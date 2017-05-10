@@ -199,7 +199,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <returns>A new AceQLTransaction object.</returns>
         /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
-        public async Task<AceQLTransaction> BeginTransaction()
+        public async Task<AceQLTransaction> BeginTransactionAsync()
         {
             TestConnectionOpened();
             await aceQLHttpApi.CallApiNoResultAsync("set_auto_commit", "false").ConfigureAwait(false);
@@ -222,7 +222,7 @@ namespace AceQL.Client.api
         /// <param name="isolationLevel">The isolation level.</param>
         /// <returns>A new AceQLTransaction object.</returns>
         /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
-        public async Task<AceQLTransaction> BeginTransaction(AceQLIsolationLevel isolationLevel)
+        public async Task<AceQLTransaction> BeginTransactionAsync(AceQLIsolationLevel isolationLevel)
         {
             TestConnectionOpened();
             await aceQLHttpApi.CallApiNoResultAsync("set_auto_commit", "false").ConfigureAwait(false);

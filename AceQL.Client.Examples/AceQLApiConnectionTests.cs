@@ -84,7 +84,7 @@ namespace AceQL.Client.Examples
             Console.WriteLine("AceQL local folder: ");
             Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
-            AceQLTransaction transaction = await connection.BeginTransaction();
+            AceQLTransaction transaction = await connection.BeginTransactionAsync();
             await transaction.CommitAsync();
             transaction.Dispose();
 
@@ -139,7 +139,7 @@ namespace AceQL.Client.Examples
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
-            transaction = await connection.BeginTransaction();
+            transaction = await connection.BeginTransactionAsync();
 
             sql = "delete from orderlog";
             command = new AceQLCommand(sql, connection);
@@ -149,7 +149,7 @@ namespace AceQL.Client.Examples
             await transaction.CommitAsync();
 
             // Do next inserts in a transaction because of BLOB
-            transaction = await connection.BeginTransaction();
+            transaction = await connection.BeginTransactionAsync();
 
             try
             {
@@ -207,7 +207,7 @@ namespace AceQL.Client.Examples
             Console.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
-            transaction = await connection.BeginTransaction();
+            transaction = await connection.BeginTransactionAsync();
 
             sql = "select * from orderlog";
             command = new AceQLCommand(sql, connection);

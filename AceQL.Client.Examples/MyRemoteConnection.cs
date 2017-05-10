@@ -151,7 +151,7 @@ namespace AceQL.Client.Examples
         public async Task InsertCustomerAndOrderLogAsync(int customerId, int itemId)
         {
             // Create a transaction
-            using (AceQLTransaction transaction = await connection.BeginTransaction())
+            using (AceQLTransaction transaction = await connection.BeginTransactionAsync())
             {
                 string sql = "insert into customer values " + "" +
                     "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
