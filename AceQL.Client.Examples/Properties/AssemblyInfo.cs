@@ -1,20 +1,26 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AceQL.Client")]
-[assembly: AssemblyDescription("C# Client toolkit for easy access of remote SQL databases managed with AceQL HTTP.")]
+[assembly: AssemblyTitle("AceQL.Client.Examples")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("KawanSoft")]
-[assembly: AssemblyProduct("AceQL.Client")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("AceQL.Client.Examples")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
-[assembly: AssemblyTrademark("AceQL")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
+
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("2084d7cf-95c3-431e-9d42-90a59a0ce1cc")]
 
 // Version information for an assembly consists of the following four values:
 //
