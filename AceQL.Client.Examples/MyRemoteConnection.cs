@@ -111,7 +111,7 @@ namespace AceQL.Client.Examples
             String password = "MySecret";
 
             // Proxy will be detected, pass the auth info for proxy that require authentication:
-            String proxyUri = null; // "http://localhost:8080";
+            String proxyUri = "http://localhost:8080";
             String proxyUsername = "ndepomereu2";
             String proxyPassword = null;
 

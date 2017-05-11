@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.api.http
 {
     /// <summary>
-    /// Allowst oupload file (Blobs) using streaming and supporting progress indicators
+    /// Allows file upload (Blobs) using streaming and supporting progress indicators
     /// </summary>
     internal class FormUploadStream
     {

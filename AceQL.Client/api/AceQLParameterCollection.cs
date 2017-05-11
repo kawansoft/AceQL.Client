@@ -51,7 +51,7 @@ namespace AceQL.Client.api
         /// <summary>
         /// Specifies the number of items in the collection.
         /// </summary>
-        /// <value>The the number of items in the collection.</value>
+        /// <value>The number of items in the collection.</value>
         public int Count
         {
             get
@@ -300,7 +300,7 @@ namespace AceQL.Client.api
         /// Get index of parameter value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>The index of the value..</returns>
+        /// <returns>The index of the value.</returns>
         public int IndexOf(object value)
         {
             //if (value == null)

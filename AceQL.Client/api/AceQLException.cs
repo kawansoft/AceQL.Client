@@ -128,7 +128,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="reason">The reason.</param>
         /// <param name="errorType">The error identifier.</param>
-        /// <param name="exception">The exception.</param>
+        /// <param name="exception">The Exception.</param>
         /// <param name="httpStatusCode">The http status code.</param>
         public AceQLException(string reason, int errorType, Exception exception, HttpStatusCode httpStatusCode)
         {

@@ -49,7 +49,7 @@ namespace AceQL.Client.api
         /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="value">The value. Can not be null.</param>
+        /// <param name="value">The value. Cannot be null.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName or value is null.</exception>
         public AceQLParameter(string parameterName, object value)
         {

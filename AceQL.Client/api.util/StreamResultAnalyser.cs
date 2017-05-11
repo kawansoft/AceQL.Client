@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.api.util
 {
     /// <summary>
-    /// Class StreamResultAnalyser. Allows to analyse the result of a downloaded result of a SQL query stored in a local PC file.
+    /// Class StreamResultAnalyser. Allows to analyze the result of a downloaded result of a SQL query stored in a local PC file.
     /// </summary>
     internal class StreamResultAnalyser
     {
@@ -50,7 +50,7 @@ namespace AceQL.Client.api.util
         /// </summary>
         /// <param name="folderName">The folder name.</param>
         /// <param name="fileName">The JSON file containing the remote SQL query result.</param>
-        /// <param name="httpStatusCode">The Jhttp status code.</param>
+        /// <param name="httpStatusCode">The http status code.</param>
         internal StreamResultAnalyser(string folderName, string fileName, HttpStatusCode httpStatusCode)
         {
             if (folderName == null)

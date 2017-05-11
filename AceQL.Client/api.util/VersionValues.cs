@@ -28,8 +28,9 @@
 //09/05/2017 20:55 NDP: C# AceQLConnection: add SetCancellationTokenSource
 //10/05/2017 19:00 NDP: C# Allow to pass ProxyUri in connection string and use it instead of System.Net.WebRequest.DefaultWebProxy
 //10/05/2017 19:32 NDP: C# AceQLClientSdk is the new Visual C# project
-//10/05/2017 22:08 NDP: Releases
-//10/05/2017 22:20 NDP: BeginTransaction renamed to BeginTransactionAsync 
+//10/05/2017 22:08 NDP: C# Releases
+//10/05/2017 22:20 NDP: C# BeginTransaction renamed to BeginTransactionAsync 
+//11/05/2017 12:24 NDP: C# Correct XML comments spelling
 
 namespace AceQL.Client.api.util
 {
@@ -37,6 +38,6 @@ namespace AceQL.Client.api.util
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.2";
-        internal static readonly String DATE = "10-may-2017";
+        internal static readonly String DATE = "11-may-2017";
     }
 }

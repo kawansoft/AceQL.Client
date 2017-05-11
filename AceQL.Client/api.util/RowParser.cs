@@ -24,7 +24,7 @@ namespace AceQL.Client.api.util
 {
     /// <summary>
     /// Class RowParser.
-    /// We pass pass a TextReader instead of a PortableFile as we want the methods to be all sync for end user.
+    /// We pass a TextReader instead of a PortableFile as we want the methods to be all sync for end user.
     /// </summary>
     internal class RowParser
     {
@@ -65,7 +65,7 @@ namespace AceQL.Client.api.util
         /// Initializes a new instance of the <see cref="RowParser" /> class.
         /// </summary>
         /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The file name. Passe for file detion.</param>
+        /// <param name="fileName">The file name. Passe for file deletion.</param>
         /// <param name="textTreader">The textTreader to use, corresponds to filename.</param>
         /// <exception cref="System.ArgumentNullException">fileName is null!</exception>
         ///<exception cref="System.ArgumentNullException">textTreader is null!</exception>

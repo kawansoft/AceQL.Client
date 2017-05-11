@@ -24,7 +24,7 @@ namespace AceQL.Client.api
 {
     /// <summary>
     /// Class AceQLDataReader. Provides a way of reading a forward-only stream of rows from a remote database
-    /// transfered in a local file.
+    /// transferred in a local file.
     /// </summary>
     public class AceQLDataReader : IDisposable
     {
@@ -36,7 +36,7 @@ namespace AceQL.Client.api
         private AceQLHttpApi aceQLHttpApi;
 
         /// <summary>
-        /// The file containin the result set.
+        /// The file containing the result set.
         /// </summary>
         private string fileName;
 
@@ -60,7 +60,7 @@ namespace AceQL.Client.api
         /// Initializes a new instance of the <see cref="AceQLDataReader" /> class.
         /// </summary>
         /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The JSON fileName that contians the SQL query result set. Passes forr delete at Dsipose()</param>
+        /// <param name="fileName">The JSON fileName that contains the SQL query result set. Passed for delete at Dispose()</param>
         /// <param name="textTreader">The TextTreader to use, corresponds to filename.</param>
         /// <param name="rowsCount">The number of rows in the file/result set.</param>
         /// <param name="connection">The AceQL connection.</param>
@@ -131,7 +131,7 @@ namespace AceQL.Client.api
         /// <summary>
         /// Traces the specified string.
         /// </summary>
-        /// <param name="s">The string to trace.s</param>
+        /// <param name="s">The string to trace.</param>
         private void Trace(String s)
         {
             if (traceOn)
@@ -631,7 +631,7 @@ namespace AceQL.Client.api
 
 
         /// <summary>
-        /// Closes the DataReader. This is recommanded in order to delete the local corresponding temporary files.
+        /// Closes the DataReader. This is recommended in order to delete the local corresponding temporary files.
         /// </summary>
         public void Dispose()
         {

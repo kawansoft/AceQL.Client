@@ -16,9 +16,9 @@ namespace AceQL.Client.api.http
         String proxyUri = null;
 
         /// <summary>
-        /// Builts a IWebProxy implementation.
+        /// Builds an IWebProxy implementation.
         /// </summary>
-        /// <param name="proxyUri">the proxy URI. Exemple: http://localhost:8080</param>
+        /// <param name="proxyUri">the proxy URI. Example: http://localhost:8080</param>
         /// 
         public Proxy(String proxyUri)
         {

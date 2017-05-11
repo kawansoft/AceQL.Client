@@ -16,7 +16,7 @@ namespace AceQL.Client.api.http
 {
 
     /// <summary>
-    /// Class AceQLHttpApi. Alows to create a Connection to the remote server
+    /// Class AceQLHttpApi. Allows to create a Connection to the remote server
     /// </summary>
     /// <seealso cref="System.IDisposable" />
     internal class AceQLHttpApi : IDisposable
@@ -68,7 +68,7 @@ namespace AceQL.Client.api.http
         /// </summary>
         internal HttpStatusCode httpStatusCode;
 
-        // Futur usage
+        // Future usage
         //int connectTimeout = 0;
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace AceQL.Client.api.http
         /// </summary>
         /// <param name="connectionString">The connection string. 
         /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword"
-        /// You may specify if session is staless with Stateless=true. If not specified, session is stateful.
+        /// You may specify if session is stateless with Stateless=true. If not specified, session is stateful.
         /// You may specify using NTLM with NTLM=true or specify the username and password of an authenticated proxy with ProxyUsernme and 
         /// ProxyPassword. Examples
         /// 1) NLTM: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; NTLM=true"
@@ -344,7 +344,7 @@ namespace AceQL.Client.api.http
         /// <summary>
         /// Opens this instance.
         /// </summary>
-        /// <exception cref="ArgumentNullException"> if a required paramater extracted from connection string is missing.
+        /// <exception cref="ArgumentNullException"> if a required parameter extracted from connection string is missing.
         /// </exception>
         /// <exception cref="AceQLException"> if any other Exception occurs.
         /// </exception>
@@ -492,7 +492,7 @@ namespace AceQL.Client.api.http
         /// Executes a POST with parameters.
         /// </summary>
         /// <param name="action">The action.</param>
-        /// <param name="parameters">The request parmaters.</param>
+        /// <param name="parameters">The request parameters.</param>
         /// <returns>Stream.</returns>
         /// <exception cref="System.ArgumentNullException">
         /// action is null!
@@ -877,9 +877,9 @@ namespace AceQL.Client.api.http
         }
 
         /// <summary>
-        /// Returns the sharable progress variable that will store blob/clob upload or download progress between 0 and 100.
+        /// Returns the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
-        /// <returns>The sharable progress variable that will store blob/clob upload or download progress between 0 and 100.</returns>
+        /// <returns>The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
         internal ProgressHolder GetProgress()
         {
             return progress;
@@ -887,7 +887,7 @@ namespace AceQL.Client.api.http
 
 
         /// <summary>
-        /// Sets the sharable progress variable that will store blob/clob upload ordownload progress between 0 and 100. Will be used by progress indicators to show the progress.
+        /// Sets the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
         /// <param name="progress">The sharable progress variable.</param>
         internal void SetProgress(ProgressHolder progress)

@@ -237,7 +237,7 @@ namespace AceQL.Client.api.http
         }
 
         /// <summary>
-        /// The already upoaded length
+        /// The already uploaded length
         /// </summary>
         internal int Percent
         {

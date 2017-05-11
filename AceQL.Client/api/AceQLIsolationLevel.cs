@@ -23,7 +23,7 @@ namespace AceQL.Client.api
         ReadCommitted = 4096,
 
         /// <summary>
-        /// Locks are placed on all data that is used in a query, preventing other usersfrom updating the data. Prevents non-repeatable reads but phantom rows are still possible.
+        /// Locks are placed on all data that is used in a query, preventing other users from updating the data. Prevents non-repeatable reads but phantom rows are still possible.
         /// </summary>
         RepeatableRead = 65536,
  

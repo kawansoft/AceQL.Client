@@ -94,7 +94,7 @@ namespace AceQL.Client.api
 
 
         /// <summary>
-        /// Specifies the isolation leve for this transaction.
+        /// Specifies the isolation level for this transaction.
         /// </summary>
         /// <value>The isolation level.</value>
         public AceQLIsolationLevel IsolationLevel

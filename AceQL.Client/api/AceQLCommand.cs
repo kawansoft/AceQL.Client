@@ -77,7 +77,7 @@ namespace AceQL.Client.api
         /// <summary>
         /// Gets the remote database connection.
         /// </summary>
-        /// <value>The remote database database connection.</value>
+        /// <value>The remote database connection.</value>
         protected AceQLConnection Connection
         {
             get

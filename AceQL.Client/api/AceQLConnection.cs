@@ -39,7 +39,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="connectionString">The connection string. 
         /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword"
-        /// You may specify if session is staless with Stateless = true. If not specified, session is stateful.
+        /// You may specify if session is stateless with Stateless = true. If not specified, session is stateful.
         /// Example:"Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; Stateless = true"
         /// 
         /// You may alos specify using NTLM with NTLM=true or specify the username and password of an authenticated proxy with ProxyUsernme and 
@@ -141,9 +141,11 @@ namespace AceQL.Client.api
 
 
         /// <summary>
-        /// Gets a value indicating whether [gzip result] is on or off. Defauts to true.
+        /// Gets or sets a value indicating whether SQL result sets are returned compressed with the GZIP file format
+        /// before download. Defauts to true.
         /// </summary>
-        /// <value><c>true</c> if [gzip result]; otherwise, <c>false</c>.</value>
+        /// <value>true if SQL result sets are returned compressed with the GZIP file format
+        /// before download.</value>
         public bool GzipResult
         {
             get
@@ -175,7 +177,7 @@ namespace AceQL.Client.api
 
         /// <summary>
         /// Closes this instance.
-        /// This is highly recommanded in default stateful mode: it will call in async mode the "disconnect" HTTP API and release the remote Connection into the pool.
+        /// This is highly recommended in default stateful mode: it will call in async mode the "disconnect" HTTP API and release the remote Connection into the pool.
         /// </summary>
         public void Dispose()
         {

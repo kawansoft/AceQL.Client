@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.api.util
 {
     /// <summary>
-    /// Class ResultAnalyser. Used to analyse a JSON response from the AceQL server.
+    /// Class ResultAnalyser. Used to analyze a JSON response from the AceQL server.
     /// </summary>
     internal class ResultAnalyser
     {
@@ -37,7 +37,7 @@ namespace AceQL.Client.api.util
         /// </summary>
         private bool invalidJsonStream = false;
 
-        /** Exception when parsing the JSON stream. Futur usage */
+        /** Exception when parsing the JSON stream. Future usage */
         private Exception parseException = null;
 
         /// <summary>
