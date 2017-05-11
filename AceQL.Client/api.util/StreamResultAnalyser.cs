@@ -11,14 +11,14 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using AceQL.Client.api.file;
+using AceQL.Client.Api.File;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.util
+namespace AceQL.Client.Api.Util
 {
     /// <summary>
     /// Class StreamResultAnalyser. Allows to analyze the result of a downloaded result of a SQL query stored in a local PC file.

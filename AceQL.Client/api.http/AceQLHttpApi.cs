@@ -1,5 +1,6 @@
 ﻿
-using AceQL.Client.api.util;
+using AceQL.Client.Api.File;
+using AceQL.Client.Api.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.http
+namespace AceQL.Client.Api.Http
 {
 
     /// <summary>
@@ -901,7 +902,7 @@ namespace AceQL.Client.api.http
         /// <returns>the SDK current Version.</returns>
         internal String GetVersion()
         {
-            return util.Version.GetVersion();
+            return Util.Version.GetVersion();
         }
 
         /// <summary>

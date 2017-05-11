@@ -1,5 +1,5 @@
 ﻿
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Specifies the transaction locking behavior for the remote connection.

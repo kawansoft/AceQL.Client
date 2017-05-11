@@ -12,15 +12,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-using AceQL.Client.api.file;
-using AceQL.Client.api.http;
-using AceQL.Client.api.util;
+using AceQL.Client.Api.File;
+using AceQL.Client.Api.Http;
 using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using AceQL.Client.Api.Util;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Class AceQLConnection. Allows to create a database connection to the remote server.
@@ -200,7 +200,7 @@ namespace AceQL.Client.api
         /// Initializes a new AceQL.Client.api.AceQLTransaction object. This will put the remote connection in auto commit mode off.
         /// </summary>
         /// <returns>A new AceQLTransaction object.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLTransaction> BeginTransactionAsync()
         {
             TestConnectionOpened();
@@ -223,7 +223,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
         /// <returns>A new AceQLTransaction object.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLTransaction> BeginTransactionAsync(AceQLIsolationLevel isolationLevel)
         {
             TestConnectionOpened();
@@ -298,14 +298,14 @@ namespace AceQL.Client.api
         /// <returns>the AceQL SDK current Version.</returns>
         public String GetClientVersion()
         {
-            return AceQL.Client.api.util.Version.GetVersion();
+            return AceQL.Client.Api.Util.Version.GetVersion();
         }
 
         /// <summary>
         /// Returns the remote AceQL Server Version.
         /// </summary>
         /// <returns>the remote  AceQL Server Version.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<string> GetServerVersionAsync()
         {
             TestConnectionOpened();

@@ -38,33 +38,33 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="api.file\PortableFile.cs" />
-    <Compile Include="api.file\PortableFileInfo.cs" />
-    <Compile Include="api.http\AceQLHttpApi.cs" />
-    <Compile Include="api.http\FormUpload.cs" />
-    <Compile Include="api.http\FormUploadStream.cs" />
-    <Compile Include="api.http\Proxy.cs" />
-    <Compile Include="api.util\AceQLCommandUtil.cs" />
-    <Compile Include="api.util\AceQLTypes.cs" />
-    <Compile Include="api.util\ConsoleEmul.cs" />
-    <Compile Include="api.util\Parms.cs" />
-    <Compile Include="api.util\PrepStatementParameter.cs" />
-    <Compile Include="api.util\ResultAnalyser.cs" />
-    <Compile Include="api.util\RowCounter.cs" />
-    <Compile Include="api.util\RowParser.cs" />
-    <Compile Include="api.util\StreamResultAnalyser.cs" />
-    <Compile Include="api.util\Version.cs" />
-    <Compile Include="api.util\VersionValues.cs" />
-    <Compile Include="api\AceQLCommand.cs" />
-    <Compile Include="api\AceQLConnection.cs" />
-    <Compile Include="api\AceQLDataReader.cs" />
-    <Compile Include="api\AceQLException.cs" />
-    <Compile Include="api\AceQLIsolationLevel.cs" />
-    <Compile Include="api\AceQLParameter.cs" />
-    <Compile Include="api\AceQLParameterCollection.cs" />
-    <Compile Include="api\AceQLTransaction.cs" />
-    <Compile Include="api\ProgressHolder.cs" />
-    <Compile Include="api\SqlType.cs" />
+    <Compile Include="Api.File\PortableFile.cs" />
+    <Compile Include="Api.File\PortableFileInfo.cs" />
+    <Compile Include="Api.Http\AceQLHttpApi.cs" />
+    <Compile Include="Api.Http\FormUpload.cs" />
+    <Compile Include="Api.Http\FormUploadStream.cs" />
+    <Compile Include="Api.Http\Proxy.cs" />
+    <Compile Include="Api.Util\AceQLCommandUtil.cs" />
+    <Compile Include="Api.Util\AceQLTypes.cs" />
+    <Compile Include="Api.Util\ConsoleEmul.cs" />
+    <Compile Include="Api.Util\Parms.cs" />
+    <Compile Include="Api.Util\PrepStatementParameter.cs" />
+    <Compile Include="Api.Util\ResultAnalyser.cs" />
+    <Compile Include="Api.Util\RowCounter.cs" />
+    <Compile Include="Api.Util\RowParser.cs" />
+    <Compile Include="Api.Util\StreamResultAnalyser.cs" />
+    <Compile Include="Api.Util\Version.cs" />
+    <Compile Include="Api.Util\VersionValues.cs" />
+    <Compile Include="Api\AceQLCommand.cs" />
+    <Compile Include="Api\AceQLConnection.cs" />
+    <Compile Include="Api\AceQLDataReader.cs" />
+    <Compile Include="Api\AceQLException.cs" />
+    <Compile Include="Api\AceQLIsolationLevel.cs" />
+    <Compile Include="Api\AceQLParameter.cs" />
+    <Compile Include="Api\AceQLParameterCollection.cs" />
+    <Compile Include="Api\AceQLTransaction.cs" />
+    <Compile Include="Api\ProgressHolder.cs" />
+    <Compile Include="Api\SqlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="api.file\PCLStorage_LICENSE" />
+    <None Include="Api.File\PCLStorage_LICENSE" />
     <None Include="app.config" />
     <None Include="LICENSE" />
     <None Include="packages.config" />

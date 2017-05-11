@@ -11,13 +11,13 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using AceQL.Client.api.util;
+using AceQL.Client.Api.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Represents a collection of parameters associated with an AceQL.Client.api.AceQLCommand 

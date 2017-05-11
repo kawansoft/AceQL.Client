@@ -12,7 +12,7 @@
 // <summary></summary>
 // ***********************************************************************
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
 
     /// <summary>

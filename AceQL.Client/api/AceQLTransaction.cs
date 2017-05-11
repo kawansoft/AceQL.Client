@@ -12,11 +12,11 @@
 // <summary></summary>
 // ***********************************************************************
 
-using AceQL.Client.api.http;
+using AceQL.Client.Api.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Class AceQLTransaction. Allows to define a Transaction in order to execute remote commit or rollback.
@@ -122,7 +122,7 @@ namespace AceQL.Client.api
         /// Commits the database transaction. 
         /// Note that this call will put the remote connection in auto commit mode on after commit.
         /// </summary>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task CommitAsync()
         {
             await aceQLHttpApi.CallApiNoResultAsync("set_auto_commit", "true").ConfigureAwait(false);
@@ -132,7 +132,7 @@ namespace AceQL.Client.api
         /// Rolls back a transaction from a pending state.
         /// Note that this call will put the remote connection in auto commit mode on after rollback.
         /// </summary>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task RollbackAsync()
         {
             await aceQLHttpApi.CallApiNoResultAsync("rollback", null).ConfigureAwait(false);

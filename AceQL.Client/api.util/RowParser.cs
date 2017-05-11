@@ -11,7 +11,7 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using AceQL.Client.api.file;
+using AceQL.Client.Api.File;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.util
+namespace AceQL.Client.Api.Util
 {
     /// <summary>
     /// Class RowParser.

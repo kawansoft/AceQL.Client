@@ -1,5 +1,5 @@
-﻿using AceQL.Client.api.file;
-using AceQL.Client.api.util;
+﻿using AceQL.Client.Api.File;
+using AceQL.Client.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.http
+namespace AceQL.Client.Api.Http
 {
 
     /// <summary>

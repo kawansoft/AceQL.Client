@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AceQL.Client.api.util
+namespace AceQL.Client.Api.Util
 {
     internal class Version
     {

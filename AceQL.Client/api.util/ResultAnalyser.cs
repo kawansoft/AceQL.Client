@@ -19,7 +19,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.util
+namespace AceQL.Client.Api.Util
 {
     /// <summary>
     /// Class ResultAnalyser. Used to analyze a JSON response from the AceQL server.

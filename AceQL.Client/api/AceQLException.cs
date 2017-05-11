@@ -15,7 +15,7 @@
 using System;
 using System.Net;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Class AceQLException. All client and server side exceptions raised are wrapped in AceQLException.

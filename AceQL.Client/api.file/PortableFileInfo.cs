@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.file
+namespace AceQL.Client.Api.File
 {
     /// <summary>
     /// Equivalent in our Portable Class Library of Windows System.IO.FileInfo for most important methods.

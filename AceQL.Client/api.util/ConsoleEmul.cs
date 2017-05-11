@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.util
+namespace AceQL.Client.Api.Util
 {
     /// <summary>
     /// Console emulator as in Portable Class Library we don't have access to Console.

@@ -12,15 +12,15 @@
 // <summary></summary>
 // ***********************************************************************
 
-using AceQL.Client.api.http;
-using AceQL.Client.api.util;
+using AceQL.Client.Api.Http;
+using AceQL.Client.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Class AceQLDataReader. Provides a way of reading a forward-only stream of rows from a remote database
@@ -209,7 +209,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The ordinal.</param>
         /// <returns>The Stream to read the downloaded Blob.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<Stream> GetStreamAsync(int ordinal)
         {
             String blobId = GetString(ordinal);
@@ -227,7 +227,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool GetBoolean(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -306,7 +306,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public DateTime GetDateTime(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -326,7 +326,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public decimal GetDecimal(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -342,7 +342,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public double GetDouble(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -379,7 +379,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public float GetFloat(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -406,7 +406,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public short GetInt16(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -422,7 +422,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public int GetInt32(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -438,7 +438,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public long GetInt64(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -454,7 +454,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The name of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public string GetName(int ordinal)
         {
             if (!colNamesPerColIndex.ContainsKey(ordinal))
@@ -470,7 +470,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="name">The name of the column.</param>
         /// <returns>The zero-based column ordinal.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public int GetOrdinal(string name)
         {
             if (!colIndexesPerColName.ContainsKey(name))
@@ -486,7 +486,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public string GetString(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -502,7 +502,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public object GetValue(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -575,7 +575,7 @@ namespace AceQL.Client.api
         /// </summary>
         /// <param name="ordinal">The ordinal.</param>
         /// <returns> rue if column contains non-existent or missing values, else false.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool IsDBNull(int ordinal)
         {
             if (!valuesPerColIndex.ContainsKey(ordinal))
@@ -590,7 +590,7 @@ namespace AceQL.Client.api
         /// Advances the reader to the next record.
         /// </summary>
         /// <returns>true if there are more rows; otherwise, false.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool Read()
         {
             if (DEBUG)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using PCLStorage;
 
-namespace AceQL.Client.api.file
+namespace AceQL.Client.Api.File
 {
     /// <summary>
     /// Equivalent in our Portable Class Library of Windows System.IO.File for most important methods.

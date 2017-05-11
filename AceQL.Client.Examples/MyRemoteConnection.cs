@@ -1,7 +1,6 @@
 ﻿using AceQL.Client;
-using AceQL.Client.api;
-using AceQL.Client.api.file;
-using AceQL.Client.api.util;
+using AceQL.Client.Api;
+using AceQL.Client.Api.File;
 using System;
 using System.IO;
 using System.Threading.Tasks;

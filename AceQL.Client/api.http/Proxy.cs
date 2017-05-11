@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.http
+namespace AceQL.Client.Api.Http
 {
     /// <summary>
     /// Class to allow to pass a proxyUri, if we don't want to use the default System.Net.WebRequest.DefaultWebProxy.

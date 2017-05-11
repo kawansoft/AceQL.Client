@@ -1,6 +1,6 @@
 ﻿
-using AceQL.Client.api;
-using AceQL.Client.api.file;
+using AceQL.Client.Api;
+using AceQL.Client.Api.File;
 using PCLStorage;
 using System;
 using System.Data;

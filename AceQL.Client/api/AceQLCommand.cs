@@ -11,9 +11,8 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using AceQL.Client.api.file;
-using AceQL.Client.api.http;
-using AceQL.Client.api.util;
+using AceQL.Client.Api.File;
+using AceQL.Client.Api.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,8 +20,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using AceQL.Client.Api.Util;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Represents a Transact-SQL statement or stored procedure to execute against a remote SQL database.
@@ -122,7 +122,7 @@ namespace AceQL.Client.api
         ///  Sends the AceQL.Client.api.AceQLCommand.CommandText to the AceQL.Client.api.Connection and builds a AceQL.Client.api.AceQLDataReader.
         /// </summary>
         /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLDataReader> ExecuteReaderAsync()
         {
             if (Parameters.Count == 0)
@@ -139,7 +139,7 @@ namespace AceQL.Client.api
         /// Executes the SQL statement against the connection and returns the number of rows affected.
         /// </summary>
         /// <returns>The number of rows affected.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<int> ExecuteNonQueryAsync()
         {
             if (Parameters.Count == 0)
@@ -157,7 +157,7 @@ namespace AceQL.Client.api
         /// Executes the query as statement.
         /// </summary>
         /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         private async Task<AceQLDataReader> ExecuteQueryAsStatementAsync()
         {
             try
@@ -222,7 +222,7 @@ namespace AceQL.Client.api
         /// Executes the query as prepared statement.
         /// </summary>
         /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
-        /// <exception cref="AceQL.Client.api.AceQLException">If any Exception occurs.</exception>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         private async Task<AceQLDataReader> ExecuteQueryAsPreparedStatementAsync()
         {
             try

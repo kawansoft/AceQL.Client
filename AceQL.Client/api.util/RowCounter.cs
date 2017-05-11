@@ -1,11 +1,11 @@
-﻿using AceQL.Client.api.file;
-using AceQL.Client.api.util;
+﻿using AceQL.Client.Api.File;
+using AceQL.Client.Api.Util;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Counts rows in a JSON file.

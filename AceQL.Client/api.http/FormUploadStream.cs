@@ -1,5 +1,6 @@
 ﻿
-using AceQL.Client.api.util;
+using AceQL.Client.Api.File;
+using AceQL.Client.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.api.http
+namespace AceQL.Client.Api.Http
 {
     /// <summary>
     /// Allows file upload (Blobs) using streaming and supporting progress indicators
