@@ -32,6 +32,7 @@
 //10/05/2017 22:20 NDP: C# BeginTransaction renamed to BeginTransactionAsync 
 //11/05/2017 12:24 NDP: C# Correct XML comments spelling
 //11/05/2017 12:39 NDP: C# Packages first letters are now uppercase
+//11/05/2017 17:43 NDP: C# Correct XML comments spelling
 
 namespace AceQL.Client.Api.Util
 {

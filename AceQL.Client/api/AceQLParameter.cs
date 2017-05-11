@@ -41,7 +41,7 @@ namespace AceQL.Client.Api
         private bool isNullValue = false;
 
         /// <summary>
-        /// The length of he BLOB to upload
+        /// The length of the BLOB to upload
         /// </summary>
         private long blobLength = 0;
 
