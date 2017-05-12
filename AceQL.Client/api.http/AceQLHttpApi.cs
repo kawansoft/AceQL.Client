@@ -2,6 +2,7 @@
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Util;
 using Newtonsoft.Json;
+using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -113,7 +114,6 @@ namespace AceQL.Client.Api.Http
         /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         internal AceQLHttpApi(String connectionString)
         {
-
             //Server = myServerAddress; Database = myDataBase; Username = myUsername; Password = myPassword;
 
             // Replace escaped "\;"
@@ -275,26 +275,23 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// Traces this instance.
         /// </summary>
-        internal void Trace()
+        internal static async Task TraceAsync()
         {
-            if (TRACE_ON)
-            {
-                ConsoleEmul.WriteLine();
-            }
+            await TraceAsync("");
         }
 
         /// <summary>
         /// Traces the specified string.
         /// </summary>
-        /// <param name="s">The string to trace</param>
-        internal void Trace(String s)
+        /// <param name="contents">The string to trace</param>
+        internal static async Task TraceAsync(String contents)
         {
             if (TRACE_ON)
             {
-                ConsoleEmul.WriteLine(s);
+                IFile file = await AceQLCommandUtil.GetTraceFileAsync();
+                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents);
             }
         }
-
 
         /// <summary>
         /// Gets a value indicating whether [pretty printing] is on or off.
@@ -387,7 +384,7 @@ namespace AceQL.Client.Api.Http
                 String theSessionId = resultAnalyser.GetValue("session_id");
 
                 this.url = server + "/session/" + theSessionId + "/";
-                Trace("url: " + this.url);
+                await TraceAsync("OpenAsync url: " + this.url);
 
             }
             catch (Exception exception)
@@ -528,10 +525,16 @@ namespace AceQL.Client.Api.Http
             // This is the postdata
             var postData = new List<KeyValuePair<string, string>>();
 
+            await TraceAsync();
+            await TraceAsync("----------------------------------------");
+            await TraceAsync(url);
+
             foreach (var param in parameters)
             {
                 postData.Add(new KeyValuePair<string, string>(param.Key, param.Value));
+                await TraceAsync("param: " + param.Key + "/" + param.Value);
             }
+            await TraceAsync("----------------------------------------");
 
             HttpContent content = new FormUrlEncodedContent(postData);
 
@@ -630,10 +633,11 @@ namespace AceQL.Client.Api.Http
 
                 var responseString = new StreamReader(stream).ReadToEnd();
 
-                Trace("----------------------------------------");
-                Trace(responseString);
-                Trace("----------------------------------------");
-
+                await TraceAsync();
+                await TraceAsync("----------------------------------------");
+                await TraceAsync(url);
+                await TraceAsync(responseString);
+                await TraceAsync("----------------------------------------");
 
                 return responseString;
             }

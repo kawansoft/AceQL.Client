@@ -21,7 +21,7 @@ namespace AceQL.Client.Api.Http
     /// </summary>
     internal class FormUploadStream
     {
-        internal static bool DEBUG = true;
+        internal static bool DEBUG = false;
         private long tempLen = 0;
 
         /// <summary>
@@ -83,6 +83,12 @@ namespace AceQL.Client.Api.Http
                 var multipart = new MultipartFormDataContent();
                 multipart.Add(stringContentBlobId, '"' + "blob_id" + '"');
                 multipart.Add(new StreamContent(stream), '"' + "file" + '"', '"' + blobId + '"');
+
+                await AceQLHttpApi.TraceAsync();
+                await AceQLHttpApi.TraceAsync("----------------------------------------");
+                await AceQLHttpApi.TraceAsync("url     : " + url);
+                await AceQLHttpApi.TraceAsync("blob_id : " + blobId);
+                await AceQLHttpApi.TraceAsync("----------------------------------------");
 
                 if (DEBUG)
                 {

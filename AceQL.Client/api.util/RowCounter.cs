@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using PCLStorage;
 
 namespace AceQL.Client.Api
 {
@@ -12,30 +13,24 @@ namespace AceQL.Client.Api
     /// </summary>
     internal class RowCounter
     {
-        private string fileName;
         private bool traceOn;
-        private string folderName;
+        private IFile file;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The file name.</param>
-        internal RowCounter(string folderName, string fileName)
+        /// <param name="file">The Result Set JSON file to count the rows for.</param>
+        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
+        public RowCounter(IFile file)
         {
-            if (folderName == null)
+            if (file == null)
             {
-                throw new ArgumentNullException("folderName is null!");
+                throw new ArgumentNullException("file is null!");
             }
 
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            this.folderName = folderName;
-            this.fileName = fileName;
+            this.file = file;
         }
+
 
         /// <summary>
         /// Gets the row count.
@@ -43,14 +38,10 @@ namespace AceQL.Client.Api
         /// <returns>System.Int32.</returns>
         internal async Task<int> CountAsync()
         {
-            if (!await PortableFile.ExistsAsync(folderName, fileName).ConfigureAwait(false))
-            {
-                throw new System.IO.FileNotFoundException("JSON file does not exist: " + fileName);
-            }
-
             Trace();
-            using (TextReader textReader = await PortableFile.OpenTextAsync(folderName, fileName).ConfigureAwait(false))
+            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
             {
+                TextReader textReader = new StreamReader(stream);
                 using (JsonTextReader reader = new JsonTextReader(textReader))
                 {
                     while (reader.Read())

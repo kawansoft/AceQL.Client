@@ -15,5 +15,11 @@ namespace AceQL.Client.Api.Util
         /// The AceQL default storage folder.
         /// </summary>
         public const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
+
+        /// <summary>
+        /// The default trace file name.
+        /// </summary>
+        public const string TRACE_TXT = "trace.txt";
+
     }
 }

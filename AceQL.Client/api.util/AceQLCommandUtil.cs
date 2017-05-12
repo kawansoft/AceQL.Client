@@ -11,12 +11,11 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using Newtonsoft.Json;
+using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AceQL.Client.Api.Util
@@ -147,7 +146,7 @@ namespace AceQL.Client.Api.Util
                 {
                     Stream stream = (Stream)value;
 
-                    String blobId = AceQLCommandUtil.BuildBlobId();
+                    String blobId = BuildUniqueBlobId();
 
                     blobIds.Add(blobId);
                     blobStreams.Add(stream);
@@ -220,16 +219,28 @@ namespace AceQL.Client.Api.Util
             return parametersList;
         }
 
-        internal static string BuildBlobId()
+        /// <summary>
+        /// Builds a unique Blob ID.
+        /// </summary>
+        /// <returns>a unique Blob ID.</returns>
+        internal static string BuildUniqueBlobId()
         {
             String blobId = Guid.NewGuid().ToString() + ".blob";
             return blobId;
         }
 
-        internal static string BuildResultSetFileName()
+        /// <summary>
+        /// Returns the file corresponding to the trace file. Value is: AceQLPclFolder/trace.txt.
+        /// </summary>
+        /// <returns>the file corresponding to the trace file.</returns>
+        internal static async Task<IFile> GetTraceFileAsync()
         {
-            String fileName = Guid.NewGuid().ToString() + "-result-set.txt";
-            return fileName;
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+            IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
+                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+
+            IFile file = await folder.CreateFileAsync(Parms.TRACE_TXT, CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+            return file;
         }
 
         /// <summary>

@@ -33,15 +33,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\AceQL.Client.XML</DocumentationFile>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api.File\PortableFile.cs" />
-    <Compile Include="Api.File\PortableFileInfo.cs" />
     <Compile Include="Api.Http\AceQLHttpApi.cs" />
-    <Compile Include="Api.Http\FormUpload.cs" />
     <Compile Include="Api.Http\FormUploadStream.cs" />
     <Compile Include="Api.Http\Proxy.cs" />
     <Compile Include="Api.Util\AceQLCommandUtil.cs" />

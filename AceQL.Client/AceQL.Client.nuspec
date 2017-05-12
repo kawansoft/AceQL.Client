@@ -6,11 +6,11 @@
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
-        <licenseUrl>https://www.aceql.com/rest/soft/1.0/licensing/AceQLOpenSourceLicense.txt</licenseUrl>
+        <licenseUrl>https://github.com/kawansoft/AceQL.Client/blob/master/AceQL.Client/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/kawansoft/AceQL.Client</projectUrl>
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>Client toolkit for easy access of remote SQL databases managed with AceQL HTTP.</description>
+        <description>Client toolkit for easy access of remote SQL databases managed with AceQL HTTP. Packaged as a Portable Class Library that works on iOS, Android and Windows.</description>
         <releaseNotes>Package is a Portable Class Library that works with Windows, Android, and iPhone. Works with Xamarin.</releaseNotes>
         <copyright>Copyright © 2017</copyright>
         <tags>SQL http remote database</tags>

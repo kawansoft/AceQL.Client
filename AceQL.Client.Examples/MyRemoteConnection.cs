@@ -1,6 +1,7 @@
 ﻿using AceQL.Client;
 using AceQL.Client.Api;
 using AceQL.Client.Api.File;
+using PCLStorage;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace AceQL.Client.Examples
 
         public static async Task DoIt(string[] args)
         {
+
             AceQLConnection connection = null;
 
             try
@@ -116,7 +118,8 @@ namespace AceQL.Client.Examples
 
             if (await PortableFile.ExistsAsync("AceQLPclFolder", "password.txt"))
             {
-                proxyPassword = await PortableFile.ReadAllTextAsync("AceQLPclFolder", "password.txt");
+                IFile file = await PortableFile.GetFileAsync("AceQLPclFolder", "password.txt");
+                proxyPassword = await file.ReadAllTextAsync();
             }
             
             string connectionString = $"Server={server}; Database={database}; "
@@ -222,7 +225,7 @@ namespace AceQL.Client.Examples
 
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (dataReader.Read())
+                while (await dataReader.ReadAsync())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
@@ -244,7 +247,7 @@ namespace AceQL.Client.Examples
 
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (dataReader.Read())
+                while (await dataReader.ReadAsync())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);

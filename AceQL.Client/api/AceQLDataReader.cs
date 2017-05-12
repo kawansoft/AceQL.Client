@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using PCLStorage;
 
 namespace AceQL.Client.Api
 {
@@ -35,11 +36,6 @@ namespace AceQL.Client.Api
         /// </summary>
         private AceQLHttpApi aceQLHttpApi;
 
-        /// <summary>
-        /// The file containing the result set.
-        /// </summary>
-        private string fileName;
-
         private bool traceOn = false;
 
         private int currentRowNum = 0;
@@ -54,32 +50,25 @@ namespace AceQL.Client.Api
         private Dictionary<string, int> colIndexesPerColName = new Dictionary<string, int>();
 
         private AceQLConnection connection;
-        private string folderName;
+
+        /// <summary>
+        /// The JSON file containing the Result Set
+        /// </summary>
+        private IFile file;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLDataReader" /> class.
         /// </summary>
-        /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The JSON fileName that contains the SQL query result set. Passed for delete at Dispose()</param>
-        /// <param name="textTreader">The TextTreader to use, corresponds to filename.</param>
+        /// <param name="file">The JSON file containing the Result Set.</param>
         /// <param name="rowsCount">The number of rows in the file/result set.</param>
         /// <param name="connection">The AceQL connection.</param>
-        internal AceQLDataReader(string folderName, string fileName, TextReader textTreader, int rowsCount, AceQLConnection connection)
+        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
+        internal AceQLDataReader(IFile file, int rowsCount, AceQLConnection connection)
         {
-
-            if (folderName == null)
+            if (file == null)
             {
-                throw new ArgumentNullException("folderName is null!");
-            }
-
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            if (textTreader == null)
-            {
-                throw new ArgumentNullException("textTreader is null!");
+                throw new ArgumentNullException("file is null!");
             }
 
             if (connection == null)
@@ -87,15 +76,14 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("connection is null!");
             }
 
-            this.folderName = folderName;
-            this.fileName = fileName;
+            this.file = file;
+            this.rowsCount = rowsCount;
             this.connection = connection;
+
             this.aceQLHttpApi = connection.aceQLHttpApi;
 
-            rowParser = new RowParser(folderName, fileName, textTreader);
-
+            rowParser = new RowParser(file);
             this.rowsCount = rowsCount;
-
         }
 
 
@@ -591,7 +579,7 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <returns>true if there are more rows; otherwise, false.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
-        public bool Read()
+        public async Task<bool> ReadAsync()
         {
             if (DEBUG)
             {
@@ -613,7 +601,7 @@ namespace AceQL.Client.Api
             try
             {
                 currentRowNum++;
-                rowParser.BuildRowNum(currentRowNum);
+                await rowParser.BuildRowNumAsync(currentRowNum).ConfigureAwait(false);
 
                 valuesPerColIndex = rowParser.GetValuesPerColIndex();
                 colNamesPerColIndex = rowParser.GetColNamesPerColIndex();

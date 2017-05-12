@@ -11,6 +11,7 @@ namespace AceQL.Client.Examples
     {
         static void Main(string[] args)
         {
+
             int mainToLaunch = 2;
 
             if (mainToLaunch == 1)

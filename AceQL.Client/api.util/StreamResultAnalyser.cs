@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using PCLStorage;
 
 namespace AceQL.Client.Api.Util
 {
@@ -25,10 +26,6 @@ namespace AceQL.Client.Api.Util
     /// </summary>
     internal class StreamResultAnalyser
     {
-        /// <summary>
-        /// The JSON file
-        /// </summary>
-        private string fileName;
         /// <summary>
         /// The error identifier
         /// </summary>
@@ -43,28 +40,25 @@ namespace AceQL.Client.Api.Util
         private string stackTrace;
 
         private HttpStatusCode httpStatusCode;
-        private string folderName;
+
+        // The JSON file ontaining Result Set
+        private IFile file;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamResultAnalyser"/> class.
         /// </summary>
-        /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The JSON file containing the remote SQL query result.</param>
+        /// <param name="file">The file to analyse.</param>
         /// <param name="httpStatusCode">The http status code.</param>
-        internal StreamResultAnalyser(string folderName, string fileName, HttpStatusCode httpStatusCode)
+        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
+        public StreamResultAnalyser(IFile file, HttpStatusCode httpStatusCode)
         {
-            if (folderName == null)
+            if (file == null)
             {
-                throw new ArgumentNullException("folderName is null!");
+                throw new ArgumentNullException("file is null!");
             }
 
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            this.folderName = folderName;
-            this.fileName = fileName;
+            this.file = file;
             this.httpStatusCode = httpStatusCode;
         }
 
@@ -74,20 +68,10 @@ namespace AceQL.Client.Api.Util
         /// <returns><c>true</c> if [is status ok]; otherwise, <c>false</c>.</returns>
         internal async Task<bool> IsStatusOkAsync()
         {
-            if (! await PortableFile.ExistsAsync(folderName, fileName).ConfigureAwait(false))
-            {
-                this.errorType = "0";
 
-                errorMessage = "Unknown error.";
-                if (httpStatusCode != HttpStatusCode.OK)
-                {
-                    errorMessage = "HTTP FAILURE " + (int)httpStatusCode + " (" + httpStatusCode + ")";
-                }
-                return false;
-            }
-
-            using (TextReader textReader = await PortableFile.OpenTextAsync(folderName, fileName).ConfigureAwait(false))
+            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
             {
+                TextReader textReader = new StreamReader(stream);
                 var reader = new JsonTextReader(textReader);
 
                 while (reader.Read())

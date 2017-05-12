@@ -21,6 +21,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
+using PCLStorage;
 
 namespace AceQL.Client.Api
 {
@@ -162,7 +163,7 @@ namespace AceQL.Client.Api
         {
             try
             {
-                String fileName = AceQLCommandUtil.BuildResultSetFileName();
+                IFile file = await GetUniqueResultSetFile();
 
                 Boolean isPreparedStatement = false;
                 Dictionary<string, string> parametersMap = null;
@@ -173,7 +174,7 @@ namespace AceQL.Client.Api
                     {
                         using (GZipStream decompressionStream = new GZipStream(input, CompressionMode.Decompress))
                         {
-                            using (var stream = await PortableFile.CreateAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false))
+                            using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
                             {
                                 decompressionStream.CopyTo(stream);
                             }
@@ -181,15 +182,15 @@ namespace AceQL.Client.Api
                     }
                     else
                     {
-                        using (var stream = await PortableFile.CreateAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false))
+                        using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
                         {
                             input.CopyTo(stream);
                         }
                     }
                 }
 
-                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(Parms.ACEQL_PCL_FOLDER, fileName, aceQLHttpApi.httpStatusCode);
-                if (! await resultAnalyser.IsStatusOkAsync().ConfigureAwait(false))
+                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(file, aceQLHttpApi.httpStatusCode);
+                if (!await resultAnalyser.IsStatusOkAsync().ConfigureAwait(false))
                 {
                     throw new AceQLException(resultAnalyser.GetErrorMessage(),
                         resultAnalyser.GetErrorType(),
@@ -197,11 +198,10 @@ namespace AceQL.Client.Api
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowcounter = new RowCounter(Parms.ACEQL_PCL_FOLDER, fileName);
+                RowCounter rowcounter = new RowCounter(file);
                 int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
-                TextReader textReader =await PortableFile.OpenTextAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false);
 
-                AceQLDataReader aceQLDataReader = new AceQLDataReader(Parms.ACEQL_PCL_FOLDER, fileName, textReader, rowsCount, connection);
+                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, rowsCount, connection);
                 return aceQLDataReader;
 
             }
@@ -216,6 +216,15 @@ namespace AceQL.Client.Api
                     throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.httpStatusCode);
                 }
             }
+        }
+
+        /// <summary>
+        /// Generates a unique File on the system.
+        /// </summary>
+        /// <returns>A unique File on the system.</returns>
+        private static async Task<IFile> GetUniqueResultSetFile()
+        {
+            return await PortableFile.CreateFileAsync(Parms.ACEQL_PCL_FOLDER, Guid.NewGuid().ToString() + "-result-set.txt");
         }
 
         /// <summary>
@@ -235,7 +244,7 @@ namespace AceQL.Client.Api
                 // Replace all @parms with ? in sql command
                 cmdText = aceQLCommandUtil.ReplaceParmsWithQuestionMarks();
 
-                String fileName = AceQLCommandUtil.BuildResultSetFileName();
+                IFile file = await GetUniqueResultSetFile();
 
                 bool isPreparedStatement = true;
                 using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false))
@@ -246,7 +255,7 @@ namespace AceQL.Client.Api
                         {
                             using (GZipStream decompressionStream = new GZipStream(input, CompressionMode.Decompress))
                             {
-                                using (var stream = await PortableFile.CreateAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false))
+                                using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
                                 {
                                     decompressionStream.CopyTo(stream);
                                 }
@@ -254,17 +263,17 @@ namespace AceQL.Client.Api
                         }
                         else
                         {
-                            using (var stream = await PortableFile.CreateAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false))
+                            using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
                             {
                                 input.CopyTo(stream);
                             }
                         }
-                        
+
                     }
 
                 }
 
-                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(Parms.ACEQL_PCL_FOLDER, fileName, aceQLHttpApi.httpStatusCode);
+                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(file, aceQLHttpApi.httpStatusCode);
                 if (!await resultAnalyser.IsStatusOkAsync().ConfigureAwait(false))
                 {
                     throw new AceQLException(resultAnalyser.GetErrorMessage(),
@@ -273,11 +282,10 @@ namespace AceQL.Client.Api
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowcounter = new RowCounter(Parms.ACEQL_PCL_FOLDER, fileName);
+                RowCounter rowcounter = new RowCounter(file);
                 int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
-                TextReader textReader = await PortableFile.OpenTextAsync(Parms.ACEQL_PCL_FOLDER, fileName).ConfigureAwait(false); ;
 
-                AceQLDataReader aceQLDataReader = new AceQLDataReader(Parms.ACEQL_PCL_FOLDER, fileName, textReader, rowsCount, connection);
+                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, rowsCount, connection);
                 return aceQLDataReader;
 
             }

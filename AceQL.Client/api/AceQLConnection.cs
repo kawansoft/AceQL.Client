@@ -19,6 +19,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
+using PCLStorage;
 
 namespace AceQL.Client.Api
 {
@@ -73,27 +74,28 @@ namespace AceQL.Client.Api
         /// <returns>The path to the local AceQL folder.</returns>
         public static async Task<string> GetAceQLLocalFolderAsync()
         {
-            PortableFileInfo portableFileInfo = new PortableFileInfo(Parms.ACEQL_PCL_FOLDER);
-            String path = await portableFileInfo.GetDirectoryNameAsync().ConfigureAwait(false);
-            return path;
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+            IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
+                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+            return folder.Path;
         }
 
 
         /// <summary>
         /// Traces this instance.
         /// </summary>
-        internal void Trace()
+        internal static async Task TraceAsync()
         {
-            aceQLHttpApi.Trace();
+            await AceQLHttpApi.TraceAsync();
         }
 
         /// <summary>
         /// Traces the specified string.
         /// </summary>
         /// <param name="s">The string to trace</param>
-        internal void Trace(String s)
+        internal static async Task TraceAsync(String s)
         {
-            aceQLHttpApi.Trace(s);
+            await AceQLHttpApi.TraceAsync(s);
         }
 
         /// <summary>
@@ -234,21 +236,20 @@ namespace AceQL.Client.Api
             return aceQLTransaction;
         }
 
-
         /// <summary>
-        /// Says if trace is on
+        /// Says if trace is on. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
         /// </summary>
-        /// <returns>true if trace is on</returns>
-        internal static bool IsTraceOn()
+        /// <returns>true if trace is on, else false.</returns>
+        public static bool IsTraceOn()
         {
             return AceQLHttpApi.IsTraceOn();
         }
 
         /// <summary>
-        /// Sets the trace on/off
+        /// Sets the trace on/off. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
         /// </summary>
-        /// <param name="traceOn">if true, trace will be on; else trace will be off</param>
-        internal static void SetTraceOn(bool traceOn)
+        /// <param name="traceOn">If true, trace will be on; else trace will be off.</param>
+        public static void SetTraceOn(bool traceOn)
         {
             AceQLHttpApi.SetTraceOn(traceOn);
         }
@@ -257,7 +258,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Returns the CancellationTokenSource used to cancel a BLOB upload.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The CancellationTokenSource that will be used for BLOB upload.</returns>
         internal CancellationTokenSource GetCancellationTokenSource()
         {
             return aceQLHttpApi.GetCancellationTokenSource();

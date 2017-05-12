@@ -15,6 +15,8 @@ namespace AceQL.Client.Examples
     /// </summary>
     class AceQLApiConnectionTests
     {
+        private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
+
         public static void TheMain(string[] args)
         {
             try
@@ -33,7 +35,7 @@ namespace AceQL.Client.Examples
 
         static async Task DoIt(string[] args)
         {
-
+ 
             String IN_DIRECTORY = "c:\\test\\";
             String OUT_DIRECTORY = "c:\\test\\out\\";
 
@@ -54,13 +56,15 @@ namespace AceQL.Client.Examples
             String proxyUsername = "ndepomereu2";
             String proxyPassword = null;
 
-            PortableFileInfo portableFileInfo = new PortableFileInfo("AceQLPclFolder");
-            String dir = await portableFileInfo.GetDirectoryNameAsync();
-            Console.WriteLine("AceQLPclFolder: " + dir);
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+            IFolder folder = await rootFolder.CreateFolderAsync(ACEQL_PCL_FOLDER,
+                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+            Console.WriteLine("AceQLPclFolder: " + folder.Path);
 
-            if (await PortableFile.ExistsAsync("AceQLPclFolder", "assword.txt"))
+            if (await PortableFile.ExistsAsync(ACEQL_PCL_FOLDER, "password.txt"))
             {
-                proxyPassword = await PortableFile.ReadAllTextAsync("AceQLPclFolder", "password.txt");
+                IFile file = await PortableFile.GetFileAsync("AceQLPclFolder", "password.txt");
+                proxyPassword = await file.ReadAllTextAsync();
             }
 
             //customer_id integer NOT NULL,
@@ -75,6 +79,7 @@ namespace AceQL.Client.Examples
             string connectionString = $"Server={server}; Database={database}; Username={username}; Password={password}";
             connectionString += $"; ProxyUsername ={ proxyUsername}; ProxyPassword ={ proxyPassword}";
 
+            AceQLConnection.SetTraceOn(true);
             AceQLConnection connection = new AceQLConnection(connectionString);
 
             await connection.OpenAsync();
@@ -117,9 +122,10 @@ namespace AceQL.Client.Examples
 
             sql = "select * from customer";
             command = new AceQLCommand(sql, connection);
+
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (dataReader.Read())
+                while (await dataReader.ReadAsync())
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -215,7 +221,7 @@ namespace AceQL.Client.Examples
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
                 int k = 0;
-                while (dataReader.Read())
+                while (await dataReader.ReadAsync())
                 {
                     Console.WriteLine();
                     int i = 0;

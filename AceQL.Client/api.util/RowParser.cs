@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PCLStorage;
 
 namespace AceQL.Client.Api.Util
 {
@@ -34,20 +35,6 @@ namespace AceQL.Client.Api.Util
         private const string COL_VALUE = "val";
 
         /// <summary>
-        /// The file containing the result set.
-        /// </summary>
-        private string fileName;
-
-        /// <summary>
-        /// The text reader
-        /// </summary>
-        TextReader textReader;
-        /// <summary>
-        /// The reader
-        /// </summary>
-        JsonTextReader reader;
-
-        /// <summary>
         /// The trace on
         /// </summary>
         private bool traceOn = false;
@@ -58,40 +45,23 @@ namespace AceQL.Client.Api.Util
         private Dictionary<int, string> typesPerColIndex;
         private Dictionary<int, string> colNamesPerColIndex;
         private Dictionary<string, int> colIndexesPerColName;
-        private string folderName;
 
+        private IFile file;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RowParser" /> class.
+        /// Constructor.
         /// </summary>
-        /// <param name="folderName">The folder name.</param>
-        /// <param name="fileName">The file name. Passe for file deletion.</param>
-        /// <param name="textTreader">The textTreader to use, corresponds to filename.</param>
-        /// <exception cref="System.ArgumentNullException">fileName is null!</exception>
-        ///<exception cref="System.ArgumentNullException">textTreader is null!</exception>
-        internal RowParser(string folderName, string fileName, TextReader textTreader)
+        /// <param name="file">The JSON file containing the Result Set.</param>
+        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
+        public RowParser(IFile file)
         {
-            if (folderName == null)
+            if (file == null)
             {
-                throw new ArgumentNullException("folderName is null!");
+                throw new ArgumentNullException("file is null!");
             }
 
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            if (textTreader == null)
-            {
-                throw new ArgumentNullException("textTreader is null!");
-            }
-
-            this.folderName = folderName;
-            this.fileName = fileName;
-            this.textReader = textTreader;
-            this.reader = new JsonTextReader(textReader);
+            this.file = file;
         }
-
 
         internal Dictionary<int, string> GetTypesPerColIndex()
         {
@@ -119,115 +89,132 @@ namespace AceQL.Client.Api.Util
         /// Builds the row number.
         /// </summary>
         /// <param name="rowNum">The row number.</param>
-        internal void BuildRowNum(int rowNum)
+        internal async Task BuildRowNumAsync(int rowNum)
         {
-            //NO: Never happens
-            //if (reader == null)
-            //{
-            //    textReader = PortableFile.OpenText(fileName);
-            //    reader = new JsonTextReader(textReader);
-            //}
+
+            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
+            {
+                TextReader textReader = new StreamReader(stream);
+                JsonTextReader reader = new JsonTextReader(textReader);
+
+                while (reader.Read())
+                {
+                    if (reader.Value == null)
+                    {
+                        continue;
+                    }
+
+                    Treat(reader, rowNum);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Cntinue reading...
+        /// </summary>
+        /// <param name="reader">the text reader </param>
+        /// <param name="rowNum">The row number.</param>
+        private void Treat(JsonTextReader reader, int rowNum)
+        {
+
+            if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum))
+            {
+                return;
+            }
+
+            int colIndex = 0;
+            String colName = null;
+            String colType = null;
+
+            valuesPerColIndex = new Dictionary<int, object>();
+            typesPerColIndex = new Dictionary<int, string>();
+            colNamesPerColIndex = new Dictionary<int, string>();
+            colIndexesPerColName = new Dictionary<string, int>();
 
             while (reader.Read())
             {
-                if (reader.Value != null)
+                // We are done at end of row
+                if (reader.TokenType.Equals(JsonToken.EndArray))
                 {
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("row_" + rowNum))
+                    return;
+                }
+
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_INDEX))
+                {
+                    if (reader.Read())
                     {
-                        int colIndex = 0;
-                        String colName = null;
-                        String colType = null;
+                        String colIndexStr = reader.Value.ToString();
+                        colIndex = Int32.Parse(colIndexStr);
 
-                        valuesPerColIndex = new Dictionary<int, object>();
-                        typesPerColIndex = new Dictionary<int, string>();
-                        colNamesPerColIndex = new Dictionary<int, string>();
-                        colIndexesPerColName = new Dictionary<string, int>();
-
-                        while (reader.Read())
-                        {
-                            // We are done at end of row
-                            if (reader.TokenType.Equals(JsonToken.EndArray))
-                            {
-                                return;
-                            }
-
-                            if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_INDEX))
-                            {
-                                if (reader.Read())
-                                {
-                                    String colIndexStr = reader.Value.ToString();
-                                    colIndex = Int32.Parse(colIndexStr);
-
-                                    Trace();
-                                    Trace("" + colIndex);
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-
-                            if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_TYPE))
-                            {
-                                if (reader.Read())
-                                {
-                                    String colIndexStr = reader.Value.ToString();
-                                    colType = reader.Value.ToString();
-                                    Trace("" + colType);
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-
-                            if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_NAME))
-                            {
-                                if (reader.Read())
-                                {
-                                    String colIndexStr = reader.Value.ToString();
-                                    colName = reader.Value.ToString();
-                                    Trace("" + colName);
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-
-                            if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_VALUE))
-                            {
-                                if (reader.Read())
-                                {
-                                    String colValue = reader.Value.ToString();
-
-                                    if (colValue != null)
-                                    {
-                                        colValue = colValue.Trim();
-                                    }
-
-                                    // because it's start at 0 on C# insted of 1 in JDBC
-                                    colIndex--;
-
-                                    Trace("" + colValue);
-                                    valuesPerColIndex.Add(colIndex, colValue);
-                                    typesPerColIndex.Add(colIndex, colType);
-
-                                    colNamesPerColIndex.Add(colIndex, colName);
-                                    colIndexesPerColName.Add(colName, colIndex);
-
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                        }
-
+                        Trace();
+                        Trace("" + colIndex);
+                    }
+                    else
+                    {
+                        return;
                     }
                 }
 
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_TYPE))
+                {
+                    if (reader.Read())
+                    {
+                        String colIndexStr = reader.Value.ToString();
+                        colType = reader.Value.ToString();
+                        Trace("" + colType);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_NAME))
+                {
+                    if (reader.Read())
+                    {
+                        String colIndexStr = reader.Value.ToString();
+                        colName = reader.Value.ToString();
+                        Trace("" + colName);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_VALUE))
+                {
+                    if (reader.Read())
+                    {
+                        String colValue = reader.Value.ToString();
+
+                        if (colValue != null)
+                        {
+                            colValue = colValue.Trim();
+                        }
+
+                        // because it's start at 0 on C# insted of 1 in JDBC
+                        colIndex--;
+
+                        Trace("" + colValue);
+                        valuesPerColIndex.Add(colIndex, colValue);
+                        typesPerColIndex.Add(colIndex, colType);
+
+                        colNamesPerColIndex.Add(colIndex, colName);
+                        colIndexesPerColName.Add(colName, colIndex);
+
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+
             }
+
         }
 
         /**
@@ -282,38 +269,16 @@ namespace AceQL.Client.Api.Util
             }
         }
 
-        internal void ResetParser()
-        {
-            if (reader != null)
-            {
-                reader.Close();
-            }
 
-            // Reinit parser:
-            reader = null;
-        }
 
         internal void Close()
         {
-            if (reader != null)
-            {
-                reader.Close();
-            }
-
-            if (textReader != null)
-            {
-                textReader.Dispose();
-            }
-
-            // Reinit parser:
-            reader = null;
-
             // Delete the file in fire and forget mode
 
             try
             {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                PortableFile.DeleteAsync(folderName, fileName);
+                file.DeleteAsync();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
             catch (Exception exception)
