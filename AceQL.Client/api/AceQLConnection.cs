@@ -32,31 +32,21 @@ namespace AceQL.Client.Api
     {
         internal static bool DEBUG = false;
 
-        private string connectionString;
-        private AceQLCredential credential;
-
         internal AceQLHttpApi aceQLHttpApi = null;
         private bool connectionOpened = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
+        /// </summary>
+        public AceQLConnection()
+        {
+            aceQLHttpApi = new AceQLHttpApi();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class  when given a string that contains the connection string.
         /// </summary>
-        /// <param name="connectionString">The connection string. 
-        /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword"
-        /// You may specify if session is stateless with Stateless = true. If not specified, session is stateful.
-        /// Example:"Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; Stateless = true"
-        /// 
-        /// You may alos specify using NTLM with NTLM=true or specify the username and password of an authenticated proxy with ProxyUsernme and 
-        /// ProxyPassword. Examples:
-        /// 1) NLTM: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; NTLM=true"
-        /// 2) Authenticated proxy : "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; ProxyUsername=user1; ProxyPassword=pass1"
-        /// if ProxyUri is specified, the value will be used instead of System.Net.WebRequest.DefaultWebProxy. Example:
-        /// "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; ProxyUri=http://localhost:8080 ProxyUsername=user1; ProxyPassword=pass1"
-        /// Read/Write http timeout may be specified with Timeout in milliseconds:
-        /// Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; Timeout=300000"
-        /// If timeout is not specified or equals 0, <see cref="System.Net.Http.HttpClient"/> default value will be used.
-        /// ";" char is supported in password, must be escaped: Password = my\;Password;
-        /// </param>
+        /// <param name="connectionString">The connection used to open the remote database.</param>
         /// <exception cref="System.ArgumentNullException">If connectionString is null.</exception>
         /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         public AceQLConnection(String connectionString)
@@ -67,7 +57,6 @@ namespace AceQL.Client.Api
             }
 
             aceQLHttpApi = new AceQLHttpApi(connectionString);
-            this.connectionString = connectionString;
 
         }
 
@@ -75,12 +64,10 @@ namespace AceQL.Client.Api
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class  when given a string that contains the connection string 
         /// and an <see cref="AceQLCredential"/> object that contains the username and password.
         /// </summary>
-        /// <param name="connectionString">The connection string. 
-        /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase". 
-        /// <see cref="AceQLConnection"/>.AceQLConnection(String connectionString) for all possible values.
-        /// </param>
+        /// <param name="connectionString">A connection string that does not use any of the following connection string keywords: Username
+        /// or Password.</param>
         /// <param name="credential"><see cref="AceQLCredential"/> object. </param>
-        /// <exception cref="System.ArgumentNullException">If connectionString is null or <see cref="AceQLCredential"/> is null. </exception>
+        /// <exception cref="System.ArgumentNullException">If connectionString is null or <see cref="AceQLCredential"/> is null.</exception>
         /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         public AceQLConnection(string connectionString, AceQLCredential credential)
         {
@@ -95,8 +82,6 @@ namespace AceQL.Client.Api
             }
 
             aceQLHttpApi = new AceQLHttpApi(connectionString, credential);
-            this.connectionString = connectionString;
-            this.credential = credential;
         }
 
         /// <summary>
@@ -130,14 +115,19 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the connection string used to connect to the remote database.
+        /// Gets or sets the connection string used to connect to the remote database.
         /// </summary>
         /// <value>The connection string used to connect to the remote database.</value>
         public string ConnectionString
         {
             get
             {
-                return this.connectionString;
+                return aceQLHttpApi.ConnectionString;
+            }
+
+            set
+            {
+                aceQLHttpApi.ConnectionString = value;
             }
         }
 
@@ -149,14 +139,7 @@ namespace AceQL.Client.Api
         {
             get
             {
-                if (aceQLHttpApi != null)
-                {
-                    return aceQLHttpApi.Database;
-                }
-                else
-                {
-                    return null;
-                }
+                return aceQLHttpApi.Database;
             }
         }
 
@@ -212,10 +195,21 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the <see cref="AceQLCredential"/> object for this connection. 
+        /// Gets or sets the <see cref="AceQLCredential"/> object for this connection. 
         /// </summary>
         /// <value>The the <see cref="AceQLCredential"/> object for this connection.</value>
-        public AceQLCredential Credential { get => credential;}
+        public AceQLCredential Credential
+        {
+            get
+            {
+                return aceQLHttpApi.Credential;
+            }
+
+            set
+            {
+                aceQLHttpApi.Credential = value;
+            }
+        }
 
         /// <summary>
         /// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
@@ -361,14 +355,14 @@ namespace AceQL.Client.Api
             return serverVersion;
         }
 
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>A new object that is a copy of this instance.</returns>
-        public object Clone()
-        {
-            return new AceQLConnection(connectionString);
-        }
+        ///// <summary>
+        ///// Creates a new object that is a copy of the current instance.
+        ///// </summary>
+        ///// <returns>A new object that is a copy of this instance.</returns>
+        //public object Clone()
+        //{
+        //    return new AceQLConnection(ConnectionString);
+        //}
 
         private void Debug(string s)
         {

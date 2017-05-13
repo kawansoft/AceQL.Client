@@ -31,16 +31,6 @@ namespace AceQL.Client.Api.Http
         private String server = null;
 
         /// <summary>
-        /// The username
-        /// </summary>
-        private String username = null;
-
-        /// <summary>
-        /// The password
-        /// </summary>
-        private String password = null;
-
-        /// <summary>
         /// The database
         /// </summary>
         private String database = null;
@@ -58,7 +48,7 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// The credentials
         /// </summary>
-        private ICredentials credentials = null;
+        private ICredentials proxyCredentials = null;
 
         /// <summary>
         /// The timeout in milliseconds
@@ -92,34 +82,31 @@ namespace AceQL.Client.Api.Http
         private string url;
 
         private string connectionString;
-
         private CancellationTokenSource cancellationTokenSource;
         private ProgressIndicator progressIndicator;
+        private AceQLCredential credential;
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
         /// </summary>
-        /// <param name="connectionString">The connection string. 
-        /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword"
-        /// You may specify if session is stateless with Stateless=true. If not specified, session is stateful.
-        /// You may specify using NTLM with NTLM=true or specify the username and password of an authenticated proxy with ProxyUsernme and 
-        /// ProxyPassword. Examples
-        /// 1) NLTM: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; NTLM=true"
-        /// 2) Authenticated proxy : "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; ProxyUsername=user1; ProxyPassword=pass1"
-        /// Read/Write http timeout may be specified with Timeout in milliseconds:
-        /// Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; Timeout=300000"
-        /// If timeout is not specified or equals 0, HttpWebRequest default will be used.
+        /// <param name="connectionString">The connection string.
         /// </param>"
         /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         internal AceQLHttpApi(String connectionString)
         {
-            //Server = myServerAddress; Database = myDataBase; Username = myUsername; Password = myPassword;
+            this.connectionString = connectionString;
+            DecodeConnectionString(connectionString);
+        }
 
+        /// <summary>
+        /// Decode connection string and load elements in memory.
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void DecodeConnectionString(string connectionString)
+        {
             // Replace escaped "\;"
             connectionString = connectionString.Replace("\\;", "\\semicolon");
-
-            this.connectionString = connectionString;
 
             String theServer = null;
             String theDatabase = null;
@@ -127,7 +114,7 @@ namespace AceQL.Client.Api.Http
             String thePassword = null;
             bool theStateless = false;
             String theProxyUri = null;
-            ICredentials theCredentials = null;
+            ICredentials theProxyCredentials = null;
 
             bool isNTLM = false;
             String proxyUsername = null;
@@ -214,35 +201,44 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
-            Debug("connectionString: " + connectionString);
-            Debug("theProxyUri     : " + theProxyUri);
-            Debug("theCredentials  : " + proxyUsername + " / " + proxyPassword);
+            Debug("connectionString   : " + connectionString);
+            Debug("theProxyUri        : " + theProxyUri);
+            Debug("theProxyCredentials: " + proxyUsername + " / " + proxyPassword);
 
             if (isNTLM)
             {
-                theCredentials = CredentialCache.DefaultCredentials;
+                theProxyCredentials = CredentialCache.DefaultCredentials;
             }
             else
             {
                 if (proxyUsername != null && proxyPassword != null)
                 {
-                    theCredentials = new NetworkCredential(proxyUsername, proxyPassword);
+                    theProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
                 }
             }
 
-            Init(theServer, theDatabase, theUsername, thePassword, theStateless, theProxyUri, theCredentials, theTimeout);
+            Init(theServer, theDatabase, theUsername, thePassword, theStateless, theProxyUri, theProxyCredentials, theTimeout);
 
         }
 
-        private AceQLHttpApi()
+        public AceQLHttpApi()
         {
-            Init(server, database, username, password, stateless, proxyUri, credentials, timeout);
+ 
         }
 
         internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
         {
-            this.username = credential.Username;
-            this.password = credential.Password;
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException("connectionString is null!");
+            }
+
+            if (credential == null)
+            {
+                throw new ArgumentNullException("credential is null!");
+            }
+
+            this.credential = credential;
         }
 
         /// <summary>
@@ -254,7 +250,7 @@ namespace AceQL.Client.Api.Http
         /// <param name="password">The password.</param>
         /// <param name="stateless">The stateless.</param>
         /// <param name="proxyUri">The Proxy Uri.</param>
-        /// <param name="credentials">The credentials.</param>
+        /// <param name="proxyCredentials">The credentials.</param>
         /// <param name="timeout">The timeout.</param>
         /// <exception cref="System.ArgumentNullException">
         /// server is null!
@@ -266,15 +262,19 @@ namespace AceQL.Client.Api.Http
         /// database is null!
         /// </exception>
 
-        private void Init(string server, string database, string username, string password, bool stateless, string proxyUri, ICredentials credentials, int timeout)
+        private void Init(string server, string database, string username, string password, bool stateless, string proxyUri, ICredentials proxyCredentials, int timeout)
         {
             this.server = server;
             this.database = database;
-            this.username = username;
-            this.password = password;
+
+            if (username != null  && password != null)
+            {
+                this.credential = new AceQLCredential(username, password);
+            }
+
             this.stateless = stateless;
             this.proxyUri = proxyUri;
-            this.credentials = credentials;
+            this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;
         }
 
@@ -349,6 +349,21 @@ namespace AceQL.Client.Api.Http
         internal int Timeout { get => timeout;  }
 
 
+        public AceQLCredential Credential {
+            get
+            {
+                return credential;
+            }
+
+            set
+            {
+                credential = value;
+            }
+        }
+
+        public string ConnectionString { get => connectionString; set => connectionString = value; }
+
+
         /// <summary>
         /// Opens this instance.
         /// </summary>
@@ -360,6 +375,15 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
+                String username = null;
+                String password = null;
+
+                if (credential != null)
+                {
+                    username = credential.Username;
+                    password = credential.Password;
+                }
+
                 if (server == null)
                 {
                     throw new ArgumentNullException("Server keyword not found in connection string.");
@@ -477,7 +501,7 @@ namespace AceQL.Client.Api.Http
         internal async Task<Stream> CallWithGetReturnStreamAsync(String url)
         {
 
-            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, credentials));
+            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
 
             if (timeout != 0)
             {
@@ -521,7 +545,7 @@ namespace AceQL.Client.Api.Http
 
             String urlWithaction = url + action;
 
-            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, credentials));
+            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
 
             if (timeout != 0)
             {
@@ -757,7 +781,7 @@ namespace AceQL.Client.Api.Http
             FormUploadStream formUploadStream = new FormUploadStream();
             HttpResponseMessage response = null;
 
-            response = await formUploadStream.UploadAsync(theUrl, proxyUri, credentials, timeout, blobId, stream, totalLength, progressIndicator, cancellationTokenSource).ConfigureAwait(false);
+            response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, blobId, stream, totalLength, progressIndicator, cancellationTokenSource).ConfigureAwait(false);
 
             this.httpStatusCode = response.StatusCode;
 
@@ -918,14 +942,14 @@ namespace AceQL.Client.Api.Http
             return Util.Version.GetVersion();
         }
 
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>A new object that is a copy of this instance.</returns>
-        internal object Clone()
-        {
-            return new AceQLHttpApi();
-        }
+        ///// <summary>
+        ///// Creates a new object that is a copy of the current instance.
+        ///// </summary>
+        ///// <returns>A new object that is a copy of this instance.</returns>
+        //internal object Clone()
+        //{
+        //    return new AceQLHttpApi();
+        //}
 
         /// <summary>
         /// Closes this instance.
