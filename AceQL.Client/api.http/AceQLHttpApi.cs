@@ -88,7 +88,15 @@ namespace AceQL.Client.Api.Http
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
+        /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
+        /// </summary>
+        internal AceQLHttpApi()
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.
         /// </param>"
@@ -97,6 +105,182 @@ namespace AceQL.Client.Api.Http
         {
             this.connectionString = connectionString;
         }
+
+      
+        internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
+        {
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException("connectionString is null!");
+            }
+
+            if (credential == null)
+            {
+                throw new ArgumentNullException("credential is null!");
+            }
+
+            this.credential = credential;
+        }
+
+
+        /// <summary>
+        /// Opens this instance.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"> if a required parameter extracted from connection string is missing.
+        /// </exception>
+        /// <exception cref="AceQLException"> if any other Exception occurs.
+        /// </exception>
+        internal async Task OpenAsync()
+        {
+            try
+            {
+                DecodeConnectionString();
+
+                String username = null;
+                String password = null;
+
+                if (credential != null)
+                {
+                    username = credential.Username;
+                    password = credential.Password;
+                }
+
+                if (server == null)
+                {
+                    throw new ArgumentNullException("Server keyword not found in connection string.");
+                }
+                if (username == null)
+                {
+                    throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredential not set.");
+                }
+                if (password == null)
+                {
+                    throw new ArgumentNullException("Password keyword not found in connection string or AceQLCredential not set");
+                }
+                if (database == null)
+                {
+                    throw new ArgumentNullException("Database keyword not found in connection string.");
+                }
+
+                String theUrl = server + "/database/" + database + "/username/" + username + "/connect"
+                    + "?password=" + password + "&stateless=" + stateless;
+
+                String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
+
+                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
+                if (!resultAnalyser.IsStatusOk())
+                {
+                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
+                        resultAnalyser.GetErrorId(),
+                        resultAnalyser.GetStackTrace(),
+                        httpStatusCode);
+                }
+
+                String theSessionId = resultAnalyser.GetValue("session_id");
+
+                this.url = server + "/session/" + theSessionId + "/";
+                await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
+
+            }
+            catch (Exception exception)
+            {
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Traces this instance.
+        /// </summary>
+        internal static async Task TraceAsync()
+        {
+            await TraceAsync("").ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Traces the specified string.
+        /// </summary>
+        /// <param name="contents">The string to trace</param>
+        internal static async Task TraceAsync(String contents)
+        {
+            if (TRACE_ON)
+            {
+                IFile file = await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
+                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether [pretty printing] is on or off.
+        /// </summary>
+        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
+        internal bool PrettyPrinting
+        {
+            get
+            {
+                return prettyPrinting;
+            }
+
+            set
+            {
+                prettyPrinting = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Gets a value indicating whether [gzip result] is on or off.
+        /// </summary>
+        /// <value><c>true</c> if [gzip result]; otherwise, <c>false</c>.</value>
+        internal bool GzipResult
+        {
+            get
+            {
+                return gzipResult;
+            }
+
+            set
+            {
+                gzipResult = value;
+            }
+        }
+
+        internal string Database
+        {
+            get
+            {
+                return database;
+            }
+        }
+
+        /// <summary>
+        /// The timeout in milliseconds
+        /// </summary>
+        internal int Timeout { get => timeout;  }
+
+
+        public AceQLCredential Credential {
+            get
+            {
+                return credential;
+            }
+
+            set
+            {
+                credential = value;
+            }
+        }
+
+        public string ConnectionString { get => connectionString; set => connectionString = value; }
+
 
         /// <summary>
         /// Decode connection string and load elements in memory.
@@ -233,26 +417,6 @@ namespace AceQL.Client.Api.Http
 
         }
 
-        public AceQLHttpApi()
-        {
- 
-        }
-
-        internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
-        {
-            if (connectionString == null)
-            {
-                throw new ArgumentNullException("connectionString is null!");
-            }
-
-            if (credential == null)
-            {
-                throw new ArgumentNullException("credential is null!");
-            }
-
-            this.credential = credential;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
         /// </summary>
@@ -279,7 +443,7 @@ namespace AceQL.Client.Api.Http
             this.server = server;
             this.database = database;
 
-            if (username != null  && password != null && credential == null)
+            if (username != null && password != null && credential == null)
             {
                 this.credential = new AceQLCredential(username, password);
             }
@@ -290,164 +454,7 @@ namespace AceQL.Client.Api.Http
             this.timeout = timeout;
         }
 
-        /// <summary>
-        /// Traces this instance.
-        /// </summary>
-        internal static async Task TraceAsync()
-        {
-            await TraceAsync("").ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Traces the specified string.
-        /// </summary>
-        /// <param name="contents">The string to trace</param>
-        internal static async Task TraceAsync(String contents)
-        {
-            if (TRACE_ON)
-            {
-                IFile file = await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
-                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether [pretty printing] is on or off.
-        /// </summary>
-        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
-        internal bool PrettyPrinting
-        {
-            get
-            {
-                return prettyPrinting;
-            }
-
-            set
-            {
-                prettyPrinting = value;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Gets a value indicating whether [gzip result] is on or off.
-        /// </summary>
-        /// <value><c>true</c> if [gzip result]; otherwise, <c>false</c>.</value>
-        internal bool GzipResult
-        {
-            get
-            {
-                return gzipResult;
-            }
-
-            set
-            {
-                gzipResult = value;
-            }
-        }
-
-        internal string Database
-        {
-            get
-            {
-                return database;
-            }
-        }
-
-        /// <summary>
-        /// The timeout in milliseconds
-        /// </summary>
-        internal int Timeout { get => timeout;  }
-
-
-        public AceQLCredential Credential {
-            get
-            {
-                return credential;
-            }
-
-            set
-            {
-                credential = value;
-            }
-        }
-
-        public string ConnectionString { get => connectionString; set => connectionString = value; }
-
-
-        /// <summary>
-        /// Opens this instance.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"> if a required parameter extracted from connection string is missing.
-        /// </exception>
-        /// <exception cref="AceQLException"> if any other Exception occurs.
-        /// </exception>
-        internal async Task OpenAsync()
-        {
-            try
-            {
-                DecodeConnectionString();
-
-                String username = null;
-                String password = null;
-
-                if (credential != null)
-                {
-                    username = credential.Username;
-                    password = credential.Password;
-                }
-
-                if (server == null)
-                {
-                    throw new ArgumentNullException("Server keyword not found in connection string.");
-                }
-                if (username == null)
-                {
-                    throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredentials not set.");
-                }
-                if (password == null)
-                {
-                    throw new ArgumentNullException("Password keyword not found in connection string or AceQLCredentials not set");
-                }
-                if (database == null)
-                {
-                    throw new ArgumentNullException("Database keyword not found in connection string.");
-                }
-
-                String theUrl = server + "/database/" + database + "/username/" + username + "/connect"
-                    + "?password=" + password + "&stateless=" + stateless;
-
-                String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
-
-                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-                if (!resultAnalyser.IsStatusOk())
-                {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorId(),
-                        resultAnalyser.GetStackTrace(),
-                        httpStatusCode);
-                }
-
-                String theSessionId = resultAnalyser.GetValue("session_id");
-
-                this.url = server + "/session/" + theSessionId + "/";
-                await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
-
-            }
-            catch (Exception exception)
-            {
-                if (exception.GetType() == typeof(AceQLException))
-                {
-                    throw exception;
-                }
-                else
-                {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
-                }
-            }
-
-        }
+      
 
         /// <summary>
         /// Build an HttpClient instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
