@@ -91,7 +91,6 @@ namespace AceQL.Client.Api.Util
         /// <param name="rowNum">The row number.</param>
         internal async Task BuildRowNumAsync(int rowNum)
         {
-
             using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
             {
                 TextReader textReader = new StreamReader(stream);
@@ -107,7 +106,6 @@ namespace AceQL.Client.Api.Util
                     Treat(reader, rowNum);
                 }
             }
-
         }
 
         /// <summary>

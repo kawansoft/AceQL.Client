@@ -41,7 +41,7 @@ namespace AceQL.Client.Api.Util
 
         private HttpStatusCode httpStatusCode;
 
-        // The JSON file ontaining Result Set
+        // The JSON file containing Result Set
         private IFile file;
 
 
@@ -76,27 +76,29 @@ namespace AceQL.Client.Api.Util
 
                 while (reader.Read())
                 {
-                    if (reader.Value != null)
+                    if (reader.Value == null)
                     {
-                        if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("status"))
-                        {
-                            if (reader.Read())
-                            {
-                                if (reader.Value.Equals("OK"))
-                                {
-                                    return true;
-                                }
-                                else
-                                {
-                                    ParseErrorKeywords(reader);
-                                    return false;
-                                }
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
+                        continue;
+                    }
+
+                    if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("status"))
+                    {
+                        continue;
+                    }
+
+                    if (!reader.Read())
+                    {
+                        return false;
+                    }
+
+                    if (reader.Value.Equals("OK"))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        ParseErrorKeywords(reader);
+                        return false;
                     }
 
                 }
@@ -114,44 +116,47 @@ namespace AceQL.Client.Api.Util
         {
             while (reader.Read())
             {
-                if (reader.Value != null)
+                if (reader.Value == null)
                 {
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("error_type"))
-                    {
-                        if (reader.Read())
-                        {
-                            this.errorType = reader.Value.ToString();
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
+                    continue;
+                }
 
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("error_message"))
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("error_type"))
+                {
+                    if (reader.Read())
                     {
-                        if (reader.Read())
-                        {
-                            this.errorMessage = reader.Value.ToString();
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        this.errorType = reader.Value.ToString();
                     }
-
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("stack_trace"))
+                    else
                     {
-                        if (reader.Read())
-                        {
-                            this.stackTrace = (string)reader.Value;
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
+
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("error_message"))
+                {
+                    if (reader.Read())
+                    {
+                        this.errorMessage = reader.Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("stack_trace"))
+                {
+                    if (reader.Read())
+                    {
+                        this.stackTrace = (string)reader.Value;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
             }
         }
 

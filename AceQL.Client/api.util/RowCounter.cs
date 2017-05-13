@@ -42,31 +42,36 @@ namespace AceQL.Client.Api
             using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
             {
                 TextReader textReader = new StreamReader(stream);
-                using (JsonTextReader reader = new JsonTextReader(textReader))
-                {
-                    while (reader.Read())
-                    {
-                        if (reader.Value != null)
-                        {
-                            if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("row_count"))
-                            {
-                                if (reader.Read())
-                                {
-                                    String rowCountStr = reader.Value.ToString();
-                                    int rowCount = Int32.Parse(rowCountStr);
+                var reader = new JsonTextReader(textReader);
 
-                                    Trace();
-                                    Trace("rowCount: " + rowCount);
-                                    return rowCount;
-                                }
-                                else
-                                {
-                                    return 0;
-                                }
-                            }
-                        }
+                while (reader.Read())
+                {
+                    if (reader.Value == null)
+                    {
+                        continue;
                     }
+
+                    if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_count"))
+                    {
+                        continue;
+                    }
+
+                    if (reader.Read())
+                    {
+                        String rowCountStr = reader.Value.ToString();
+                        int rowCount = Int32.Parse(rowCountStr);
+
+                        Trace();
+                        Trace("rowCount: " + rowCount);
+                        return rowCount;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+
                 }
+
             }
 
             return 0;
