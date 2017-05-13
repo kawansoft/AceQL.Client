@@ -46,7 +46,7 @@
 //13/05/2017 02:54 NDP: Clean PortableFile comments
 //13/05/2017 13:47 NDP: ProgressHolder renamed to ProgressIndicator
 //13/05/2017 13:53 NDP: Version is marked as beta
-//13/05/2017 14:20 NDP: Clean code loops
+//13/05/2017 14:28 NDP: Clean code loops
 
 namespace AceQL.Client.Api.Util
 {

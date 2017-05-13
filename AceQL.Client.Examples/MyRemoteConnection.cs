@@ -318,7 +318,6 @@ namespace AceQL.Client.Examples
         /// <exception cref="System.IO.FileNotFoundException">If the folder does not exist or the file was not found in the specified folder.</exception>
         public static async Task<IFile> GetFileAsync(String folderName, String fileName)
         {
-
             if (folderName == null)
             {
                 throw new ArgumentNullException("folderName is null!");
