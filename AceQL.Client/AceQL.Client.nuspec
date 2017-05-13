@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
-        <licenseUrl>https://github.com/kawansoft/AceQL.Client/blob/master/AceQL.Client/LICENSE.md</licenseUrl>
+        <licenseUrl>https://github.com/kawansoft/AceQL.Client/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/kawansoft/AceQL.Client</projectUrl>
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
