@@ -163,7 +163,7 @@ namespace AceQL.Client.Api
         {
             try
             {
-                IFile file = await GetUniqueResultSetFile();
+                IFile file = await GetUniqueResultSetFileAsync().ConfigureAwait(false);
 
                 Boolean isPreparedStatement = false;
                 Dictionary<string, string> parametersMap = null;
@@ -219,10 +219,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Generates a unique File on the system.
+        /// Generates a unique File on the system for the downloaded result set content.
         /// </summary>
         /// <returns>A unique File on the system.</returns>
-        private static async Task<IFile> GetUniqueResultSetFile()
+        private static async Task<IFile> GetUniqueResultSetFileAsync()
         {
             IFolder rootFolder = FileSystem.Current.LocalStorage;
             IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
@@ -251,7 +251,7 @@ namespace AceQL.Client.Api
                 // Replace all @parms with ? in sql command
                 cmdText = aceQLCommandUtil.ReplaceParmsWithQuestionMarks();
 
-                IFile file = await GetUniqueResultSetFile();
+                IFile file = await GetUniqueResultSetFileAsync().ConfigureAwait(false);
 
                 bool isPreparedStatement = true;
                 using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false))
@@ -339,7 +339,7 @@ namespace AceQL.Client.Api
 
                 for (int i = 0; i < blobIds.Count; i++)
                 {
-                    await aceQLHttpApi.BlobUploadAsync(blobIds[i], blobStreams[i], totalLength);
+                    await aceQLHttpApi.BlobUploadAsync(blobIds[i], blobStreams[i], totalLength).ConfigureAwait(false);
                 }
 
                 // Replace all @parms with ? in sql command

@@ -61,10 +61,10 @@ namespace AceQL.Client.Examples
                 CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
             Console.WriteLine("AceQLPclFolder: " + folder.Path);
 
-            if (await ExistsAsync(ACEQL_PCL_FOLDER, "password.txt"))
+            if (await ExistsAsync(ACEQL_PCL_FOLDER, "password.txt").ConfigureAwait(false))
             {
-                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt");
-                proxyPassword = await file.ReadAllTextAsync();
+                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt").ConfigureAwait(false);
+                proxyPassword = await file.ReadAllTextAsync().ConfigureAwait(false);
             }
 
             //customer_id integer NOT NULL,
@@ -82,20 +82,20 @@ namespace AceQL.Client.Examples
             AceQLConnection.SetTraceOn(true);
             AceQLConnection connection = new AceQLConnection(connectionString);
 
-            await connection.OpenAsync();
+            await connection.OpenAsync().ConfigureAwait(false);
 
             Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync().ConfigureAwait(false));
             Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync().ConfigureAwait(false));
 
-            AceQLTransaction transaction = await connection.BeginTransactionAsync();
-            await transaction.CommitAsync();
+            AceQLTransaction transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            await transaction.CommitAsync().ConfigureAwait(false);
             transaction.Dispose();
 
             String sql = "delete from customer";
             AceQLCommand command = new AceQLCommand(sql, connection);
-            await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
 
             for (int i = 0; i < 3; i++)
             {
@@ -115,7 +115,7 @@ namespace AceQL.Client.Examples
                 command.Parameters.AddWithValue("@parm7", customer_id + "11111");
                 command.Parameters.AddNullValue("@parm8", SqlType.VARCHAR); //null value for NULL SQL insert.
 
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
 
             command.Dispose();
@@ -123,9 +123,9 @@ namespace AceQL.Client.Examples
             sql = "select * from customer";
             command = new AceQLCommand(sql, connection);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
             {
-                while (await dataReader.ReadAsync())
+                while (await dataReader.ReadAsync().ConfigureAwait(false))
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -145,17 +145,17 @@ namespace AceQL.Client.Examples
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync();
+            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
 
             sql = "delete from orderlog";
             command = new AceQLCommand(sql, connection);
-            await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             command.Dispose();
 
-            await transaction.CommitAsync();
+            await transaction.CommitAsync().ConfigureAwait(false);
 
             // Do next inserts in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync();
+            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
 
             try
             {
@@ -198,30 +198,30 @@ namespace AceQL.Client.Examples
                     connection.SetCancellationTokenSource(cancellationTokenSource);
                     connection.SetProgressIndicator(progressIndicator);
                     
-                    await command.ExecuteNonQueryAsync();
+                    await command.ExecuteNonQueryAsync().ConfigureAwait(false);
 
                 }
                 command.Dispose();
-                await transaction.CommitAsync();
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
             catch (Exception exception)
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw exception;
             }
 
             Console.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync();
+            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
 
             sql = "select * from orderlog";
             command = new AceQLCommand(sql, connection);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
             {
                 int k = 0;
-                while (await dataReader.ReadAsync())
+                while (await dataReader.ReadAsync().ConfigureAwait(false))
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -249,7 +249,7 @@ namespace AceQL.Client.Examples
                 }
             }
 
-            await transaction.CommitAsync();
+            await transaction.CommitAsync().ConfigureAwait(false);
             connection.Dispose();
 
             Console.WriteLine();

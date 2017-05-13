@@ -47,6 +47,7 @@
 //13/05/2017 13:47 NDP: ProgressHolder renamed to ProgressIndicator
 //13/05/2017 13:53 NDP: Version is marked as beta
 //13/05/2017 14:28 NDP: Clean code loops
+//13/05/2017 15:30 NDP: GetUniqueResultSetFile() renamed to GetUniqueResultSetFileAsync()
 
 namespace AceQL.Client.Api.Util
 {

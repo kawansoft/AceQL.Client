@@ -58,7 +58,7 @@ namespace AceQL.Client.Api.File
 
             long theLength = 0;
 
-            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read))
+            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
             {
                 while (stream.ReadByte() > 0)
                 {

@@ -86,7 +86,7 @@ namespace AceQL.Client.Api
         /// </summary>
         internal static async Task TraceAsync()
         {
-            await AceQLHttpApi.TraceAsync();
+            await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace AceQL.Client.Api
         /// <param name="s">The string to trace</param>
         internal static async Task TraceAsync(String s)
         {
-            await AceQLHttpApi.TraceAsync(s);
+            await AceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
         }
 
         /// <summary>

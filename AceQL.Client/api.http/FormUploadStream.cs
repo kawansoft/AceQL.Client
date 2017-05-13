@@ -84,11 +84,11 @@ namespace AceQL.Client.Api.Http
                 multipart.Add(stringContentBlobId, '"' + "blob_id" + '"');
                 multipart.Add(new StreamContent(stream), '"' + "file" + '"', '"' + blobId + '"');
 
-                await AceQLHttpApi.TraceAsync();
-                await AceQLHttpApi.TraceAsync("----------------------------------------");
-                await AceQLHttpApi.TraceAsync("url     : " + url);
-                await AceQLHttpApi.TraceAsync("blob_id : " + blobId);
-                await AceQLHttpApi.TraceAsync("----------------------------------------");
+                await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
+                await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
+                await AceQLHttpApi.TraceAsync("url     : " + url).ConfigureAwait(false);
+                await AceQLHttpApi.TraceAsync("blob_id : " + blobId).ConfigureAwait(false);
+                await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
 
                 if (DEBUG)
                 {
@@ -101,11 +101,11 @@ namespace AceQL.Client.Api.Http
 
                 if (cancellationTokenSource == null)
                 {
-                    response = await httpClient.PostAsync(url, multipart);
+                    response = await httpClient.PostAsync(url, multipart).ConfigureAwait(false);
                 }
                 else
                 {
-                    response = await httpClient.PostAsync(url, multipart, cancellationTokenSource.Token);
+                    response = await httpClient.PostAsync(url, multipart, cancellationTokenSource.Token).ConfigureAwait(false);
                 }
 
                 progressIndicator.Value = 100;

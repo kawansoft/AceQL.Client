@@ -277,7 +277,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         internal static async Task TraceAsync()
         {
-            await TraceAsync("");
+            await TraceAsync("").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -288,8 +288,8 @@ namespace AceQL.Client.Api.Http
         {
             if (TRACE_ON)
             {
-                IFile file = await AceQLCommandUtil.GetTraceFileAsync();
-                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents);
+                IFile file = await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
+                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
             }
         }
 
@@ -384,7 +384,7 @@ namespace AceQL.Client.Api.Http
                 String theSessionId = resultAnalyser.GetValue("session_id");
 
                 this.url = server + "/session/" + theSessionId + "/";
-                await TraceAsync("OpenAsync url: " + this.url);
+                await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
 
             }
             catch (Exception exception)
@@ -485,7 +485,6 @@ namespace AceQL.Client.Api.Http
         }
 
 
-
         /// <summary>
         /// Executes a POST with parameters.
         /// </summary>
@@ -525,16 +524,16 @@ namespace AceQL.Client.Api.Http
             // This is the postdata
             var postData = new List<KeyValuePair<string, string>>();
 
-            await TraceAsync();
-            await TraceAsync("----------------------------------------");
-            await TraceAsync(url);
+            await TraceAsync().ConfigureAwait(false);
+            await TraceAsync("----------------------------------------").ConfigureAwait(false);
+            await TraceAsync(url).ConfigureAwait(false);
 
             foreach (var param in parameters)
             {
                 postData.Add(new KeyValuePair<string, string>(param.Key, param.Value));
                 await TraceAsync("param: " + param.Key + "/" + param.Value);
             }
-            await TraceAsync("----------------------------------------");
+            await TraceAsync("----------------------------------------").ConfigureAwait(false);
 
             HttpContent content = new FormUrlEncodedContent(postData);
 
@@ -633,11 +632,11 @@ namespace AceQL.Client.Api.Http
 
                 var responseString = new StreamReader(stream).ReadToEnd();
 
-                await TraceAsync();
-                await TraceAsync("----------------------------------------");
-                await TraceAsync(url);
-                await TraceAsync(responseString);
-                await TraceAsync("----------------------------------------");
+                await TraceAsync().ConfigureAwait(false);
+                await TraceAsync("----------------------------------------").ConfigureAwait(false);
+                await TraceAsync(url).ConfigureAwait(false);
+                await TraceAsync(responseString).ConfigureAwait(false);
+                await TraceAsync("----------------------------------------").ConfigureAwait(false);
 
                 return responseString;
             }
@@ -752,7 +751,7 @@ namespace AceQL.Client.Api.Http
 
             this.httpStatusCode = response.StatusCode;
 
-            Stream streamResult = await response.Content.ReadAsStreamAsync();
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             HttpStatusCode httpStatusCode = response.StatusCode;
 
             String result = null;
