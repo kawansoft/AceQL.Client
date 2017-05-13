@@ -115,7 +115,7 @@ namespace AceQL.Client.Api
         /// Returns parameter at specified index.
         /// </summary>
         /// <param name="index">The index.</param>
-        /// <returns>the AceQLParameter at index.</returns>
+        /// <returns>the <see cref="AceQLParameter"/> at index.</returns>
         public object this[int index]
         {
             get
@@ -130,7 +130,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Removes all values from the AceQLParameterCollection" />.
+        /// Removes all values from the <see cref="AceQLParameterCollection"/>".
         /// </summary>
         public void Clear()
         {
@@ -377,7 +377,7 @@ namespace AceQL.Client.Api
         /// Gets the parameter for it's name.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <returns>The AceQLParameter for the parameter name.</returns>
+        /// <returns>The <see cref="AceQLParameter"/> for the parameter name.</returns>
         public AceQLParameter GetAceQLParameter(string parameterName)
         {
             for (int i = 0; i < aceqlParameters.Count; i++)
@@ -396,7 +396,7 @@ namespace AceQL.Client.Api
         /// Gets the parameter at the index.
         /// </summary>
         /// <param name="index">The index.</param>
-        /// <returns>The AceQLParameter at index position.</returns>
+        /// <returns>The <see cref="AceQLParameter"/> at index position.</returns>
         protected AceQLParameter GetParameter(int index)
         {
             return aceqlParameters[index];

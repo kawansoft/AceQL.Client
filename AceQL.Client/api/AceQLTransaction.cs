@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class AceQLTransaction. Allows to define a Transaction in order to execute remote commit or rollback.
+    /// Class <see cref="AceQLTransaction"/>. Allows to define a Transaction in order to execute remote commit or rollback.
     /// </summary>
     public class AceQLTransaction : IDisposable
     {
@@ -140,7 +140,8 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. This is optional.
+        /// Disposes this instance. This code does nothing and is optional because calls to CommitAsync()/RollbackAsync() reset the server
+        /// connection. Class implements IDisposable to ease code migration.
         /// </summary>
         public void Dispose()
         {

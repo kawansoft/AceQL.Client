@@ -16,7 +16,7 @@ namespace AceQL.Client.Api
 {
 
     /// <summary>
-    /// Enum of SQL types. To use when setting a value to NULL with AceQL.Client.api.AceQLCommand.Parameter.AddNullValue().
+    /// Enum of SQL types. To use when setting a value to NULL with <see cref="AceQLCommand"/>.Parameter.AddNullValue.
     /// </summary>
     public enum SqlType
     {

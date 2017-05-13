@@ -88,7 +88,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query and a AceQL.Client.api.AceQLConnection.
+        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query and a <see cref="AceQLConnection"/>.
         /// </summary>
         /// <param name="cmdText">The text of the query.</param>
         /// <param name="connection">The AceQL connection.</param>
@@ -120,9 +120,9 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        ///  Sends the AceQL.Client.api.AceQLCommand.CommandText to the AceQL.Client.api.Connection and builds a AceQL.Client.api.AceQLDataReader.
+        ///  Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
         /// </summary>
-        /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
+        /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLDataReader> ExecuteReaderAsync()
         {
@@ -157,7 +157,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Executes the query as statement.
         /// </summary>
-        /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
+        /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         private async Task<AceQLDataReader> ExecuteQueryAsStatementAsync()
         {
@@ -237,7 +237,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Executes the query as prepared statement.
         /// </summary>
-        /// <returns>An AceQL.Client.api.AceQLDataReader object.</returns>
+        /// <returns>An <see cref="AceQLDataReader"/> object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         private async Task<AceQLDataReader> ExecuteQueryAsPreparedStatementAsync()
         {
@@ -391,7 +391,8 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Disposes this instance. This is optional.
+        /// Disposes this instance. This call is optional and does nothing because all resources are released after 
+        /// each other AceQL.Client.Api.AceQLCommand method call. Class implements IDisposable to ease code migration.
         /// </summary>
         public void Dispose()
         {

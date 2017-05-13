@@ -20,11 +20,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
 using PCLStorage;
+using System.Security;
 
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class AceQLConnection. Allows to create a database connection to the remote server.
+    /// Class <see cref="AceQLConnection"/>. Allows to create a database connection to the remote server.
     /// </summary>
     /// <seealso cref="System.IDisposable" />
     public class AceQLConnection :  IDisposable 
@@ -162,9 +163,16 @@ namespace AceQL.Client.Api
 
         }
 
- 
         /// <summary>
-        /// Closes this instance.
+        /// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
+        /// </summary>
+        public void Close()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Closes the connection to the remote database.
         /// This is highly recommended in default stateful mode: it will call in async mode the "disconnect" HTTP API and release the remote Connection into the pool.
         /// </summary>
         public void Dispose()
@@ -185,9 +193,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Initializes a new AceQL.Client.api.AceQLTransaction object. This will put the remote connection in auto commit mode off.
+        /// Initializes a <see cref="AceQLTransaction"/>object. This will put the remote connection in auto commit mode off.
         /// </summary>
-        /// <returns>A new AceQLTransaction object.</returns>
+        /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLTransaction> BeginTransactionAsync()
         {
@@ -206,11 +214,11 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Initializes a new AceQL.Client.api.AceQLTransaction object with the specified isolation level.
+        /// Initializes a new <see cref="AceQLTransaction"/>object with the specified isolation level.
         /// This will put the remote connection in auto commit mode off.
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
-        /// <returns>A new AceQLTransaction object.</returns>
+        /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLTransaction> BeginTransactionAsync(AceQLIsolationLevel isolationLevel)
         {

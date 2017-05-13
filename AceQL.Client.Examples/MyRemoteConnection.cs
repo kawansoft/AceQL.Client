@@ -27,16 +27,18 @@ namespace AceQL.Client.Examples
 
         public static async Task DoIt(string[] args)
         {
-
-            AceQLConnection connection = null;
-
+      
             try
             {
                 int customerId = 1;
                 int itemId = 1;
 
-                using (connection = await remoteConnectionBuilderAsync())
+                // Make sure connection is always closed to close and release server connection into the pool
+                using (AceQLConnection connection = connectionBuilder())
                 {
+                    // Opens the connection with the remote database
+                    await connection.OpenAsync();
+
                     MyRemoteConnection myRemoteConnection = new MyRemoteConnection(
                         connection);
 
@@ -49,11 +51,11 @@ namespace AceQL.Client.Examples
 
                     await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId);
                     await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Press enter to close....");
-                    Console.ReadLine();
                 }
+
+                Console.WriteLine();
+                Console.WriteLine("Press enter to close....");
+                Console.ReadLine();
 
             }
             catch (Exception exception)
@@ -72,7 +74,7 @@ namespace AceQL.Client.Examples
         /// </summary>
         /// <returns>The connection to the remote database</returns>
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
-        public static async Task<AceQLConnection> remoteConnectionBuilderAsync()
+        public static AceQLConnection connectionBuilder()
         {
             // Port number is the port number used to start the Web Server:
             //String server = "http://www.aceql.com:9090/aceql";
@@ -88,9 +90,6 @@ namespace AceQL.Client.Examples
                 + $"Username={username}; Password={password}";
 
             AceQLConnection connection = new AceQLConnection(connectionString);
-
-            // Opens the connection with the remote database
-            await connection.OpenAsync();
 
             return connection;
         }
@@ -129,9 +128,6 @@ namespace AceQL.Client.Examples
                 + $"ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword}";
 
             AceQLConnection connection = new AceQLConnection(connectionString);
-
-            // Opens the connection with the remote database
-            await connection.OpenAsync();
 
             return connection;
         }
@@ -202,8 +198,8 @@ namespace AceQL.Client.Examples
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
                         await transaction.RollbackAsync();
+                        throw e;
                     }
                 }
             }

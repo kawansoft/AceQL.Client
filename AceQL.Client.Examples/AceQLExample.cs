@@ -36,9 +36,6 @@ namespace AceQL.Client.Examples
         static async Task DoIt(string[] args)
         {
  
-            String IN_DIRECTORY = "c:\\test\\";
-            String OUT_DIRECTORY = "c:\\test\\out\\";
-
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             String serverUrlLocalhost = "http://localhost:9090/aceql";
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -80,7 +77,27 @@ namespace AceQL.Client.Examples
             connectionString += $"; ProxyUsername ={ proxyUsername}; ProxyPassword ={ proxyPassword}";
 
             AceQLConnection.SetTraceOn(true);
-            AceQLConnection connection = new AceQLConnection(connectionString);
+
+            // Make sure connection is always closed to close and release server connection into the pool
+            using (AceQLConnection connection = new AceQLConnection(connectionString))
+            {
+                ExecuteExample(connection);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Press enter to close....");
+            Console.ReadLine();
+
+        }
+
+        /// <summary>
+        /// Executes our example using an <see cref="AceQLConnection"/> 
+        /// </summary>
+        /// <param name="connection"></param>
+        private static async void ExecuteExample(AceQLConnection connection)
+        {
+            String IN_DIRECTORY = "c:\\test\\";
+            String OUT_DIRECTORY = "c:\\test\\out\\";
 
             await connection.OpenAsync();
 
@@ -123,6 +140,7 @@ namespace AceQL.Client.Examples
             sql = "select * from customer";
             command = new AceQLCommand(sql, connection);
 
+            // Our dataReader must be disposed to delete underlying dowloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
                 while (await dataReader.ReadAsync())
@@ -138,8 +156,9 @@ namespace AceQL.Client.Examples
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
                 }
-            }
 
+            }
+            
             command.Dispose();
 
             Console.WriteLine("Before delete from orderlog");
@@ -197,7 +216,7 @@ namespace AceQL.Client.Examples
 
                     connection.SetCancellationTokenSource(cancellationTokenSource);
                     connection.SetProgressIndicator(progressIndicator);
-                    
+
                     await command.ExecuteNonQueryAsync();
 
                 }
@@ -250,12 +269,6 @@ namespace AceQL.Client.Examples
             }
 
             await transaction.CommitAsync();
-            connection.Dispose();
-
-            Console.WriteLine();
-            Console.WriteLine("Press enter to close....");
-            Console.ReadLine();
-
         }
 
         /// <summary>

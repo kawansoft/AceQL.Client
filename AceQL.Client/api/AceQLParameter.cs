@@ -74,7 +74,7 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Gets name of the AceQLParameter name.
+        /// Gets name of the <see cref="AceQLParameter"/> name.
         /// </summary>
         /// <value>The name of the parameter.</value>
         /// <exception cref="System.NotImplementedException"></exception>
@@ -100,7 +100,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Says it the parameter has been asked to be null with AceQLParameterCollection.AddNull().
+        /// Says it the <see cref="AceQLParameter"/> has been asked to be null with <see cref="AceQLParameterCollection"/>.AddNull.
         /// </summary>
         internal bool IsNullValue
         {
@@ -148,9 +148,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets a string that contains AceQLParameter.ParameterName
+        /// Gets a string that contains <see cref="AceQLParameter"/>.ParameterName
         /// </summary>
-        /// <returns>A string that contains AceQLParameter.ParameterName</returns>
+        /// <returns>A string that contains <see cref="AceQLParameter"/></returns>
         public override string ToString()
         {
             //NO! Must return parameterName!

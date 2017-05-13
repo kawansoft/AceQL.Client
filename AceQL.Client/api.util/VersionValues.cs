@@ -49,6 +49,7 @@
 //13/05/2017 14:28 NDP: Clean code loops
 //13/05/2017 15:30 NDP: GetUniqueResultSetFile() renamed to GetUniqueResultSetFileAsync()
 //13/05/2017 15:46 NDP: No .ConfigureAwait(false) in examples code
+//13/05/2017 17:49 NDP: Add clean <cref> in comments
 
 namespace AceQL.Client.Api.Util
 {

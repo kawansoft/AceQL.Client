@@ -24,7 +24,7 @@ using PCLStorage;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class AceQLDataReader. Provides a way of reading a forward-only stream of rows from a remote database
+    /// Class <see cref="AceQLDataReader"/>. Provides a way of reading a forward-only stream of rows from a remote database
     /// transferred in a local file.
     /// </summary>
     public class AceQLDataReader : IDisposable
@@ -138,6 +138,7 @@ namespace AceQL.Client.Api
         {
             get
             {
+                TestIsClosed();
                 int colIndex = colIndexesPerColName[name];
                 return valuesPerColIndex[colIndex];
             }
@@ -152,6 +153,7 @@ namespace AceQL.Client.Api
         {
             get
             {
+                TestIsClosed();
                 return valuesPerColIndex[ordinal];
             }
         }
@@ -164,6 +166,7 @@ namespace AceQL.Client.Api
         {
             get
             {
+                TestIsClosed();
                 return valuesPerColIndex.Count;
             }
         }
@@ -176,6 +179,7 @@ namespace AceQL.Client.Api
         {
             get
             {
+                TestIsClosed();
                 return rowsCount > 0;
             }
         }
@@ -200,6 +204,7 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<Stream> GetStreamAsync(int ordinal)
         {
+            TestIsClosed();
             String blobId = GetString(ordinal);
 
             Debug("");
@@ -218,6 +223,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool GetBoolean(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -297,6 +304,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public DateTime GetDateTime(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -317,6 +326,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public decimal GetDecimal(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -333,6 +344,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public double GetDouble(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -370,6 +383,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public float GetFloat(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -397,6 +412,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public short GetInt16(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -413,6 +430,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public int GetInt32(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -429,6 +448,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public long GetInt64(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -445,6 +466,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public string GetName(int ordinal)
         {
+            TestIsClosed();
+
             if (!colNamesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No name found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -461,6 +484,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public int GetOrdinal(string name)
         {
+            TestIsClosed();
+
             if (!colIndexesPerColName.ContainsKey(name))
             {
                 throw new AceQLException("No ordinal found for name: " + name, 0, (Exception)null, (HttpStatusCode)200);
@@ -477,6 +502,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public string GetString(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -493,6 +520,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public object GetValue(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -566,6 +595,8 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool IsDBNull(int ordinal)
         {
+            TestIsClosed();
+
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
@@ -581,16 +612,13 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<bool> ReadAsync()
         {
+            TestIsClosed();
+
             if (DEBUG)
             {
                 ConsoleEmul.WriteLine();
                 ConsoleEmul.WriteLine("currentRowNum: " + currentRowNum);
                 ConsoleEmul.WriteLine("rowCount     : " + rowsCount);
-            }
-
-            if (IsClosed)
-            {
-                throw new AceQLException("Reader is closed!", 0, (Exception)null, (HttpStatusCode)200);
             }
 
             if (currentRowNum == rowsCount)
@@ -617,9 +645,25 @@ namespace AceQL.Client.Api
 
         }
 
+        internal void TestIsClosed()
+        {
+            if (isClosed)
+            {
+                throw new AceQLException("Instance is closed and disposed.", 0, (Exception)null, HttpStatusCode.OK);
+            }
+        }
 
         /// <summary>
-        /// Closes the DataReader. This is recommended in order to delete the local corresponding temporary files.
+        /// Closes the <see cref="AceQLDataReader"/>instance. Same as call to <see cref="AceQLDataReader"/>.Dispose().
+        /// </summary>
+        public void Close()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Releases all resources used by the current instance of the <see cref="AceQLDataReader"/> class. 
+        /// This is recommended in order to delete the local corresponding temporary files.
         /// </summary>
         public void Dispose()
         {
