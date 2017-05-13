@@ -41,6 +41,7 @@
 //13/05/2017 00:27 NDP: Delete class FormUpload
 //13/05/2017 02:04 NDP: PortableFile entirely rewritten: no more hiding or IFile/IFolder
 //13/05/2017 02:28 NDP: License is now Apache 2.0
+//13/05/2017 02:29 NDP: Clean comments
 
 namespace AceQL.Client.Api.Util
 {
