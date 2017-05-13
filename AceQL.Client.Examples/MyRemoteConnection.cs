@@ -90,7 +90,6 @@ namespace AceQL.Client.Examples
                 + $"Username={username}; Password={password}";
 
             AceQLConnection connection = new AceQLConnection(connectionString);
-
             return connection;
         }
 

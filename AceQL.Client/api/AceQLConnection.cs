@@ -28,16 +28,18 @@ namespace AceQL.Client.Api
     /// Class <see cref="AceQLConnection"/>. Allows to create a database connection to the remote server.
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public class AceQLConnection :  IDisposable 
+    public class AceQLConnection : IDisposable
     {
         internal static bool DEBUG = false;
 
         private string connectionString;
+        private AceQLCredential credential;
+
         internal AceQLHttpApi aceQLHttpApi = null;
         private bool connectionOpened = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
+        /// Initializes a new instance of the <see cref="AceQLConnection"/> class  when given a string that contains the connection string.
         /// </summary>
         /// <param name="connectionString">The connection string. 
         /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword"
@@ -52,7 +54,7 @@ namespace AceQL.Client.Api
         /// "Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; ProxyUri=http://localhost:8080 ProxyUsername=user1; ProxyPassword=pass1"
         /// Read/Write http timeout may be specified with Timeout in milliseconds:
         /// Server = http://www.acme.com/aceql; Database = myDataBase; Username = myUsername; Password = myPassword; Timeout=300000"
-        /// If timeout is not specified or equals 0, HttpClient default will be used.
+        /// If timeout is not specified or equals 0, <see cref="System.Net.Http.HttpClient"/> default value will be used.
         /// ";" char is supported in password, must be escaped: Password = my\;Password;
         /// </param>
         /// <exception cref="System.ArgumentNullException">If connectionString is null.</exception>
@@ -67,6 +69,34 @@ namespace AceQL.Client.Api
             aceQLHttpApi = new AceQLHttpApi(connectionString);
             this.connectionString = connectionString;
 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLConnection"/> class  when given a string that contains the connection string 
+        /// and an <see cref="AceQLCredential"/> object that contains the username and password.
+        /// </summary>
+        /// <param name="connectionString">The connection string. 
+        /// Minimum content is: "Server = http://www.acme.com/aceql; Database = myDataBase". 
+        /// <see cref="AceQLConnection"/>.AceQLConnection(String connectionString) for all possible values.
+        /// </param>
+        /// <param name="credential"><see cref="AceQLCredential"/> object. </param>
+        /// <exception cref="System.ArgumentNullException">If connectionString is null or <see cref="AceQLCredential"/> is null. </exception>
+        /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
+        public AceQLConnection(string connectionString, AceQLCredential credential)
+        {
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException("connectionString is null!");
+            }
+
+            if (credential == null)
+            {
+                throw new ArgumentNullException("credential is null!");
+            }
+
+            aceQLHttpApi = new AceQLHttpApi(connectionString, credential);
+            this.connectionString = connectionString;
+            this.credential = credential;
         }
 
         /// <summary>
@@ -100,30 +130,36 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the connection string.
+        /// Gets the connection string used to connect to the remote database.
         /// </summary>
-        /// <value>The connection string.</value>
+        /// <value>The connection string used to connect to the remote database.</value>
         public string ConnectionString
         {
             get
             {
                 return this.connectionString;
             }
-
         }
 
         /// <summary>
-        /// Gets the database.
+        /// Gets the current database in use.
         /// </summary>
-        /// <value>The database.</value>
+        /// <value>The current database in use.</value>
         public string Database
         {
             get
             {
-                return aceQLHttpApi.Database;
+                if (aceQLHttpApi != null)
+                {
+                    return aceQLHttpApi.Database;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
- 
+
 
         /// <summary>
         /// Gets a value indicating whether [pretty printing] is on or off. Defaults to false.
@@ -162,6 +198,24 @@ namespace AceQL.Client.Api
             }
 
         }
+
+        /// <summary>
+        /// Gets the time to wait in milliseconds while trying to establish a connection before terminating the attempt and generating an error.
+        /// If value is 0, <see cref="System.Net.Http.HttpClient"/> default will value be used.
+        /// </summary>
+        public int ConnectionTimeout
+        {
+            get
+            {
+                return aceQLHttpApi.Timeout;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AceQLCredential"/> object for this connection. 
+        /// </summary>
+        /// <value>The the <see cref="AceQLCredential"/> object for this connection.</value>
+        public AceQLCredential Credential { get => credential;}
 
         /// <summary>
         /// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
@@ -220,7 +274,7 @@ namespace AceQL.Client.Api
         /// <param name="isolationLevel">The isolation level.</param>
         /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
-        public async Task<AceQLTransaction> BeginTransactionAsync(AceQLIsolationLevel isolationLevel)
+        public async Task<AceQLTransaction> BeginTransactionAsync(IsolationLevel isolationLevel)
         {
             TestConnectionOpened();
             await aceQLHttpApi.CallApiNoResultAsync("set_auto_commit", "false").ConfigureAwait(false);

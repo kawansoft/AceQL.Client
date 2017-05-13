@@ -239,6 +239,12 @@ namespace AceQL.Client.Api.Http
             Init(server, database, username, password, stateless, proxyUri, credentials, timeout);
         }
 
+        internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
+        {
+            this.username = credential.Username;
+            this.password = credential.Password;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
         /// </summary>
@@ -337,6 +343,10 @@ namespace AceQL.Client.Api.Http
             }
         }
 
+        /// <summary>
+        /// The timeout in milliseconds
+        /// </summary>
+        internal int Timeout { get => timeout;  }
 
 
         /// <summary>
@@ -356,11 +366,11 @@ namespace AceQL.Client.Api.Http
                 }
                 if (username == null)
                 {
-                    throw new ArgumentNullException("Username keyword not found in connection string.");
+                    throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredentials not set.");
                 }
                 if (password == null)
                 {
-                    throw new ArgumentNullException("Password keyword not found in connection string.");
+                    throw new ArgumentNullException("Password keyword not found in connection string or AceQLCredentials not set");
                 }
                 if (database == null)
                 {

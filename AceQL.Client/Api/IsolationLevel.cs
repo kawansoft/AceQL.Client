@@ -4,7 +4,7 @@ namespace AceQL.Client.Api
     /// <summary>
     /// Specifies the transaction locking behavior for the remote connection.
     /// </summary>
-    public enum AceQLIsolationLevel
+    public enum IsolationLevel
     {
 
         /// <summary>

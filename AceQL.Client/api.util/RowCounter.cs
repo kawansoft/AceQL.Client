@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using PCLStorage;
 
-namespace AceQL.Client.Api
+namespace AceQL.Client.Api.Util
 {
     /// <summary>
     /// Counts rows in a JSON file.

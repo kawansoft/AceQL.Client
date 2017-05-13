@@ -50,6 +50,7 @@
 //13/05/2017 15:30 NDP: GetUniqueResultSetFile() renamed to GetUniqueResultSetFileAsync()
 //13/05/2017 15:46 NDP: No .ConfigureAwait(false) in examples code
 //13/05/2017 17:49 NDP: Add clean <cref> in comments
+//13/05/2017 19:02 NDP: Add AceQLCredential class & AceQLIsolationLevel renamed to IsolationLevel
 
 namespace AceQL.Client.Api.Util
 {

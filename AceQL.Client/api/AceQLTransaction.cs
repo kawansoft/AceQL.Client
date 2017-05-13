@@ -36,7 +36,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The isolation level
         /// </summary>
-        private AceQLIsolationLevel isolationLevel = AceQLIsolationLevel.Unspecified;
+        private IsolationLevel isolationLevel = IsolationLevel.Unspecified;
 
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="connection">The AceQL connection.</param>
         /// <param name="isolationLevel">The isolation level.</param>
-        internal AceQLTransaction(AceQLConnection connection, AceQLIsolationLevel isolationLevel) : this(connection)
+        internal AceQLTransaction(AceQLConnection connection, IsolationLevel isolationLevel) : this(connection)
         {
             this.isolationLevel = isolationLevel;
             string isolationLevelStr = GetTransactionIsolationAsString(isolationLevel);
@@ -65,25 +65,25 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="transactionIsolationLevel">The transaction isolation level.</param>
         /// <returns>String.</returns>
-        internal static String GetTransactionIsolationAsString(AceQLIsolationLevel transactionIsolationLevel)
+        internal static String GetTransactionIsolationAsString(IsolationLevel transactionIsolationLevel)
         {
-            if (transactionIsolationLevel == AceQLIsolationLevel.Unspecified)
+            if (transactionIsolationLevel == IsolationLevel.Unspecified)
             {
                 return "NONE";
             }
-            else if (transactionIsolationLevel == AceQLIsolationLevel.ReadCommitted)
+            else if (transactionIsolationLevel == IsolationLevel.ReadCommitted)
             {
                 return "READ_COMMITTED";
             }
-            else if (transactionIsolationLevel == AceQLIsolationLevel.ReadUncommitted)
+            else if (transactionIsolationLevel == IsolationLevel.ReadUncommitted)
             {
                 return "READ_UNCOMMITTED";
             }
-            else if (transactionIsolationLevel == AceQLIsolationLevel.RepeatableRead)
+            else if (transactionIsolationLevel == IsolationLevel.RepeatableRead)
             {
                 return "REPEATABLE_READ";
             }
-            else if (transactionIsolationLevel == AceQLIsolationLevel.Serializable)
+            else if (transactionIsolationLevel == IsolationLevel.Serializable)
             {
                 return "SERIALIZABLE";
             }
@@ -97,7 +97,7 @@ namespace AceQL.Client.Api
         /// Specifies the isolation level for this transaction.
         /// </summary>
         /// <value>The isolation level.</value>
-        public AceQLIsolationLevel IsolationLevel
+        public IsolationLevel IsolationLevel
         {
             get
             {
