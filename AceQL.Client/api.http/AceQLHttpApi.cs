@@ -530,7 +530,18 @@ namespace AceQL.Client.Api.Http
                 httpClient.Timeout = new TimeSpan(nanoseconds / 100);
             }
 
-            HttpResponseMessage response = await httpClient.GetAsync(url).ConfigureAwait(false);
+            HttpResponseMessage response = null;
+
+            if (cancellationTokenSource == null)
+            {
+                response = await httpClient.GetAsync(url).ConfigureAwait(false);
+            }
+            else
+            {
+                response = await httpClient.GetAsync(url, cancellationTokenSource.Token).ConfigureAwait(false);
+            }
+
+            response = await httpClient.GetAsync(url).ConfigureAwait(false);
             this.httpStatusCode = response.StatusCode;
 
             HttpContent content = response.Content;
@@ -592,7 +603,17 @@ namespace AceQL.Client.Api.Http
 
             HttpContent content = new FormUrlEncodedContent(postData);
 
-            HttpResponseMessage response = await httpClient.PostAsync(urlWithaction, content);
+            HttpResponseMessage response = null;
+
+            if (cancellationTokenSource == null)
+            {
+                response = await httpClient.PostAsync(urlWithaction, content);
+            }
+            else
+            {
+                response = await httpClient.PostAsync(urlWithaction, content, cancellationTokenSource.Token);
+            }
+
             this.httpStatusCode = response.StatusCode;
 
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);

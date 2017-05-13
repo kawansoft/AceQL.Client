@@ -298,18 +298,18 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Returns the CancellationTokenSource used to cancel a BLOB upload.
+        /// Returns the CancellationTokenSource used to cancel an http action.
         /// </summary>
-        /// <returns>The CancellationTokenSource that will be used for BLOB upload.</returns>
+        /// <returns>The CancellationTokenSource that will be used for an http action.</returns>
         internal CancellationTokenSource GetCancellationTokenSource()
         {
             return aceQLHttpApi.GetCancellationTokenSource();
         }
 
         /// <summary>
-        /// Sets the CancellationTokenSource that will be used for BLOB upload.
+        /// Sets the CancellationTokenSource that will be used for an http action
         /// </summary>
-        /// <param name="cancellationTokenSource">The CancellationTokenSource that will be used for BLOB upload.</param>
+        /// <param name="cancellationTokenSource">The CancellationTokenSource that will be used for an http action.</param>
         public void SetCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
         {
             aceQLHttpApi.SetCancellationTokenSource(cancellationTokenSource);

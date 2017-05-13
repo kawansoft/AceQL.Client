@@ -310,7 +310,6 @@ namespace AceQL.Client.Api
         }
 
 
-
         /// <summary>
         /// Executes the update as prepared statement.
         /// </summary>

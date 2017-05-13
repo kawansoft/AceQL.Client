@@ -53,6 +53,7 @@
 //13/05/2017 19:02 NDP: Add AceQLCredential class & AceQLIsolationLevel renamed to IsolationLevel
 //13/05/2017 21:17 NDP: Add AceQLConnection() constructor and AceQLConnection get/set Credential & ConnectionString properties
 //13/05/2017 21:45 NDP: AceQLConnection & AceQLHttpApi: clean comments
+//13/05/2017 22:09 NDP: AceQLConnection: CancellationTokenSource, if set, is used on all http calls
 
 namespace AceQL.Client.Api.Util
 {
