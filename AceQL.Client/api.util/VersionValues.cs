@@ -39,7 +39,7 @@
 //12/05/2017 19:59 NDP: PortableFile: add CopyAsync() methods
 //13/05/2017 00:22 NDP: Use as much as possible directly PCLStorage API
 //13/05/2017 00:27 NDP: Delete class FormUpload
-//13/05/2017 01:59 NDP: PortableFile entirely rewritten: no more hiding or IFile/IFolder
+//13/05/2017 02:04 NDP: PortableFile entirely rewritten: no more hiding or IFile/IFolder
 
 namespace AceQL.Client.Api.Util
 {

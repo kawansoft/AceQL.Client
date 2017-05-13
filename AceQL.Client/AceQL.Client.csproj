@@ -95,7 +95,6 @@
   <ItemGroup>
     <None Include="Api.File\PCLStorage_LICENSE" />
     <None Include="app.config" />
-    <None Include="LICENSE.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
