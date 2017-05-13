@@ -9,7 +9,7 @@ namespace AceQL.Client.Api
     /// <summary>
     /// Class that allows to store the progress between 0 and 100 for a Blob/Clob upload or download.
     /// </summary>
-    public class ProgressHolder
+    public class ProgressIndicator
     {
         private int progress = 0;
 

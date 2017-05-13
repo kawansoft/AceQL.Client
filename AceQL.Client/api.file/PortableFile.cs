@@ -17,9 +17,10 @@ namespace AceQL.Client.Api.File
     /// </summary>
     public class PortableFile
     {
-      
+
         /// <summary>
-        /// Opens a file, appends the specified string to the file, and then closes the file. If the file does not exist, this method creates a file, writes the specified string to the file, then closes the file.
+        /// Opens a file, appends the specified string to the file, and then closes the file. 
+        /// If the file does not exist, this method creates a file, writes the specified string to the file, then closes the file.
         /// </summary>
         /// <param name="file">The file on which to trace</param>
         /// <param name="contents">The string to append to the file.</param>

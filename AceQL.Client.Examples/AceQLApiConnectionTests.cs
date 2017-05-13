@@ -193,10 +193,10 @@ namespace AceQL.Client.Examples
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
                     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                    ProgressHolder progressHolder = new ProgressHolder();
+                    ProgressIndicator progressIndicator = new ProgressIndicator();
 
                     connection.SetCancellationTokenSource(cancellationTokenSource);
-                    connection.SetProgress(progressHolder);
+                    connection.SetProgressIndicator(progressIndicator);
                     
                     await command.ExecuteNonQueryAsync();
 

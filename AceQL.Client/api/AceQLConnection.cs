@@ -162,21 +162,7 @@ namespace AceQL.Client.Api
 
         }
 
-        ///// <summary>
-        ///// Sets this connection's auto-commit mode to the given state. 
-        ///// Method shoud be called with autoCommit true after a AceQLtransaction CommitAsync() or RollbackAsync().
-        ///// This is necessary because AceQLtransaction.Dispose() can not call an Async method, and thus leaves the remote
-        ///// connection in auto commit false/off state.
-        ///// </summary>
-        ///// <param name="autoCommit">true to enable auto-commit mode; false to disable it.</param>
-        ///// <returns></returns>
-        //public async Task SetAutoCommit(bool autoCommit)
-        //{
-        //    String autoCommitStr = "" + autoCommit;
-        //    autoCommitStr = autoCommitStr.ToLower();
-        //    await aceQLHttpApi.CallApiNoResultAsync("set_auto_commit", autoCommitStr).ConfigureAwait(false);
-        //}
-
+ 
         /// <summary>
         /// Closes this instance.
         /// This is highly recommended in default stateful mode: it will call in async mode the "disconnect" HTTP API and release the remote Connection into the pool.
@@ -277,19 +263,18 @@ namespace AceQL.Client.Api
         /// Returns the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
         /// <returns>The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
-        public ProgressHolder GetProgress()
+        public ProgressIndicator GetProgressIndicator()
         {
-            return aceQLHttpApi.GetProgress();
+            return aceQLHttpApi.GetProgressIndicator();
         }
-
 
         /// <summary>
         /// Sets the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
-        /// <param name="progress">The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</param>
-        public void SetProgress(ProgressHolder progress)
+        /// <param name="progressIndicator">The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</param>
+        public void SetProgressIndicator(ProgressIndicator progressIndicator)
         {
-            aceQLHttpApi.SetProgress(progress);
+            aceQLHttpApi.SetProgressIndicator(progressIndicator);
         }
 
 

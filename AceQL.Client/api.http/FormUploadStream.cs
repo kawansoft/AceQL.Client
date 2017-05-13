@@ -34,10 +34,10 @@ namespace AceQL.Client.Api.Http
         /// <param name="blobId"></param>
         /// <param name="stream"></param>
         /// <param name="totalLength"></param> 
-        /// <param name="progressHolder"></param>
+        /// <param name="progressIndicator"></param>
         /// <param name="cancellationTokenSource"></param> 
         /// <returns></returns>
-        internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials, int timeout, String blobId, Stream stream, long totalLength, ProgressHolder progressHolder, CancellationTokenSource cancellationTokenSource)
+        internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials, int timeout, String blobId, Stream stream, long totalLength, ProgressIndicator progressIndicator, CancellationTokenSource cancellationTokenSource)
         {
             HttpClientHandler handler = AceQLHttpApi.BuildHttpClientHandler(proxyUri, credentials);
 
@@ -58,16 +58,16 @@ namespace AceQL.Client.Api.Http
                 int num = e.ProgressPercentage;
                 this.tempLen += e.BytesTransferred;
 
-                if (progressHolder != null)
+                if (progressIndicator != null)
                 {
                     if (totalLength > 0 && tempLen > totalLength / 100)
                     {
                         tempLen = 0;
                     }
-                    int cpt = progressHolder.Value;
+                    int cpt = progressIndicator.Value;
                     cpt++;
-                    progressHolder.Value = Math.Min(99, cpt);
-                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressHolder.Value);
+                    progressIndicator.Value = Math.Min(99, cpt);
+                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Value);
                 }
                 else
                 {
@@ -108,7 +108,7 @@ namespace AceQL.Client.Api.Http
                     response = await httpClient.PostAsync(url, multipart, cancellationTokenSource.Token);
                 }
 
-
+                progressIndicator.Value = 100;
                 //if (!response.IsSuccessStatusCode)
                 //{
                 //    ConsoleEmul.WriteLine("FAILURE");

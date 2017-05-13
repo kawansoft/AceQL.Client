@@ -94,7 +94,7 @@ namespace AceQL.Client.Api.Http
         private string connectionString;
 
         private CancellationTokenSource cancellationTokenSource;
-        private ProgressHolder progress;
+        private ProgressIndicator progressIndicator;
 
 
         /// <summary>
@@ -748,7 +748,7 @@ namespace AceQL.Client.Api.Http
             FormUploadStream formUploadStream = new FormUploadStream();
             HttpResponseMessage response = null;
 
-            response = await formUploadStream.UploadAsync(theUrl, proxyUri, credentials, timeout, blobId, stream, totalLength, progress, cancellationTokenSource).ConfigureAwait(false);
+            response = await formUploadStream.UploadAsync(theUrl, proxyUri, credentials, timeout, blobId, stream, totalLength, progressIndicator, cancellationTokenSource).ConfigureAwait(false);
 
             this.httpStatusCode = response.StatusCode;
 
@@ -885,19 +885,19 @@ namespace AceQL.Client.Api.Http
         /// Returns the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
         /// <returns>The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
-        internal ProgressHolder GetProgress()
+        internal ProgressIndicator GetProgressIndicator()
         {
-            return progress;
+            return progressIndicator;
         }
 
 
         /// <summary>
         /// Sets the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
-        /// <param name="progress">The sharable progress variable.</param>
-        internal void SetProgress(ProgressHolder progress)
+        /// <param name="progressIndicator">The sharable progress variable.</param>
+        internal void SetProgressIndicator(ProgressIndicator progressIndicator)
         {
-            this.progress = progress;
+            this.progressIndicator = progressIndicator;
         }
 
         /// <summary>

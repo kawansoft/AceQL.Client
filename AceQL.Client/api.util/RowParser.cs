@@ -111,9 +111,9 @@ namespace AceQL.Client.Api.Util
         }
 
         /// <summary>
-        /// Cntinue reading...
+        /// Continue reading...
         /// </summary>
-        /// <param name="reader">the text reader </param>
+        /// <param name="reader">The text reader </param>
         /// <param name="rowNum">The row number.</param>
         private void Treat(JsonTextReader reader, int rowNum)
         {
@@ -268,7 +268,6 @@ namespace AceQL.Client.Api.Util
                 ConsoleEmul.WriteLine(s);
             }
         }
-
 
 
         internal void Close()

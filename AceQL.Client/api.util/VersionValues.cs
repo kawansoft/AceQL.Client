@@ -44,13 +44,14 @@
 //13/05/2017 02:29 NDP: Clean comments
 //13/05/2017 02:50 NDP: Remove unnecessary methods from PortableFile
 //13/05/2017 02:54 NDP: Clean PortableFile comments
+//13/05/2017 13:47 NDP: ProgressHolder renamed to ProgressIndicator
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.1";
+        internal static readonly String VERSION = "v1.0.1-beta.1";
         internal static readonly String DATE = "13-may-2017";
     }
 }
