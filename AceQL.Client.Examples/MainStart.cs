@@ -19,7 +19,7 @@ namespace AceQL.Client.Examples
             }
             else if (mainToLaunch == 2)
             {
-                AceQLApiConnectionTests.TheMain(args);
+                AceQLExample.TheMain(args);
             }
         }
     }

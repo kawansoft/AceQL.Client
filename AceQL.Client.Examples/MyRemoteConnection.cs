@@ -35,20 +35,20 @@ namespace AceQL.Client.Examples
                 int customerId = 1;
                 int itemId = 1;
 
-                using (connection = await remoteConnectionBuilderAsync().ConfigureAwait(false))
+                using (connection = await remoteConnectionBuilderAsync())
                 {
                     MyRemoteConnection myRemoteConnection = new MyRemoteConnection(
                         connection);
 
                     // Delete previous instances, so that user can recall class
                     Console.WriteLine("deleting customer...");
-                    await myRemoteConnection.DeleteCustomerAsync(customerId).ConfigureAwait(false);
+                    await myRemoteConnection.DeleteCustomerAsync(customerId);
 
                     Console.WriteLine("deleting orderlog...");
-                    await myRemoteConnection.DeleteOrderlogAsync(customerId, itemId).ConfigureAwait(false);
+                    await myRemoteConnection.DeleteOrderlogAsync(customerId, itemId);
 
-                    await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId).ConfigureAwait(false);
-                    await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId).ConfigureAwait(false);
+                    await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId);
+                    await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId);
 
                     Console.WriteLine();
                     Console.WriteLine("Press enter to close....");
@@ -90,7 +90,7 @@ namespace AceQL.Client.Examples
             AceQLConnection connection = new AceQLConnection(connectionString);
 
             // Opens the connection with the remote database
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync();
 
             return connection;
         }
@@ -117,10 +117,10 @@ namespace AceQL.Client.Examples
             String proxyUsername = "ndepomereu2";
             String proxyPassword = null;
 
-            if (await ExistsAsync("AceQLPclFolder", "password.txt").ConfigureAwait(false))
+            if (await ExistsAsync("AceQLPclFolder", "password.txt"))
             {
-                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt").ConfigureAwait(false);
-                proxyPassword = await file.ReadAllTextAsync().ConfigureAwait(false);
+                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt");
+                proxyPassword = await file.ReadAllTextAsync();
             }
             
             string connectionString = $"Server={server}; Database={database}; "
@@ -131,7 +131,7 @@ namespace AceQL.Client.Examples
             AceQLConnection connection = new AceQLConnection(connectionString);
 
             // Opens the connection with the remote database
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync();
 
             return connection;
         }
@@ -154,7 +154,7 @@ namespace AceQL.Client.Examples
         public async Task InsertCustomerAndOrderLogAsync(int customerId, int itemId)
         {
             // Create a transaction
-            using (AceQLTransaction transaction = await connection.BeginTransactionAsync().ConfigureAwait(false))
+            using (AceQLTransaction transaction = await connection.BeginTransactionAsync())
             {
                 string sql = "insert into customer values " + "" +
                     "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
@@ -171,7 +171,7 @@ namespace AceQL.Client.Examples
                     command.Parameters.AddWithValue("@parm7", "NY 10010");
                     command.Parameters.AddNullValue("@parm8", SqlType.VARCHAR);
 
-                    await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    await command.ExecuteNonQueryAsync();
                 }
 
                 sql = "insert into orderlog values " +
@@ -196,14 +196,14 @@ namespace AceQL.Client.Examples
                         command.Parameters.AddWithValue("@is_delivered", 1);
                         command.Parameters.AddWithValue("@quantity", 1);
 
-                        await command.ExecuteNonQueryAsync().ConfigureAwait(false);
-                        await transaction.CommitAsync().ConfigureAwait(false);
+                        await command.ExecuteNonQueryAsync();
+                        await transaction.CommitAsync();
 
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
-                        await transaction.RollbackAsync().ConfigureAwait(false);
+                        await transaction.RollbackAsync();
                     }
                 }
             }
@@ -224,9 +224,9 @@ namespace AceQL.Client.Examples
             AceQLCommand command = new AceQLCommand(sql, connection);
             command.Parameters.AddWithValue("@customer_id", customerId);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync().ConfigureAwait(false))
+                while (await dataReader.ReadAsync())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
@@ -246,9 +246,9 @@ namespace AceQL.Client.Examples
             command.Parameters.AddWithValue("@customer_id", customerId);
             command.Parameters.AddWithValue("@item_id", customerId);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync().ConfigureAwait(false))
+                while (await dataReader.ReadAsync())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
@@ -260,7 +260,7 @@ namespace AceQL.Client.Examples
                     DateTime datePlaced = dataReader.GetDateTime(i++).Date;
                     DateTime dateShipped = dataReader.GetDateTime(i++);
 
-                    Stream stream = await dataReader.GetStreamAsync(i++).ConfigureAwait(false); // null stream
+                    Stream stream = await dataReader.GetStreamAsync(i++); // null stream
 
                     bool is_delivered = dataReader.GetInt32(i++) == 1 ? true : false;
                     int quantity = dataReader.GetInt32(i++);
@@ -289,7 +289,7 @@ namespace AceQL.Client.Examples
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@customer_id", customerId);
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync();
             }
         }
 
@@ -306,7 +306,7 @@ namespace AceQL.Client.Examples
             {
                 command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@item_id", idemId);
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync();
             }
         }
 
@@ -330,8 +330,8 @@ namespace AceQL.Client.Examples
             }
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await rootFolder.GetFolderAsync(folderName).ConfigureAwait(false);
-            IFile file = await folder.GetFileAsync(fileName).ConfigureAwait(false);
+            IFolder folder = await rootFolder.GetFolderAsync(folderName);
+            IFile file = await folder.GetFileAsync(fileName);
             return file;
         }
 
@@ -358,7 +358,7 @@ namespace AceQL.Client.Examples
             try
             {
                 IFolder rootFolder = FileSystem.Current.LocalStorage;
-                folder = await rootFolder.GetFolderAsync(folderName).ConfigureAwait(false);
+                folder = await rootFolder.GetFolderAsync(folderName);
             }
             catch (FileNotFoundException)
             {
@@ -369,7 +369,7 @@ namespace AceQL.Client.Examples
 
             try
             {
-                file = await folder.GetFileAsync(fileName).ConfigureAwait(false);
+                file = await folder.GetFileAsync(fileName);
             }
             catch (FileNotFoundException)
             {

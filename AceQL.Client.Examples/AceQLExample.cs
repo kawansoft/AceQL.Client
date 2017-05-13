@@ -13,7 +13,7 @@ namespace AceQL.Client.Examples
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLApiConnectionTests
+    class AceQLExample
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
@@ -58,13 +58,13 @@ namespace AceQL.Client.Examples
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
             IFolder folder = await rootFolder.CreateFolderAsync(ACEQL_PCL_FOLDER,
-                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+                CreationCollisionOption.OpenIfExists);
             Console.WriteLine("AceQLPclFolder: " + folder.Path);
 
-            if (await ExistsAsync(ACEQL_PCL_FOLDER, "password.txt").ConfigureAwait(false))
+            if (await ExistsAsync(ACEQL_PCL_FOLDER, "password.txt"))
             {
-                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt").ConfigureAwait(false);
-                proxyPassword = await file.ReadAllTextAsync().ConfigureAwait(false);
+                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt");
+                proxyPassword = await file.ReadAllTextAsync();
             }
 
             //customer_id integer NOT NULL,
@@ -82,20 +82,20 @@ namespace AceQL.Client.Examples
             AceQLConnection.SetTraceOn(true);
             AceQLConnection connection = new AceQLConnection(connectionString);
 
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync();
 
             Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync().ConfigureAwait(false));
+            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
             Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync().ConfigureAwait(false));
+            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
-            AceQLTransaction transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
-            await transaction.CommitAsync().ConfigureAwait(false);
+            AceQLTransaction transaction = await connection.BeginTransactionAsync();
+            await transaction.CommitAsync();
             transaction.Dispose();
 
             String sql = "delete from customer";
             AceQLCommand command = new AceQLCommand(sql, connection);
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await command.ExecuteNonQueryAsync();
 
             for (int i = 0; i < 3; i++)
             {
@@ -115,7 +115,7 @@ namespace AceQL.Client.Examples
                 command.Parameters.AddWithValue("@parm7", customer_id + "11111");
                 command.Parameters.AddNullValue("@parm8", SqlType.VARCHAR); //null value for NULL SQL insert.
 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync();
             }
 
             command.Dispose();
@@ -123,9 +123,9 @@ namespace AceQL.Client.Examples
             sql = "select * from customer";
             command = new AceQLCommand(sql, connection);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync().ConfigureAwait(false))
+                while (await dataReader.ReadAsync())
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -145,17 +145,17 @@ namespace AceQL.Client.Examples
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            transaction = await connection.BeginTransactionAsync();
 
             sql = "delete from orderlog";
             command = new AceQLCommand(sql, connection);
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await command.ExecuteNonQueryAsync();
             command.Dispose();
 
-            await transaction.CommitAsync().ConfigureAwait(false);
+            await transaction.CommitAsync();
 
             // Do next inserts in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            transaction = await connection.BeginTransactionAsync();
 
             try
             {
@@ -198,30 +198,30 @@ namespace AceQL.Client.Examples
                     connection.SetCancellationTokenSource(cancellationTokenSource);
                     connection.SetProgressIndicator(progressIndicator);
                     
-                    await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    await command.ExecuteNonQueryAsync();
 
                 }
                 command.Dispose();
-                await transaction.CommitAsync().ConfigureAwait(false);
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
-                await transaction.RollbackAsync().ConfigureAwait(false);
+                await transaction.RollbackAsync();
                 throw exception;
             }
 
             Console.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            transaction = await connection.BeginTransactionAsync();
 
             sql = "select * from orderlog";
             command = new AceQLCommand(sql, connection);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
                 int k = 0;
-                while (await dataReader.ReadAsync().ConfigureAwait(false))
+                while (await dataReader.ReadAsync())
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -239,7 +239,7 @@ namespace AceQL.Client.Examples
                     String blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
                     k++;
 
-                    using (Stream stream = await dataReader.GetStreamAsync(6).ConfigureAwait(false))
+                    using (Stream stream = await dataReader.GetStreamAsync(6))
                     {
                         using (var fileStream = File.Create(blobPath))
                         {
@@ -249,7 +249,7 @@ namespace AceQL.Client.Examples
                 }
             }
 
-            await transaction.CommitAsync().ConfigureAwait(false);
+            await transaction.CommitAsync();
             connection.Dispose();
 
             Console.WriteLine();
@@ -279,8 +279,8 @@ namespace AceQL.Client.Examples
             }
 
             IFolder rootFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await rootFolder.GetFolderAsync(folderName).ConfigureAwait(false);
-            IFile file = await folder.GetFileAsync(fileName).ConfigureAwait(false);
+            IFolder folder = await rootFolder.GetFolderAsync(folderName);
+            IFile file = await folder.GetFileAsync(fileName);
             return file;
         }
 
@@ -307,7 +307,7 @@ namespace AceQL.Client.Examples
             try
             {
                 IFolder rootFolder = FileSystem.Current.LocalStorage;
-                folder = await rootFolder.GetFolderAsync(folderName).ConfigureAwait(false);
+                folder = await rootFolder.GetFolderAsync(folderName);
             }
             catch (FileNotFoundException)
             {
@@ -318,7 +318,7 @@ namespace AceQL.Client.Examples
 
             try
             {
-                file = await folder.GetFileAsync(fileName).ConfigureAwait(false);
+                file = await folder.GetFileAsync(fileName);
             }
             catch (FileNotFoundException)
             {
