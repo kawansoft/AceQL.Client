@@ -52,6 +52,7 @@
 //13/05/2017 17:49 NDP: Add clean <cref> in comments
 //13/05/2017 19:02 NDP: Add AceQLCredential class & AceQLIsolationLevel renamed to IsolationLevel
 //13/05/2017 21:17 NDP: Add AceQLConnection() constructor and AceQLConnection get/set Credential & ConnectionString properties
+//13/05/2017 21:30 NDP: AceQLConnection: clean comments
 
 namespace AceQL.Client.Api.Util
 {

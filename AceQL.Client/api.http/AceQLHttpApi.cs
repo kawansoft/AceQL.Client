@@ -96,15 +96,20 @@ namespace AceQL.Client.Api.Http
         internal AceQLHttpApi(String connectionString)
         {
             this.connectionString = connectionString;
-            DecodeConnectionString(connectionString);
         }
 
         /// <summary>
         /// Decode connection string and load elements in memory.
         /// </summary>
-        /// <param name="connectionString"></param>
-        private void DecodeConnectionString(string connectionString)
+        private void DecodeConnectionString()
         {
+
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException("connectionString has not been set and is null!");
+            }
+
+
             // Replace escaped "\;"
             connectionString = connectionString.Replace("\\;", "\\semicolon");
 
@@ -205,6 +210,13 @@ namespace AceQL.Client.Api.Http
             Debug("theProxyUri        : " + theProxyUri);
             Debug("theProxyCredentials: " + proxyUsername + " / " + proxyPassword);
 
+            // username & password maybe set by Credential
+            if (credential != null)
+            {
+                theUsername = credential.Username;
+                thePassword = credential.Password;
+            }
+
             if (isNTLM)
             {
                 theProxyCredentials = CredentialCache.DefaultCredentials;
@@ -267,7 +279,7 @@ namespace AceQL.Client.Api.Http
             this.server = server;
             this.database = database;
 
-            if (username != null  && password != null)
+            if (username != null  && password != null && credential == null)
             {
                 this.credential = new AceQLCredential(username, password);
             }
@@ -375,6 +387,8 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
+                DecodeConnectionString();
+
                 String username = null;
                 String password = null;
 
