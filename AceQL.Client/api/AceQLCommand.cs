@@ -224,7 +224,14 @@ namespace AceQL.Client.Api
         /// <returns>A unique File on the system.</returns>
         private static async Task<IFile> GetUniqueResultSetFile()
         {
-            return await PortableFile.CreateFileAsync(Parms.ACEQL_PCL_FOLDER, Guid.NewGuid().ToString() + "-result-set.txt");
+            IFolder rootFolder = FileSystem.Current.LocalStorage;
+            IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
+                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+
+            String fileName = Guid.NewGuid().ToString() + "-result-set.txt";
+            IFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
+
+            return file;
         }
 
         /// <summary>
