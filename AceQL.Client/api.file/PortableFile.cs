@@ -12,10 +12,8 @@ namespace AceQL.Client.Api.File
     /// <summary>
     /// Equivalent in our Portable Class Library of Windows System.IO.File for some important methods not included
     /// in PCLStorage, such as AppendAllTextAsync() or GetLengthAsync().
-    /// Instead of paths, files are defined as of a simple name (without path separator), and are stored in
-    /// a folder name.
     /// Methods are all async, as storage methods are async on some OS.
-    /// Implementation uses https://github.com/dsplaisted/PCLStorage.
+    /// Implementation uses PCLStorage (https://github.com/dsplaisted/PCLStorage).
     /// </summary>
     public class PortableFile
     {
@@ -49,6 +47,7 @@ namespace AceQL.Client.Api.File
         /// Returns the file length.
         /// </summary>
         /// <returns>The file length.</returns>
+        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public async Task<long> GetLengthAsync(IFile file)
         {
             if (file == null)

@@ -43,6 +43,7 @@
 //13/05/2017 02:28 NDP: License is now Apache 2.0
 //13/05/2017 02:29 NDP: Clean comments
 //13/05/2017 02:50 NDP: Remove unnecessary methods from PortableFile
+//13/05/2017 02:54 NDP: Clean PortableFile comments
 
 namespace AceQL.Client.Api.Util
 {
