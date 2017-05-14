@@ -201,7 +201,9 @@ namespace AceQL.Client.Api
                 RowCounter rowcounter = new RowCounter(file);
                 int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
 
-                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, rowsCount, connection);
+                Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
+
+                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, readStream, rowsCount, connection);
                 return aceQLDataReader;
 
             }
@@ -292,7 +294,9 @@ namespace AceQL.Client.Api
                 RowCounter rowcounter = new RowCounter(file);
                 int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
 
-                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, rowsCount, connection);
+                Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
+
+                AceQLDataReader aceQLDataReader = new AceQLDataReader(file, readStream, rowsCount, connection);
                 return aceQLDataReader;
 
             }

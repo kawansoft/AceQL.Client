@@ -33,6 +33,8 @@ namespace AceQL.Client.Examples
                 int customerId = 1;
                 int itemId = 1;
 
+                AceQLConnection.SetTraceOn(true);
+
                 // Make sure connection is always closed to close and release server connection into the pool
                 using (AceQLConnection connection = connectionBuilder())
                 {
@@ -42,7 +44,8 @@ namespace AceQL.Client.Examples
                     MyRemoteConnection myRemoteConnection = new MyRemoteConnection(
                         connection);
 
-                    // Delete previous instances, so that user can recall class
+                    // Delete previous instances, so that user can recall 
+                    
                     Console.WriteLine("deleting customer...");
                     await myRemoteConnection.DeleteCustomerAsync(customerId);
 
@@ -51,6 +54,8 @@ namespace AceQL.Client.Examples
 
                     await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId);
                     await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId);
+                    
+                    Console.WriteLine("The end...");
                 }
 
                 Console.WriteLine();
@@ -221,7 +226,7 @@ namespace AceQL.Client.Examples
 
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync())
+                while (dataReader.Read())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
@@ -243,7 +248,7 @@ namespace AceQL.Client.Examples
 
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync())
+                while (dataReader.Read())
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
@@ -270,6 +275,7 @@ namespace AceQL.Client.Examples
                     Console.WriteLine("quantity    : " + quantity);
                 }
             }
+
 
         }
 

@@ -86,6 +86,10 @@ namespace AceQL.Client.Api.Http
         private ProgressIndicator progressIndicator;
         private AceQLCredential credential;
 
+        /// <summary>
+        /// Says id Dispose() has already be called
+        /// </summary>
+        private bool disposeDone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
@@ -164,8 +168,10 @@ namespace AceQL.Client.Api.Http
 
                 String theUrl = server + "/database/" + database + "/username/" + username + "/connect"
                     + "?password=" + password + "&stateless=" + stateless;
+                ConsoleEmul.WriteLine("theUrl: " + theUrl);
 
                 String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
+                ConsoleEmul.WriteLine("result: " + result);
 
                 ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
                 if (!resultAnalyser.IsStatusOk())
@@ -521,7 +527,6 @@ namespace AceQL.Client.Api.Http
         /// <returns>Stream.</returns>
         internal async Task<Stream> CallWithGetReturnStreamAsync(String url)
         {
-
             HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
 
             if (timeout != 0)
@@ -541,7 +546,6 @@ namespace AceQL.Client.Api.Http
                 response = await httpClient.GetAsync(url, cancellationTokenSource.Token).ConfigureAwait(false);
             }
 
-            response = await httpClient.GetAsync(url).ConfigureAwait(false);
             this.httpStatusCode = response.StatusCode;
 
             HttpContent content = response.Content;
@@ -615,7 +619,6 @@ namespace AceQL.Client.Api.Http
             }
 
             this.httpStatusCode = response.StatusCode;
-
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
         }
@@ -902,9 +905,7 @@ namespace AceQL.Client.Api.Http
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("blob_id", blobId);
 
-                //Stream input = callWithPost(url, parameters);
                 Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
-
                 return input;
             }
             catch (Exception exception)
@@ -993,21 +994,42 @@ namespace AceQL.Client.Api.Http
         //    return new AceQLHttpApi();
         //}
 
+
+        ///// <summary>
+        ///// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
+        ///// </summary>
+        //public async Task CloseAsync()
+        //{
+        //    await CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+        //}
+
         /// <summary>
         /// Closes this instance.
         /// </summary>
         public void Dispose()
         {
+            // Avoid throwing Exceptions
+            if (disposeDone)
+            {
+                return;
+            }
+
+            disposeDone = true;
+
             try
             {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                ConsoleEmul.WriteLine("Before disconnect!");
                 CallApiNoResultAsync("disconnect", null);
+                ConsoleEmul.WriteLine("After  disconnect!");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
             catch (Exception exception)
             {
+                ConsoleEmul.WriteLine("DISCONNECT FAILURE:");
                 ConsoleEmul.WriteLine(exception.ToString());
             }
+            
         }
 
         internal static void Debug(string s)

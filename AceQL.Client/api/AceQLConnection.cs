@@ -211,6 +211,14 @@ namespace AceQL.Client.Api
             }
         }
 
+        ///// <summary>
+        ///// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
+        ///// </summary>
+        //public async Task CloseAsync()
+        //{
+        //    await aceQLHttpApi.CloseAsync().ConfigureAwait(false);
+        //}
+
         /// <summary>
         /// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
         /// </summary>

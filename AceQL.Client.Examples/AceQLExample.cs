@@ -30,12 +30,16 @@ namespace AceQL.Client.Examples
                 Console.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Press enter to close....");
+            Console.ReadLine();
         }
 
 
         static async Task DoIt(string[] args)
         {
- 
+
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             String serverUrlLocalhost = "http://localhost:9090/aceql";
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -81,12 +85,8 @@ namespace AceQL.Client.Examples
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
-                ExecuteExample(connection);
+                await ExecuteExample(connection).ConfigureAwait(false);
             }
-
-            Console.WriteLine();
-            Console.WriteLine("Press enter to close....");
-            Console.ReadLine();
 
         }
 
@@ -94,10 +94,13 @@ namespace AceQL.Client.Examples
         /// Executes our example using an <see cref="AceQLConnection"/> 
         /// </summary>
         /// <param name="connection"></param>
-        private static async void ExecuteExample(AceQLConnection connection)
+        private static async Task ExecuteExample(AceQLConnection connection)
         {
             String IN_DIRECTORY = "c:\\test\\";
             String OUT_DIRECTORY = "c:\\test\\out\\";
+
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            connection.SetCancellationTokenSource(cancellationTokenSource);
 
             await connection.OpenAsync();
 
@@ -143,7 +146,7 @@ namespace AceQL.Client.Examples
             // Our dataReader must be disposed to delete underlying dowloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (await dataReader.ReadAsync())
+                while (dataReader.Read())
                 {
                     Console.WriteLine();
                     int i = 0;
@@ -158,7 +161,7 @@ namespace AceQL.Client.Examples
                 }
 
             }
-            
+
             command.Dispose();
 
             Console.WriteLine("Before delete from orderlog");
@@ -211,10 +214,7 @@ namespace AceQL.Client.Examples
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
-                    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                     ProgressIndicator progressIndicator = new ProgressIndicator();
-
-                    connection.SetCancellationTokenSource(cancellationTokenSource);
                     connection.SetProgressIndicator(progressIndicator);
 
                     await command.ExecuteNonQueryAsync();
@@ -240,7 +240,7 @@ namespace AceQL.Client.Examples
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
                 int k = 0;
-                while (await dataReader.ReadAsync())
+                while (dataReader.Read())
                 {
                     Console.WriteLine();
                     int i = 0;

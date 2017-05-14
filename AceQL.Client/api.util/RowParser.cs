@@ -46,21 +46,17 @@ namespace AceQL.Client.Api.Util
         private Dictionary<int, string> colNamesPerColIndex;
         private Dictionary<string, int> colIndexesPerColName;
 
-        private IFile file;
+        private StreamReader streamReader;
+        private JsonTextReader jsonTextReader;
 
         /// <summary>
-        /// Constructor.
+        /// Constructor
         /// </summary>
-        /// <param name="file">The JSON file containing the Result Set.</param>
-        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
-        public RowParser(IFile file)
+        /// <param name="readStream">The reading stream on file.</param>
+        public RowParser(Stream readStream)
         {
-            if (file == null)
-            {
-                throw new ArgumentNullException("file is null!");
-            }
-
-            this.file = file;
+            streamReader = new StreamReader(readStream);
+            jsonTextReader = new JsonTextReader(streamReader);
         }
 
         internal Dictionary<int, string> GetTypesPerColIndex()
@@ -89,23 +85,18 @@ namespace AceQL.Client.Api.Util
         /// Builds the row number.
         /// </summary>
         /// <param name="rowNum">The row number.</param>
-        internal async Task BuildRowNumAsync(int rowNum)
+        internal void BuildRowNum(int rowNum)
         {
-            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
+            while (jsonTextReader.Read())
             {
-                TextReader textReader = new StreamReader(stream);
-                JsonTextReader reader = new JsonTextReader(textReader);
-
-                while (reader.Read())
+                if (jsonTextReader.Value == null)
                 {
-                    if (reader.Value == null)
-                    {
-                        continue;
-                    }
-
-                    Treat(reader, rowNum);
+                    continue;
                 }
+
+                Treat(jsonTextReader, rowNum);
             }
+
         }
 
         /// <summary>
@@ -115,7 +106,6 @@ namespace AceQL.Client.Api.Util
         /// <param name="rowNum">The row number.</param>
         private void Treat(JsonTextReader reader, int rowNum)
         {
-
             if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum))
             {
                 return;
@@ -267,22 +257,9 @@ namespace AceQL.Client.Api.Util
             }
         }
 
-
         internal void Close()
         {
-            // Delete the file in fire and forget mode
-
-            try
-            {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                file.DeleteAsync();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            }
-            catch (Exception exception)
-            {
-                ConsoleEmul.WriteLine(exception.ToString());
-            }
-
+            this.streamReader.Dispose();
         }
 
 

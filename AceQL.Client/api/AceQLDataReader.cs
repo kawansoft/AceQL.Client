@@ -56,15 +56,15 @@ namespace AceQL.Client.Api
         /// </summary>
         private IFile file;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLDataReader" /> class.
         /// </summary>
-        /// <param name="file">The JSON file containing the Result Set.</param>
+        /// <param name="file">The JSON file containing the Result Set. Passed only for delete action.</param>
+        /// <param name="readStream">The reading stream on file.</param>
         /// <param name="rowsCount">The number of rows in the file/result set.</param>
         /// <param name="connection">The AceQL connection.</param>
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
-        internal AceQLDataReader(IFile file, int rowsCount, AceQLConnection connection)
+        internal AceQLDataReader(IFile file, Stream readStream, int rowsCount, AceQLConnection connection)
         {
             if (file == null)
             {
@@ -82,7 +82,7 @@ namespace AceQL.Client.Api
 
             this.aceQLHttpApi = connection.aceQLHttpApi;
 
-            rowParser = new RowParser(file);
+            rowParser = new RowParser(readStream);
             this.rowsCount = rowsCount;
         }
 
@@ -610,7 +610,7 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <returns>true if there are more rows; otherwise, false.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
-        public async Task<bool> ReadAsync()
+        public bool Read()
         {
             TestIsClosed();
 
@@ -629,7 +629,7 @@ namespace AceQL.Client.Api
             try
             {
                 currentRowNum++;
-                await rowParser.BuildRowNumAsync(currentRowNum).ConfigureAwait(false);
+                rowParser.BuildRowNum(currentRowNum);
 
                 valuesPerColIndex = rowParser.GetValuesPerColIndex();
                 colNamesPerColIndex = rowParser.GetColNamesPerColIndex();
@@ -669,6 +669,17 @@ namespace AceQL.Client.Api
         {
             isClosed = true;
             rowParser.Close();
+
+            try
+            {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                file.DeleteAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            }
+            catch (Exception exception)
+            {
+                ConsoleEmul.WriteLine(exception.ToString());
+            }
         }
 
         private void Debug(string s)
