@@ -21,7 +21,7 @@ namespace AceQL.Client.Examples
         {
             try
             {
-                DoIt(args).Wait();
+                DoIt(args).GetAwaiter().GetResult();
             }
             catch (Exception exception)
             {
@@ -99,9 +99,6 @@ namespace AceQL.Client.Examples
         {
             String IN_DIRECTORY = "c:\\test\\";
             String OUT_DIRECTORY = "c:\\test\\out\\";
-
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            connection.SetCancellationTokenSource(cancellationTokenSource);
 
             await connection.OpenAsync();
 

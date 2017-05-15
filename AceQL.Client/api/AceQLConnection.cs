@@ -211,24 +211,6 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Returns the CancellationTokenSource used to cancel an http action.
-        /// </summary>
-        /// <returns>The CancellationTokenSource that will be used for an http action.</returns>
-        internal CancellationTokenSource GetCancellationTokenSource()
-        {
-            return aceQLHttpApi.GetCancellationTokenSource();
-        }
-
-        /// <summary>
-        /// Sets the CancellationTokenSource that will be used for an http action
-        /// </summary>
-        /// <param name="cancellationTokenSource">The CancellationTokenSource that will be used for an http action.</param>
-        public void SetCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
-        {
-            aceQLHttpApi.SetCancellationTokenSource(cancellationTokenSource);
-        }
-
-        /// <summary>
         /// Returns the sharable progress variable that will store Blob/Clob upload progress between 0 and 100.
         /// </summary>
         /// <returns>The sharable progress variable that will store Blob/Clob upload progress between 0 and 100.</returns>

@@ -82,7 +82,9 @@ namespace AceQL.Client.Api.Http
         private string url;
 
         private string connectionString;
-        private CancellationTokenSource cancellationTokenSource;
+
+        private CancellationTokenSource cancellationTokenSource = null;
+
         private ProgressIndicator progressIndicator;
         private AceQLCredential credential;
 
@@ -982,7 +984,7 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
-        /// Sets the CancellationTokenSource for the BLOB Upload cancel.
+        /// Sets the CancellationTokenSource for the current call
         /// </summary>
         /// <param name="cancellationTokenSource">The CancellationTokenSource for the BLOB Upload cancel.</param>
         internal void SetCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
@@ -990,14 +992,6 @@ namespace AceQL.Client.Api.Http
             this.cancellationTokenSource = cancellationTokenSource;
         }
 
-        /// <summary>
-        /// Returns the CancellationTokenSource used to cancel a BLOB upload.
-        /// </summary>
-        /// <returns></returns>
-        internal CancellationTokenSource GetCancellationTokenSource()
-        {
-            return this.cancellationTokenSource;
-        }
 
         /// <summary>
         /// Returns the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.

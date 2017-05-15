@@ -26,7 +26,7 @@ using PCLStorage;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Represents a Transact-SQL statement or stored procedure to execute against a remote SQL database.
+    /// Represents a SQL statement to execute against a remote SQL database.
     /// </summary>
     public class AceQLCommand : IDisposable
     {
@@ -36,73 +36,62 @@ namespace AceQL.Client.Api
         private AceQLHttpApi aceQLHttpApi;
 
         /// <summary>
-        /// The AceQL connection
-        /// </summary>
-        private AceQLConnection connection;
-        /// <summary>
         /// The text of the query.
         /// </summary>
         private string cmdText;
+        /// <summary>
+        /// The AceQL connection
+        /// </summary>
+        private AceQLConnection connection;
 
+        /// <summary>
+        /// The associated AceQLTransaction. 
+        /// </summary>
+        private AceQLTransaction transaction;
+
+  
         /// <summary>
         /// The parameters
         /// </summary>
         private AceQLParameterCollection parameters = null;
 
-
         /// <summary>
-        /// Gets the parameters.
+        /// Initializes a new instance of the <see cref="AceQLCommand"/> class.
         /// </summary>
-        /// <value>The parameters.</value>
-        public AceQLParameterCollection Parameters
+        public AceQLCommand()
         {
-            get
-            {
-                return parameters;
-            }
         }
 
         /// <summary>
-        /// Gets the command text.
-        /// </summary>
-        /// <value>The command text.</value>
-        public string CommandText
-        {
-            get
-            {
-                return cmdText;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the remote database connection.
-        /// </summary>
-        /// <value>The remote database connection.</value>
-        protected AceQLConnection Connection
-        {
-            get
-            {
-                return connection;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query and a <see cref="AceQLConnection"/>.
+        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query.
         /// </summary>
         /// <param name="cmdText">The text of the query.</param>
-        /// <param name="connection">The AceQL connection.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// cmdText is null
-        /// or
-        /// connection is null.
+        /// <exception cref="System.ArgumentNullException">If cmdText is null.
         /// </exception>
-        public AceQLCommand(string cmdText, AceQLConnection connection)
+        public AceQLCommand(string cmdText)
         {
             if (cmdText == null)
             {
                 throw new ArgumentNullException("cmdText is null!");
             }
+
+            this.cmdText = cmdText;
+            parameters = new AceQLParameterCollection(cmdText);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query 
+        /// and a <see cref="AceQLConnection"/>.
+        /// </summary>
+        /// <param name="cmdText">The text of the query.</param>
+        /// <param name="connection">A <see cref="AceQLConnection"/> that represents the connection to a remote database.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// If cmdText is null
+        /// or
+        /// connection is null.
+        /// </exception>
+        public AceQLCommand(string cmdText, AceQLConnection connection) : this(cmdText)
+        {
 
             if (connection == null)
             {
@@ -111,11 +100,30 @@ namespace AceQL.Client.Api
 
             connection.TestConnectionOpened();
 
-            this.cmdText = cmdText;
             this.connection = connection;
             this.aceQLHttpApi = connection.aceQLHttpApi;
 
-            parameters = new AceQLParameterCollection(cmdText);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query and a 
+        /// <see cref="AceQLConnection"/>, and the System.Data.SqlClient.SqlTransaction.
+        /// </summary>
+        /// <param name="cmdText">The text of the query.</param>
+        /// <param name="connection">A <see cref="AceQLConnection"/> that represents the connection to a remote database.</param>
+        /// <param name="transaction">A <see cref="AceQLTransaction"/>.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// If cmdText is null or connection or  is null.
+        /// </exception>
+        public AceQLCommand(string cmdText, AceQLConnection connection, AceQLTransaction transaction) : this(cmdText, connection)
+        {
+
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction is null!");
+            }
+
+            this.transaction = transaction;
         }
 
 
@@ -126,6 +134,17 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLDataReader> ExecuteReaderAsync()
         {
+
+            if (cmdText == null)
+            {
+                throw new ArgumentNullException("cmdText is null!");
+            }
+
+            if (connection == null)
+            {
+                throw new ArgumentNullException("connection is null!");
+            }
+
             if (Parameters.Count == 0)
             {
                 return await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
@@ -143,6 +162,16 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<int> ExecuteNonQueryAsync()
         {
+            if (cmdText == null)
+            {
+                throw new ArgumentNullException("cmdText is null!");
+            }
+
+            if (connection == null)
+            {
+                throw new ArgumentNullException("connection is null!");
+            }
+
             if (Parameters.Count == 0)
             {
                 return await ExecuteUpdateAsStatementAsync().ConfigureAwait(false);
@@ -393,6 +422,89 @@ namespace AceQL.Client.Api
         }
 
 
+
+        /// <summary>
+        /// Gets ot set SQL statement to execute against a remote SQL database.
+        /// </summary>
+        /// <value>The SQL statement to execute against a remote SQL database.</value>
+        public string CommandText
+        {
+            get
+            {
+                return cmdText;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("cmdText is null!");
+                }
+
+                this.cmdText = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="SqlConnection"/> used by this instance of <see cref="AceQLCommand"/>.
+        /// </summary>
+        /// <value>The remote database connection.</value>
+        protected AceQLConnection Connection
+        {
+            get
+            {
+                return connection;
+            }
+
+            set
+            {
+                connection.TestConnectionOpened();
+
+                if (value == null)
+                {
+                    throw new ArgumentNullException("connection is null!");
+                }
+
+                this.connection = value;
+                this.aceQLHttpApi = connection.aceQLHttpApi;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="AceQLTransaction"/> used by this instance of <see cref="AceQLCommand"/>.
+        /// </summary>
+        /// <value>The <see cref="AceQLTransaction"/>.</value>
+        public AceQLTransaction Transaction
+        {
+            get
+            {
+                return transaction;
+            }
+
+            set
+            {
+
+                if (value == null)
+                {
+                    throw new ArgumentNullException("transaction is null!");
+                }
+
+                this.transaction = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AceQLParameterCollection"/>.
+        /// </summary>
+        /// <value>The <see cref="AceQLParameterCollection"/>.</value>
+        public AceQLParameterCollection Parameters
+        {
+            get
+            {
+                return parameters;
+            }
+        }
         /// <summary>
         /// Disposes this instance. This call is optional and does nothing because all resources are released after 
         /// each other AceQL.Client.Api.AceQLCommand method call. Class implements IDisposable to ease code migration.

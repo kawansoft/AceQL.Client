@@ -56,6 +56,7 @@
 //13/05/2017 22:09 NDP: AceQLConnection: CancellationTokenSource, if set, is used on all http calls
 //14/05/2017 03:03 NDP: AceQLHttpApi.CallWithGetReturnStreamAsync: fix but on twice http calls
 //15/05/2017 15:11 NDP: AceQLConnection is now closed with AceQLConnection.CloseAsync
+//15/05/2017 16:16 NDP: Add all possible constructors to AceCommand for user confort
 
 namespace AceQL.Client.Api.Util
 {
