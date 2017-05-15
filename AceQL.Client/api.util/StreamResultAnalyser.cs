@@ -48,7 +48,7 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamResultAnalyser"/> class.
         /// </summary>
-        /// <param name="file">The file to analyse.</param>
+        /// <param name="file">The file to analyze.</param>
         /// <param name="httpStatusCode">The http status code.</param>
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public StreamResultAnalyser(IFile file, HttpStatusCode httpStatusCode)
@@ -181,7 +181,7 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// Gets the remote stack trace.
         /// </summary>
-        /// <returns>The remote stack strace.</returns>
+        /// <returns>The remote stack trace.</returns>
         internal string GetStackTrace()
         {
             return this.stackTrace;

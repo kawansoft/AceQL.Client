@@ -293,7 +293,7 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Gets the value of the specified column as a boolean..
+        /// Gets the value of the specified column as a Boolean.
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>

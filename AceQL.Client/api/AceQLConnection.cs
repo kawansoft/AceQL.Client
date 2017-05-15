@@ -248,7 +248,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// If connection has not been closed by an explicit call to <see cref="AceQLConnection"/>CloseAsync:
-        /// Calls silentely <see cref="AceQLConnection"/>CloseAsync without reporting any Exception.
+        /// Calls silently <see cref="AceQLConnection"/>CloseAsync without reporting any Exception.
         /// As the call is not awaited, execution of the 
         /// current method continues before the call to is <see cref="AceQLConnection"/>CloseAsync completed.
         /// </summary>
@@ -395,7 +395,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Gets or sets a value indicating whether SQL result sets are returned compressed with the GZIP file format
-        /// before download. Defauts to true.
+        /// before download. Defaults to true.
         /// </summary>
         /// <value>True if SQL result sets are returned compressed with the GZIP file format
         /// before download.</value>
@@ -428,7 +428,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Gets or sets the <see cref="AceQLCredential"/> object for this connection. 
         /// </summary>
-        /// <value>The the <see cref="AceQLCredential"/> object for this connection.</value>
+        /// <value>The <see cref="AceQLCredential"/> object for this connection.</value>
         public AceQLCredential Credential
         {
             get

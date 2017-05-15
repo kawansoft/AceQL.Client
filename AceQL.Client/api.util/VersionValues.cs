@@ -64,6 +64,7 @@
 //15/05/2017 19:05 NDP: XxxAsync(CancellationToken cancellationToken) versions all done 
 //15/05/2017 19:23 NDP: Clean some comments
 //15/05/2017 19:45 NDP: Clean some comments
+//15/05/2017 20:10 NDP: Fix spelling error in comments 
 
 namespace AceQL.Client.Api.Util
 {

@@ -681,7 +681,7 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
-        /// Calls the API withs result.
+        /// Calls the API with result.
         /// </summary>
         /// <param name="commandName">Name of the command.</param>
         /// <param name="commandOption">The command option.</param>

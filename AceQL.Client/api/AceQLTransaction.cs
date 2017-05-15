@@ -64,7 +64,7 @@ namespace AceQL.Client.Api
         /// Gets the transaction isolation as string.
         /// </summary>
         /// <param name="transactionIsolationLevel">The transaction isolation level.</param>
-        /// <returns>Th transaction isolation as string.</returns>
+        /// <returns>The transaction isolation as string.</returns>
         internal static String GetTransactionIsolationAsString(IsolationLevel transactionIsolationLevel)
         {
             if (transactionIsolationLevel == IsolationLevel.Unspecified)
