@@ -239,9 +239,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is closed.
+        /// Retrieves a Boolean value that indicates whether the specified <see cref="AceQLDataReader"/>
+        /// instance has been closed.
         /// </summary>
-        /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
+        /// <value>true if the specified <see cref="AceQLDataReader"/> instance is closed; otherwise false.</value>
         public bool IsClosed
         {
             get

@@ -22,7 +22,7 @@ namespace AceQL.Client.Examples
 
         public static void TheMain(string[] args)
         {
-            DoIt(args).GetAwaiter().GetResult();
+            DoIt(args).Wait();
         }
 
         public static async Task DoIt(string[] args)

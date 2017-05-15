@@ -998,9 +998,8 @@ namespace AceQL.Client.Api.Http
             TRACE_ON = traceOn;
         }
 
-
         /// <summary>
-        /// To be call at end of each of each public aysnc() calls to reset to false the usage of a CancellationToken with http calls
+        /// To be call at end of each of each public aysnc(CancellationToken) calls to reset to false the usage of a CancellationToken with http calls
         /// and some reader calls.
         /// </summary>
         internal void ResetCancellationToken()
