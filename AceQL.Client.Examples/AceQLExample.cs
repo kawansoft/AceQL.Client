@@ -123,7 +123,7 @@ namespace AceQL.Client.Examples
 
             command.Prepare();
 
-        await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync();
 
             for (int i = 0; i < 3; i++)
             {
@@ -143,7 +143,8 @@ namespace AceQL.Client.Examples
                 command.Parameters.AddWithValue("@parm7", customer_id + "11111");
                 command.Parameters.AddNullValue("@parm8", SqlType.VARCHAR); //null value for NULL SQL insert.
 
-                await command.ExecuteNonQueryAsync();
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
             }
 
             command.Dispose();

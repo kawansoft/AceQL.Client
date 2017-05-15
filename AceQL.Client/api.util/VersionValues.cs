@@ -63,7 +63,7 @@
 //15/05/2017 18:44 NDP: AceQLCommand & AceQLConnection: add Async(CancellationToken cancellationToken) version
 //15/05/2017 19:05 NDP: XxxAsync(CancellationToken cancellationToken) versions all done 
 //15/05/2017 19:23 NDP: Clean some comments
-//15/05/2017 19:30 NDP: Clean some comments
+//15/05/2017 19:45 NDP: Clean some comments
 
 namespace AceQL.Client.Api.Util
 {

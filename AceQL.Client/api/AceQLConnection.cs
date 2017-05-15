@@ -233,7 +233,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Closes the connection to the remote database and closes the http session. 
-        /// This is the prefered method to close the connection. 
+        /// This is the preferred method of closing any open connection.
         /// </summary>
         public async Task CloseAsync()
         {
