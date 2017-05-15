@@ -20,6 +20,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using PCLStorage;
+using System.Threading;
 
 namespace AceQL.Client.Api
 {
@@ -128,6 +129,58 @@ namespace AceQL.Client.Api
             }
         }
 
+        /// <summary>
+        /// Advances the reader to the next record. 
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param> 
+        /// <returns>true if there are more rows; otherwise, false.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<bool> ReadAsync(CancellationToken cancellationToken)
+        {
+            Task<bool> task = new Task<bool>(Read);
+            task.Start();
+            return await task;
+        }
+
+        /// <summary>
+        /// Advances the reader to the next record.
+        /// </summary>
+        /// <returns>true if there are more rows; otherwise, false.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public bool Read()
+        {
+            TestIsClosed();
+
+            if (DEBUG)
+            {
+                ConsoleEmul.WriteLine();
+                ConsoleEmul.WriteLine("currentRowNum: " + currentRowNum);
+                ConsoleEmul.WriteLine("rowCount     : " + rowsCount);
+            }
+
+            if (currentRowNum == rowsCount)
+            {
+                return false;
+            }
+
+            try
+            {
+                currentRowNum++;
+                rowParser.BuildRowNum(currentRowNum);
+
+                valuesPerColIndex = rowParser.GetValuesPerColIndex();
+                colNamesPerColIndex = rowParser.GetColNamesPerColIndex();
+                colTypesPerColIndex = rowParser.GetTypesPerColIndex();
+                colIndexesPerColName = rowParser.GetColIndexesPerColName();
+            }
+            catch (Exception exception)
+            {
+                throw new AceQLException("Error when reading.", 0, exception, (HttpStatusCode)200);
+            }
+
+            return true;
+
+        }
 
         /// <summary>
         /// Gets the value for  the specified name.
@@ -196,12 +249,6 @@ namespace AceQL.Client.Api
             }
         }
 
-        public async Task<bool> ReadAsync()
-        {
-            Task <bool> task = new Task<bool>(Read);
-            task.Start();
-            return await task;
-        }
 
         /// <summary>
         /// Downloads the Blob and gets the stream.
@@ -610,46 +657,6 @@ namespace AceQL.Client.Api
             }
 
             return (valuesPerColIndex[ordinal] == null ? true : false);
-        }
-
-        /// <summary>
-        /// Advances the reader to the next record.
-        /// </summary>
-        /// <returns>true if there are more rows; otherwise, false.</returns>
-        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
-        public bool Read()
-        {
-            TestIsClosed();
-
-            if (DEBUG)
-            {
-                ConsoleEmul.WriteLine();
-                ConsoleEmul.WriteLine("currentRowNum: " + currentRowNum);
-                ConsoleEmul.WriteLine("rowCount     : " + rowsCount);
-            }
-
-            if (currentRowNum == rowsCount)
-            {
-                return false;
-            }
-
-            try
-            {
-                currentRowNum++;
-                rowParser.BuildRowNum(currentRowNum);
-
-                valuesPerColIndex = rowParser.GetValuesPerColIndex();
-                colNamesPerColIndex = rowParser.GetColNamesPerColIndex();
-                colTypesPerColIndex = rowParser.GetTypesPerColIndex();
-                colIndexesPerColName = rowParser.GetColIndexesPerColName();
-            }
-            catch (Exception exception)
-            {
-                throw new AceQLException("Error when reading.", 0, exception, (HttpStatusCode)200);
-            }
-
-            return true;
-
         }
 
         internal void TestIsClosed()

@@ -34,7 +34,11 @@ namespace AceQL.Client.Api
 
         internal AceQLHttpApi aceQLHttpApi = null;
         private bool connectionOpened = false;
-        private bool callToCloseAsyncDone;
+
+        /// <summary>
+        ///  Says if connection is closed
+        /// </summary>
+        private bool closeAsyncDone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
@@ -49,7 +53,6 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="connectionString">The connection used to open the remote database.</param>
         /// <exception cref="System.ArgumentNullException">If connectionString is null.</exception>
-        /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         public AceQLConnection(String connectionString)
         {
             if (connectionString == null)
@@ -115,10 +118,6 @@ namespace AceQL.Client.Api
             await AceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
         }
 
-    
-
-
-
         /// <summary>
         /// Opens a connection with the remote database.
         /// </summary>
@@ -168,27 +167,38 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Closes the connection to the remote database and closes the http session.
+        /// Closes the connection to the remote database and closes the http session. 
+        /// This is the prefered method to close the connection. 
         /// </summary>
         public async Task CloseAsync()
         {
-            callToCloseAsyncDone = true;
+            if (closeAsyncDone)
+            {
+                return;
+            }
+
             await aceQLHttpApi.CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+            closeAsyncDone = true;
         }
 
         /// <summary>
-        /// Does nothing and provided to ease existing code migration by making class <see cref="AceQLConnection"/> disposable.
-        /// <see cref="AceQLConnection"/>.CloseAsync() must be called before <see cref="AceQLConnection"/>.Dispose().
+        /// If connection has not been closed by an explicit call to <see cref="AceQLConnection"/>CloseAsync:
+        /// Calls silentely <see cref="AceQLConnection"/>CloseAsync without reporting any Exception.
+        /// As the call is not awaited, execution of the 
+        /// current method continues before the call to is <see cref="AceQLConnection"/>CloseAsync completed.
         /// </summary>
-        /// <exception cref="AceQL.Client.Api.AceQLException">If <see cref="AceQLConnection"/>.CloseAsync() has not be called before.</exception>
         public void Dispose()
         {
-            if (!callToCloseAsyncDone)
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            try
             {
-                throw new AceQLException("CloseAsync must be called before Dispose.", 0, (Exception)null, HttpStatusCode.OK);
+                CloseAsync();
             }
-
-            TestConnectionOpened();
+            catch (Exception)
+            {
+                // Do nothing
+            }
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         /// <summary>

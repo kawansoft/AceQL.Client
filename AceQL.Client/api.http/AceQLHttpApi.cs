@@ -23,6 +23,9 @@ namespace AceQL.Client.Api.Http
     /// <seealso cref="System.IDisposable" />
     internal class AceQLHttpApi : IDisposable
     {
+        private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
+        private const string ESCAPED_SEMICOLON = "\\;";
+
         internal static bool DEBUG = false;
 
         /// <summary>
@@ -290,15 +293,13 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         private void DecodeConnectionString()
         {
-
             if (connectionString == null)
             {
                 throw new ArgumentNullException("connectionString has not been set and is null!");
             }
 
-
             // Replace escaped "\;"
-            connectionString = connectionString.Replace("\\;", "\\semicolon");
+            connectionString = connectionString.Replace(ESCAPED_SEMICOLON, ESCAPED_SEMICOLON_WORD);
 
             String theServer = null;
             String theDatabase = null;
@@ -317,6 +318,12 @@ namespace AceQL.Client.Api.Http
             string[] lines = connectionString.Split(';');
             foreach (string line in lines)
             {
+                // If some empty ;
+                if (line.Trim().Length <= 2)
+                {
+                    continue;
+                }
+
                 string[] theLines = line.Split('=');
 
                 if (theLines.Length != 2)
@@ -366,7 +373,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else if (property.ToLower().Equals("proxyusername"))
                 {
-                    value = value.Replace("\\semicolon", ";");
+                    value = value.Replace(ESCAPED_SEMICOLON_WORD, ";");
                     proxyUsername = value;
 
                     // Set to null a "null" string

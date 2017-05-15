@@ -442,6 +442,7 @@ namespace AceQL.Client.Api
                 }
 
                 this.cmdText = value;
+                parameters = new AceQLParameterCollection(cmdText);
             }
         }
 
@@ -449,7 +450,7 @@ namespace AceQL.Client.Api
         /// Gets or sets the <see cref="SqlConnection"/> used by this instance of <see cref="AceQLCommand"/>.
         /// </summary>
         /// <value>The remote database connection.</value>
-        protected AceQLConnection Connection
+        public AceQLConnection Connection
         {
             get
             {
@@ -458,14 +459,13 @@ namespace AceQL.Client.Api
 
             set
             {
-                connection.TestConnectionOpened();
-
                 if (value == null)
                 {
                     throw new ArgumentNullException("connection is null!");
                 }
 
                 this.connection = value;
+                this.connection.TestConnectionOpened();
                 this.aceQLHttpApi = connection.aceQLHttpApi;
             }
         }

@@ -4,7 +4,8 @@ namespace AceQL.Client.Api
 {
     /// <summary>
     /// <see cref="AceQLCredential"/> provides a little more secure way than using a connection string to specify the username or password for a login attempt.
-    /// Note that implementation uses a string for password, as password will anyway be transformed finally into a string when sent using HTTP protocol. 
+    /// Note that implementation uses a string for password, as password will anyway be transformed finally into a string when sent using HTTP protocol.
+    /// This could/should be improved in the future (by encrypting the password and decrypting on the server.)
     /// </summary>
     public class AceQLCredential
     {

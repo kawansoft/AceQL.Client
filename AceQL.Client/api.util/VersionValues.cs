@@ -57,6 +57,8 @@
 //14/05/2017 03:03 NDP: AceQLHttpApi.CallWithGetReturnStreamAsync: fix but on twice http calls
 //15/05/2017 15:11 NDP: AceQLConnection is now closed with AceQLConnection.CloseAsync
 //15/05/2017 16:16 NDP: Add all possible constructors to AceCommand for user confort
+//15/05/2017 17:02 NDP: Add ReadAsync to AceQLDataReader
+//15/05/2017 17:93 NDP: AceQLHttpApi.DecodeConnectionString: treat case some empty alone ";" in connection strings. Test AceQLCredential usage  
 
 namespace AceQL.Client.Api.Util
 {

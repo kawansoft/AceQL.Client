@@ -21,7 +21,12 @@ namespace AceQL.Client.Examples
         {
             try
             {
-                DoIt(args).GetAwaiter().GetResult();
+                DoIt(args).Wait();
+                //DoIt(args).GetAwaiter().GetResult();
+
+                Console.WriteLine();
+                Console.WriteLine("Press enter to close....");
+                Console.ReadLine();
             }
             catch (Exception exception)
             {
@@ -31,9 +36,6 @@ namespace AceQL.Client.Examples
                 Console.ReadLine();
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Press enter to close....");
-            Console.ReadLine();
         }
 
 
@@ -77,14 +79,16 @@ namespace AceQL.Client.Examples
             //zipcode character(10) NOT NULL,
             //phone character varying(32),
 
-            string connectionString = $"Server={server}; Database={database}; Username={username}; Password={password}";
-            connectionString += $"; ProxyUsername ={ proxyUsername}; ProxyPassword ={ proxyPassword}";
+            string connectionString = $"Server={server}; Database={database}; ";
+            //connectionString += $"Username={username}; Password={password}";
+            connectionString += $"; ProxyUsername ={proxyUsername}; ProxyPassword ={ proxyPassword}";
 
             AceQLConnection.SetTraceOn(true);
 
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
+                connection.Credential = new AceQLCredential(username, password);
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }
@@ -112,7 +116,11 @@ namespace AceQL.Client.Examples
             transaction.Dispose();
 
             String sql = "delete from customer";
-            AceQLCommand command = new AceQLCommand(sql, connection);
+
+            AceQLCommand command = new AceQLCommand();
+            command.CommandText = sql;
+            command.Connection = connection;
+
             await command.ExecuteNonQueryAsync();
 
             for (int i = 0; i < 3; i++)
@@ -145,7 +153,7 @@ namespace AceQL.Client.Examples
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
 
-                while (await dataReader.ReadAsync())
+                while (await dataReader.ReadAsync(new CancellationTokenSource().Token))
                 {
                     Console.WriteLine();
                     int i = 0;
