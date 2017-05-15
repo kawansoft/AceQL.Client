@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
 using PCLStorage;
+using System.Threading;
 
 namespace AceQL.Client.Api
 {
@@ -49,7 +50,7 @@ namespace AceQL.Client.Api
         /// </summary>
         private AceQLTransaction transaction;
 
-  
+
         /// <summary>
         /// The parameters
         /// </summary>
@@ -128,6 +129,26 @@ namespace AceQL.Client.Api
             this.transaction = transaction;
         }
 
+        /// <summary>
+        ///  Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<AceQLDataReader> ExecuteReaderAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await ExecuteReaderAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
 
         /// <summary>
         ///  Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
@@ -136,7 +157,6 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<AceQLDataReader> ExecuteReaderAsync()
         {
-
             if (cmdText == null)
             {
                 throw new ArgumentNullException("cmdText is null!");
@@ -170,6 +190,26 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Executes the SQL statement against the connection and returns the number of rows affected.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>The number of rows affected.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<int> ExecuteNonQueryAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
+        /// <summary>
+        /// Executes the SQL statement against the connection and returns the number of rows affected.
         /// </summary>
         /// <returns>The number of rows affected.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
@@ -186,7 +226,7 @@ namespace AceQL.Client.Api
             }
 
             // Statement wit parameters are always prepared statement
-            if (Parameters.Count == 0 && ! prepare)
+            if (Parameters.Count == 0 && !prepare)
             {
                 return await ExecuteUpdateAsStatementAsync().ConfigureAwait(false);
             }
@@ -197,6 +237,27 @@ namespace AceQL.Client.Api
 
         }
 
+        /// <summary>
+        /// Executes the query as statement.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        private async Task<AceQLDataReader> ExecuteQueryAsStatementAsync(CancellationToken cancellationToken)
+        {
+
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await ExecuteQueryAsStatementAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
         /// <summary>
         /// Executes the query as statement.
         /// </summary>
@@ -404,7 +465,7 @@ namespace AceQL.Client.Api
 
                 bool isPreparedStatement = true;
 
-                int result =  await aceQLHttpApi.ExecuteUpdateAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false);
+                int result = await aceQLHttpApi.ExecuteUpdateAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false);
                 return result;
             }
             catch (Exception exception)
@@ -497,7 +558,6 @@ namespace AceQL.Client.Api
 
             set
             {
-
                 if (value == null)
                 {
                     throw new ArgumentNullException("transaction is null!");

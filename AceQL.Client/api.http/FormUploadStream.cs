@@ -35,9 +35,10 @@ namespace AceQL.Client.Api.Http
         /// <param name="stream"></param>
         /// <param name="totalLength"></param> 
         /// <param name="progressIndicator"></param>
-        /// <param name="cancellationTokenSource"></param> 
+        /// <param name="cancellationToken"></param> 
         /// <returns></returns>
-        internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials, int timeout, String blobId, Stream stream, long totalLength, ProgressIndicator progressIndicator, CancellationTokenSource cancellationTokenSource)
+        internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
+            int timeout, String blobId, Stream stream, long totalLength, ProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
         {
             HttpClientHandler handler = AceQLHttpApi.BuildHttpClientHandler(proxyUri, credentials);
 
@@ -99,13 +100,13 @@ namespace AceQL.Client.Api.Http
 
                 HttpResponseMessage response = null;
 
-                if (cancellationTokenSource == null)
+                if (!useCancellationToken)
                 {
                     response = await httpClient.PostAsync(url, multipart).ConfigureAwait(false);
                 }
                 else
                 {
-                    response = await httpClient.PostAsync(url, multipart, cancellationTokenSource.Token).ConfigureAwait(false);
+                    response = await httpClient.PostAsync(url, multipart, cancellationToken).ConfigureAwait(false);
                 }
 
                 progressIndicator.Value = 100;

@@ -129,6 +129,47 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
+        /// Opens a connection with the remote database.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <exception cref="AceQLException">If any Exception occurs.</exception>
+        public async Task OpenAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                await OpenAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
+
+        /// <summary>
+        /// Initializes a <see cref="AceQLTransaction"/>object. This will put the remote connection in auto commit mode off.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<AceQLTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await BeginTransactionAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
+
+        /// <summary>
         /// Initializes a <see cref="AceQLTransaction"/>object. This will put the remote connection in auto commit mode off.
         /// </summary>
         /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
@@ -141,6 +182,8 @@ namespace AceQL.Client.Api
             return aceQLTransaction;
         }
 
+
+
         internal void TestConnectionOpened()
         {
             if (!connectionOpened)
@@ -149,6 +192,28 @@ namespace AceQL.Client.Api
             }
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="AceQLTransaction"/>object with the specified isolation level.
+        /// This will put the remote connection in auto commit mode off.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="isolationLevel">The isolation level.</param>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<AceQLTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await BeginTransactionAsync(isolationLevel);
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
         /// <summary>
         /// Initializes a new <see cref="AceQLTransaction"/>object with the specified isolation level.
         /// This will put the remote connection in auto commit mode off.
@@ -238,7 +303,6 @@ namespace AceQL.Client.Api
             aceQLHttpApi.SetProgressIndicator(progressIndicator);
         }
 
-
         /// <summary>
         /// Returns the AceQL SDK current Version.
         /// </summary>
@@ -246,6 +310,27 @@ namespace AceQL.Client.Api
         public String GetClientVersion()
         {
             return AceQL.Client.Api.Util.Version.GetVersion();
+        }
+
+        /// <summary>
+        /// Returns the remote AceQL Server Version.
+        /// The cancellation token can be used to request that the operation be abandoned.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>the remote  AceQL Server Version.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<string> GetServerVersionAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await GetServerVersionAsync();
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
         }
 
         /// <summary>

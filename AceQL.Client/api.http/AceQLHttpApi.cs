@@ -86,10 +86,10 @@ namespace AceQL.Client.Api.Http
 
         private string connectionString;
 
-        private CancellationTokenSource cancellationTokenSource = null;
-
         private ProgressIndicator progressIndicator;
         private AceQLCredential credential;
+        private CancellationToken cancellationToken;
+        private bool useCancellationToken = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
@@ -110,7 +110,7 @@ namespace AceQL.Client.Api.Http
             this.connectionString = connectionString;
         }
 
-      
+
         internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
         {
             if (connectionString == null)
@@ -202,6 +202,7 @@ namespace AceQL.Client.Api.Http
 
         }
 
+
         /// <summary>
         /// Traces this instance.
         /// </summary>
@@ -270,10 +271,11 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// The timeout in milliseconds
         /// </summary>
-        internal int Timeout { get => timeout;  }
+        internal int Timeout { get => timeout; }
 
 
-        public AceQLCredential Credential {
+        public AceQLCredential Credential
+        {
             get
             {
                 return credential;
@@ -286,6 +288,11 @@ namespace AceQL.Client.Api.Http
         }
 
         public string ConnectionString { get => connectionString; set => connectionString = value; }
+
+        /// <summary>
+        /// Says it use has passed a CancellationToken
+        /// </summary>
+        public bool UseCancellationToken { get => useCancellationToken; }
 
 
         /// <summary>
@@ -541,13 +548,13 @@ namespace AceQL.Client.Api.Http
 
             HttpResponseMessage response = null;
 
-            if (cancellationTokenSource == null)
+            if (!UseCancellationToken)
             {
                 response = await httpClient.GetAsync(url).ConfigureAwait(false);
             }
             else
             {
-                response = await httpClient.GetAsync(url, cancellationTokenSource.Token).ConfigureAwait(false);
+                response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
             }
 
             this.httpStatusCode = response.StatusCode;
@@ -613,13 +620,13 @@ namespace AceQL.Client.Api.Http
 
             HttpResponseMessage response = null;
 
-            if (cancellationTokenSource == null)
+            if (!UseCancellationToken)
             {
                 response = await httpClient.PostAsync(urlWithaction, content);
             }
             else
             {
-                response = await httpClient.PostAsync(urlWithaction, content, cancellationTokenSource.Token);
+                response = await httpClient.PostAsync(urlWithaction, content, cancellationToken);
             }
 
             this.httpStatusCode = response.StatusCode;
@@ -877,7 +884,8 @@ namespace AceQL.Client.Api.Http
             FormUploadStream formUploadStream = new FormUploadStream();
             HttpResponseMessage response = null;
 
-            response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, blobId, stream, totalLength, progressIndicator, cancellationTokenSource).ConfigureAwait(false);
+            response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, blobId, stream,
+                totalLength, progressIndicator, cancellationToken, useCancellationToken).ConfigureAwait(false);
 
             this.httpStatusCode = response.StatusCode;
 
@@ -990,13 +998,24 @@ namespace AceQL.Client.Api.Http
             TRACE_ON = traceOn;
         }
 
+
         /// <summary>
-        /// Sets the CancellationTokenSource for the current call.
+        /// To be call at end of each of each public aysnc() calls to reset to false the usage of a CancellationToken with http calls
+        /// and some reader calls.
         /// </summary>
-        /// <param name="cancellationTokenSource">The CancellationTokenSource for current call.</param>
-        internal void SetCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
+        internal void ResetCancellationToken()
         {
-            this.cancellationTokenSource = cancellationTokenSource;
+            this.useCancellationToken = false;
+        }
+
+        /// <summary>
+        /// Sets the CancellationToken asked by user to pass for the current public xxxAsync() call api.
+        /// </summary>
+        /// <param name="cancellationToken">ancellationToken asked by user to pass for the current public xxxAsync() call api.</param>
+        internal void SetCancellationToken(CancellationToken cancellationToken)
+        {
+            this.useCancellationToken = true;
+            this.cancellationToken = cancellationToken;
         }
 
         /// <summary>
@@ -1050,7 +1069,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         public void Dispose()
         {
-            
+
         }
 
         internal static void Debug(string s)
