@@ -20,18 +20,8 @@ namespace AceQL.Client.Api
         /// <exception cref="System.ArgumentNullException">If username or password is null. </exception>
         public AceQLCredential(string username, string password)
         {
-            if (username == null)
-            {
-                throw new ArgumentNullException("username is null!");
-            }
-
-            if (password == null)
-            {
-                throw new ArgumentNullException("password is null!");
-            }
-
-            this.username = username;
-            this.password = password;
+            this.username = username ?? throw new ArgumentNullException("username is null!");
+            this.password = password ?? throw new ArgumentNullException("password is null!");
         }
 
         /// <summary>

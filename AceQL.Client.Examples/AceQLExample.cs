@@ -21,6 +21,7 @@ namespace AceQL.Client.Examples
         {
             try
             {
+
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 

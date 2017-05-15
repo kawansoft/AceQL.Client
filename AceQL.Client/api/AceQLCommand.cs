@@ -73,12 +73,7 @@ namespace AceQL.Client.Api
         /// </exception>
         public AceQLCommand(string cmdText)
         {
-            if (cmdText == null)
-            {
-                throw new ArgumentNullException("cmdText is null!");
-            }
-
-            this.cmdText = cmdText;
+            this.cmdText = cmdText ?? throw new ArgumentNullException("cmdText is null!");
             parameters = new AceQLParameterCollection(cmdText);
         }
 

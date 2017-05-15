@@ -77,7 +77,6 @@ namespace AceQL.Client.Api
         /// Gets name of the <see cref="AceQLParameter"/> name.
         /// </summary>
         /// <value>The name of the parameter.</value>
-        /// <exception cref="System.NotImplementedException"></exception>
         public string ParameterName
         {
             get

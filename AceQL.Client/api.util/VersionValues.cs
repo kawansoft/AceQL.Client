@@ -66,7 +66,8 @@
 //15/05/2017 19:45 NDP: Clean some comments
 //15/05/2017 20:10 NDP: Fix spelling error in comments 
 //15/05/2017 20:48 NDP: AceQLDataReader: clean comments
-
+//15/05/2017 20:58 NDP: AceQLDataReader: clean comments
+// 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
