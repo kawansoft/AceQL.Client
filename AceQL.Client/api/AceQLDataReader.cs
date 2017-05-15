@@ -131,6 +131,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Advances the reader to the next record. 
+        /// The cancellation token can be used to request that the operation be abandoned before the read timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param> 
         /// <returns>true if there are more rows; otherwise, false.</returns>
@@ -250,6 +251,27 @@ namespace AceQL.Client.Api
         }
 
 
+        /// <summary>
+        /// Downloads the Blob and gets the stream.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <param name="cancellationToken">The cancellation instruction.</param>
+        /// <returns>The Stream to read the downloaded Blob.</returns>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
+        public async Task<Stream> GetStreamAsync(int ordinal, CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Global var avoids to propagate cancellationToken as parameter to all methods... 
+                aceQLHttpApi.SetCancellationToken(cancellationToken);
+                return await GetStreamAsync(ordinal);
+            }
+            finally
+            {
+                aceQLHttpApi.ResetCancellationToken();
+            }
+        }
         /// <summary>
         /// Downloads the Blob and gets the stream.
         /// </summary>

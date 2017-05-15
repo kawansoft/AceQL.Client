@@ -130,7 +130,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Opens a connection with the remote database.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
@@ -150,7 +150,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Initializes a <see cref="AceQLTransaction"/>object. This will put the remote connection in auto commit mode off.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>A new <see cref="AceQLTransaction"/> object.</returns>
@@ -195,7 +195,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Initializes a new <see cref="AceQLTransaction"/>object with the specified isolation level.
         /// This will put the remote connection in auto commit mode off.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
         /// <param name="cancellationToken">The cancellation instruction.</param>
@@ -314,7 +314,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Returns the remote AceQL Server Version.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>the remote  AceQL Server Version.</returns>

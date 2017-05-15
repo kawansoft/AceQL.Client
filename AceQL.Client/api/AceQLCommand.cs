@@ -131,7 +131,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         ///  Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
@@ -190,7 +190,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Executes the SQL statement against the connection and returns the number of rows affected.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>The number of rows affected.</returns>
@@ -239,7 +239,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Executes the query as statement.
-        /// The cancellation token can be used to request that the operation be abandoned.
+        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
