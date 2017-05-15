@@ -86,6 +86,7 @@ namespace AceQL.Client.Examples
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
                 await ExecuteExample(connection).ConfigureAwait(false);
+                await connection.CloseAsync();
             }
 
         }
@@ -146,7 +147,8 @@ namespace AceQL.Client.Examples
             // Our dataReader must be disposed to delete underlying dowloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                while (dataReader.Read())
+
+                while (await dataReader.ReadAsync())
                 {
                     Console.WriteLine();
                     int i = 0;

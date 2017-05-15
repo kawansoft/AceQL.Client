@@ -34,6 +34,7 @@ namespace AceQL.Client.Api
 
         internal AceQLHttpApi aceQLHttpApi = null;
         private bool connectionOpened = false;
+        private bool callToCloseAsyncDone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
@@ -114,128 +115,8 @@ namespace AceQL.Client.Api
             await AceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets or sets the connection string used to connect to the remote database.
-        /// </summary>
-        /// <value>The connection string used to connect to the remote database.</value>
-        public string ConnectionString
-        {
-            get
-            {
-                return aceQLHttpApi.ConnectionString;
-            }
+    
 
-            set
-            {
-                aceQLHttpApi.ConnectionString = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current database in use.
-        /// </summary>
-        /// <value>The current database in use.</value>
-        public string Database
-        {
-            get
-            {
-                return aceQLHttpApi.Database;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets a value indicating whether [pretty printing] is on or off. Defaults to false.
-        /// </summary>
-        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
-        public bool PrettyPrinting
-        {
-            get
-            {
-                return aceQLHttpApi.PrettyPrinting;
-            }
-
-            set
-            {
-                aceQLHttpApi.PrettyPrinting = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets or sets a value indicating whether SQL result sets are returned compressed with the GZIP file format
-        /// before download. Defauts to true.
-        /// </summary>
-        /// <value>true if SQL result sets are returned compressed with the GZIP file format
-        /// before download.</value>
-        public bool GzipResult
-        {
-            get
-            {
-                return aceQLHttpApi.GzipResult;
-            }
-
-            set
-            {
-                aceQLHttpApi.GzipResult = value;
-            }
-
-        }
-
-        /// <summary>
-        /// Gets the time to wait in milliseconds while trying to establish a connection before terminating the attempt and generating an error.
-        /// If value is 0, <see cref="System.Net.Http.HttpClient"/> default will value be used.
-        /// </summary>
-        public int ConnectionTimeout
-        {
-            get
-            {
-                return aceQLHttpApi.Timeout;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="AceQLCredential"/> object for this connection. 
-        /// </summary>
-        /// <value>The the <see cref="AceQLCredential"/> object for this connection.</value>
-        public AceQLCredential Credential
-        {
-            get
-            {
-                return aceQLHttpApi.Credential;
-            }
-
-            set
-            {
-                aceQLHttpApi.Credential = value;
-            }
-        }
-
-        ///// <summary>
-        ///// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
-        ///// </summary>
-        //public async Task CloseAsync()
-        //{
-        //    await aceQLHttpApi.CloseAsync().ConfigureAwait(false);
-        //}
-
-        /// <summary>
-        /// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
-        /// </summary>
-        public void Close()
-        {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Closes the connection to the remote database.
-        /// This is highly recommended in default stateful mode: it will call in async mode the "disconnect" HTTP API and release the remote Connection into the pool.
-        /// </summary>
-        public void Dispose()
-        {
-            TestConnectionOpened();
-            aceQLHttpApi.Dispose();
-        }
 
 
         /// <summary>
@@ -284,6 +165,30 @@ namespace AceQL.Client.Api
             await aceQLHttpApi.CallApiNoResultAsync("set_transaction_isolation_level", isolationLevelStr).ConfigureAwait(false);
             AceQLTransaction aceQLTransaction = new AceQLTransaction(this, isolationLevel);
             return aceQLTransaction;
+        }
+
+        /// <summary>
+        /// Closes the connection to the remote database and closes the http session.
+        /// </summary>
+        public async Task CloseAsync()
+        {
+            callToCloseAsyncDone = true;
+            await aceQLHttpApi.CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Does nothing and provided to ease existing code migration by making class <see cref="AceQLConnection"/> disposable.
+        /// <see cref="AceQLConnection"/>.CloseAsync() must be called before <see cref="AceQLConnection"/>.Dispose().
+        /// </summary>
+        /// <exception cref="AceQL.Client.Api.AceQLException">If <see cref="AceQLConnection"/>.CloseAsync() has not be called before.</exception>
+        public void Dispose()
+        {
+            if (!callToCloseAsyncDone)
+            {
+                throw new AceQLException("CloseAsync must be called before Dispose.", 0, (Exception)null, HttpStatusCode.OK);
+            }
+
+            TestConnectionOpened();
         }
 
         /// <summary>
@@ -359,8 +264,105 @@ namespace AceQL.Client.Api
         public async Task<string> GetServerVersionAsync()
         {
             TestConnectionOpened();
-            String serverVersion = await aceQLHttpApi.CallApiAsync("get_version", null).ConfigureAwait(false);
+            String serverVersion = await aceQLHttpApi.CallApiWithResultAsync("get_version", null).ConfigureAwait(false);
             return serverVersion;
+        }
+
+        /// <summary>
+        /// Gets or sets the connection string used to connect to the remote database.
+        /// </summary>
+        /// <value>The connection string used to connect to the remote database.</value>
+        public string ConnectionString
+        {
+            get
+            {
+                return aceQLHttpApi.ConnectionString;
+            }
+
+            set
+            {
+                aceQLHttpApi.ConnectionString = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current database in use.
+        /// </summary>
+        /// <value>The current database in use.</value>
+        public string Database
+        {
+            get
+            {
+                return aceQLHttpApi.Database;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets a value indicating whether [pretty printing] is on or off. Defaults to false.
+        /// </summary>
+        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
+        public bool PrettyPrinting
+        {
+            get
+            {
+                return aceQLHttpApi.PrettyPrinting;
+            }
+
+            set
+            {
+                aceQLHttpApi.PrettyPrinting = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SQL result sets are returned compressed with the GZIP file format
+        /// before download. Defauts to true.
+        /// </summary>
+        /// <value>True if SQL result sets are returned compressed with the GZIP file format
+        /// before download.</value>
+        public bool GzipResult
+        {
+            get
+            {
+                return aceQLHttpApi.GzipResult;
+            }
+
+            set
+            {
+                aceQLHttpApi.GzipResult = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets the time to wait in milliseconds while trying to establish a connection before terminating the attempt and generating an error.
+        /// If value is 0, <see cref="System.Net.Http.HttpClient"/> default will value be used.
+        /// </summary>
+        public int ConnectionTimeout
+        {
+            get
+            {
+                return aceQLHttpApi.Timeout;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="AceQLCredential"/> object for this connection. 
+        /// </summary>
+        /// <value>The the <see cref="AceQLCredential"/> object for this connection.</value>
+        public AceQLCredential Credential
+        {
+            get
+            {
+                return aceQLHttpApi.Credential;
+            }
+
+            set
+            {
+                aceQLHttpApi.Credential = value;
+            }
         }
 
         ///// <summary>

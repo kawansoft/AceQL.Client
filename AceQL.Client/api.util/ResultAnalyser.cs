@@ -117,15 +117,23 @@ namespace AceQL.Client.Api.Util
         }
 
         /// <summary>
-        /// Gets the result.
+        /// Gets the result for a a key name
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>System.String.</returns>
         public string GetResult(String name)
         {
-            return GetValue("result");
+            return GetValue(name);
         }
 
+        /// <summary>
+        /// Gest the result for the key name "result"
+        /// </summary>
+        /// <returns></returns>
+        public String GetResult()
+        {
+            return GetValue("result");
+        }
 
         /// <summary>
         /// Gets the value.
@@ -296,7 +304,7 @@ namespace AceQL.Client.Api.Util
         /// <returns>System.Int32.</returns>
         internal int GetIntvalue(string name)
         {
-            String insStr =  GetValue(name);
+            String insStr = GetValue(name);
 
             if (insStr == null)
             {

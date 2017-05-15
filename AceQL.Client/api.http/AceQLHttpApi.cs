@@ -87,11 +87,6 @@ namespace AceQL.Client.Api.Http
         private AceQLCredential credential;
 
         /// <summary>
-        /// Says id Dispose() has already be called
-        /// </summary>
-        private bool disposeDone;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
         /// </summary>
         internal AceQLHttpApi()
@@ -460,14 +455,14 @@ namespace AceQL.Client.Api.Http
             this.timeout = timeout;
         }
 
-      
+
 
         /// <summary>
         /// Build an HttpClient instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
         /// </summary>
         /// <param name="proxyUri"></param>
         /// <param name="credentials">The credentials to use for an authenticated proxy. null if none.</param>
-        /// <returns></returns>
+        /// <returns>The HtpClientHandler.</returns>
         internal static HttpClientHandler BuildHttpClientHandler(string proxyUri, ICredentials credentials)
         {
             Proxy proxy = null;
@@ -525,7 +520,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Stream.</returns>
-        internal async Task<Stream> CallWithGetReturnStreamAsync(String url)
+        private async Task<Stream> CallWithGetReturnStreamAsync(String url)
         {
             HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
 
@@ -566,7 +561,7 @@ namespace AceQL.Client.Api.Http
         /// or
         /// postParameters is null!
         /// </exception>
-        internal async Task<Stream> CallWithPostAsync(String action, Dictionary<string, string> parameters)
+        private async Task<Stream> CallWithPostAsync(String action, Dictionary<string, string> parameters)
         {
 
             if (action == null)
@@ -644,7 +639,7 @@ namespace AceQL.Client.Api.Http
                     throw new ArgumentNullException("commandName is null!");
                 }
 
-                String result = await CallApiAsync(commandName, commandOption).ConfigureAwait(false);
+                String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
 
                 ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
                 if (!resultAnalyser.IsStatusOk())
@@ -670,12 +665,61 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
+        /// Calls the API withs result.
+        /// </summary>
+        /// <param name="commandName">Name of the command.</param>
+        /// <param name="commandOption">The command option.</param>
+        /// <exception cref="System.ArgumentNullException">commandName is null!</exception>
+        /// <exception cref="AceQLException">
+        /// HTTP_FAILURE" + " " + httpStatusDescription - 0
+        /// or
+        /// or
+        /// 0
+        /// </exception>
+        internal async Task<string> CallApiWithResultAsync(String commandName, String commandOption)
+        {
+            try
+            {
+                if (commandName == null)
+                {
+                    throw new ArgumentNullException("commandName is null!");
+                }
+
+                String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
+
+                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
+                if (!resultAnalyser.IsStatusOk())
+                {
+                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
+                        resultAnalyser.GetErrorId(),
+                        resultAnalyser.GetStackTrace(),
+                        httpStatusCode);
+                }
+
+                return resultAnalyser.GetResult();
+
+            }
+            catch (Exception exception)
+            {
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Calls the with get.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="actionParameter">The action parameter.</param>
         /// <returns>String.</returns>
-        internal async Task<string> CallApiAsync(String action, String actionParameter)
+        private async Task<string> CallWithGetAsync(String action, String actionParameter)
         {
             String urlWithaction = this.url + action;
 
@@ -694,7 +738,7 @@ namespace AceQL.Client.Api.Http
         /// <param name="url">The URL.</param>
         /// <returns>String.</returns>
         /// <exception cref="System.ArgumentNullException">url is null!</exception>
-        internal async Task<string> CallWithGetAsync(String url)
+        private async Task<string> CallWithGetAsync(String url)
         {
 
             if (url == null)
@@ -790,8 +834,6 @@ namespace AceQL.Client.Api.Http
 
 
         }
-
-
 
 
         /// <summary>
@@ -995,40 +1037,19 @@ namespace AceQL.Client.Api.Http
         //}
 
 
-        ///// <summary>
-        ///// Closes the connection to the remote database by calling <see cref="AceQLConnection"/>.Dispose().
-        ///// </summary>
-        //public async Task CloseAsync()
-        //{
-        //    await CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
-        //}
+        /// <summary>
+        /// Closes the connection to the remote database and closes the http session.
+        /// </summary>
+        public async Task CloseAsync()
+        {
+            await CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+        }
 
         /// <summary>
-        /// Closes this instance.
+        /// Does nothing.
         /// </summary>
         public void Dispose()
         {
-            // Avoid throwing Exceptions
-            if (disposeDone)
-            {
-                return;
-            }
-
-            disposeDone = true;
-
-            try
-            {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                ConsoleEmul.WriteLine("Before disconnect!");
-                CallApiNoResultAsync("disconnect", null);
-                ConsoleEmul.WriteLine("After  disconnect!");
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            }
-            catch (Exception exception)
-            {
-                ConsoleEmul.WriteLine("DISCONNECT FAILURE:");
-                ConsoleEmul.WriteLine(exception.ToString());
-            }
             
         }
 

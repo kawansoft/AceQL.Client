@@ -196,6 +196,13 @@ namespace AceQL.Client.Api
             }
         }
 
+        public async Task<bool> ReadAsync()
+        {
+            Task <bool> task = new Task<bool>(Read);
+            task.Start();
+            return await task;
+        }
+
         /// <summary>
         /// Downloads the Blob and gets the stream.
         /// </summary>

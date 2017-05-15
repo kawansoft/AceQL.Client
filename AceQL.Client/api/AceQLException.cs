@@ -105,6 +105,21 @@ namespace AceQL.Client.Api
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLException" /> class.
+        /// Corresponds to a client side failure/exception thrown.
+        /// </summary>
+        /// <param name="reason">The reason.</param>
+        /// <param name="errorType">The error identifier.</param>
+        /// <param name="exception">The Exception.</param>
+        /// <param name="httpStatusCode">The http status code.</param>
+        public AceQLException(string reason, int errorType, Exception exception, HttpStatusCode httpStatusCode)
+        {
+            this.reason = reason;
+            this.errorType = errorType;
+            this.exception = exception;
+            this.httpStatusCode = httpStatusCode;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLException" /> class.
@@ -122,21 +137,7 @@ namespace AceQL.Client.Api
             this.httpStatusCode = httpStatusCode;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLException" /> class.
-        /// Corresponds to a client side failure/exception thrown.
-        /// </summary>
-        /// <param name="reason">The reason.</param>
-        /// <param name="errorType">The error identifier.</param>
-        /// <param name="exception">The Exception.</param>
-        /// <param name="httpStatusCode">The http status code.</param>
-        public AceQLException(string reason, int errorType, Exception exception, HttpStatusCode httpStatusCode)
-        {
-            this.reason = reason;
-            this.errorType = errorType;
-            this.exception = exception;
-            this.httpStatusCode = httpStatusCode;
-        }
+
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

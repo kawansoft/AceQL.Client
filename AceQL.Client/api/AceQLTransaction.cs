@@ -64,7 +64,7 @@ namespace AceQL.Client.Api
         /// Gets the transaction isolation as string.
         /// </summary>
         /// <param name="transactionIsolationLevel">The transaction isolation level.</param>
-        /// <returns>String.</returns>
+        /// <returns>Th transaction isolation as string.</returns>
         internal static String GetTransactionIsolationAsString(IsolationLevel transactionIsolationLevel)
         {
             if (transactionIsolationLevel == IsolationLevel.Unspecified)
@@ -140,7 +140,8 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. This code does nothing and is optional because calls to CommitAsync()/RollbackAsync() reset the server
+        /// Disposes this instance. This code does nothing and is optional because calls 
+        /// to <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
         /// connection. Class implements IDisposable to ease code migration.
         /// </summary>
         public void Dispose()

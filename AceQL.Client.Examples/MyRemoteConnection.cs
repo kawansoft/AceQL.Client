@@ -22,7 +22,7 @@ namespace AceQL.Client.Examples
 
         public static void TheMain(string[] args)
         {
-            DoIt(args).Wait();
+            DoIt(args).GetAwaiter().GetResult();
         }
 
         public static async Task DoIt(string[] args)
@@ -54,7 +54,8 @@ namespace AceQL.Client.Examples
 
                     await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId);
                     await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId);
-                    
+
+                    await connection.CloseAsync();
                     Console.WriteLine("The end...");
                 }
 
