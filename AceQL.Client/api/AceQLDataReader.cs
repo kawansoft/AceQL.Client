@@ -27,6 +27,7 @@ namespace AceQL.Client.Api
     /// <summary>
     /// Class <see cref="AceQLDataReader"/>. Provides a way of reading a forward-only stream of rows from a remote database
     /// transferred in a local file.
+    /// Note that all data of the stream are already downloaded when <see cref="AceQLDataReader"/> is created.
     /// </summary>
     public class AceQLDataReader : IDisposable
     {
@@ -58,7 +59,7 @@ namespace AceQL.Client.Api
         private IFile file;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLDataReader" /> class.
+        /// Initializes a new instance of the <see cref="AceQLDataReader"/> class.
         /// </summary>
         /// <param name="file">The JSON file containing the Result Set. Passed only for delete action.</param>
         /// <param name="readStream">The reading stream on file.</param>
@@ -131,7 +132,9 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Advances the reader to the next record. 
-        /// The cancellation token can be used to request that the operation be abandoned before the read timeout.
+        /// Method is provided only for consistency: same method exists in SQLServer SqlDataReader class.
+        /// It's cleaner to use <see cref="AceQLDataReader"/>.Read() because data are read from a <see cref="TextReader"/> 
+        /// (all data are already downloaded when <see cref="AceQLDataReader"/> is created.)
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param> 
         /// <returns>true if there are more rows; otherwise, false.</returns>

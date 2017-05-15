@@ -140,7 +140,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. This code does nothing and is optional because calls 
+        /// Disposes this instance. This code does nothing / call is optional because calls 
         /// to <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
         /// connection. Class implements IDisposable to ease code migration.
         /// </summary>

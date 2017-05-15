@@ -248,7 +248,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// If connection has not been closed by an explicit call to <see cref="AceQLConnection"/>CloseAsync:
-        /// Calls silently <see cref="AceQLConnection"/>CloseAsync without reporting any Exception.
+        /// calls silently <see cref="AceQLConnection"/>CloseAsync without reporting any Exception.
         /// As the call is not awaited, execution of the 
         /// current method continues before the call to is <see cref="AceQLConnection"/>CloseAsync completed.
         /// </summary>
@@ -286,25 +286,25 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Returns the sharable progress variable that will store Blob/Clob upload progress between 0 and 100.
+        /// Returns the progress indicator variable that will store Blob/Clob upload progress between 0 and 100.
         /// </summary>
-        /// <returns>The sharable progress variable that will store Blob/Clob upload progress between 0 and 100.</returns>
+        /// <returns>The progress indicator variable that will store Blob/Clob upload progress between 0 and 100.</returns>
         public ProgressIndicator GetProgressIndicator()
         {
             return aceQLHttpApi.GetProgressIndicator();
         }
 
         /// <summary>
-        /// Sets the sharable progress variable that will store Blob/Clob upload progress between 0 and 100. Will be used by progress bars to show the progress.
+        /// Sets the progress indicator variable that will store Blob/Clob upload progress between 0 and 100. Will be used by progress bars to show the progress.
         /// </summary>
-        /// <param name="progressIndicator">The sharable progress variable that will store Blob/Clob upload progress between 0 and 100.</param>
+        /// <param name="progressIndicator">The progress indicator variable that will store Blob/Clob upload progress between 0 and 100.</param>
         public void SetProgressIndicator(ProgressIndicator progressIndicator)
         {
             aceQLHttpApi.SetProgressIndicator(progressIndicator);
         }
 
         /// <summary>
-        /// Returns the AceQL SDK current Version.
+        /// Returns the AceQL Client SDK current Version.
         /// </summary>
         /// <returns>the AceQL SDK current Version.</returns>
         public String GetClientVersion()
@@ -313,7 +313,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Returns the remote AceQL Server Version.
+        /// Returns the remote AceQL HTTP Server Version.
         /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
@@ -334,7 +334,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Returns the remote AceQL Server Version.
+        /// Returns the remote AceQL HTTP Server Version.
         /// </summary>
         /// <returns>the remote  AceQL Server Version.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>

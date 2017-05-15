@@ -576,7 +576,7 @@ namespace AceQL.Client.Api
         }
         /// <summary>
         /// Disposes this instance. This call is optional and does nothing because all resources are released after 
-        /// each other AceQL.Client.Api.AceQLCommand method call. Class implements IDisposable to ease code migration.
+        /// each other <see cref="AceQLCommand"/> method call. Class implements IDisposable to ease code migration.
         /// </summary>
         public void Dispose()
         {
