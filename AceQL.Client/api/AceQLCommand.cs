@@ -55,6 +55,8 @@ namespace AceQL.Client.Api
         /// </summary>
         private AceQLParameterCollection parameters = null;
 
+        private bool prepare;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLCommand"/> class.
         /// </summary>
@@ -145,7 +147,8 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("connection is null!");
             }
 
-            if (Parameters.Count == 0)
+            // Statement wit parameters are always prepared statement
+            if (Parameters.Count == 0 && !prepare)
             {
                 return await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
             }
@@ -153,6 +156,16 @@ namespace AceQL.Client.Api
             {
                 return await ExecuteQueryAsPreparedStatementAsync().ConfigureAwait(false);
             }
+        }
+
+        /// <summary>
+        /// Creates a prepared version of the command. Optional call.
+        /// Note that the remote statement will always be a prepared statement if
+        /// the command contains parameters.
+        /// </summary>
+        public void Prepare()
+        {
+            this.prepare = true;
         }
 
         /// <summary>
@@ -172,7 +185,8 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("connection is null!");
             }
 
-            if (Parameters.Count == 0)
+            // Statement wit parameters are always prepared statement
+            if (Parameters.Count == 0 && ! prepare)
             {
                 return await ExecuteUpdateAsStatementAsync().ConfigureAwait(false);
             }

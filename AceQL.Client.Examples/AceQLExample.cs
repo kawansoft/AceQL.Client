@@ -121,7 +121,9 @@ namespace AceQL.Client.Examples
             command.CommandText = sql;
             command.Connection = connection;
 
-            await command.ExecuteNonQueryAsync();
+            command.Prepare();
+
+        await command.ExecuteNonQueryAsync();
 
             for (int i = 0; i < 3; i++)
             {

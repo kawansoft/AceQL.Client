@@ -58,7 +58,8 @@
 //15/05/2017 15:11 NDP: AceQLConnection is now closed with AceQLConnection.CloseAsync
 //15/05/2017 16:16 NDP: Add all possible constructors to AceCommand for user confort
 //15/05/2017 17:02 NDP: Add ReadAsync to AceQLDataReader
-//15/05/2017 17:93 NDP: AceQLHttpApi.DecodeConnectionString: treat case some empty alone ";" in connection strings. Test AceQLCredential usage  
+//15/05/2017 17:33 NDP: AceQLHttpApi.DecodeConnectionString: treat case some empty alone ";" in connection strings. Test AceQLCredential usage  
+//15/05/2017 17:53 NDP: Add AceQLHttpApi.Prepare
 
 namespace AceQL.Client.Api.Util
 {
