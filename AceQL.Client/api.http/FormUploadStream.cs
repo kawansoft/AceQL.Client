@@ -36,6 +36,7 @@ namespace AceQL.Client.Api.Http
         /// <param name="totalLength"></param> 
         /// <param name="progressIndicator"></param>
         /// <param name="cancellationToken"></param> 
+        /// <param name="useCancellationToken"></param> 
         /// <returns></returns>
         internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
             int timeout, String blobId, Stream stream, long totalLength, ProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)

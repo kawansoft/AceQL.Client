@@ -246,7 +246,6 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         private async Task<AceQLDataReader> ExecuteQueryAsStatementAsync(CancellationToken cancellationToken)
         {
-
             try
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
@@ -258,6 +257,7 @@ namespace AceQL.Client.Api
                 aceQLHttpApi.ResetCancellationToken();
             }
         }
+
         /// <summary>
         /// Executes the query as statement.
         /// </summary>
@@ -522,7 +522,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SqlConnection"/> used by this instance of <see cref="AceQLCommand"/>.
+        /// Gets or sets the <see cref="AceQLConnection"/> used by this instance of <see cref="AceQLCommand"/>.
         /// </summary>
         /// <value>The remote database connection.</value>
         public AceQLConnection Connection
@@ -534,12 +534,7 @@ namespace AceQL.Client.Api
 
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("connection is null!");
-                }
-
-                this.connection = value;
+                this.connection = value ?? throw new ArgumentNullException("connection is null!");
                 this.connection.TestConnectionOpened();
                 this.aceQLHttpApi = connection.aceQLHttpApi;
             }
