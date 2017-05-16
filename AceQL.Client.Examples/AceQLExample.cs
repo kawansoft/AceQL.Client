@@ -156,8 +156,8 @@ namespace AceQL.Client.Examples
             // Our dataReader must be disposed to delete underlying dowloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-
-                while (await dataReader.ReadAsync(new CancellationTokenSource().Token))
+                //await dataReader.ReadAsync(new CancellationTokenSource().Token)
+                while (dataReader.Read())
                 {
                     Console.WriteLine();
                     int i = 0;

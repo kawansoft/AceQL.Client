@@ -67,6 +67,7 @@
 //15/05/2017 20:10 NDP: Fix spelling error in comments 
 //15/05/2017 20:48 NDP: AceQLDataReader: clean comments
 //15/05/2017 20:58 NDP: AceQLDataReader: clean comments
+//16/05/2017 10:40 NDP: RowParser: rewrite read() which was buggy after refactoring
 // 
 namespace AceQL.Client.Api.Util
 {
@@ -74,6 +75,6 @@ namespace AceQL.Client.Api.Util
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.1-beta";
-        internal static readonly String DATE = "15-may-2017";
+        internal static readonly String DATE = "16-may-2017";
     }
 }

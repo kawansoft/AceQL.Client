@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PCLStorage;
 
 namespace AceQL.Client.Api.Util
 {
@@ -34,6 +33,9 @@ namespace AceQL.Client.Api.Util
         private const string COL_NAME = "nam";
         private const string COL_VALUE = "val";
 
+        private StreamReader streamReader;
+        JsonTextReader reader;
+
         /// <summary>
         /// The trace on
         /// </summary>
@@ -46,8 +48,6 @@ namespace AceQL.Client.Api.Util
         private Dictionary<int, string> colNamesPerColIndex;
         private Dictionary<string, int> colIndexesPerColName;
 
-        private StreamReader streamReader;
-        private JsonTextReader jsonTextReader;
 
         /// <summary>
         /// Constructor
@@ -56,7 +56,7 @@ namespace AceQL.Client.Api.Util
         public RowParser(Stream readStream)
         {
             streamReader = new StreamReader(readStream);
-            jsonTextReader = new JsonTextReader(streamReader);
+            reader = new JsonTextReader(streamReader);
         }
 
         internal Dictionary<int, string> GetTypesPerColIndex()
@@ -87,95 +87,80 @@ namespace AceQL.Client.Api.Util
         /// <param name="rowNum">The row number.</param>
         internal void BuildRowNum(int rowNum)
         {
-            while (jsonTextReader.Read())
+            while (reader.Read())
             {
-                if (jsonTextReader.Value == null)
+                if (reader.Value == null)
                 {
                     continue;
                 }
 
-                Treat(jsonTextReader, rowNum);
-            }
-
-        }
-
-        /// <summary>
-        /// Continue reading...
-        /// </summary>
-        /// <param name="reader">The text reader </param>
-        /// <param name="rowNum">The row number.</param>
-        private void Treat(JsonTextReader reader, int rowNum)
-        {
-            if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum))
-            {
-                return;
-            }
-
-            int colIndex = 0;
-            String colName = null;
-            String colType = null;
-
-            valuesPerColIndex = new Dictionary<int, object>();
-            typesPerColIndex = new Dictionary<int, string>();
-            colNamesPerColIndex = new Dictionary<int, string>();
-            colIndexesPerColName = new Dictionary<string, int>();
-
-            while (reader.Read())
-            {
-                // We are done at end of row
-                if (reader.TokenType.Equals(JsonToken.EndArray))
+                if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum))
                 {
-                    return;
+                    continue;
                 }
 
-                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_INDEX))
+                int colIndex = 0;
+                String colName = null;
+                String colType = null;
+
+                valuesPerColIndex = new Dictionary<int, object>();
+                typesPerColIndex = new Dictionary<int, string>();
+                colNamesPerColIndex = new Dictionary<int, string>();
+                colIndexesPerColName = new Dictionary<string, int>();
+
+                while (reader.Read())
                 {
-                    if (reader.Read())
+                    // We are done at end of row
+                    if (reader.TokenType.Equals(JsonToken.EndArray))
                     {
+                        return;
+                    }
+
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_INDEX))
+                    {
+                        if (!reader.Read())
+                        {
+                            return;
+                        }
                         String colIndexStr = reader.Value.ToString();
                         colIndex = Int32.Parse(colIndexStr);
 
                         Trace();
                         Trace("" + colIndex);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
 
-                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_TYPE))
-                {
-                    if (reader.Read())
+                    }
+
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_TYPE))
                     {
+                        if (!reader.Read())
+                        {
+                            return;
+                        }
                         String colIndexStr = reader.Value.ToString();
                         colType = reader.Value.ToString();
                         Trace("" + colType);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
 
-                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_NAME))
-                {
-                    if (reader.Read())
+                    }
+
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_NAME))
                     {
+                        if (!reader.Read())
+                        {
+                            return;
+                        }
                         String colIndexStr = reader.Value.ToString();
                         colName = reader.Value.ToString();
                         Trace("" + colName);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
 
-                if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_VALUE))
-                {
-                    if (reader.Read())
+                    }
+
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_VALUE))
                     {
+                        if (!reader.Read())
+                        {
+                            return;
+                        }
+
                         String colValue = reader.Value.ToString();
 
                         if (colValue != null)
@@ -194,15 +179,9 @@ namespace AceQL.Client.Api.Util
                         colIndexesPerColName.Add(colName, colIndex);
 
                     }
-                    else
-                    {
-                        return;
-                    }
                 }
 
-
             }
-
         }
 
         /**
@@ -257,11 +236,15 @@ namespace AceQL.Client.Api.Util
             }
         }
 
+
         internal void Close()
         {
-            this.streamReader.Dispose();
-        }
+            if (this.streamReader != null)
+            {
+                this.streamReader.Dispose();
+            }
 
+        }
 
     }
 }
