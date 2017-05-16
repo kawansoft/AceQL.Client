@@ -18,7 +18,7 @@ using System.Net;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class <see cref="AceQLException"/>. All client and server side exceptions raised are wrapped in AceQLException.
+    /// Class <see cref="AceQLException"/>. All client and server side exceptions raised are wrapped in a <see cref="AceQLException"/>.
     /// </summary>
     public class AceQLException : Exception
     {
@@ -60,7 +60,7 @@ namespace AceQL.Client.Api
         /// Gets the error type.
         /// </summary>
         /// <value>The error type.</value>
-        public int ErrorId
+        public int ErrorType
         {
             get
             {
@@ -69,9 +69,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the remote stack trace.
+        /// Gets the remote Java stack trace.
         /// </summary>
-        /// <value>The remote stack trace.</value>
+        /// <value>The remote Java stack trace.</value>
         public string RemoteStackTrace
         {
             get
@@ -124,7 +124,7 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLException" /> class.
+        /// Initializes a new instance of the <see cref="AceQLException"/> class.
         /// Corresponds to an Exception raised on server side.
         /// </summary>
         /// <param name="reason">The reason.</param>
@@ -141,9 +141,9 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             String returnStr = "errorType: " + errorType;

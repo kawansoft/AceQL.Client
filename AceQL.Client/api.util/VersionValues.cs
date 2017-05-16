@@ -71,6 +71,7 @@
 //16/05/2017 11:32 NDP: AceQLParameterCollection: clean comments
 //16/05/2017 11:45 NDP: PortableFile & AceQLCommand: clean comments
 //16/05/2017 11:57 NDP: ProgressIndicator: clean comments
+//16/05/2017 13:15 NDP: AceQLException: rename errorId to errorType
 // 
 namespace AceQL.Client.Api.Util
 {
