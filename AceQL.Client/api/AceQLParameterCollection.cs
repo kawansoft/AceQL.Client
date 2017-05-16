@@ -20,7 +20,7 @@ using System.IO;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Represents a collection of parameters associated with an AceQL.Client.api.AceQLCommand 
+    /// Represents a collection of parameters associated with an <see cref="AceQLCommand"/>
     /// and their respective mappings to columns.
     /// </summary>
     public class AceQLParameterCollection : IList, ICollection, IEnumerable
@@ -130,7 +130,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Removes all values from the <see cref="AceQLParameterCollection"/>".
+        /// Removes all <see cref="AceQLParameter"/> objects from the <see cref="AceQLParameterCollection"/>
         /// </summary>
         public void Clear()
         {
@@ -138,10 +138,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Determines whether [contains] [the specified value].
+        /// Determines whether the specified parameter name is in this <see cref="AceQLParameterCollection"/>.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if [contains] [the specified value]; otherwise, <c>false</c>.</returns>
+        /// <returns>true if the <see cref="AceQLParameterCollection"/> contains the value; otherwise false.</returns>
         public bool Contains(string value)
         {
             foreach(AceQLParameter aceQLParameter in aceqlParameters)
@@ -154,10 +154,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Determines whether [contains] [the specified value].
+        /// Determines whether the specified System.Object is in this <see cref="AceQLParameterCollection"/>.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if [contains] [the specified value]; otherwise, <c>false</c>.</returns>
+        /// <returns>true if the <see cref="AceQLParameterCollection"/> contains the value; otherwise false.</returns>
         public bool Contains(object value)
         {
             foreach (AceQLParameter aceQLParameter in aceqlParameters)
@@ -172,9 +172,11 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Copies the elements of the System.Collections.ICollection to an System.Array, starting at a particular System.Array index.
+        /// Copies the elements of the <see cref="ICollection"/> to an <see cref="Array"/>, starting at a particular <see cref="Array"/> index.
+        /// Not implemented.
         /// </summary>
-        /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection. The System.Array must have zero-based indexing.</param>
+        /// <param name="array">The one-dimensional<see cref="Array"/>that is the destination of the elements copied from <see cref="ICollection"/>. 
+        ///                     The <see cref="Array"/>must have zero-based indexing.</param>
         /// <param name="index">The zero-based index in array at which copying begins.</param>
         /// <exception cref="System.NotImplementedException"></exception>
         public void CopyTo(Array array, int index)
@@ -183,19 +185,19 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Exposes the <see cref="M:System.Collections.IEnumerable.GetEnumerator" /> method, which supports a simple iteration over a collection by a .NET Framework data provider.
+        /// Exposes the <see cref="IEnumerable"/>.GetEnumerator" method, which supports a simple iteration over a collection by a .NET Framework data provider.
         /// </summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the collection.</returns>
+        /// <returns>An <see cref="IEnumerator"/> that can be used to iterate through the collection.</returns>
         public IEnumerator GetEnumerator()
         {
             return aceqlParameters.GetEnumerator();
         }
 
         /// <summary>
-        /// Get index of a parameter name.
+        ///  Gets the location of the specified <see cref="AceQLParameter"/> with the specified name.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <returns>The index of the parameter name.</returns>
+        /// <returns> The case-sensitive name of the <see cref="AceQLParameter"/> to find.</returns>
         /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public int IndexOf(string parameterName)
         {
@@ -216,10 +218,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Add a null value for a parameter, and precise the parameter's SQL type.
+        /// Add a null value for a <see cref="AceQLParameter"/>, and precise the parameter's <see cref="SqlType"/>.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="sqlType">The SQL type of the parameter.</param>
+        /// <param name="sqlType">The <see cref="SqlType"/>of the parameter.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public void AddNullValue(string parameterName, SqlType sqlType)
         {
@@ -237,10 +239,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Adds the parameter name with it's value.
+        ///  Adds a value to the end of the <see cref="AceQLParameterCollection"/>.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="value">The value. Cannot ne bull.</param>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="value">The value to be added. Cannot ne bull. Use <see cref="AceQLCommand"/>.Parameters.addNullValue to pass a null value.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName or value is null.</exception>
         public void AddWithValue(string parameterName, object value)
         {
@@ -255,12 +257,12 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Adds the BLOB parameter as a stream.
+        /// Adds a BLOB parameter as a stream. to the end of the <see cref="AceQLParameterCollection"/>.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="stream">The BLOB stream to read.</param>
         /// <param name="length">The BLOB stream length.</param>
-        /// <exception cref="System.ArgumentNullException">If parameterName or stream is null.</exception>
+        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public void AddBlob(string parameterName, Stream stream, long length)
         {
             if (parameterName == null)
@@ -281,9 +283,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Adds the specified parameter.
+        /// Adds the specified <see cref="AceQLParameter"/>. object to the <see cref="AceQLParameterCollection"/>.
         /// </summary>
-        /// <param name="value">The value.</param>
+        /// <param name="value">The <see cref="AceQLParameter"/> to add to the collection.</param>
         /// <exception cref="System.ArgumentNullException">If value is null.</exception>
         public void Add(AceQLParameter value)
         {
@@ -297,10 +299,11 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Get index of parameter value.
+        ///  Gets the location of the specified <see cref="Object"/> within the collection.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The index of the value.</returns>
+        /// <param name="value">The <see cref="Object"/> to find.</param>
+        /// <returns> The zero-based location of the specified <see cref="Object"/> that is a <see cref="AceQLParameter"/> within the collection. Returns -1 when the object does not exist in the <see cref="AceQLParameterCollection"/>.</returns>
+        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public int IndexOf(object value)
         {
             //if (value == null)
@@ -320,10 +323,11 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Inserts value at the specified index. Not implemented.
+        /// Inserts an <see cref="Object"/>into the <see cref="AceQLParameterCollection"/> at the specified index. 
+        /// Not implemented.
         /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="value">The value.</param>
+        /// <param name="index">The zero-based index at which value should be inserted.</param>
+        /// <param name="value">An <see cref="Object"/> to be inserted in the <see cref="AceQLParameterCollection"/>.</param>
         /// <exception cref="System.NotImplementedException"></exception>
         public void Insert(int index, object value)
         {
@@ -331,9 +335,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Removes the specified parameter value.
+        /// Removes the specified <see cref="AceQLParameter"/> from the collection.
         /// </summary>
-        /// <param name="value">The value.</param>
+        /// <param name="value">The object to remove from the collection.</param>
         public void Remove(object value)
         {
             for (int i = 0; i < aceqlParameters.Count; i++)
@@ -348,9 +352,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Removes the specified parameter name.
+        ///  Removes the <see cref="AceQLParameter"/> from the <see cref="AceQLParameterCollection"/>
+        ///  at the specified parameter name.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="parameterName">The name of the <see cref="AceQLParameter"/> to remove.</param>
         public void RemoveAt(string parameterName)
         {
             for (int i = 0; i < aceqlParameters.Count; i++)
@@ -365,18 +370,19 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Removes the parameter at the specified index .
+        ///  Removes the <see cref="AceQLParameter"/> from the <see cref="AceQLParameterCollection"/>
+        ///  at the specified index.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="index">The zero-based index of the <see cref="AceQLParameter"/> object to remove.</param>
         public void RemoveAt(int index)
         {
             aceqlParameters.RemoveAt(index);
         }
 
         /// <summary>
-        /// Gets the parameter for it's name.
+        /// Gets the <see cref="AceQLParameter"/> for it's name.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="parameterName">Name of the <see cref="AceQLParameter"/>.</param>
         /// <returns>The <see cref="AceQLParameter"/> for the parameter name.</returns>
         public AceQLParameter GetAceQLParameter(string parameterName)
         {
@@ -393,9 +399,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the parameter at the index.
+        /// Gets the <see cref="AceQLParameter"/> at the index.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="index">The index of <see cref="AceQLParameter"/>.</param>
         /// <returns>The <see cref="AceQLParameter"/> at index position.</returns>
         protected AceQLParameter GetParameter(int index)
         {
@@ -404,10 +410,10 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Adds the specified value. Not implemented.
+        ///  Adds the specified <see cref="AceQLParameter"/> object to the <see cref="AceQLParameterCollection"/>. Not implemented.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>System.Int32.</returns>
+        /// <param name="value">An <see cref="Object"/>.</param>
+        /// <returns>The index of the new <see cref="AceQLParameter"/> object.</returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public int Add(object value)
         {

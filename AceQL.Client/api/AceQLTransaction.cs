@@ -107,9 +107,9 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Gets the AceQL connection.
+        /// Gets the connection to remote database.
         /// </summary>
-        /// <value>The AceQL connection.</value>
+        /// <value>the connection to remote database.</value>
         public AceQLConnection AceQLConnection
         {
             get
@@ -140,9 +140,9 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. This code does nothing / call is optional because calls 
-        /// to <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
-        /// connection. Class implements IDisposable to ease code migration.
+        /// Disposes this instance. Call is optional as it does nothing. It is provided to ease code migration as SQL Server SqlTransaction is disposable.
+        /// <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
+        /// connection.
         /// </summary>
         public void Dispose()
         {

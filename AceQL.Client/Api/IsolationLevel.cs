@@ -6,7 +6,6 @@ namespace AceQL.Client.Api
     /// </summary>
     public enum IsolationLevel
     {
-
         /// <summary>
         /// A different isolation level than the one specified is being used, but the level cannot be determined.
         /// </summary>
@@ -31,6 +30,5 @@ namespace AceQL.Client.Api
         ///A range lock is placed, preventing other users from updating or inserting rows into the dataset until the transaction is complete.
         /// </summary>
         Serializable = 1048576,
-
     }
 }
