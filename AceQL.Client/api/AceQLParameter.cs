@@ -70,7 +70,7 @@ namespace AceQL.Client.Api
 
             if (value == null)
             {
-                throw new ArgumentNullException("Parameter value cannot be null! Use AceQLCommand.Parameters.addNullValue to pass a null value.");
+                throw new ArgumentNullException("Parameter value cannot be null! Use AceQLCommand.Parameters.AddWithNullValue to pass a null value.");
             }
         }
 

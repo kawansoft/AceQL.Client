@@ -74,6 +74,8 @@
 //16/05/2017 13:15 NDP: AceQLException: rename errorId to errorType
 //16/05/2017 15:18 NDP: AceQLParameterCollection.AddBlob renamed to AceQLParameterCollection.AddWithValue
 //16/05/2017 16:19 NDP: AceQLDataReader: clean management of IsDBNull()
+//16/05/2017 18:17 NDP: AceQLException: use cleaner names for public propeties
+//16/05/2017 21:23 NDP: Clean AceQLParameterCollection comments
 // 
 namespace AceQL.Client.Api.Util
 {

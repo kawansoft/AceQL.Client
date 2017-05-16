@@ -738,7 +738,7 @@ namespace AceQL.Client.Api
         ///  Gets a value that indicates whether the column contains non-existent or missing values.
         /// </summary>
         /// <param name="ordinal">The ordinal.</param>
-        /// <returns> rue if column contains non-existent or missing values, else false.</returns>
+        /// <returns>true if column contains non-existent or missing values, else false.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public bool IsDBNull(int ordinal)
         {
