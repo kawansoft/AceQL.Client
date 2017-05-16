@@ -30,7 +30,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Returns the string representation of progress.
+        /// Returns the string representation of the progress value.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
