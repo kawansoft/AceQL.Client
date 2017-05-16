@@ -69,6 +69,7 @@
 //15/05/2017 20:58 NDP: AceQLDataReader: clean comments
 //16/05/2017 10:40 NDP: RowParser: rewrite read() which was buggy after refactoring
 //16/05/2017 11:32 NDP: AceQLParameterCollection: clean comments
+//16/05/2017 11:45 NDP: PortableFile & AceQLCommand: clean comments
 // 
 namespace AceQL.Client.Api.Util
 {

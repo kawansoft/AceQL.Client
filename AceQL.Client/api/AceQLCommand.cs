@@ -109,11 +109,10 @@ namespace AceQL.Client.Api
         /// <param name="connection">A <see cref="AceQLConnection"/> that represents the connection to a remote database.</param>
         /// <param name="transaction">A <see cref="AceQLTransaction"/>.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// If cmdText is null or connection or  is null.
+        /// If cmdText is null or connection or transaction is null.
         /// </exception>
         public AceQLCommand(string cmdText, AceQLConnection connection, AceQLTransaction transaction) : this(cmdText, connection)
         {
-
             if (transaction == null)
             {
                 throw new ArgumentNullException("transaction is null!");
@@ -123,7 +122,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        ///  Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
+        /// Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
         /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
@@ -218,7 +217,7 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("connection is null!");
             }
 
-            // Statement wit parameters are always prepared statement
+            // Statement with parameters are always prepared statement
             if (Parameters.Count == 0 && !prepare)
             {
                 return await ExecuteUpdateAsStatementAsync().ConfigureAwait(false);
@@ -567,9 +566,10 @@ namespace AceQL.Client.Api
                 return parameters;
             }
         }
+
         /// <summary>
         /// Disposes this instance. This call is optional and does nothing because all resources are released after 
-        /// each other <see cref="AceQLCommand"/> method call. Class implements IDisposable to ease code migration.
+        /// each other <see cref="AceQLCommand"/> method call. Class implements <see cref="IDisposable"/>  to ease code migration.
         /// </summary>
         public void Dispose()
         {

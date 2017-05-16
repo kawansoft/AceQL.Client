@@ -19,11 +19,11 @@ namespace AceQL.Client.Api.File
     {
 
         /// <summary>
-        /// Opens a file, appends the specified string to the file, and then closes the file. 
+        /// Opens a <see cref="IFile"/>, appends the specified string to the file, and then closes the file.
         /// If the file does not exist, this method creates a file, writes the specified string to the file, then closes the file.
         /// </summary>
-        /// <param name="file">The file on which to trace</param>
-        /// <param name="contents">The string to append to the file.</param>
+        /// <param name="file">The <see cref="IFile"/> to append the specified string to.</param>
+        /// <param name="contents">The string to append to the <see cref="IFile"/>.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public static async Task AppendAllTextAsync(IFile file, string contents)
@@ -45,9 +45,9 @@ namespace AceQL.Client.Api.File
         }
 
         /// <summary>
-        /// Returns the file length.
+        /// Returns the <see cref="IFile"/> length.
         /// </summary>
-        /// <returns>The file length.</returns>
+        /// <returns>The <see cref="IFile"/> length.</returns>
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public async Task<long> GetLengthAsync(IFile file)
         {

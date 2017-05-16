@@ -40,7 +40,7 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLTransaction" /> class.
+        /// Initializes a new instance of the <see cref="AceQLTransaction"/> class.
         /// </summary>
         /// <param name="connection">The AceQL connection.</param>
         internal AceQLTransaction(AceQLConnection connection)
@@ -140,7 +140,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. Call is optional as it does nothing. It is provided to ease code migration as SQL Server SqlTransaction is disposable.
+        /// Disposes this instance. Call is optional as it does nothing. It is provided to ease code migration as SQL Server SqlTransaction is <see cref="IDisposable"/>.
         /// <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
         /// connection.
         /// </summary>
