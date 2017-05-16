@@ -223,7 +223,7 @@ namespace AceQL.Client.Api
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="sqlType">The <see cref="SqlType"/>of the parameter.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
-        public void AddNullValue(string parameterName, SqlType sqlType)
+        public void AddWithNullValue(string parameterName, SqlType sqlType)
         {
             if (parameterName == null)
             {

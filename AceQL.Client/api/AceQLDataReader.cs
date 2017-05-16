@@ -197,6 +197,12 @@ namespace AceQL.Client.Api
             {
                 TestIsClosed();
                 int colIndex = colIndexesPerColName[name];
+
+                if (IsDBNull(colIndex))
+                {
+                    return null;
+                }
+
                 return valuesPerColIndex[colIndex];
             }
         }
@@ -211,6 +217,12 @@ namespace AceQL.Client.Api
             get
             {
                 TestIsClosed();
+
+                if (IsDBNull(ordinal))
+                {
+                    return null;
+                }
+
                 return valuesPerColIndex[ordinal];
             }
         }
@@ -284,6 +296,11 @@ namespace AceQL.Client.Api
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<Stream> GetStreamAsync(int ordinal)
         {
+            if (IsDBNull(ordinal))
+            {
+                return null;
+            }
+
             TestIsClosed();
             String blobId = GetString(ordinal);
 
@@ -310,8 +327,14 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return false;
+            }
+
             return Boolean.Parse(valuesPerColIndex[ordinal].ToString());
         }
+
 
         ///// <summary>
         ///// Gets the byte.
@@ -391,6 +414,11 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return DateTime.MinValue;
+            }
+
             String theDateTime = valuesPerColIndex[ordinal].ToString();
             long unixDate = Convert.ToInt64(theDateTime);
             DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -413,6 +441,11 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return 0;
+            }
+
             return Decimal.Parse(valuesPerColIndex[ordinal].ToString());
         }
 
@@ -429,6 +462,11 @@ namespace AceQL.Client.Api
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
+            }
+
+            if (IsDBNull(ordinal))
+            {
+                return 0;
             }
 
             return Double.Parse(valuesPerColIndex[ordinal].ToString());
@@ -470,6 +508,11 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return 0;
+            }
+
             return float.Parse(valuesPerColIndex[ordinal].ToString());
         }
 
@@ -499,6 +542,11 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return 0;
+            }
+
             return short.Parse(valuesPerColIndex[ordinal].ToString());
         }
 
@@ -517,6 +565,11 @@ namespace AceQL.Client.Api
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
             }
 
+            if (IsDBNull(ordinal))
+            {
+                return 0;
+            }
+
             return int.Parse(valuesPerColIndex[ordinal].ToString());
         }
 
@@ -533,6 +586,11 @@ namespace AceQL.Client.Api
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
+            }
+
+            if (IsDBNull(ordinal))
+            {
+                return 0;
             }
 
             return long.Parse(valuesPerColIndex[ordinal].ToString());
@@ -587,6 +645,11 @@ namespace AceQL.Client.Api
             if (!valuesPerColIndex.ContainsKey(ordinal))
             {
                 throw new AceQLException("No value found for ordinal: " + ordinal, 0, (Exception)null, (HttpStatusCode)200);
+            }
+
+            if (IsDBNull(ordinal))
+            {
+                return null;
             }
 
             return valuesPerColIndex[ordinal].ToString();
@@ -648,6 +711,11 @@ namespace AceQL.Client.Api
             }
             else
             {
+                if (IsDBNull(ordinal))
+                {
+                    return null;
+                }
+
                 // If we don't know ==> just object, user will do the cast...
                 return valuesPerColIndex[ordinal];
             }
@@ -665,7 +733,6 @@ namespace AceQL.Client.Api
         //    throw new NotImplementedException();
         //}
 
-        //   Gets a value that indicates whether the column contains non-existent or missing values.
 
         /// <summary>
         ///  Gets a value that indicates whether the column contains non-existent or missing values.

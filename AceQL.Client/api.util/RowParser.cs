@@ -163,6 +163,11 @@ namespace AceQL.Client.Api.Util
 
                         String colValue = reader.Value.ToString();
 
+                        if (colValue.Equals("NULL"))
+                        {
+                            colValue = null;
+                        }
+
                         if (colValue != null)
                         {
                             colValue = colValue.Trim();
