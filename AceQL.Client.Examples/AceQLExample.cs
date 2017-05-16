@@ -173,8 +173,6 @@ namespace AceQL.Client.Examples
 
             }
 
-            command.Dispose();
-
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
@@ -221,7 +219,7 @@ namespace AceQL.Client.Examples
                     command.Parameters.AddWithValue("@parm4", (double)j * 1000);
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
-                    command.Parameters.AddBlob("@parm7", stream, length);
+                    command.Parameters.AddWithValue("@parm7", stream, length);
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
@@ -231,7 +229,7 @@ namespace AceQL.Client.Examples
                     await command.ExecuteNonQueryAsync();
 
                 }
-                command.Dispose();
+
                 await transaction.CommitAsync();
             }
             catch (Exception exception)

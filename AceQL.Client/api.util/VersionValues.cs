@@ -72,6 +72,7 @@
 //16/05/2017 11:45 NDP: PortableFile & AceQLCommand: clean comments
 //16/05/2017 11:57 NDP: ProgressIndicator: clean comments
 //16/05/2017 13:15 NDP: AceQLException: rename errorId to errorType
+//16/05/2017 15:18 NDP: AceQLParameterCollection.AddBlob renamed to AceQLParameterCollection.AddWithValue
 // 
 namespace AceQL.Client.Api.Util
 {

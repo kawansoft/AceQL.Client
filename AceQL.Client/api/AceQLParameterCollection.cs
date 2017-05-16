@@ -257,13 +257,14 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Adds a BLOB parameter as a stream. to the end of the <see cref="AceQLParameterCollection"/>.
+        /// Adds a value to the end of the <see cref="AceQLParameterCollection"/>.
+        /// To be used for Blobs insert or update.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="stream">The BLOB stream to read.</param>
-        /// <param name="length">The BLOB stream length.</param>
-        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
-        public void AddBlob(string parameterName, Stream stream, long length)
+        /// <param name="stream">The Blob stream to read. Cannot ne bull. Use <see cref="AceQLCommand"/>.Parameters.addNullValue to pass a null value.</param>
+        /// <param name="length">The Blob stream length.</param>
+        /// <exception cref="System.ArgumentNullException">If parameterName or stream is null.</exception>
+        public void AddWithValue(string parameterName, Stream stream, long length)
         {
             if (parameterName == null)
             {
@@ -275,9 +276,7 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("stream is null!");
             }
 
-            AceQLParameter aceQLParameter = new AceQLParameter(parameterName, stream);
-            aceQLParameter.SqlType = SqlType.BLOB;
-            aceQLParameter.BlobLength = length;
+            AceQLParameter aceQLParameter = new AceQLParameter(parameterName, stream, length);
             aceqlParameters.Add(aceQLParameter);
             Debug(parameterName + " SqlType: " + aceQLParameter.SqlType);
         }

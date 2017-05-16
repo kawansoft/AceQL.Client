@@ -13,6 +13,7 @@
 // ***********************************************************************
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace AceQL.Client.Api
         /// The length of the BLOB to upload
         /// </summary>
         private long blobLength = 0;
+        private long length;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
@@ -70,6 +72,20 @@ namespace AceQL.Client.Api
             {
                 throw new ArgumentNullException("Parameter value cannot be null! Use AceQLCommand.Parameters.addNullValue to pass a null value.");
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
+        /// To be used for Blobs.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="value">The Blob stream. Cannot be null.</param>
+        /// <param name="length">The Blob stream length.</param>
+        /// <exception cref="System.ArgumentNullException">If parameterName or value is null.</exception>
+        public AceQLParameter(string parameterName, Stream value, long length) : this(parameterName, value)
+        {
+            this.blobLength = length;
+            this.SqlType = SqlType.BLOB;
         }
 
 
@@ -140,10 +156,6 @@ namespace AceQL.Client.Api
                 return blobLength;
             }
 
-            set
-            {
-                blobLength = value;
-            }
         }
 
         /// <summary>
