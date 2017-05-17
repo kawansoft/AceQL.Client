@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*
+ * This file is part of AceQL C# Client SDK.
+ * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
+ * Copyright (C) 2017,  KawanSoft SAS
+ * (http://www.kawansoft.com). All rights reserved.                                
+ *                                                                               
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. 
+ */
+
+using System;
 
 //29/04/2017 20:38 NDP: begin remove all System.Data references
 //30/04/2017 21:17 NDP: version use streams fro Blob, no more file because of Portable Library project
@@ -79,7 +98,8 @@
 //17/05/2017 14:28 NDP: AceQLParameterCollection: support add parameter version with stream for BLOB, without length
 //17/05/2017 15:44 NDP: Clean comments everywhere and add new line for long comments
 //17/05/2017 17:14 NDP: Remove header notices
-// 
+//17/05/2017 17:14 NDP: Add Apache 2.0 notice to all files
+
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
