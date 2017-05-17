@@ -40,10 +40,10 @@
     <Folder Include="Tests\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\PortableFile.cs" />
-    <Compile Include="Api.Http2\AceQLHttpApi.cs" />
-    <Compile Include="Api.Http2\FormUploadStream.cs" />
-    <Compile Include="Api.Http2\Proxy.cs" />
+    <Compile Include="Api.File\PortableFile.cs" />
+    <Compile Include="Api.Http\AceQLHttpApi.cs" />
+    <Compile Include="Api.Http\FormUploadStream.cs" />
+    <Compile Include="Api.Http\Proxy.cs" />
     <Compile Include="Api.Util\AceQLCommandUtil.cs" />
     <Compile Include="Api\AceQLCredential.cs" />
     <Compile Include="Api.Util\AceQLTypes.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="Api\AceQLParameter.cs" />
     <Compile Include="Api\AceQLParameterCollection.cs" />
     <Compile Include="Api\AceQLTransaction.cs" />
-    <Compile Include="Api\ProgressIndicator.cs" />
+    <Compile Include="Api.File\ProgressIndicator.cs" />
     <Compile Include="Api\SqlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,7 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Api\PCLStorage_LICENSE" />
+    <None Include="Api.File\PCLStorage_LICENSE" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
