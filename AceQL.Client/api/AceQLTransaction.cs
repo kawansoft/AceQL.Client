@@ -1,17 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : AceQL.Client
-// Author           : Nicolas de Pomereu
-// Created          : 02-21-2017
-//
-// Last Modified By : Nicolas de Pomereu
-// Last Modified On : 02-25-2017
-// ***********************************************************************
-// <copyright file="AceQLTransaction.cs" company="KawanSoft">
-//     Copyright ©  2017
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-
+﻿
 using AceQL.Client.Api.Http;
 using System;
 using System.Threading.Tasks;

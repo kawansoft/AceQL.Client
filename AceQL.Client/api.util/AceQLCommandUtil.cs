@@ -1,16 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : AceQL.Client
-// Author           : Nicolas de Pomereu
-// Created          : 02-22-2017
-//
-// Last Modified By : Nicolas de Pomereu
-// Last Modified On : 02-25-2017
-// ***********************************************************************
-// <copyright file="AceQLCommandUtil.cs" company="KawanSoft">
-//     Copyright ©  2017
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
+﻿
 using PCLStorage;
 using System;
 using System.Collections.Generic;

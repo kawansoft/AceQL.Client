@@ -78,6 +78,7 @@
 //16/05/2017 21:23 NDP: Clean AceQLParameterCollection comments
 //17/05/2017 14:28 NDP: AceQLParameterCollection: support add parameter version with stream for BLOB, without length
 //17/05/2017 15:44 NDP: Clean comments everywhere and add new line for long comments
+//17/05/2017 17:14 NDP: Remove header notices
 // 
 namespace AceQL.Client.Api.Util
 {
