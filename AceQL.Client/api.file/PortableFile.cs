@@ -29,8 +29,11 @@ using PCLStorage;
 namespace AceQL.Client.Api.File
 {
     /// <summary>
+    /// Class a <see cref="PortableFile"/>
+    /// <para/>
     /// Equivalent in our Portable Class Library of Windows System.IO.File for some important methods not included
     /// in PCLStorage, such as AppendAllTextAsync() or GetLengthAsync().
+    /// <para/>
     /// Methods are all async, as storage methods are async on some OS.
     /// Implementation uses PCLStorage (https://github.com/dsplaisted/PCLStorage).
     /// </summary>

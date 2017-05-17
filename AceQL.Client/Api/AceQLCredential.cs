@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
  * Copyright (C) 2017,  KawanSoft SAS

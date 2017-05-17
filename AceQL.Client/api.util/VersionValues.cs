@@ -99,7 +99,8 @@ using System;
 //17/05/2017 15:44 NDP: Clean comments everywhere and add new line for long comments
 //17/05/2017 17:14 NDP: Remove header notices
 //17/05/2017 17:14 NDP: Add Apache 2.0 notice to all files
-
+//17/05/2017 17:39 NDP: PortableFile: clean comments
+// s
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
