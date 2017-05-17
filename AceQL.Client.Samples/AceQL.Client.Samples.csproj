@@ -53,9 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AceQLExample.cs" />
-    <Compile Include="MainStart.cs" />
-    <Compile Include="MyRemoteConnection.cs" />
+    <Compile Include="Src\AceQLExample.cs" />
+    <Compile Include="Src\MainStart.cs" />
+    <Compile Include="Src\MyRemoteConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
