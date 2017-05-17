@@ -40,7 +40,7 @@
     <Folder Include="Tests\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api.File\PortableFile.cs" />
+    <Compile Include="Api\PortableFile.cs" />
     <Compile Include="Api.Http\AceQLHttpApi.cs" />
     <Compile Include="Api.Http\FormUploadStream.cs" />
     <Compile Include="Api.Http\Proxy.cs" />
@@ -95,7 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Api.File\PCLStorage_LICENSE" />
+    <None Include="Api\PCLStorage_LICENSE" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
