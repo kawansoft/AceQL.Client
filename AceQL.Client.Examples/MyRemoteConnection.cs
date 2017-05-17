@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Api.Examples
+namespace AceQL.Client.Samples
 {
     /// <summary>
     /// This example: 

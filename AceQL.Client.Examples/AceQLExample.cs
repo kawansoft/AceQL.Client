@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Examples
+namespace AceQL.Client.Samples
 {
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
