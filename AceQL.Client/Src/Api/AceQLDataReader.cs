@@ -74,19 +74,9 @@ namespace AceQL.Client.Api
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         internal AceQLDataReader(IFile file, Stream readStream, int rowsCount, AceQLConnection connection)
         {
-            if (file == null)
-            {
-                throw new ArgumentNullException("file is null!");
-            }
-
-            if (connection == null)
-            {
-                throw new ArgumentNullException("connection is null!");
-            }
-
-            this.file = file;
+            this.file = file ?? throw new ArgumentNullException("file is null!");
             this.rowsCount = rowsCount;
-            this.connection = connection;
+            this.connection = connection ?? throw new ArgumentNullException("connection is null!");
 
             this.aceQLHttpApi = connection.aceQLHttpApi;
 

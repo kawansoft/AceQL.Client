@@ -47,12 +47,7 @@ namespace AceQL.Client.Api
         /// <exception cref="System.ArgumentNullException">If cmdText is null.</exception>
         internal AceQLParameterCollection(string cmdText)
         {
-            if (cmdText == null)
-            {
-                throw new ArgumentNullException("cmdText is null!");
-            }
-
-            this.cmdText = cmdText;
+            this.cmdText = cmdText ?? throw new ArgumentNullException("cmdText is null!");
         }
 
         /// <summary>
@@ -89,7 +84,7 @@ namespace AceQL.Client.Api
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
@@ -114,7 +109,7 @@ namespace AceQL.Client.Api
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
@@ -237,9 +232,11 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("parameterName is null!");
             }
 
-            AceQLParameter aceQLParameter = new AceQLParameter(parameterName, "NULL");
-            aceQLParameter.IsNullValue = true;
-            aceQLParameter.SqlType = sqlType;
+            AceQLParameter aceQLParameter = new AceQLParameter(parameterName, "NULL")
+            {
+                IsNullValue = true,
+                SqlType = sqlType
+            };
             aceqlParameters.Add(aceQLParameter);
             
             //debug(parameterName + " SqlType: " + aceQLParameter.SqlType);

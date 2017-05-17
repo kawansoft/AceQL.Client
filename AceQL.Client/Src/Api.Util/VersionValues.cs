@@ -106,6 +106,7 @@ using System;
 //17/05/2017 22:59 NDP: AceQLTransaction: clean comments
 //17/05/2017 01:09 NDP: Src folder is root for source files
 //17/05/2017 01:27 NDP: Simplify Null Check 
+//17/05/2017 01:38 NDP: Simplify Null Check
 // 
 namespace AceQL.Client.Api.Util
 {
