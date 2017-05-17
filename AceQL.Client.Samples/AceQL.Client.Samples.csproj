@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AceQL.Client\AceQL.Client.csproj">
-      <Project>{A4EC12FC-F5D4-4396-B6DF-07E14B792871}</Project>
+      <Project>{830785e7-4388-452a-95cc-dcc9c6f38e13}</Project>
       <Name>AceQL.Client</Name>
     </ProjectReference>
   </ItemGroup>

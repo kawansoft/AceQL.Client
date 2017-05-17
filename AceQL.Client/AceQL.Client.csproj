@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4EC12FC-F5D4-4396-B6DF-07E14B792871}</ProjectGuid>
+    <ProjectGuid>{830785E7-4388-452A-95CC-DCC9C6F38E13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AceQL.Client</RootNamespace>
