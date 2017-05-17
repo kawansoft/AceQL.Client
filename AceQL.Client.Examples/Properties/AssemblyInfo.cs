@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AceQL.Client.Examples")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("AceQL.Client.Samples")]
+[assembly: AssemblyDescription("AceQL.Client Console Application Samples")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AceQL.Client.Examples")]
+[assembly: AssemblyCompany("KawanSoft")]
+[assembly: AssemblyProduct("AceQL.Client.Samples")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

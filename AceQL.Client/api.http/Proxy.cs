@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Api.Http
 {
     /// <summary>
-    /// Class to allow to pass a proxyUri, if we don't want to use the default System.Net.WebRequest.DefaultWebProxy.
+    /// <see cref="Proxy"/>Class. Allow to pass a proxyUri, if we don't want to use the default <see cref="System.Net.WebRequest"/>.DefaultWebProxy
     /// </summary>
     internal class Proxy : IWebProxy
     {
@@ -35,7 +35,7 @@ namespace AceQL.Client.Api.Http
         String proxyUri = null;
 
         /// <summary>
-        /// Builds an IWebProxy implementation.
+        /// Builds an  <see cref="IWebProxy"/> implementation.
         /// </summary>
         /// <param name="proxyUri">The proxy URI. Example: http://localhost:8080.</param>
         /// 

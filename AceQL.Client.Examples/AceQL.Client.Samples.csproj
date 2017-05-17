@@ -7,8 +7,8 @@
     <ProjectGuid>{2084D7CF-95C3-431E-9D42-90A59A0CE1CC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AceQL.Client.Examples</RootNamespace>
-    <AssemblyName>AceQL.Client.Examples</AssemblyName>
+    <RootNamespace>AceQL.Client.Samples</RootNamespace>
+    <AssemblyName>AceQL.Client.Samples</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
