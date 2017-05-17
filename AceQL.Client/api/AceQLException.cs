@@ -51,9 +51,9 @@ namespace AceQL.Client.Api
         private Exception exceptionCause;
 
         /// <summary>
-        /// Gets the reason.
+        /// Gets the error message.
         /// </summary>
-        /// <value>The reason.</value>
+        /// <value>The error message.</value>
         public string Reason
         {
             get
@@ -63,7 +63,14 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the error type.
+        /// Gets the error type:
+        /// <list type="table">
+        /// <item><description>0 for local <see cref="AceQLException"/>.</description></item>
+        /// <item><description>1 for JDBC Driver Exception on the server.</description></item>
+        /// <item><description>2 for AceQL Java Exception on the server.</description></item>
+        /// <item><description>3 for AceQL Security Exception on the server.</description></item>
+        /// <item><description>4 for AceQL failure.</description></item>
+        /// </list>
         /// </summary>
         /// <value>The error type.</value>
         public int ErrorType
@@ -120,7 +127,7 @@ namespace AceQL.Client.Api
         /// <param name="errorType">The error type.</param>
         /// <param name="exceptionCause">The <see cref="Exception"/> cause.</param>
         /// <param name="httpStatusCode">The http status code.</param>
-        public AceQLException(string reason, int errorType, Exception exceptionCause, HttpStatusCode httpStatusCode)
+        internal AceQLException(string reason, int errorType, Exception exceptionCause, HttpStatusCode httpStatusCode)
         {
             this.reason = reason;
             this.errorType = errorType;
@@ -137,7 +144,7 @@ namespace AceQL.Client.Api
         /// <param name="errorType">The error type.</param>
         /// <param name="remoteStackTrace">The remote Java stack trace.</param>
         /// <param name="httpStatusCode">The http status code.</param>
-        public AceQLException(string reason, int errorType, string remoteStackTrace, HttpStatusCode httpStatusCode)
+        internal AceQLException(string reason, int errorType, string remoteStackTrace, HttpStatusCode httpStatusCode)
         {
             this.reason = reason;
             this.errorType = errorType;
