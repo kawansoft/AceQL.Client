@@ -104,7 +104,7 @@ using System;
 //17/05/2017 19:42 NDP: All classes named "*Analyser*" renamed ro "*Analyzer*" because of meaning of US word
 //17/05/2017 21:12 NDP: AceQLException: all constructor are public, as user may want to reuse it.
 //17/05/2017 22:59 NDP: AceQLTransaction: clean comments
-//17/05/2017 00:59 NDP: Src folder is root for source files
+//17/05/2017 01:09 NDP: Src folder is root for source files
 // 
 namespace AceQL.Client.Api.Util
 {
