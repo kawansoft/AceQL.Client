@@ -150,7 +150,7 @@ namespace AceQL.Client.Examples
         /// <summary>
         /// Example of 2 INSERT in the same transaction.
         /// </summary>
-        /// <param name="customerId">The cutomer ID.</param>
+        /// <param name="customerId">The customer ID.</param>
         /// <param name="itemId">the item ID.</param>
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public async Task InsertCustomerAndOrderLogAsync(int customerId, int itemId)

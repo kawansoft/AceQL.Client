@@ -180,7 +180,7 @@ namespace AceQL.Client.Api.Util
                             colValue = colValue.Trim();
                         }
 
-                        // because it's start at 0 on C# insted of 1 in JDBC
+                        // because it's start at 0 on C# instead of 1 in JDBC
                         colIndex--;
 
                         Trace("" + colValue);

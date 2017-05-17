@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Api.Util
 {
     /// <summary>
-    /// Parametets for SDK.
+    /// Parameters for SDK.
     /// </summary>
     internal class Parms
     {

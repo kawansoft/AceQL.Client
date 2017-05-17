@@ -49,10 +49,10 @@
     <Compile Include="Api.Util\ConsoleEmul.cs" />
     <Compile Include="Api.Util\Parms.cs" />
     <Compile Include="Api.Util\PrepStatementParameter.cs" />
-    <Compile Include="Api.Util\ResultAnalyser.cs" />
+    <Compile Include="Api.Util\ResultAnalyzer.cs" />
     <Compile Include="Api.Util\RowCounter.cs" />
     <Compile Include="Api.Util\RowParser.cs" />
-    <Compile Include="Api.Util\StreamResultAnalyser.cs" />
+    <Compile Include="Api.Util\StreamResultAnalyzer.cs" />
     <Compile Include="Api.Util\Version.cs" />
     <Compile Include="Api.Util\VersionValues.cs" />
     <Compile Include="Api\AceQLCommand.cs" />

@@ -75,7 +75,7 @@ using System;
 //13/05/2017 22:09 NDP: AceQLConnection: CancellationTokenSource, if set, is used on all http calls
 //14/05/2017 03:03 NDP: AceQLHttpApi.CallWithGetReturnStreamAsync: fix but on twice http calls
 //15/05/2017 15:11 NDP: AceQLConnection is now closed with AceQLConnection.CloseAsync
-//15/05/2017 16:16 NDP: Add all possible constructors to AceCommand for user confort
+//15/05/2017 16:16 NDP: Add all possible constructors to AceCommand for user comfort
 //15/05/2017 17:02 NDP: Add ReadAsync to AceQLDataReader
 //15/05/2017 17:33 NDP: AceQLHttpApi.DecodeConnectionString: treat case some empty alone ";" in connection strings. Test AceQLCredential usage  
 //15/05/2017 17:53 NDP: Add AceQLHttpApi.Prepare
@@ -101,7 +101,8 @@ using System;
 //17/05/2017 17:14 NDP: Add Apache 2.0 notice to all files
 //17/05/2017 17:39 NDP: PortableFile: clean comments
 //17/05/2017 18:17 NDP: AceQLException: clean comments
-
+//17/05/2017 19:42 NDP: All classes named "*Analyser*" renamed ro "*Analyzer*" because of meaning of US word
+// 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues

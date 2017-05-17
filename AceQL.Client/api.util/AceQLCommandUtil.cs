@@ -251,7 +251,7 @@ namespace AceQL.Client.Api.Util
         }
 
         /// <summary>
-        /// Gets the prepared statement parameters dictionnary.
+        /// Gets the prepared statement parameters dictionary.
         /// </summary>
         /// <returns>Dictionary&lt;String, System.Int32&gt;.</returns>
         /// <exception cref="System.ArgumentException">Invalid parameter not exists in SQL command: " + theParm</exception>

@@ -153,7 +153,7 @@ namespace AceQL.Client.Examples
             sql = "select * from customer";
             command = new AceQLCommand(sql, connection);
 
-            // Our dataReader must be disposed to delete underlying dowloaded files
+            // Our dataReader must be disposed to delete underlying downloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
                 //await dataReader.ReadAsync(new CancellationTokenSource().Token)

@@ -192,16 +192,16 @@ namespace AceQL.Client.Api.Http
                 String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
                 ConsoleEmul.WriteLine("result: " + result);
 
-                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-                if (!resultAnalyser.IsStatusOk())
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorId(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
                         httpStatusCode);
                 }
 
-                String theSessionId = resultAnalyser.GetValue("session_id");
+                String theSessionId = resultAnalyzer.GetValue("session_id");
 
                 this.url = server + "/session/" + theSessionId + "/";
                 await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
@@ -676,12 +676,12 @@ namespace AceQL.Client.Api.Http
 
                 String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
 
-                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-                if (!resultAnalyser.IsStatusOk())
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorId(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
                         httpStatusCode);
                 }
 
@@ -722,16 +722,16 @@ namespace AceQL.Client.Api.Http
 
                 String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
 
-                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-                if (!resultAnalyser.IsStatusOk())
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorId(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
                         httpStatusCode);
                 }
 
-                return resultAnalyser.GetResult();
+                return resultAnalyzer.GetResult();
 
             }
             catch (Exception exception)
@@ -853,16 +853,16 @@ namespace AceQL.Client.Api.Http
                     result = new StreamReader(input).ReadToEnd();
                 }
 
-                ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-                if (!resultAnalyser.IsStatusOk())
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorId(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
                         httpStatusCode);
                 }
 
-                int rowCount = resultAnalyser.GetIntvalue("row_count");
+                int rowCount = resultAnalyzer.GetIntvalue("row_count");
                 return rowCount;
 
             }
@@ -947,16 +947,16 @@ namespace AceQL.Client.Api.Http
 
             }
 
-            ResultAnalyser resultAnalyser = new ResultAnalyser(result, httpStatusCode);
-            if (!resultAnalyser.IsStatusOk())
+            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+            if (!resultAnalyzer.IsStatusOk())
             {
-                throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                    resultAnalyser.GetErrorId(),
-                    resultAnalyser.GetStackTrace(),
+                throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                    resultAnalyzer.GetErrorId(),
+                    resultAnalyzer.GetStackTrace(),
                     httpStatusCode);
             }
 
-            String lengthStr = resultAnalyser.GetValue("length");
+            String lengthStr = resultAnalyzer.GetValue("length");
             long length = Convert.ToInt64(lengthStr);
             return length;
 

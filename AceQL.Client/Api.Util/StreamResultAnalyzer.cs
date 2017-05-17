@@ -29,9 +29,9 @@ using PCLStorage;
 namespace AceQL.Client.Api.Util
 {
     /// <summary>
-    /// Class StreamResultAnalyser. Allows to analyze the result of a downloaded result of a SQL query stored in a local PC file.
+    /// Class <see cref="StreamResultAnalyzer"/>. Allows to analyze the result of a downloaded result of a SQL query stored in a local PC file.
     /// </summary>
-    internal class StreamResultAnalyser
+    internal class StreamResultAnalyzer
     {
         /// <summary>
         /// The error identifier
@@ -53,12 +53,12 @@ namespace AceQL.Client.Api.Util
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamResultAnalyser"/> class.
+        /// Initializes a new instance of the <see cref="StreamResultAnalyzer"/> class.
         /// </summary>
         /// <param name="file">The file to analyze.</param>
         /// <param name="httpStatusCode">The http status code.</param>
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
-        public StreamResultAnalyser(IFile file, HttpStatusCode httpStatusCode)
+        public StreamResultAnalyzer(IFile file, HttpStatusCode httpStatusCode)
         {
             if (file == null)
             {

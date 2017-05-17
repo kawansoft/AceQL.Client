@@ -29,9 +29,9 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Api.Util
 {
     /// <summary>
-    /// Class ResultAnalyser. Used to analyze a JSON response from the AceQL server.
+    /// Class <see cref="ResultAnalyzer"/>. Used to analyze a JSON response from the AceQL server.
     /// </summary>
-    internal class ResultAnalyser
+    internal class ResultAnalyzer
     {
         /// <summary>
         /// The json result
@@ -48,12 +48,12 @@ namespace AceQL.Client.Api.Util
         private Exception parseException = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResultAnalyser"/> class.
+        /// Initializes a new instance of the <see cref="ResultAnalyzer"/> class.
         /// </summary>
         /// <param name="jsonResult">The json result.</param>
         /// <param name="httpStatusCode">The http status code.</param>
         /// <exception cref="System.ArgumentNullException">jsonResult is null!</exception>
-        public ResultAnalyser(string jsonResult, HttpStatusCode httpStatusCode)
+        public ResultAnalyzer(string jsonResult, HttpStatusCode httpStatusCode)
         {
             this.httpStatusCode = httpStatusCode;
             this.jsonResult = jsonResult;
@@ -134,7 +134,7 @@ namespace AceQL.Client.Api.Util
         }
 
         /// <summary>
-        /// Gest the result for the key name "result"
+        /// Gets the result for the key name "result"
         /// </summary>
         /// <returns></returns>
         public String GetResult()

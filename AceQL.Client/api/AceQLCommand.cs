@@ -292,12 +292,12 @@ namespace AceQL.Client.Api
                     }
                 }
 
-                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(file, aceQLHttpApi.httpStatusCode);
-                if (!await resultAnalyser.IsStatusOkAsync().ConfigureAwait(false))
+                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.httpStatusCode);
+                if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorType(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(streamResultAnalyzer.GetErrorMessage(),
+                        streamResultAnalyzer.GetErrorType(),
+                        streamResultAnalyzer.GetStackTrace(),
                         aceQLHttpApi.httpStatusCode);
                 }
 
@@ -385,17 +385,17 @@ namespace AceQL.Client.Api
 
                 }
 
-                StreamResultAnalyser resultAnalyser = new StreamResultAnalyser(file, aceQLHttpApi.httpStatusCode);
-                if (!await resultAnalyser.IsStatusOkAsync().ConfigureAwait(false))
+                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.httpStatusCode);
+                if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
                 {
-                    throw new AceQLException(resultAnalyser.GetErrorMessage(),
-                        resultAnalyser.GetErrorType(),
-                        resultAnalyser.GetStackTrace(),
+                    throw new AceQLException(streamResultAnalyzer.GetErrorMessage(),
+                        streamResultAnalyzer.GetErrorType(),
+                        streamResultAnalyzer.GetStackTrace(),
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowcounter = new RowCounter(file);
-                int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
+                RowCounter rowCounter = new RowCounter(file);
+                int rowsCount = await rowCounter.CountAsync().ConfigureAwait(false);
 
                 Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
 
