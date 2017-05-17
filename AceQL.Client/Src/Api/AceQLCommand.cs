@@ -120,12 +120,7 @@ namespace AceQL.Client.Api
         /// </exception>
         public AceQLCommand(string cmdText, AceQLConnection connection, AceQLTransaction transaction) : this(cmdText, connection)
         {
-            if (transaction == null)
-            {
-                throw new ArgumentNullException("transaction is null!");
-            }
-
-            this.transaction = transaction;
+            this.transaction = transaction ?? throw new ArgumentNullException("transaction is null!");
         }
 
         /// <summary>
@@ -451,9 +446,11 @@ namespace AceQL.Client.Api
                 // Replace all @parms with ? in sql command
                 cmdText = aceQLCommandUtil.ReplaceParmsWithQuestionMarks();
 
-                Dictionary<string, string> parametersMap = new Dictionary<string, string>();
-                parametersMap.Add("sql", cmdText);
-                parametersMap.Add("prepared_statement", "true");
+                Dictionary<string, string> parametersMap = new Dictionary<string, string>
+                {
+                    { "sql", cmdText },
+                    { "prepared_statement", "true" }
+                };
 
                 //statementParameters.ToList().ForEach(x => parametersMap.Add(x.Key, x.Value));
                 List<string> keyList = new List<string>(statementParameters.Keys);
@@ -510,12 +507,7 @@ namespace AceQL.Client.Api
 
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("cmdText is null!");
-                }
-
-                this.cmdText = value;
+                this.cmdText = value ?? throw new ArgumentNullException("cmdText is null!");
                 parameters = new AceQLParameterCollection(cmdText);
             }
         }
@@ -552,14 +544,9 @@ namespace AceQL.Client.Api
 
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("transaction is null!");
-                }
-
-                this.transaction = value;
+                this.transaction = value ?? throw new ArgumentNullException("transaction is null!");
             }
-
+        
         }
 
         /// <summary>
