@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\PortableFile.cs" />
-    <Compile Include="Api.Http\AceQLHttpApi.cs" />
-    <Compile Include="Api.Http\FormUploadStream.cs" />
-    <Compile Include="Api.Http\Proxy.cs" />
+    <Compile Include="Api.Http2\AceQLHttpApi.cs" />
+    <Compile Include="Api.Http2\FormUploadStream.cs" />
+    <Compile Include="Api.Http2\Proxy.cs" />
     <Compile Include="Api.Util\AceQLCommandUtil.cs" />
     <Compile Include="Api\AceQLCredential.cs" />
     <Compile Include="Api.Util\AceQLTypes.cs" />
