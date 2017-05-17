@@ -1,11 +1,12 @@
-﻿using System;
+﻿using AceQL.Client.Examples;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Examples
+namespace AceQL.Client.Api.Examples
 {
     class MainStart
     {
