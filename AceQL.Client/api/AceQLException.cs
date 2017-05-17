@@ -18,7 +18,7 @@ using System.Net;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class <see cref="AceQLException"/>. All client and server side exceptions raised are wrapped in a <see cref="AceQLException"/>.
+    /// Class <see cref="AceQLException"/>. All client and server side exceptions raised are wrapped in an <see cref="AceQLException"/>.
     /// </summary>
     public class AceQLException : Exception
     {

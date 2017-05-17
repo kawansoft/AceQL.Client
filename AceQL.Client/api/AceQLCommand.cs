@@ -103,7 +103,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLCommand"/> class with the text of the query and a 
-        /// <see cref="AceQLConnection"/>, and the System.Data.SqlClient.SqlTransaction.
+        /// <see cref="AceQLConnection"/>, and the <see cref="AceQLTransaction"/>.
         /// </summary>
         /// <param name="cmdText">The text of the query.</param>
         /// <param name="connection">A <see cref="AceQLConnection"/> that represents the connection to a remote database.</param>
@@ -123,7 +123,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Sends the <see cref="AceQLCommand"/>.CommandText to the <see cref="AceQLConnection"/> and builds an <see cref="AceQLDataReader"/>.
-        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
+        /// <para/>The cancellation token can be used to can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
@@ -182,7 +182,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Executes the SQL statement against the connection and returns the number of rows affected.
-        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
+        /// <para/>The cancellation token can be used to can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>The number of rows affected.</returns>
@@ -231,7 +231,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Executes the query as statement.
-        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
+        /// <para/>The cancellation token can be used to can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
@@ -294,8 +294,8 @@ namespace AceQL.Client.Api
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowcounter = new RowCounter(file);
-                int rowsCount = await rowcounter.CountAsync().ConfigureAwait(false);
+                RowCounter rowCounter = new RowCounter(file);
+                int rowsCount = await rowCounter.CountAsync().ConfigureAwait(false);
 
                 Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
 

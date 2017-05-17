@@ -52,7 +52,7 @@ namespace AceQL.Client.Examples
             String serverUrlLinux = "http://www.aceql.com:9090/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            String server = serverUrlLocalhost;
+            String server = serverUrlLinux;
             String database = "kawansoft_example";
             String username = "username";
             String password = "password";

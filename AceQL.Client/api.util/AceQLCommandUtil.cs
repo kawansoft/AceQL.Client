@@ -129,7 +129,6 @@ namespace AceQL.Client.Api.Util
             {
                 AceQLParameter aceQLParameter = Parameters.GetAceQLParameter(parameter.Key);
                 int paramIndex = parameter.Value;
-                //DbType dbType = aceQLParameter.DbType;
                 SqlType sqlType = aceQLParameter.SqlType;
                 Object value = aceQLParameter.Value;
 
@@ -142,14 +141,15 @@ namespace AceQL.Client.Api.Util
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, "NULL");
                 }
-                else if (sqlType == SqlType.BLOB)
+                else if (value is Stream)
                 {
-                    Stream stream = (Stream)value;
+                    // All streams are blob for now
+                    // This will be enhanced in future version
 
                     String blobId = BuildUniqueBlobId();
 
                     blobIds.Add(blobId);
-                    blobStreams.Add(stream);
+                    blobStreams.Add((Stream)value);
                     blobLengths.Add(aceQLParameter.BlobLength);
 
                     String paramType = "BLOB";

@@ -27,7 +27,7 @@ namespace AceQL.Client.Api
     /// <summary>
     /// Class <see cref="AceQLDataReader"/>. Provides a way of reading a forward-only stream of rows from a remote database
     /// transferred in a local file.
-    /// Note that all data of the stream are already downloaded when <see cref="AceQLDataReader"/> is created.
+    /// <para/>Note that all data of the stream are already downloaded when <see cref="AceQLDataReader"/> is created.
     /// </summary>
     public class AceQLDataReader : IDisposable
     {
@@ -133,6 +133,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Advances the reader to the next record. 
         /// Method is provided only for consistency: same method exists in SQLServer SqlDataReader class.
+        /// <para/>
         /// It's cleaner to use <see cref="AceQLDataReader"/>.Read() because data are read from a <see cref="TextReader"/> 
         /// (all data are already downloaded when <see cref="AceQLDataReader"/> is created.)
         /// </summary>
@@ -240,10 +241,9 @@ namespace AceQL.Client.Api
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance has rows.
+        /// <summary>Gets a value that indicates whether the <see cref="AceQLDataReader"/> contains one or more rows.
         /// </summary>
-        /// <value><c>true</c> if this instance has rows; otherwise, <c>false</c>.</value>
+        /// <value>true if the <see cref="AceQLDataReader"/> contains one or more rows; otherwise.</value>
         public bool HasRows
         {
             get
@@ -254,7 +254,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Retrieves a Boolean value that indicates whether the specified <see cref="AceQLDataReader"/>
+        /// Retrieves a Boolean value that indicates whether the specified <see cref="AceQLDataReader"/> 
         /// instance has been closed.
         /// </summary>
         /// <value>true if the specified <see cref="AceQLDataReader"/> instance is closed; otherwise false.</value>
@@ -269,7 +269,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Downloads the Blob and gets the stream.
-        /// The cancellation token can be used to request that the operation be abandoned before the http request timeout.
+        /// <para/>The cancellation token can be used to can be used to request that the operation be abandoned before the http request timeout.
         /// </summary>
         /// <param name="ordinal">The ordinal.</param>
         /// <param name="cancellationToken">The cancellation instruction.</param>
@@ -289,10 +289,10 @@ namespace AceQL.Client.Api
             }
         }
         /// <summary>
-        /// Downloads the Blob and gets the stream.
+        /// Downloads the Blob and gets a reading <see cref="Stream"/>.
         /// </summary>
         /// <param name="ordinal">The ordinal.</param>
-        /// <returns>The Stream to read the downloaded Blob.</returns>
+        /// <returns>The <see cref="Stream"/> to read the downloaded Blob.</returns>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task<Stream> GetStreamAsync(int ordinal)
         {
@@ -400,7 +400,7 @@ namespace AceQL.Client.Api
         //}
 
         /// <summary>
-        /// Gets the value of the specified column as a DateTime.
+        /// Gets the value of the specified column as a <see cref="DateTime"/>.
         /// </summary>
         /// <param name="ordinal">The zero-based column ordinal.</param>
         /// <returns>The value of the specified column.</returns>

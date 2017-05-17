@@ -119,8 +119,8 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Commits the database transaction. 
-        /// Note that this call will put the remote connection in auto commit mode on after commit.
+        /// Commits the remote database transaction. 
+        /// <para/>Note that this call will put the remote connection in auto commit mode on after Commit.
         /// </summary>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task CommitAsync()
@@ -130,7 +130,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Rolls back a transaction from a pending state.
-        /// Note that this call will put the remote connection in auto commit mode on after rollback.
+        /// <para/>Note that this call will put the remote connection in auto commit mode on after Rollback.
         /// </summary>
         /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
         public async Task RollbackAsync()
@@ -140,9 +140,11 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Disposes this instance. Call is optional as it does nothing. It is provided to ease code migration as SQL Server SqlTransaction is <see cref="IDisposable"/>.
-        /// <see cref="AceQLTransaction"/>.CommitAsync and <see cref="AceQLTransaction"/>.RollbackAsync() reset the server auto commit mode to true.
-        /// connection.
+        /// Optional call, does nothing.
+        /// The opened <see cref="AceQLTransaction"/> must be closed  by an <see cref="AceQLTransaction"/>.CommitAsync 
+        /// or an <see cref="AceQLTransaction"/>.RollbackAsync.
+        /// 
+        /// <para/>Method is provided for consistency a SQL Server SqlTransaction is <see cref="IDisposable"/>.
         /// </summary>
         public void Dispose()
         {

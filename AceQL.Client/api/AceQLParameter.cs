@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Represents a parameter to an AceQL.Client.api.AceQLCommand.
+    /// Represents a parameter to an <see cref="AceQLCommand"/>.
     /// </summary>
     public class AceQLParameter
     {
@@ -45,7 +45,6 @@ namespace AceQL.Client.Api
         /// The length of the BLOB to upload
         /// </summary>
         private long blobLength = 0;
-        private long length;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
@@ -85,7 +84,6 @@ namespace AceQL.Client.Api
         public AceQLParameter(string parameterName, Stream value, long length) : this(parameterName, value)
         {
             this.blobLength = length;
-            this.SqlType = SqlType.BLOB;
         }
 
 

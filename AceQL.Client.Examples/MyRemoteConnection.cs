@@ -36,11 +36,8 @@ namespace AceQL.Client.Examples
                 AceQLConnection.SetTraceOn(true);
 
                 // Make sure connection is always closed to close and release server connection into the pool
-                using (AceQLConnection connection = connectionBuilder())
+                using (AceQLConnection connection = await connectionBuilderAsync())
                 {
-                    // Opens the connection with the remote database
-                    await connection.OpenAsync();
-
                     MyRemoteConnection myRemoteConnection = new MyRemoteConnection(
                         connection);
 
@@ -76,11 +73,11 @@ namespace AceQL.Client.Examples
 
         /// <summary>
         /// RemoteConnection Quick Start client example.
-        /// Creates a Connection to a remote database.
+        /// Creates a Connection to a remote database and open it.
         /// </summary>
         /// <returns>The connection to the remote database</returns>
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
-        public static AceQLConnection connectionBuilder()
+        public static async Task<AceQLConnection> connectionBuilderAsync()
         {
             // Port number is the port number used to start the Web Server:
             //String server = "http://www.aceql.com:9090/aceql";
@@ -96,6 +93,10 @@ namespace AceQL.Client.Examples
                 + $"Username={username}; Password={password}";
 
             AceQLConnection connection = new AceQLConnection(connectionString);
+
+            // Opens the connection with the remote database
+            await connection.OpenAsync();
+
             return connection;
         }
 

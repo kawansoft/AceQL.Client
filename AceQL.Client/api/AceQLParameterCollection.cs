@@ -218,7 +218,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Add a null value for a <see cref="AceQLParameter"/>, and precise the parameter's <see cref="SqlType"/>.
+        /// Adds a null value to the end of the <see cref="AceQLParameterCollection"/> with the parameter's <see cref="SqlType"/>.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="sqlType">The <see cref="SqlType"/>of the parameter.</param>

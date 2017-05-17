@@ -74,8 +74,10 @@
 //16/05/2017 13:15 NDP: AceQLException: rename errorId to errorType
 //16/05/2017 15:18 NDP: AceQLParameterCollection.AddBlob renamed to AceQLParameterCollection.AddWithValue
 //16/05/2017 16:19 NDP: AceQLDataReader: clean management of IsDBNull()
-//16/05/2017 18:17 NDP: AceQLException: use cleaner names for public propeties
+//16/05/2017 18:17 NDP: AceQLException: use cleaner names for public properties
 //16/05/2017 21:23 NDP: Clean AceQLParameterCollection comments
+//17/05/2017 14:28 NDP: AceQLParameterCollection: support add parameter version with stream for BLOB, without length
+//17/05/2017 15:44 NDP: Clean comments everywhere and add new line for long comments
 // 
 namespace AceQL.Client.Api.Util
 {
@@ -83,6 +85,6 @@ namespace AceQL.Client.Api.Util
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.1-beta";
-        internal static readonly String DATE = "16-may-2017";
+        internal static readonly String DATE = "17-may-2017";
     }
 }
