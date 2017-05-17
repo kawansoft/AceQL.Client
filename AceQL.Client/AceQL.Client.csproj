@@ -45,7 +45,7 @@
     <Compile Include="Api.Http\FormUploadStream.cs" />
     <Compile Include="Api.Http\Proxy.cs" />
     <Compile Include="Api.Util\AceQLCommandUtil.cs" />
-    <Compile Include="Api\AceQLCredential.cs" />
+    <Compile Include="ApiNew\AceQLCredential.cs" />
     <Compile Include="Api.Util\AceQLTypes.cs" />
     <Compile Include="Api.Util\ConsoleEmul.cs" />
     <Compile Include="Api.Util\Parms.cs" />
@@ -56,16 +56,16 @@
     <Compile Include="Api.Util\StreamResultAnalyzer.cs" />
     <Compile Include="Api.Util\Version.cs" />
     <Compile Include="Api.Util\VersionValues.cs" />
-    <Compile Include="Api\AceQLCommand.cs" />
-    <Compile Include="Api\AceQLConnection.cs" />
-    <Compile Include="Api\AceQLDataReader.cs" />
-    <Compile Include="Api\AceQLException.cs" />
-    <Compile Include="Api\IsolationLevel.cs" />
-    <Compile Include="Api\AceQLParameter.cs" />
-    <Compile Include="Api\AceQLParameterCollection.cs" />
-    <Compile Include="Api\AceQLTransaction.cs" />
-    <Compile Include="Api\ProgressIndicator.cs" />
-    <Compile Include="Api\SqlType.cs" />
+    <Compile Include="ApiNew\AceQLCommand.cs" />
+    <Compile Include="ApiNew\AceQLConnection.cs" />
+    <Compile Include="ApiNew\AceQLDataReader.cs" />
+    <Compile Include="ApiNew\AceQLException.cs" />
+    <Compile Include="ApiNew\IsolationLevel.cs" />
+    <Compile Include="ApiNew\AceQLParameter.cs" />
+    <Compile Include="ApiNew\AceQLParameterCollection.cs" />
+    <Compile Include="ApiNew\AceQLTransaction.cs" />
+    <Compile Include="ApiNew\ProgressIndicator.cs" />
+    <Compile Include="ApiNew\SqlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
