@@ -127,7 +127,7 @@ namespace AceQL.Client.Api
         /// <param name="errorType">The error type.</param>
         /// <param name="exceptionCause">The <see cref="Exception"/> cause.</param>
         /// <param name="httpStatusCode">The http status code.</param>
-        internal AceQLException(string reason, int errorType, Exception exceptionCause, HttpStatusCode httpStatusCode)
+        public AceQLException(string reason, int errorType, Exception exceptionCause, HttpStatusCode httpStatusCode)
         {
             this.reason = reason;
             this.errorType = errorType;
@@ -144,7 +144,7 @@ namespace AceQL.Client.Api
         /// <param name="errorType">The error type.</param>
         /// <param name="remoteStackTrace">The remote Java stack trace.</param>
         /// <param name="httpStatusCode">The http status code.</param>
-        internal AceQLException(string reason, int errorType, string remoteStackTrace, HttpStatusCode httpStatusCode)
+        public AceQLException(string reason, int errorType, string remoteStackTrace, HttpStatusCode httpStatusCode)
         {
             this.reason = reason;
             this.errorType = errorType;
