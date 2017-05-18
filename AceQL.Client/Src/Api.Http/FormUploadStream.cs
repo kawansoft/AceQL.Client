@@ -129,7 +129,11 @@ namespace AceQL.Client.Api.Http
                     response = await httpClient.PostAsync(url, multipart, cancellationToken).ConfigureAwait(false);
                 }
 
-                progressIndicator.Value = 100;
+                if (progressIndicator != null)
+                {
+                    progressIndicator.Value = 100;
+                }
+
                 //if (!response.IsSuccessStatusCode)
                 //{
                 //    ConsoleEmul.WriteLine("FAILURE");

@@ -872,7 +872,7 @@ namespace AceQL.Client.Api.Http
         /// Uploads a Blob/Clob on the server.
         /// </summary>
         /// <param name="blobId">the Blob/Clob Id</param>
-        /// <param name="stream">the stream of the Blo/Clob</param>
+        /// <param name="stream">the stream of the Blob/Clob</param>
         /// <param name="totalLength">the total length of all BLOBs to upload</param>
         /// <returns>The result as JSON format.</returns>
         /// <exception cref="System.ArgumentNullException">
@@ -1036,9 +1036,9 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
-        /// Returns the progress variable that will store Blob/Clob upload or download progress between 0 and 100.
+        /// Returns the progress indicator variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
-        /// <returns>The progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
+        /// <returns>The progress indicator variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
         internal AceQLProgressIndicator GetProgressIndicator()
         {
             return progressIndicator;
@@ -1046,9 +1046,9 @@ namespace AceQL.Client.Api.Http
 
 
         /// <summary>
-        /// Sets the progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
+        /// Sets the progress indicator variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
-        /// <param name="progressIndicator">The sharable progress variable.</param>
+        /// <param name="progressIndicator">The progress variable.</param>
         internal void SetProgressIndicator(AceQLProgressIndicator progressIndicator)
         {
             this.progressIndicator = progressIndicator;

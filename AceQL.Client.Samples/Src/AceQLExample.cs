@@ -1,4 +1,22 @@
-﻿
+﻿/*
+ * This file is part of AceQL C# Client SDK.
+ * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
+ * Copyright (C) 2017,  KawanSoft SAS
+ * (http://www.kawansoft.com). All rights reserved.                                
+ *                                                                               
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. 
+ */
+
 using AceQL.Client.Api;
 using AceQL.Client.Api.File;
 using PCLStorage;
@@ -173,7 +191,6 @@ namespace AceQL.Client.Samples
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
                 }
-
             }
 
             Console.WriteLine("Before delete from orderlog");
@@ -204,7 +221,6 @@ namespace AceQL.Client.Samples
 
                     String blobPath = IN_DIRECTORY + "username_koala.jpg";
                     Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
-                    long length = new FileInfo(blobPath).Length;
 
                     //customer_id integer NOT NULL,
                     //item_id integer NOT NULL,
@@ -223,7 +239,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.AddWithValue("@parm7", stream, length);
+                    command.Parameters.AddWithValue("@parm7", stream);
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
