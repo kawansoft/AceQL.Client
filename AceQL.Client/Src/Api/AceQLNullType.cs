@@ -17,14 +17,13 @@
  * limitations under the License. 
  */
 ﻿
-
 namespace AceQL.Client.Api
 {
 
     /// <summary>
-    /// Enum of SQL types. To use when setting a value to NULL with <see cref="AceQLCommand"/>.Parameter.AddWithNullValue.
+    /// Specifies the SQL type to pass to the server when setting a value to NULL with <see cref="AceQLParameter"/>.
     /// </summary>
-    public enum SqlType
+    public enum AceQLNullType
     {
         /// <summary>
         /// SQL type BIT.

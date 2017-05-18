@@ -136,7 +136,7 @@ namespace AceQL.Client.Api.Util
             {
                 AceQLParameter aceQLParameter = Parameters.GetAceQLParameter(parameter.Key);
                 int paramIndex = parameter.Value;
-                SqlType sqlType = aceQLParameter.SqlType;
+                AceQLNullType sqlType = aceQLParameter.SqlType;
                 Object value = aceQLParameter.Value;
 
                 Debug("paramIndex: " + paramIndex);

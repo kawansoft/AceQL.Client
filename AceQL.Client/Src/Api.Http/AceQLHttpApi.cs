@@ -104,7 +104,7 @@ namespace AceQL.Client.Api.Http
 
         private string connectionString;
 
-        private ProgressIndicator progressIndicator;
+        private AceQLProgressIndicator progressIndicator;
         private AceQLCredential credential;
         private CancellationToken cancellationToken;
         private bool useCancellationToken = false;
@@ -1039,7 +1039,7 @@ namespace AceQL.Client.Api.Http
         /// Returns the progress variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
         /// <returns>The progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
-        internal ProgressIndicator GetProgressIndicator()
+        internal AceQLProgressIndicator GetProgressIndicator()
         {
             return progressIndicator;
         }
@@ -1049,7 +1049,7 @@ namespace AceQL.Client.Api.Http
         /// Sets the progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
         /// <param name="progressIndicator">The sharable progress variable.</param>
-        internal void SetProgressIndicator(ProgressIndicator progressIndicator)
+        internal void SetProgressIndicator(AceQLProgressIndicator progressIndicator)
         {
             this.progressIndicator = progressIndicator;
         }

@@ -220,33 +220,10 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Adds a null value to the end of the <see cref="AceQLParameterCollection"/> with the parameter's <see cref="SqlType"/>.
-        /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="sqlType">The <see cref="SqlType"/>of the parameter.</param>
-        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
-        public void AddWithNullValue(string parameterName, SqlType sqlType)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException("parameterName is null!");
-            }
-
-            AceQLParameter aceQLParameter = new AceQLParameter(parameterName, "NULL")
-            {
-                IsNullValue = true,
-                SqlType = sqlType
-            };
-            aceqlParameters.Add(aceQLParameter);
-            
-            //debug(parameterName + " SqlType: " + aceQLParameter.SqlType);
-        }
-
-        /// <summary>
         ///  Adds a value to the end of the <see cref="AceQLParameterCollection"/>.
         /// </summary>
         /// <param name="parameterName">The name of the parameter.</param>
-        /// <param name="value">The value to be added. Cannot ne bull. Use <see cref="AceQLCommand"/>.Parameters.AddWithNullValue to pass a null value.</param>
+        /// <param name="value">The value to be added. Cannot ne bull.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName or value is null.</exception>
         public void AddWithValue(string parameterName, object value)
         {
@@ -265,7 +242,7 @@ namespace AceQL.Client.Api
         /// To be used for Blobs insert or update.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="stream">The Blob stream to read. Cannot ne bull. Use <see cref="AceQLCommand"/>.Parameters.AddWithNullValue to pass a null value.</param>
+        /// <param name="stream">The Blob stream to read. Cannot be null.</param>
         /// <param name="length">The Blob stream length.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName or stream is null.</exception>
         public void AddWithValue(string parameterName, Stream stream, long length)

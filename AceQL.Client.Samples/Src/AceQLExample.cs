@@ -120,10 +120,11 @@ namespace AceQL.Client.Samples
 
             String sql = "delete from customer";
 
-            AceQLCommand command = new AceQLCommand();
-            command.CommandText = sql;
-            command.Connection = connection;
-
+            AceQLCommand command = new AceQLCommand()
+            {
+                CommandText = sql,
+                Connection = connection
+            };
             command.Prepare();
 
             await command.ExecuteNonQueryAsync();
@@ -144,7 +145,7 @@ namespace AceQL.Client.Samples
                 command.Parameters.AddWithValue("@parm5", customer_id + ", road 6");
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
                 command.Parameters.AddWithValue("@parm7", customer_id + "11111");
-                command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR); //null value for NULL SQL insert.
+                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
@@ -218,7 +219,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm1", customer_id);
                     command.Parameters.AddWithValue("@parm2", customer_id);
                     command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.AddWithNullValue("@parm4", SqlType.DECIMAL);
+                    command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
@@ -226,7 +227,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
-                    ProgressIndicator progressIndicator = new ProgressIndicator();
+                    AceQLProgressIndicator progressIndicator = new AceQLProgressIndicator();
                     connection.SetProgressIndicator(progressIndicator);
 
                     await command.ExecuteNonQueryAsync();

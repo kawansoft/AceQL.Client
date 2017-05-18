@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using System;
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The database type
         /// </summary>
-        private SqlType sqlType;
+        private AceQLNullType sqlType;
 
         private bool isNullValue = false;
 
@@ -52,6 +52,31 @@ namespace AceQL.Client.Api
         /// The length of the BLOB to upload
         /// </summary>
         private long blobLength = 0;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLParameter"/> class to pass a NULL value to remote
+        /// database.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter with a NULL value.</param>
+        /// <param name="value">The <see cref="AceQLNullType"/> value.</param>
+        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
+        public AceQLParameter(string parameterName, AceQLNullType value)
+        {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException("parameterName is null!");
+            }
+
+            if (!parameterName.StartsWith("@"))
+            {
+                parameterName = "@" + parameterName;
+            }
+
+            this.parameterName = parameterName;
+
+            IsNullValue = true;
+            SqlType = sqlType;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
@@ -138,7 +163,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The SQL type
         /// </summary>
-        internal SqlType SqlType
+        internal AceQLNullType SqlType
         {
             get
             {

@@ -58,7 +58,7 @@ namespace AceQL.Client.Api.Http
         /// <param name="useCancellationToken"></param> 
         /// <returns></returns>
         internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
-            int timeout, String blobId, Stream stream, long totalLength, ProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
+            int timeout, String blobId, Stream stream, long totalLength, AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
         {
             HttpClientHandler handler = AceQLHttpApi.BuildHttpClientHandler(proxyUri, credentials);
 
