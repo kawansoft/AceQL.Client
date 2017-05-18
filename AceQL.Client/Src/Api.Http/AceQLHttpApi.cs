@@ -1037,9 +1037,9 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
-        /// Returns the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.
+        /// Returns the progress variable that will store Blob/Clob upload or download progress between 0 and 100.
         /// </summary>
-        /// <returns>The sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
+        /// <returns>The progress variable that will store Blob/Clob upload or download progress between 0 and 100.</returns>
         internal ProgressIndicator GetProgressIndicator()
         {
             return progressIndicator;
@@ -1047,7 +1047,7 @@ namespace AceQL.Client.Api.Http
 
 
         /// <summary>
-        /// Sets the sharable progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
+        /// Sets the progress variable that will store Blob/Clob upload or download progress between 0 and 100. Will be used by progress indicators to show the progress.
         /// </summary>
         /// <param name="progressIndicator">The sharable progress variable.</param>
         internal void SetProgressIndicator(ProgressIndicator progressIndicator)
