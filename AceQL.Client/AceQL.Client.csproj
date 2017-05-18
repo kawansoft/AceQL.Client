@@ -64,7 +64,7 @@
     <Compile Include="Src\Api\AceQLParameter.cs" />
     <Compile Include="Src\Api\AceQLParameterCollection.cs" />
     <Compile Include="Src\Api\AceQLTransaction.cs" />
-    <Compile Include="Src\Api.File\ProgressIndicator.cs" />
+    <Compile Include="Src\Api\ProgressIndicator.cs" />
     <Compile Include="Src\Api\SqlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
