@@ -113,6 +113,7 @@ using System;
 //17/05/2017 02:25 NDP: ProgressIndicator: move in Api Src folder
 //18/05/2017 17:58 NDP: AceQLCredential is sealed and uses now a char array for password
 //18/05/2017 19:10 NDP: Rename classes and suppress AceQLParameterCollection.AddWithNullValue
+//18/05/2017 19:29 NDP: AceQLParameter: clean comments
 // 
 namespace AceQL.Client.Api.Util
 {

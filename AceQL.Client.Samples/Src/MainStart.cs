@@ -13,7 +13,7 @@ namespace AceQL.Client.Samples
     {
         static void Main(string[] args)
         {
-            int mainToLaunch = 2;
+            int mainToLaunch = 3;
 
             if (mainToLaunch == 1)
             {

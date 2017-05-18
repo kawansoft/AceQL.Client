@@ -120,26 +120,30 @@ namespace AceQL.Client.Samples.Src
         public static async Task UseConnection()
         {
             string connectionString = null;
-            AceQLConnection connection1 = null;
+            AceQLConnection connection = null;
 
             try
             {
-                connection1 = new AceQLConnection(connectionString);
-                await connection1.OpenAsync();
-                /// SQL stuff...
+                connection = new AceQLConnection(connectionString);
+                await connection.OpenAsync();
+                // SQL stuff...
             }
             finally
             {
-                await connection1.CloseAsync();
+                await connection.CloseAsync();
             }
 
-            using (AceQLConnection connection = new AceQLConnection(connectionString))
-            {
-                // ... do stuff
-            }
 
         }
 
+        private static async Task UseConnection2()
+        {
+            string connectionString = null;
+            using (AceQLConnection connection = new AceQLConnection(connectionString))
+            {
+                // SQL stuff...
+            }
+        }
 
         private static char[] GetFromUserInput()
         {
@@ -159,28 +163,41 @@ namespace AceQL.Client.Samples.Src
         // 
         private async Task InsertCustomer()
         {
+            //customer_id integer     not null,
+            //customer_title  char(4)         null,
+            //fname varchar(32)     null,
+            //lname varchar(32) not null,
+            //addressline varchar(64) not null,
+            //town varchar(32) not null,
+            //zipcode         char(10)    not null,
+            //phone varchar(32)     null,
+
             string sql = "insert into customer values " + "" +
-                    "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
+                    "(@customer_id, @customer_title, @fname, " +
+                    "@lname, @addressline, @town, @zipcode, @phone)";
 
             AceQLCommand command = new AceQLCommand(sql, connection);
             command.Prepare(); // Optional
 
-            command.Parameters.AddWithValue("@parm1", 1);
-            command.Parameters.AddWithValue("@parm2", "Sir");
-            command.Parameters.AddWithValue("@parm3", "Doe");
-            command.Parameters.AddWithValue("@parm4", "John");
+            command.Parameters.AddWithValue("@customer_id", 1);
+            command.Parameters.AddWithValue("@customer_title", "Sir");
+            command.Parameters.AddWithValue("@fname", "Doe");
+            command.Parameters.AddWithValue("@lname", "John");
             // Alternate syntax
-            command.Parameters.Add(new AceQLParameter("@parm5", "1 Madison Ave"));
-            command.Parameters.AddWithValue("@parm6", "New York");
-            command.Parameters.AddWithValue("@parm7", "NY 10010");
-            command.Parameters.AddWithValue("@parm8", "+1 (212) 586-7000");
+            command.Parameters.Add(new AceQLParameter("@addressline", "1 Madison Ave"));
+            command.Parameters.AddWithValue("@town", "New York");
+            command.Parameters.AddWithValue("@zipcode", "NY 10010");
+            //command.Parameters.AddWithValue("@phone", "+1 (212) 586-71XX");
 
             // We don't know the phone number
-            command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR));
+            command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR));
 
             int rows = await command.ExecuteNonQueryAsync();
 
         }
+
+
+
 
         /// <summary>
         /// Example of 2 INSERT in the same transaction.

@@ -54,10 +54,10 @@ namespace AceQL.Client.Api
         private long blobLength = 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLParameter"/> class to pass a NULL value to remote
+        /// Initializes a new instance of the <see cref="AceQLParameter"/> class to pass a NULL value to the remote
         /// database.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter with a NULL value.</param>
+        /// <param name="parameterName">Name of the parameter to set with a NULL value.</param>
         /// <param name="value">The <see cref="AceQLNullType"/> value.</param>
         /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public AceQLParameter(string parameterName, AceQLNullType value)
