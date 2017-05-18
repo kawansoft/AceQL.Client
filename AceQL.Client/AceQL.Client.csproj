@@ -37,7 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Api.File\PortableFile.cs" />

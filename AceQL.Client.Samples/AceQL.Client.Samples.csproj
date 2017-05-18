@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\AceQLExample.cs" />
+    <Compile Include="Src\DocSamples.cs" />
     <Compile Include="Src\MainStart.cs" />
     <Compile Include="Src\MyRemoteConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

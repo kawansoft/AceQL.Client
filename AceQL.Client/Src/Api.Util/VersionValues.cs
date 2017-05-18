@@ -111,6 +111,7 @@ using System;
 //17/05/2017 02:07 NDP: Rewrite Dispose methods as recommended by code analysis and https://msdn.microsoft.com/library/ms244737.aspx?f=255&MSPPError=-2147217396
 //17/05/2017 02:14 NDP: AceQLHttpApi: clean comments
 //17/05/2017 02:25 NDP: ProgressIndicator: move in Api Src folder
+//18/05/2017 17:58 NDP: AceQLCredential is sealed and uses now a char array for password
 // 
 namespace AceQL.Client.Api.Util
 {
@@ -118,6 +119,6 @@ namespace AceQL.Client.Api.Util
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.1-beta";
-        internal static readonly String DATE = "17-may-2017";
+        internal static readonly String DATE = "18-may-2017";
     }
 }

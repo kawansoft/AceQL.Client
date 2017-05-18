@@ -159,7 +159,7 @@ namespace AceQL.Client.Api.Http
                 if (credential != null)
                 {
                     username = credential.Username;
-                    password = credential.Password;
+                    password = new String(credential.Password);
                 }
 
                 if (server == null)
@@ -324,7 +324,7 @@ namespace AceQL.Client.Api.Http
             String theServer = null;
             String theDatabase = null;
             String theUsername = null;
-            String thePassword = null;
+            char[] thePassword = null;
             bool theStateless = false;
             String theProxyUri = null;
             ICredentials theProxyCredentials = null;
@@ -370,7 +370,7 @@ namespace AceQL.Client.Api.Http
                 else if (property.ToLower().Equals("password"))
                 {
                     value = value.Replace("\\semicolon", ";");
-                    thePassword = value;
+                    thePassword = value.ToCharArray();
                 }
                 else if (property.ToLower().Equals("stateless"))
                 {
@@ -468,7 +468,7 @@ namespace AceQL.Client.Api.Http
         /// database is null!
         /// </exception>
 
-        private void Init(string server, string database, string username, string password, bool stateless, string proxyUri, ICredentials proxyCredentials, int timeout)
+        private void Init(string server, string database, string username, char[] password, bool stateless, string proxyUri, ICredentials proxyCredentials, int timeout)
         {
             this.server = server;
             this.database = database;
@@ -483,7 +483,6 @@ namespace AceQL.Client.Api.Http
             this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;
         }
-
 
 
         /// <summary>

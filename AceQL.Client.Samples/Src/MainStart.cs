@@ -1,4 +1,5 @@
 ﻿using AceQL.Client.Samples;
+using AceQL.Client.Samples.Src;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace AceQL.Client.Samples
     {
         static void Main(string[] args)
         {
-            int mainToLaunch = 2;
+            int mainToLaunch = 3;
 
             if (mainToLaunch == 1)
             {
@@ -21,6 +22,10 @@ namespace AceQL.Client.Samples
             else if (mainToLaunch == 2)
             {
                 AceQLExample.TheMain(args);
+            }
+            else if (mainToLaunch == 3)
+            {
+                DocSamples.TheMain(args);
             }
         }
     }

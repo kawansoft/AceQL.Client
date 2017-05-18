@@ -142,7 +142,7 @@ namespace AceQL.Client.Samples
         /// Constructor.
         /// </summary>
         /// <param name="connection">The AceQL connection to remote database.</param>
-        private MyRemoteConnection(AceQLConnection connection)
+        public MyRemoteConnection(AceQLConnection connection)
         {
             this.connection = connection;
         }
@@ -161,8 +161,8 @@ namespace AceQL.Client.Samples
                 string sql = "insert into customer values " + "" +
                     "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
 
-                using (AceQLCommand command = new AceQLCommand(sql, connection))
-                {
+                AceQLCommand command = new AceQLCommand(sql, connection);
+                
                     command.Parameters.AddWithValue("@parm1", customerId);
                     command.Parameters.AddWithValue("@parm2", "Sir");
                     command.Parameters.AddWithValue("@parm3", "Doe");
@@ -174,15 +174,15 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR);
 
                     await command.ExecuteNonQueryAsync();
-                }
+                
 
                 sql = "insert into orderlog values " +
                             "(@customer_id, @item_id, @description, " +
                              "@item_cost, @date_placed, @date_shipped, " +
                              "@jpeg_image, @is_delivered, @quantity)";
 
-                using (AceQLCommand command = new AceQLCommand(sql, connection))
-                {
+                command = new AceQLCommand(sql, connection);
+                
                     try
                     {
                         Console.WriteLine("insert into orderlog...");
@@ -207,7 +207,7 @@ namespace AceQL.Client.Samples
                         await transaction.RollbackAsync();
                         throw e;
                     }
-                }
+                
             }
 
         }

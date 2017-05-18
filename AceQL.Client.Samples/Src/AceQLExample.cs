@@ -84,12 +84,14 @@ namespace AceQL.Client.Samples
             //connectionString += $"Username={username}; Password={password}";
             connectionString += $"; ProxyUsername ={proxyUsername}; ProxyPassword ={ proxyPassword}";
 
+            AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
+
             AceQLConnection.SetTraceOn(true);
 
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
-                connection.Credential = new AceQLCredential(username, password);
+                connection.Credential = credential;
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }
@@ -220,7 +222,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.AddWithValue("@parm7", stream, length); 
+                    command.Parameters.AddWithValue("@parm7", stream, length);
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
