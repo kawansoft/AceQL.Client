@@ -37,10 +37,9 @@ namespace AceQL.Client.Api.Http
 {
 
     /// <summary>
-    /// Class AceQLHttpApi. Allows to create a Connection to the remote server
+    /// Class <see cref="AceQLHttpApi"/>. Allows to create a Connection to the remote server
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
-    internal class AceQLHttpApi : IDisposable
+    internal class AceQLHttpApi
     {
         private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
         private const string ESCAPED_SEMICOLON = "\\;";
@@ -137,12 +136,7 @@ namespace AceQL.Client.Api.Http
                 throw new ArgumentNullException("connectionString is null!");
             }
 
-            if (credential == null)
-            {
-                throw new ArgumentNullException("credential is null!");
-            }
-
-            this.credential = credential;
+            this.credential = credential ?? throw new ArgumentNullException("credential is null!");
         }
 
 
@@ -530,9 +524,11 @@ namespace AceQL.Client.Api.Http
             }
             else
             {
-                HttpClientHandler httpClientHandler = new HttpClientHandler();
-                httpClientHandler.UseProxy = true;
-                httpClientHandler.UseDefaultCredentials = false;
+                HttpClientHandler httpClientHandler = new HttpClientHandler()
+                {
+                    UseProxy = true,
+                    UseDefaultCredentials = false
+                };
 
                 if (proxy == null)
                 {
@@ -806,12 +802,13 @@ namespace AceQL.Client.Api.Http
         {
             String action = "execute_query";
 
-            Dictionary<string, string> parametersMap = new Dictionary<string, string>();
-            parametersMap.Add("sql", cmdText);
-            parametersMap.Add("prepared_statement", isPreparedStatement.ToString());
-            parametersMap.Add("gzip_result", gzipResult.ToString());
-            parametersMap.Add("pretty_printing", prettyPrinting.ToString());
-
+            Dictionary<string, string> parametersMap = new Dictionary<string, string>
+            {
+                { "sql", cmdText },
+                { "prepared_statement", isPreparedStatement.ToString() },
+                { "gzip_result", gzipResult.ToString() },
+                { "pretty_printing", prettyPrinting.ToString() }
+            };
             if (statementParameters != null)
             {
                 List<string> keyList = new List<string>(statementParameters.Keys);
@@ -830,10 +827,11 @@ namespace AceQL.Client.Api.Http
         {
             String action = "execute_update";
 
-            Dictionary<string, string> parametersMap = new Dictionary<string, string>();
-            parametersMap.Add("sql", sql);
-            parametersMap.Add("prepared_statement", isPreparedStatement.ToString());
-
+            Dictionary<string, string> parametersMap = new Dictionary<string, string>
+            {
+                { "sql", sql },
+                { "prepared_statement", isPreparedStatement.ToString() }
+            };
             if (statementParameters != null)
             {
                 List<string> keyList = new List<string>(statementParameters.Keys);
@@ -933,9 +931,10 @@ namespace AceQL.Client.Api.Http
 
             String action = "get_blob_length";
 
-            Dictionary<string, string> parametersMap = new Dictionary<string, string>();
-            parametersMap.Add("blob_id", blobId);
-
+            Dictionary<string, string> parametersMap = new Dictionary<string, string>
+            {
+                { "blob_id", blobId }
+            };
             String result = null;
 
             using (Stream input = await CallWithPostAsync(action, parametersMap).ConfigureAwait(false))
@@ -980,9 +979,10 @@ namespace AceQL.Client.Api.Http
             {
                 String action = "blob_download";
 
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("blob_id", blobId);
-
+                Dictionary<string, string> parameters = new Dictionary<string, string>
+                {
+                    { "blob_id", blobId }
+                };
                 Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
                 return input;
             }
@@ -1080,14 +1080,6 @@ namespace AceQL.Client.Api.Http
         public async Task CloseAsync()
         {
             await CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Does nothing.
-        /// </summary>
-        public void Dispose()
-        {
-
         }
 
         internal static void Debug(string s)

@@ -337,10 +337,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="ordinal">The ordinal.</param>
         ///// <returns>System.Byte.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public byte GetByte(int ordinal)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         ///// <summary>
@@ -352,10 +352,10 @@ namespace AceQL.Client.Api
         ///// <param name="bufferOffset">The buffer offset.</param>
         ///// <param name="length">The length.</param>
         ///// <returns>System.Int64.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         ///// <summary>
@@ -363,10 +363,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="ordinal">The ordinal.</param>
         ///// <returns>System.Char.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public char GetChar(int ordinal)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         ///// <summary>
@@ -378,10 +378,10 @@ namespace AceQL.Client.Api
         ///// <param name="bufferOffset">The buffer offset.</param>
         ///// <param name="length">The length.</param>
         ///// <returns>System.Int64.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         ///// <summary>
@@ -389,10 +389,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="ordinal">The ordinal.</param>
         ///// <returns>System.String.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public string GetDataTypeName(int ordinal)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         /// <summary>
@@ -472,10 +472,10 @@ namespace AceQL.Client.Api
         ///// Gets the enumerator.
         ///// </summary>
         ///// <returns>IEnumerator.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public IEnumerator GetEnumerator()
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         ///// <summary>
@@ -483,10 +483,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="ordinal">The ordinal.</param>
         ///// <returns>Type.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public Type GetFieldType(int ordinal)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         /// <summary>
@@ -517,10 +517,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="ordinal">The ordinal.</param>
         ///// <returns>Guid.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public Guid GetGuid(int ordinal)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
         /// <summary>
@@ -723,10 +723,10 @@ namespace AceQL.Client.Api
         ///// </summary>
         ///// <param name="values">The values.</param>
         ///// <returns>System.Int32.</returns>
-        ///// <exception cref="System.NotImplementedException"></exception>
+        ///// <exception cref="System.NotSupportedException"></exception>
         //public int GetValues(object[] values)
         //{
-        //    throw new NotImplementedException();
+        //    throw new NotSupportedException();
         //}
 
 
@@ -770,8 +770,19 @@ namespace AceQL.Client.Api
         /// </summary>
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="v"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool v)
+        {
             isClosed = true;
-            rowParser.Close();
+            rowParser.Dispose();
 
             try
             {
@@ -783,7 +794,9 @@ namespace AceQL.Client.Api
             {
                 ConsoleEmul.WriteLine(exception.ToString());
             }
+
         }
+
 
         private void Debug(string s)
         {

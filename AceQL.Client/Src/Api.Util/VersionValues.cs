@@ -107,6 +107,8 @@ using System;
 //17/05/2017 01:09 NDP: Src folder is root for source files
 //17/05/2017 01:27 NDP: Simplify Null Check 
 //17/05/2017 01:38 NDP: Simplify Null Check
+//17/05/2017 01:45 NDP: Replace all NotSupportedException by NotSupportedException (Microsoft Code Analysis);
+//17/05/2017 02:07 NDP: Rewrite Dispose methods as recommended by code analysis and https://msdn.microsoft.com/library/ms244737.aspx?f=255&MSPPError=-2147217396
 // 
 namespace AceQL.Client.Api.Util
 {

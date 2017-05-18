@@ -66,12 +66,12 @@ namespace AceQL.Client.Api
         /// Specifies the <see cref="T:System.Object" /> to be used to synchronize access to the collection. Not implemented.
         /// </summary>
         /// <value>The synchronize root.</value>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public object SyncRoot
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
@@ -79,7 +79,7 @@ namespace AceQL.Client.Api
         /// Specifies whether the collection is a fixed size. Not implemented.
         /// </summary>
         /// <value><c>true</c> if this instance is fixed size; otherwise, <c>false</c>.</value>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public bool IsFixedSize
         {
             get
@@ -104,7 +104,7 @@ namespace AceQL.Client.Api
         /// Specifies whether the collection is synchronized. Not implemented.
         /// </summary>
         /// <value><c>true</c> if this instance is synchronized; otherwise, <c>false</c>.</value>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public bool IsSynchronized
         {
             get
@@ -127,7 +127,7 @@ namespace AceQL.Client.Api
 
             set
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
@@ -180,10 +180,10 @@ namespace AceQL.Client.Api
         /// <param name="array">The one-dimensional<see cref="Array"/>that is the destination of the elements copied from <see cref="ICollection"/>. 
         ///                     The <see cref="Array"/>must have zero-based indexing.</param>
         /// <param name="index">The zero-based index in array at which copying begins.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public void CopyTo(Array array, int index)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -331,10 +331,10 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="index">The zero-based index at which value should be inserted.</param>
         /// <param name="value">An <see cref="Object"/> to be inserted in the <see cref="AceQLParameterCollection"/>.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public void Insert(int index, object value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -417,10 +417,10 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="value">An <see cref="Object"/>.</param>
         /// <returns>The index of the new <see cref="AceQLParameter"/> object.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
         public int Add(object value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private static void Debug(string s)

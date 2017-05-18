@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Http;
@@ -261,6 +261,18 @@ namespace AceQL.Client.Api
         /// </summary>
         public void Dispose()
         {
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="v"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool v)
+        {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             try
             {
@@ -271,8 +283,8 @@ namespace AceQL.Client.Api
                 // Do nothing
             }
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        }
 
+        }
         /// <summary>
         /// Says if trace is on. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
         /// </summary>

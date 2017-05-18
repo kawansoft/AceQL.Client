@@ -32,8 +32,9 @@ namespace AceQL.Client.Api.Util
     /// <summary>
     /// Class RowParser.
     /// We pass a TextReader instead of a PortableFile as we want the methods to be all sync for end user.
+    /// <seealso cref="System.IDisposable" />
     /// </summary>
-    internal class RowParser
+    internal class RowParser : IDisposable
     {
         private const string COL_INDEX = "idx";
         private const string COL_TYPE = "typ";
@@ -249,11 +250,15 @@ namespace AceQL.Client.Api.Util
         }
 
 
-        internal void Close()
+        public void Dispose()
         {
             if (this.streamReader != null)
             {
                 this.streamReader.Dispose();
+                if (this.reader != null)
+                {
+                    this.reader.Close();
+                }
             }
 
         }
