@@ -35,7 +35,6 @@ namespace AceQL.Client.Samples.Src
         {
             try
             {
-
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
@@ -413,13 +412,13 @@ namespace AceQL.Client.Samples.Src
                 Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
                 Console.WriteLine("item_id: " + dataReader.GetValue(i++));
 
-                // Download Blob
                 string userPath =
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 String blobPath = userPath + "\\koala_download.jpg";
 
-                Console.WriteLine("Creating file from server BLOB: " + blobPath);
+                Console.WriteLine("Creating file from server BLOB in: " + blobPath);
 
+                // Download Blob
                 using (Stream stream = await dataReader.GetStreamAsync(i++))
                 {
                     using (var fileStream = File.Create(blobPath))

@@ -314,7 +314,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Sets the progress indicator variable that will store Blob/Clob upload progress between 0 and 100. Will be used by progress bars to show the progress.
+        /// Sets the progress indicator variable that will store Blob/Clob upload progress between 0 and 100.
         /// </summary>
         /// <param name="progressIndicator">The progress indicator variable that will store Blob/Clob upload progress between 0 and 100.</param>
         public void SetProgressIndicator(AceQLProgressIndicator progressIndicator)

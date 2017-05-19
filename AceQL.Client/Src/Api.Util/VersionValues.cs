@@ -114,7 +114,8 @@ using System;
 //18/05/2017 17:58 NDP: AceQLCredential is sealed and uses now a char array for password
 //18/05/2017 19:10 NDP: Rename classes and suppress AceQLParameterCollection.AddWithNullValue
 //18/05/2017 19:29 NDP: AceQLParameter: clean comments
-//19/05/2017 01:19 NDP: FormUploadStream: test if progressIndicator is null because setting Value to 100
+//19/05/2017 01:19 NDP: FormUploadStream: test if progressIndicator is null before setting Value to 100
+//19/05/2017 03:23 NDP: Clean AceQLConnection.SetProgressIndicator comments
 // 
 namespace AceQL.Client.Api.Util
 {
