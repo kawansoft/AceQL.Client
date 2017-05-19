@@ -85,10 +85,10 @@ namespace AceQL.Client.Api.Http
                     {
                         tempLen = 0;
                     }
-                    int cpt = progressIndicator.Value;
+                    int cpt = progressIndicator.Percent;
                     cpt++;
                     progressIndicator.SetValue(Math.Min(99, cpt));
-                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Value);
+                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Percent);
                 }
                 else
                 {

@@ -22,21 +22,21 @@ using System;
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// <see cref="AceQLProgressIndicator"/> Class. Allows to get the percentage progress between 0 and 100 for a Blob/Clob upload.
+    /// <see cref="AceQLProgressIndicator"/> Class. Allows to get the percentage progress between 0 and 100 for Blob/Clob upload.
     /// </summary>
     public class AceQLProgressIndicator
     {
-        /// <summary>   The progress value set by upload thread.</summary>
-        private int progress = 0;
+        /// <summary>   The perccent progress value set by upload thread.</summary>
+        private int percent = 0;
 
         /// <summary>
-        /// Gets the progress value between 0 and 100.
+        /// Gets the upload progress value between 0 and 100.
         /// </summary>
-        public int Value
+        public int Percent
         {
             get
             {
-                return progress;
+                return percent;
             }
         }
 
@@ -46,7 +46,7 @@ namespace AceQL.Client.Api
         /// <returns></returns>
         public override string ToString()
         {
-            return progress.ToString();
+            return percent.ToString();
         }
 
 
@@ -56,7 +56,7 @@ namespace AceQL.Client.Api
         /// <param name="value">The value.</param>
         internal void SetValue(int value)
         {
-            progress = value;
+            percent = value;
         }
     }
 }

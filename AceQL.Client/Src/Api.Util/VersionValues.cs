@@ -120,6 +120,7 @@ using System;
 //19/05/2017 04:58 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 05:01 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 10:50 NDP: AceQLProgressIndicator: Value is read only.
+//19/05/2017 18:58 NDP: AceQLProgressIndicator: Value renamed to Percent
 // 
 namespace AceQL.Client.Api.Util
 {

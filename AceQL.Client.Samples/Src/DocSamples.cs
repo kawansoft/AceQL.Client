@@ -76,8 +76,18 @@ namespace AceQL.Client.Samples.Src
             Console.WriteLine("Insert BLOB...");
             await docSamples.InsertBlob(1, 1);
 
-            Console.WriteLine("Insert BLOB...");
+            Console.WriteLine("Select BLOB...");
             await docSamples.SelectBlob(1, 1);
+
+            await docSamples.DeleteOrderlogs();
+
+            Console.WriteLine("Insert BLOB with ProgressIndicator...");
+            await docSamples.InsertBlobProgressIndicator(1, 1);
+
+            Console.WriteLine("Select BLOB...");
+            await docSamples.SelectBlob(1, 1);
+
+
         }
 
         private async Task SelectCustomer()
@@ -385,6 +395,60 @@ namespace AceQL.Client.Samples.Src
         }
 
         /// <summary>
+        /// Example of an INSERT of a BLOB
+        /// </summary>
+        /// <param name="customerId">The customer ID.</param>
+        /// <param name="itemId">the item ID.</param>
+        /// <exception cref="AceQLException">If any Exception occurs.</exception>
+        public async Task InsertBlobProgressIndicator(int customerId, int itemId)
+        {
+            // Create a transaction because some database engines require autocommit off
+            AceQLTransaction transaction = await connection.BeginTransactionAsync();
+
+            try
+            {
+                String sql = "insert into orderlog values " +
+                        "(@customer_id, @item_id, @description, " +
+                        "@item_cost, @date_placed, @date_shipped, " +
+                            "@jpeg_image, @is_delivered, @quantity)";
+
+                AceQLCommand command = new AceQLCommand(sql, connection);
+
+                string userPath =
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                String blobPath = userPath + "\\koala.jpg";
+                Stream stream = new FileStream(blobPath, FileMode.Open, FileAccess.Read);
+                long length = new FileInfo(blobPath).Length;
+
+                Console.WriteLine("blobPath: " + blobPath);
+                Console.WriteLine("insert into orderlog...");
+
+                command.Parameters.AddWithValue("@customer_id", customerId);
+                command.Parameters.AddWithValue("@item_id", itemId);
+                command.Parameters.AddWithValue("@description", "Item Description");
+                command.Parameters.AddWithValue("@item_cost", 99D);
+                command.Parameters.AddWithValue("@date_placed", DateTime.Now);
+                command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
+                command.Parameters.AddWithValue("@jpeg_image", stream, length);
+                command.Parameters.AddWithValue("@is_delivered", 1);
+                command.Parameters.AddWithValue("@quantity", 1);
+
+                AceQLProgressIndicator progressIndicator = new AceQLProgressIndicator();
+                connection.SetProgressIndicator(progressIndicator);
+
+                await command.ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
+                await transaction.RollbackAsync();
+                throw e;
+            }
+
+        }
+
+        /// <summary>
         /// Example of an SELECT of a BLOB
         /// </summary>
         /// <param name="customerId">The customer ID.</param>
@@ -392,51 +456,51 @@ namespace AceQL.Client.Samples.Src
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public async Task SelectBlob(int customerId, int itemId)
         {
-    // Create a transaction because some database engines require autocommit off
-    AceQLTransaction transaction = await connection.BeginTransactionAsync();
+            // Create a transaction because some database engines require autocommit off
+            AceQLTransaction transaction = await connection.BeginTransactionAsync();
 
-    try
-    {
-        String sql = "select customer_id, item_id, jpeg_image from orderlog" +
-            " where customer_id =  @customer_id and item_id = @item_id";
-
-        AceQLCommand command = new AceQLCommand(sql, connection);
-        command.Parameters.AddWithValue("@customer_id", customerId);
-        command.Parameters.AddWithValue("@item_id", itemId);
-
-        using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
-        {
-            while (dataReader.Read())
+            try
             {
-                int i = 0;
-                Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                Console.WriteLine("item_id: " + dataReader.GetValue(i++));
+                String sql = "select customer_id, item_id, jpeg_image from orderlog" +
+                    " where customer_id =  @customer_id and item_id = @item_id";
 
-                string userPath =
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                String blobPath = userPath + "\\koala_download.jpg";
+                AceQLCommand command = new AceQLCommand(sql, connection);
+                command.Parameters.AddWithValue("@customer_id", customerId);
+                command.Parameters.AddWithValue("@item_id", itemId);
 
-                Console.WriteLine("Creating file from server BLOB in: " + blobPath);
-
-                // Download Blob
-                using (Stream stream = await dataReader.GetStreamAsync(i++))
+                using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
                 {
-                    using (var fileStream = File.Create(blobPath))
+                    while (dataReader.Read())
                     {
-                        stream.CopyTo(fileStream);
+                        int i = 0;
+                        Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                        Console.WriteLine("item_id: " + dataReader.GetValue(i++));
+
+                        string userPath =
+                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        String blobPath = userPath + "\\koala_download.jpg";
+
+                        Console.WriteLine("Creating file from server BLOB in: " + blobPath);
+
+                        // Download Blob
+                        using (Stream stream = await dataReader.GetStreamAsync(i++))
+                        {
+                            using (var fileStream = File.Create(blobPath))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                        }
                     }
+
+                    await transaction.CommitAsync();
                 }
             }
-
-            await transaction.CommitAsync();
-        }
-    }
-    catch (Exception e)
-    {
-        // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
-        await transaction.RollbackAsync();
-        throw e;
-    }
+            catch (Exception e)
+            {
+                // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
+                await transaction.RollbackAsync();
+                throw e;
+            }
 
         }
     }

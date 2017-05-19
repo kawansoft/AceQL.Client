@@ -243,9 +243,6 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
-                    AceQLProgressIndicator progressIndicator = new AceQLProgressIndicator();
-                    connection.SetProgressIndicator(progressIndicator);
-
                     await command.ExecuteNonQueryAsync();
 
                 }
