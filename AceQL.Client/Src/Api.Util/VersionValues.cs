@@ -119,6 +119,7 @@ using System;
 //19/05/2017 04:44 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 04:58 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 05:01 NDP: Simplify null check as recommended by Microsoft Code Analysis
+//19/05/2017 10:50 NDP: AceQLProgressIndicator: Value is read only.
 // 
 namespace AceQL.Client.Api.Util
 {

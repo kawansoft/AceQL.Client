@@ -25,6 +25,12 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Api.Util
 {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// <summary>   The main supported SQL types. </summary>
+    ///
+    /// <remarks>   Nicolas De Pomereu, 19/05/2017. </remarks>
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     internal class AceQLTypes
     {
         internal static readonly String BINARY = "BINARY";

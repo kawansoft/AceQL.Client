@@ -87,7 +87,7 @@ namespace AceQL.Client.Api.Http
                     }
                     int cpt = progressIndicator.Value;
                     cpt++;
-                    progressIndicator.Value = Math.Min(99, cpt);
+                    progressIndicator.SetValue(Math.Min(99, cpt));
                     if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Value);
                 }
                 else
@@ -131,7 +131,7 @@ namespace AceQL.Client.Api.Http
 
                 if (progressIndicator != null)
                 {
-                    progressIndicator.Value = 100;
+                    progressIndicator.SetValue(100);
                 }
 
                 //if (!response.IsSuccessStatusCode)

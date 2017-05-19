@@ -17,28 +17,26 @@
  * limitations under the License. 
  */
 
+using System;
+
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// Class that allows to store the progress between 0 and 100 for a Blob/Clob upload.
+    /// <see cref="AceQLProgressIndicator"/> Class. Allows to get the percentage progress between 0 and 100 for a Blob/Clob upload.
     /// </summary>
     public class AceQLProgressIndicator
     {
+        /// <summary>   The progress value set by upload thread.</summary>
         private int progress = 0;
 
         /// <summary>
-        /// The progress value between 0 and 100.
+        /// Gets the progress value between 0 and 100.
         /// </summary>
         public int Value
         {
             get
             {
                 return progress;
-            }
-
-            set
-            {
-                progress = value;
             }
         }
 
@@ -49,6 +47,16 @@ namespace AceQL.Client.Api
         public override string ToString()
         {
             return progress.ToString();
+        }
+
+
+        /// <summary>
+        /// Sets the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        internal void SetValue(int value)
+        {
+            progress = value;
         }
     }
 }

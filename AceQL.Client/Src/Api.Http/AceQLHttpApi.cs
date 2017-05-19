@@ -1024,7 +1024,7 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// Sets the CancellationToken asked by user to pass for the current public xxxAsync() call api.
         /// </summary>
-        /// <param name="cancellationToken">ancellationToken asked by user to pass for the current public xxxAsync() call api.</param>
+        /// <param name="cancellationToken">CancellationToken asked by user to pass for the current public xxxAsync() call api.</param>
         internal void SetCancellationToken(CancellationToken cancellationToken)
         {
             this.useCancellationToken = true;
