@@ -48,7 +48,6 @@
     <Compile Include="Src\Api.Util\AceQLTypes.cs" />
     <Compile Include="Src\Api.Util\ConsoleEmul.cs" />
     <Compile Include="Src\Api.Util\Parms.cs" />
-    <Compile Include="Src\Api.Util\PrepStatementParameter.cs" />
     <Compile Include="Src\Api.Util\ResultAnalyzer.cs" />
     <Compile Include="Src\Api.Util\RowCounter.cs" />
     <Compile Include="Src\Api.Util\RowParser.cs" />

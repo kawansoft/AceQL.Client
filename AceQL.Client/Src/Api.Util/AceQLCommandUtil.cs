@@ -104,18 +104,8 @@ namespace AceQL.Client.Api.Util
         /// </exception>
         internal AceQLCommandUtil(String cmdText, AceQLParameterCollection Parameters)
         {
-            if (cmdText == null)
-            {
-                throw new ArgumentNullException("cmdText is null!");
-            }
-
-            if (Parameters == null)
-            {
-                throw new ArgumentNullException("Parameters is null!");
-            }
-
-            this.cmdText = cmdText;
-            this.Parameters = Parameters;
+            this.cmdText = cmdText ?? throw new ArgumentNullException("cmdText is null!");
+            this.Parameters = Parameters ?? throw new ArgumentNullException("Parameters is null!");
         }
 
 

@@ -60,12 +60,7 @@ namespace AceQL.Client.Api.Util
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public StreamResultAnalyzer(IFile file, HttpStatusCode httpStatusCode)
         {
-            if (file == null)
-            {
-                throw new ArgumentNullException("file is null!");
-            }
-
-            this.file = file;
+            this.file = file ?? throw new ArgumentNullException("file is null!");
             this.httpStatusCode = httpStatusCode;
         }
 

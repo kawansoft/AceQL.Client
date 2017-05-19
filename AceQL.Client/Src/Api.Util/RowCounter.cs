@@ -42,14 +42,8 @@ namespace AceQL.Client.Api.Util
         /// <exception cref="System.ArgumentNullException">The file is null.</exception>
         public RowCounter(IFile file)
         {
-            if (file == null)
-            {
-                throw new ArgumentNullException("file is null!");
-            }
-
-            this.file = file;
+            this.file = file ?? throw new ArgumentNullException("file is null!");
         }
-
 
         /// <summary>
         /// Gets the row count.
