@@ -211,7 +211,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@item_cost", 99D);
                     command.Parameters.AddWithValue("@date_placed", DateTime.Now);
                     command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
-                    // No blob in our Quickstart
+                    // No blob in our Quick start
                     command.Parameters.Add(new AceQLParameter("@jpeg_image", AceQLNullType.BLOB));
                     command.Parameters.AddWithValue("@is_delivered", 1);
                     command.Parameters.AddWithValue("@quantity", 1);

@@ -116,8 +116,9 @@ using System;
 //18/05/2017 19:29 NDP: AceQLParameter: clean comments
 //19/05/2017 01:19 NDP: FormUploadStream: test if progressIndicator is null before setting Value to 100
 //19/05/2017 03:23 NDP: Clean AceQLConnection.SetProgressIndicator comments
-//19/05/2017 04:44 NDP: Simplify null check as recommanded by Microsoft Code Analysis
-
+//19/05/2017 04:44 NDP: Simplify null check as recommended by Microsoft Code Analysis
+//19/05/2017 04:58 NDP: Simplify null check as recommended by Microsoft Code Analysis
+// 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues

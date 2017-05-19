@@ -41,13 +41,7 @@ namespace AceQL.Client.Api.Http
         /// 
         public Proxy(String proxyUri)
         {
-            if (proxyUri == null)
-            {
-                throw new ArgumentNullException("proxyUri is null!");
-            }
-
-            this.proxyUri = proxyUri;
-
+            this.proxyUri = proxyUri ?? throw new ArgumentNullException("proxyUri is null!");
         }
 
         public ICredentials Credentials

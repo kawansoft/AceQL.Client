@@ -842,7 +842,6 @@ namespace AceQL.Client.Api.Http
 
             using (Stream input = await CallWithPostAsync(action, parametersMap).ConfigureAwait(false))
             {
-
                 String result = null;
 
                 if (input != null)
@@ -861,10 +860,7 @@ namespace AceQL.Client.Api.Http
 
                 int rowCount = resultAnalyzer.GetIntvalue("row_count");
                 return rowCount;
-
             }
-
-
         }
 
 
