@@ -118,6 +118,7 @@ using System;
 //19/05/2017 03:23 NDP: Clean AceQLConnection.SetProgressIndicator comments
 //19/05/2017 04:44 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 04:58 NDP: Simplify null check as recommended by Microsoft Code Analysis
+//19/05/2017 05:01 NDP: Simplify null check as recommended by Microsoft Code Analysis
 // 
 namespace AceQL.Client.Api.Util
 {
