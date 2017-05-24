@@ -160,9 +160,9 @@ namespace AceQL.Client.Samples
                 command.Parameters.AddWithValue("@parm2", "Sir");
                 command.Parameters.AddWithValue("@parm3", "André_" + customer_id);
                 command.Parameters.Add(new AceQLParameter("@parm4", "Name_" + customer_id));
-                command.Parameters.AddWithValue("@parm5", customer_id + ", road 6");
+                command.Parameters.AddWithValue("@parm5", customer_id + ", road 66");
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
-                command.Parameters.AddWithValue("@parm7", customer_id + "11111");
+                command.Parameters.AddWithValue("@parm7", customer_id + "1111");
                 command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();

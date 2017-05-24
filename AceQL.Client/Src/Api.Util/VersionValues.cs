@@ -121,13 +121,14 @@ using System;
 //19/05/2017 05:01 NDP: Simplify null check as recommended by Microsoft Code Analysis
 //19/05/2017 10:50 NDP: AceQLProgressIndicator: Value is read only.
 //19/05/2017 18:58 NDP: AceQLProgressIndicator: Value renamed to Percent
-// 
+//24/05/2017 18:58 NDP: Release
+
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.1-beta";
-        internal static readonly String DATE = "19-may-2017";
+        internal static readonly String DATE = "24-may-2017";
     }
 }

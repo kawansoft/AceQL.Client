@@ -166,69 +166,63 @@ namespace AceQL.Client.Samples
             this.connection = connection;
         }
 
-        /// <summary>
-        /// Example of 2 INSERT in the same transaction.
-        /// </summary>
-        /// <param name="customerId">The customer ID.</param>
-        /// <param name="itemId">the item ID.</param>
-        /// <exception cref="AceQLException">If any Exception occurs.</exception>
-        public async Task InsertCustomerAndOrderLogAsync(int customerId, int itemId)
+    /// <summary>
+    /// Example of 2 INSERT in the same transaction.
+    /// </summary>
+    /// <param name="customerId">The customer ID.</param>
+    /// <param name="itemId">the item ID.</param>
+    /// <exception cref="AceQLException">If any Exception occurs.</exception>
+    public async Task InsertCustomerAndOrderLogAsync(int customerId, int itemId)
+    {
+        // Create a transaction
+        AceQLTransaction transaction = await connection.BeginTransactionAsync();
+
+        string sql = "insert into customer values " + "" +
+            "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
+
+        AceQLCommand command = new AceQLCommand(sql, connection);
+        try
         {
-            // Create a transaction
-            using (AceQLTransaction transaction = await connection.BeginTransactionAsync())
-            {
-                string sql = "insert into customer values " + "" +
-                    "(@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
+            command.Parameters.AddWithValue("@parm1", customerId);
+            command.Parameters.AddWithValue("@parm2", "Sir");
+            command.Parameters.AddWithValue("@parm3", "Doe");
+            command.Parameters.AddWithValue("@parm4", "John");
+            // Alternate syntax
+            command.Parameters.Add(new AceQLParameter("@parm5", "1 Madison Ave"));
+            command.Parameters.AddWithValue("@parm6", "New York");
+            command.Parameters.AddWithValue("@parm7", "NY 10010");
+            command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR));
 
-                AceQLCommand command = new AceQLCommand(sql, connection);
+            await command.ExecuteNonQueryAsync();
 
-                command.Parameters.AddWithValue("@parm1", customerId);
-                command.Parameters.AddWithValue("@parm2", "Sir");
-                command.Parameters.AddWithValue("@parm3", "Doe");
-                command.Parameters.AddWithValue("@parm4", "John");
-                // Alternate syntax
-                command.Parameters.Add(new AceQLParameter("@parm5", "1 Madison Ave"));
-                command.Parameters.AddWithValue("@parm6", "New York");
-                command.Parameters.AddWithValue("@parm7", "NY 10010");
-                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR));
+            sql = "insert into orderlog values " +
+                        "(@customer_id, @item_id, @description, " +
+                            "@item_cost, @date_placed, @date_shipped, " +
+                            "@jpeg_image, @is_delivered, @quantity)";
 
-                await command.ExecuteNonQueryAsync();
+            command = new AceQLCommand(sql, connection);
 
-                sql = "insert into orderlog values " +
-                            "(@customer_id, @item_id, @description, " +
-                             "@item_cost, @date_placed, @date_shipped, " +
-                             "@jpeg_image, @is_delivered, @quantity)";
+            command.Parameters.AddWithValue("@customer_id", customerId);
+            command.Parameters.AddWithValue("@item_id", itemId);
+            command.Parameters.AddWithValue("@description", "Item Description");
+            command.Parameters.AddWithValue("@item_cost", 99D);
+            command.Parameters.AddWithValue("@date_placed", DateTime.Now);
+            command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
+            // No blob in our Quick start
+            command.Parameters.Add(new AceQLParameter("@jpeg_image",
+                AceQLNullType.BLOB));
+            command.Parameters.AddWithValue("@is_delivered", 1);
+            command.Parameters.AddWithValue("@quantity", 1);
 
-                command = new AceQLCommand(sql, connection);
-
-                try
-                {
-                    Console.WriteLine("insert into orderlog...");
-
-                    command.Parameters.AddWithValue("@customer_id", customerId);
-                    command.Parameters.AddWithValue("@item_id", itemId);
-                    command.Parameters.AddWithValue("@description", "Item Description");
-                    command.Parameters.AddWithValue("@item_cost", 99D);
-                    command.Parameters.AddWithValue("@date_placed", DateTime.Now);
-                    command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
-                    // No blob in our Quick start
-                    command.Parameters.Add(new AceQLParameter("@jpeg_image", AceQLNullType.BLOB));
-                    command.Parameters.AddWithValue("@is_delivered", 1);
-                    command.Parameters.AddWithValue("@quantity", 1);
-
-                    await command.ExecuteNonQueryAsync();
-                    await transaction.CommitAsync();
-
-                }
-                catch (Exception e)
-                {
-                    await transaction.RollbackAsync();
-                    throw e;
-                }
-
-            }
-
+            await command.ExecuteNonQueryAsync();
+            await transaction.CommitAsync();
         }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            throw e;
+        }
+    }
 
         /// <summary>
         /// Example of 2 SELECT.

@@ -138,7 +138,7 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLException"/> class.
-        /// Corresponds to an Java Exception raised on server side.
+        /// Corresponds to a Java Exception raised on server side.
         /// </summary>
         /// <param name="reason">The reason.</param>
         /// <param name="errorType">The error type.</param>
