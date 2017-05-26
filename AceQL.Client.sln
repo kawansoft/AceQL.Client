@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceQL.Client.Samples", "AceQL.Client.Samples\AceQL.Client.Samples.csproj", "{2084D7CF-95C3-431E-9D42-90A59A0CE1CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceQL.Client", "AceQL.Client\AceQL.Client.csproj", "{830785E7-4388-452A-95CC-DCC9C6F38E13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceQL.Client.Tests", "AceQL.Client.Tests\AceQL.Client.Tests.csproj", "{C600F7EF-6FF8-4BA4-A0DC-A9C8FEF577BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{830785E7-4388-452A-95CC-DCC9C6F38E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{830785E7-4388-452A-95CC-DCC9C6F38E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{830785E7-4388-452A-95CC-DCC9C6F38E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C600F7EF-6FF8-4BA4-A0DC-A9C8FEF577BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C600F7EF-6FF8-4BA4-A0DC-A9C8FEF577BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C600F7EF-6FF8-4BA4-A0DC-A9C8FEF577BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C600F7EF-6FF8-4BA4-A0DC-A9C8FEF577BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,12 +26,12 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Samples
+namespace AceQL.Client.Tests
 {
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLExample
+    class AceQLTest
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 

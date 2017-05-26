@@ -124,13 +124,15 @@ using System;
 //24/05/2017 18:58 NDP: Release
 //25/05/2017 16:16 NDP: Rebuild after Xamarin installation
 //25/05/2017 16:21 NDP: Fix version date spelling
+//25/05/2017 16:26 NDP: Increment version
+//26/05/2017 15:48 NDP: Increment version date & Assembly version
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.1-beta";
-        internal static readonly String DATE = "25-may-2017";
+        internal static readonly String VERSION = "v1.0.2-beta";
+        internal static readonly String DATE = "26-may-2017";
     }
 }
