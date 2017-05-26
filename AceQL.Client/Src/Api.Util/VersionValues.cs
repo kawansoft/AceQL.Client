@@ -126,6 +126,7 @@ using System;
 //25/05/2017 16:21 NDP: Fix version date spelling
 //25/05/2017 16:26 NDP: Increment version
 //26/05/2017 15:50 NDP: Increment version date & Assembly version
+//26/05/2017 22:02 NDP: Remove .ico in Samples project
 
 namespace AceQL.Client.Api.Util
 {
