@@ -125,7 +125,7 @@ using System;
 //25/05/2017 16:16 NDP: Rebuild after Xamarin installation
 //25/05/2017 16:21 NDP: Fix version date spelling
 //25/05/2017 16:26 NDP: Increment version
-//26/05/2017 15:48 NDP: Increment version date & Assembly version
+//26/05/2017 15:50 NDP: Increment version date & Assembly version
 
 namespace AceQL.Client.Api.Util
 {
