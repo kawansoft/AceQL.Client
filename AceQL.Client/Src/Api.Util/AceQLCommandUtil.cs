@@ -16,13 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace AceQL.Client.Api.Util
@@ -134,7 +135,7 @@ namespace AceQL.Client.Api.Util
 
                 if (aceQLParameter.IsNullValue)
                 {
-                    String paramType = "TYPE_NULL" + (int) sqlType;
+                    String paramType = "TYPE_NULL" + (int)sqlType;
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, "NULL");
                 }
@@ -173,7 +174,6 @@ namespace AceQL.Client.Api.Util
                 }
                 else if (value is short)
                 {
-
                     String paramType = "TINYINT";
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, value.ToString());
@@ -186,8 +186,6 @@ namespace AceQL.Client.Api.Util
                 }
                 else if (value is float)
                 {
-                    //parametersList.Add(new PrepStatementParameter(paramIndex, "REAL", value.ToString()));
-
                     String paramType = "REAL";
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, value.ToString());
@@ -204,11 +202,15 @@ namespace AceQL.Client.Api.Util
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)value));
                 }
+                else if (value is TimeSpan)
+                {
+                    String paramType = "TIME";
+                    parametersList.Add("param_type_" + paramIndex, paramType);
+                    parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)value));
+                }
                 else
                 {
-                    String paramType = "VARCHAR";
-                    parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    throw new AceQLException("Type of value is not supported. Value: " + value + " / Type: " + value.GetType(), 2, (Exception)null, HttpStatusCode.OK);
                 }
 
             }
@@ -247,7 +249,7 @@ namespace AceQL.Client.Api.Util
         /// <exception cref="System.ArgumentException">Invalid parameter not exists in SQL command: " + theParm</exception>
         internal Dictionary<String, int> GetPreparedStatementParametersDic()
         {
-            HashSet<String> theParamsSet = GetValidParams(); 
+            HashSet<String> theParamsSet = GetValidParams();
 
             SortedDictionary<int, String> paramsIndexOf = new SortedDictionary<int, String>();
 
@@ -260,8 +262,9 @@ namespace AceQL.Client.Api.Util
 
                 String theParm = Parameters[i].ToString();
 
-                if (! theParamsSet.Contains(theParm)) {
-                    throw new ArgumentException("Invalid parameter that not exists in SQL command: " + theParm); 
+                if (!theParamsSet.Contains(theParm))
+                {
+                    throw new ArgumentException("Invalid parameter that not exists in SQL command: " + theParm);
                 }
 
                 int index = cmdText.IndexOf(theParm);
@@ -329,7 +332,7 @@ namespace AceQL.Client.Api.Util
         /// <returns>String.</returns>
         internal static String ConvertToTimestamp(DateTime dateTime)
         {
-            double theDouble = (TimeZoneInfo.ConvertTime (dateTime, TimeZoneInfo.Utc) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
+            double theDouble = (TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
 
             theDouble = theDouble * 1000;
             String theTimeString = theDouble.ToString();

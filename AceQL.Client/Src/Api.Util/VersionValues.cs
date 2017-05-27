@@ -127,13 +127,14 @@ using System;
 //25/05/2017 16:26 NDP: Increment version
 //26/05/2017 15:50 NDP: Increment version date & Assembly version
 //26/05/2017 22:02 NDP: Remove .ico in Samples project
+//27/05/2017 13:37 NDP: Throw AceQLException if value type is not supported
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.2-beta";
-        internal static readonly String DATE = "26-may-2017";
+        internal static readonly String VERSION = "v1.0.3-beta";
+        internal static readonly String DATE = "27-may-2017";
     }
 }
