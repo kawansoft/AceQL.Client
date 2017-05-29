@@ -564,11 +564,11 @@ namespace AceQL.Client.Api.Http
 
             if (!UseCancellationToken)
             {
-                response = await httpClient.GetAsync(url).ConfigureAwait(false);
+                response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
             }
             else
             {
-                response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
+                response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
             }
 
             this.httpStatusCode = response.StatusCode;
@@ -972,13 +972,16 @@ namespace AceQL.Client.Api.Http
 
             try
             {
-                String action = "blob_download";
+                //String action = "blob_download";
+                //Dictionary<string, string> parameters = new Dictionary<string, string>
+                //{
+                //    { "blob_id", blobId }
+                //};
 
-                Dictionary<string, string> parameters = new Dictionary<string, string>
-                {
-                    { "blob_id", blobId }
-                };
-                Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
+                //Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
+
+                String theUrl = this.url + "/blob_download?blob_id=" + blobId;
+                Stream input = await CallWithGetReturnStreamAsync(theUrl);
                 return input;
             }
             catch (Exception exception)

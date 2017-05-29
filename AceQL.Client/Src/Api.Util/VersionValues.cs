@@ -129,13 +129,14 @@ using System;
 //26/05/2017 22:02 NDP: Remove .ico in Samples project
 //27/05/2017 13:37 NDP: Throw AceQLException if value type is not supported
 //29/05/2017 19:30 NDP: No more Nuget of Microsoft.AspNet.WebApi.Client
+//29/05/2017 21:53 NDP: CallWithGetReturnStreamAsync: use HttpCompletionOption.ResponseHeadersRead for real streaming
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.4-beta";
+        internal static readonly String VERSION = "v1.0.5-beta";
         internal static readonly String DATE = "29-may-2017";
     }
 }
