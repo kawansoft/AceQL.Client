@@ -130,6 +130,7 @@ using System;
 //27/05/2017 13:37 NDP: Throw AceQLException if value type is not supported
 //29/05/2017 19:30 NDP: No more Nuget of Microsoft.AspNet.WebApi.Client
 //29/05/2017 21:53 NDP: CallWithGetReturnStreamAsync: use HttpCompletionOption.ResponseHeadersRead for real streaming
+//29/05/2017 21:55 NDP: Increment version date & Assembly version
 
 namespace AceQL.Client.Api.Util
 {
