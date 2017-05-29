@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
         <title>AceQL HTTP Client SDK (Beta)</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -11,11 +11,10 @@
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Client toolkit for easy access of remote SQL databases managed with AceQL HTTP. Packaged as a Portable Class Library that works on iOS, Android and Windows.</description>
-        <releaseNotes>Add classes and methods to ease MS SQL Server calls migration.</releaseNotes>
+        <releaseNotes>Remove Microsoft.AspNet.WebApi.Client dependency.</releaseNotes>
         <copyright>Copyright © 2017</copyright>
         <tags>SQL http remote database</tags>
         <dependencies>
-            <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
             <dependency id="Microsoft.Bcl" version="1.1.9" />
             <dependency id="Newtonsoft.Json" version="10.0.2" />
             <dependency id="PCLStorage" version="1.0.2" />
