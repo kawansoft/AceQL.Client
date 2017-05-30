@@ -75,20 +75,6 @@ namespace AceQL.Client.Samples
             String username = "username";
             String password = "password";
 
-            String proxyUsername = "ndepomereu2";
-            String proxyPassword = null;
-
-            IFolder rootFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await rootFolder.CreateFolderAsync(ACEQL_PCL_FOLDER,
-                CreationCollisionOption.OpenIfExists);
-            Console.WriteLine("AceQLPclFolder: " + folder.Path);
-
-            if (await ExistsAsync(ACEQL_PCL_FOLDER, "password.txt"))
-            {
-                IFile file = await GetFileAsync("AceQLPclFolder", "password.txt");
-                proxyPassword = await file.ReadAllTextAsync();
-            }
-
             //customer_id integer NOT NULL,
             //customer_title character(4),
             //fname character varying(32),
@@ -100,7 +86,6 @@ namespace AceQL.Client.Samples
 
             string connectionString = $"Server={server}; Database={database}; ";
             //connectionString += $"Username={username}; Password={password}";
-            connectionString += $"; ProxyUsername ={proxyUsername}; ProxyPassword ={ proxyPassword}";
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
 
@@ -300,82 +285,7 @@ namespace AceQL.Client.Samples
             await transaction.CommitAsync();
         }
 
-        /// <summary>
-        /// Gets an existing file.
-        /// </summary>
-        /// <param name="folderName">Name of the folder, without path separators.</param>
-        /// <param name="fileName">Simple name of the file. Example: myfile.txt.</param>
-        /// <returns>An existing file instance.</returns>
-        /// <exception cref="System.IO.FileNotFoundException">If the folder does not exist or the file was not found in the specified folder.</exception>
-        public static async Task<IFile> GetFileAsync(String folderName, String fileName)
-        {
-
-            if (folderName == null)
-            {
-                throw new ArgumentNullException("folderName is null!");
-            }
-
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            IFolder rootFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await rootFolder.GetFolderAsync(folderName);
-            IFile file = await folder.GetFileAsync(fileName);
-            return file;
-        }
-
-        /// <summary>
-        /// Says if a file exists in a folder.
-        /// </summary>
-        /// <param name="folderName">Name of the folder, without path separators.</param>
-        /// <param name="fileName">Simple name of the file. Example: myfile.txt.</param>
-        /// <returns>If the folder and the file exist, else false.</returns>
-        /// <exception cref="System.ArgumentNullException">The file name or folder name is null.</exception>
-        public static async Task<bool> ExistsAsync(string folderName, string fileName)
-        {
-            if (folderName == null)
-            {
-                throw new ArgumentNullException("folderName is null!");
-            }
-
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName is null!");
-            }
-
-            IFolder folder = null;
-            try
-            {
-                IFolder rootFolder = FileSystem.Current.LocalStorage;
-                folder = await rootFolder.GetFolderAsync(folderName);
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
-
-            IFile file = null;
-
-            try
-            {
-                file = await folder.GetFileAsync(fileName);
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
-
-            if (file == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+       
 
     }
 }

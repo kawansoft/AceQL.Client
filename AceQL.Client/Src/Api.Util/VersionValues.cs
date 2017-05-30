@@ -128,16 +128,24 @@ using System;
 //26/05/2017 15:50 NDP: Increment version date & Assembly version
 //26/05/2017 22:02 NDP: Remove .ico in Samples project
 //27/05/2017 13:37 NDP: Throw AceQLException if value type is not supported
+//
+//V 1.0.4
 //29/05/2017 19:30 NDP: No more Nuget of Microsoft.AspNet.WebApi.Client
+//
+//V 1.0.5
 //29/05/2017 21:53 NDP: CallWithGetReturnStreamAsync: use HttpCompletionOption.ResponseHeadersRead for real streaming
 //29/05/2017 21:55 NDP: Increment version date & Assembly version
+//
+//V 1.0.6
+//30/05/2017 18:14 NDP: Add System.Net.Http.Formatting.Extension package (allows to use again ProgressMessageHandler)
+//30/05/2017 18:14 NDP: Remove Microsoft.Bcl.Build package
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.5-beta";
-        internal static readonly String DATE = "29-may-2017";
+        internal static readonly String VERSION = "v1.0.6-beta";
+        internal static readonly String DATE = "30-may-2017";
     }
 }

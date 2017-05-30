@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Handlers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -61,10 +62,8 @@ namespace AceQL.Client.Api.Http
         {
             HttpClientHandler handler = AceQLHttpApi.BuildHttpClientHandler(proxyUri, credentials);
 
-            //ProgressMessageHandler processMessageHander = new ProgressMessageHandler(handler);
-            //HttpClient httpClient = new HttpClient(processMessageHander);
-
-            HttpClient httpClient = new HttpClient(handler);
+            ProgressMessageHandler processMessageHander = new ProgressMessageHandler(handler);
+            HttpClient httpClient = new HttpClient(processMessageHander);
 
             if (timeout != 0)
             {
@@ -72,7 +71,6 @@ namespace AceQL.Client.Api.Http
                 httpClient.Timeout = new TimeSpan(nanoseconds / 100);
             }
 
-            /*
             processMessageHander.HttpSendProgress += (sender, e) =>
             {
                 //if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progress.IntValue: " + progress.IntValue);
@@ -97,7 +95,7 @@ namespace AceQL.Client.Api.Http
                 }
 
             };
-            */
+            
 
             StringContent stringContentBlobId = new StringContent(blobId);
 

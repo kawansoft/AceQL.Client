@@ -101,8 +101,7 @@ namespace AceQL.Client.Api
         public static async Task<string> GetAceQLLocalFolderAsync()
         {
             IFolder rootFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
-                CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+            IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER, CreationCollisionOption.OpenIfExists);
             return folder.Path;
         }
 
