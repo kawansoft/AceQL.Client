@@ -107,31 +107,36 @@ namespace AceQL.Client.Samples.Src
         {
             string sql = "update customer set fname = @fname where customer_id = @customer_id";
 
-            AceQLCommand command = new AceQLCommand(sql, connection);
+            using (AceQLCommand command = new AceQLCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@customer_id", 1);
+                command.Parameters.AddWithValue("@fname", "Jim");
 
-            command.Parameters.AddWithValue("@customer_id", 1);
-            command.Parameters.AddWithValue("@fname", "Jim");
+                int rows = await command.ExecuteNonQueryAsync();
+                Console.WriteLine("Rows updated: " + rows);
+            }
 
-            int rows = await command.ExecuteNonQueryAsync();
-            Console.WriteLine("Rows updated: " + rows);
         }
 
         private async Task SelectCustomerOne()
         {
             string sql = "select customer_id, customer_title, lname from customer where customer_id = 1";
-            AceQLCommand command = new AceQLCommand(sql, connection);
 
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+            using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
-                while (dataReader.Read())
+                using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
                 {
-                    Console.WriteLine();
-                    int i = 0;
-                    Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                    Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
-                    Console.WriteLine("lname         : " + dataReader.GetValue(i++));
+                    while (dataReader.Read())
+                    {
+                        Console.WriteLine();
+                        int i = 0;
+                        Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                        Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
+                        Console.WriteLine("lname         : " + dataReader.GetValue(i++));
+                    }
                 }
             }
+
         }
 
         private async Task SelectCustomer()
@@ -287,8 +292,10 @@ namespace AceQL.Client.Samples.Src
             string sql = "insert into customer values (1, 'Sir', 'John', 'Doe', " +
                 "'1 Madison Ave', 'New York', 'NY 10010', NULL)";
 
-            AceQLCommand command = new AceQLCommand(sql, connection);
-            int rows = await command.ExecuteNonQueryAsync();
+            using (AceQLCommand command = new AceQLCommand(sql, connection))
+            {
+                int rows = await command.ExecuteNonQueryAsync();
+            }
 
         }
 
