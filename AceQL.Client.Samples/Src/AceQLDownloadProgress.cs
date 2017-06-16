@@ -26,16 +26,16 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Tests
+namespace AceQL.Client.Samples
 {
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLTest
+    class AceQLDownloadProgress
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-        public static void Main(string[] args)
+        public static void TheMain(string[] args)
         {
             try
             {
@@ -62,18 +62,18 @@ namespace AceQL.Client.Tests
         {
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
-            String serverUrlLocalhost = "http://localhost:9090/aceql";
+            string serverUrlLocalhost = "http://localhost:9090/aceql";
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
-            String serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
+            string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
-            String serverUrlLinux = "https://www.aceql.com:9443/aceql";
+            string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            String server = serverUrlLocalhost;
-            String database = "kawansoft_example";
-            String username = "username";
-            String password = "password";
+            string server = serverUrlLinux;
+            string database = "kawansoft_example";
+            string username = "username";
+            string password = "password";
 
             //customer_id integer NOT NULL,
             //customer_title character(4),
@@ -107,8 +107,8 @@ namespace AceQL.Client.Tests
         /// <param name="connection"></param>
         private static async Task ExecuteExample(AceQLConnection connection)
         {
-            String IN_DIRECTORY = "c:\\test\\";
-            String OUT_DIRECTORY = "c:\\test\\out\\";
+            string IN_DIRECTORY = "c:\\test\\";
+            string OUT_DIRECTORY = "c:\\test\\out\\";
 
             await connection.OpenAsync();
 
@@ -121,70 +121,13 @@ namespace AceQL.Client.Tests
             await transaction.CommitAsync();
             transaction.Dispose();
 
-            String sql = "delete from customer";
-
-            AceQLCommand command = new AceQLCommand()
-            {
-                CommandText = sql,
-                Connection = connection
-            };
-            command.Prepare();
-
-            await command.ExecuteNonQueryAsync();
-
-            for (int i = 0; i < 3; i++)
-            {
-                sql =
-                "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
-
-                command = new AceQLCommand(sql, connection);
-
-                int customer_id = i;
-
-                command.Parameters.AddWithValue("@parm1", customer_id);
-                command.Parameters.AddWithValue("@parm2", "Sir");
-                command.Parameters.AddWithValue("@parm3", "André_" + customer_id);
-                command.Parameters.Add(new AceQLParameter("@parm4", "Name_" + customer_id));
-                command.Parameters.AddWithValue("@parm5", customer_id + ", road 66");
-                command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
-                command.Parameters.AddWithValue("@parm7", customer_id + "1111");
-                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
-
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
-            }
-
-            command.Dispose();
-
-            sql = "select * from customer";
-            command = new AceQLCommand(sql, connection);
-
-            // Our dataReader must be disposed to delete underlying downloaded files
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
-            {
-                //await dataReader.ReadAsync(new CancellationTokenSource().Token)
-                while (dataReader.Read())
-                {
-                    Console.WriteLine();
-                    int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++));
-                }
-            }
-
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
 
-            sql = "delete from orderlog";
-            command = new AceQLCommand(sql, connection);
+            string sql = "delete from orderlog";
+            AceQLCommand command = new AceQLCommand(sql, connection);
             await command.ExecuteNonQueryAsync();
             command.Dispose();
 
@@ -195,42 +138,38 @@ namespace AceQL.Client.Tests
 
             try
             {
-                for (int j = 1; j < 4; j++)
-                {
-                    sql =
-                    "insert into orderlog values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8, @parm9)";
+                sql =
+                "insert into orderlog values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8, @parm9)";
 
-                    command = new AceQLCommand(sql, connection);
+                command = new AceQLCommand(sql, connection);
 
-                    int customer_id = j;
+                int customer_id = 1;
 
-                    String blobPath = IN_DIRECTORY + "username_koala.jpg";
-                    Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
+                string blobPath = IN_DIRECTORY + "username_koala.jpg";
+                Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
 
-                    //customer_id integer NOT NULL,
-                    //item_id integer NOT NULL,
-                    //description character varying(64) NOT NULL,
-                    //cost_price numeric,
-                    //date_placed date NOT NULL,
-                    //date_shipped timestamp without time zone,
-                    //jpeg_image oid,
-                    //is_delivered numeric,
-                    //quantity integer NOT NULL,
+                //customer_id integer NOT NULL,
+                //item_id integer NOT NULL,
+                //description character varying(64) NOT NULL,
+                //cost_price numeric,
+                //date_placed date NOT NULL,
+                //date_shipped timestamp without time zone,
+                //jpeg_image oid,
+                //is_delivered numeric,
+                //quantity integer NOT NULL,
 
-                    command.Parameters.AddWithValue("@parm1", customer_id);
-                    command.Parameters.AddWithValue("@parm2", customer_id);
-                    command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
-                    command.Parameters.AddWithValue("@parm5", DateTime.Now);
-                    command.Parameters.AddWithValue("@parm6", DateTime.Now);
-                    // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.AddWithValue("@parm7", stream);
-                    command.Parameters.AddWithValue("@parm8", 1);
-                    command.Parameters.AddWithValue("@parm9", j * 2000);
+                command.Parameters.AddWithValue("@parm1", customer_id);
+                command.Parameters.AddWithValue("@parm2", customer_id);
+                command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
+                command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
+                command.Parameters.AddWithValue("@parm5", DateTime.Now);
+                command.Parameters.AddWithValue("@parm6", DateTime.Now);
+                // Adds the Blob. (Stream will be closed by AceQLCommand)
+                command.Parameters.AddWithValue("@parm7", stream);
+                command.Parameters.AddWithValue("@parm8", 1);
+                command.Parameters.AddWithValue("@parm9", 1* 2000);
 
-                    await command.ExecuteNonQueryAsync();
-
-                }
+                await command.ExecuteNonQueryAsync();
 
                 await transaction.CommitAsync();
             }
@@ -245,7 +184,7 @@ namespace AceQL.Client.Tests
             // Do next selects in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
 
-            sql = "select * from orderlog";
+            sql = "select * from orderlog where cutomer_id = 1 and order_id = 1";
             command = new AceQLCommand(sql, connection);
 
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
@@ -265,24 +204,34 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
 
-                    Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
-                    Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
-
                     // Download Blobs
-                    String blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
+                    string blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
                     k++;
 
                     using (Stream stream = await dataReader.GetStreamAsync(6))
                     {
                         using (var fileStream = File.Create(blobPath))
                         {
-                            stream.CopyTo(fileStream);
+                            //stream.CopyTo(fileStream);
+                            CopyStream(stream, fileStream);
                         }
+
+
                     }
                 }
             }
 
             await transaction.CommitAsync();
+        }
+
+        public static void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[32768];
+            int read;
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, read);
+            }
         }
 
     }

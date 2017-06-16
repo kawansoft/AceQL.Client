@@ -26,16 +26,16 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Samples
+namespace AceQL.Client.Tests
 {
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLExample
+    class AceQLTest
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-        public static void TheMain(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
@@ -112,8 +112,6 @@ namespace AceQL.Client.Samples
 
             await connection.OpenAsync();
 
-            Console.WriteLine("ConnectionString: " + connection.ConnectionString);
-            Console.WriteLine();
             Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
             Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
             Console.WriteLine("AceQL local folder: ");
@@ -125,8 +123,7 @@ namespace AceQL.Client.Samples
 
             string sql = "delete from customer";
 
-            AceQLCommand command = null;
-            command = new AceQLCommand()
+            AceQLCommand command = new AceQLCommand()
             {
                 CommandText = sql,
                 Connection = connection
@@ -134,25 +131,6 @@ namespace AceQL.Client.Samples
             command.Prepare();
 
             await command.ExecuteNonQueryAsync();
-
-            sql = "delete from dustomer";
-
-            command = new AceQLCommand()
-            {
-                CommandText = sql,
-                Connection = connection
-            };
-            command.Prepare();
-
-            try
-            {
-                await command.ExecuteNonQueryAsync();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.ToString());
-            } 
-
 
             for (int i = 0; i < 3; i++)
             {
@@ -306,8 +284,6 @@ namespace AceQL.Client.Samples
 
             await transaction.CommitAsync();
         }
-
-       
 
     }
 }

@@ -99,14 +99,14 @@ namespace AceQL.Client.Samples
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
             // Port number is the port number used to start the Web Server:
-            //String server = "http://www.aceql.com:9090/aceql";
-            String server = "http://localhost:9090/aceql";
-            String database = "kawansoft_example";
+            //string server = "http://www.aceql.com:9090/aceql";
+            string server = "http://localhost:9090/aceql";
+            string database = "kawansoft_example";
 
             // (username, password) for authentication on server side.
             // No authentication will be done for our Quick Start:
-            String username = "MyUsername";
-            String password = "MySecret";
+            string username = "MyUsername";
+            string password = "MySecret";
 
             string connectionString = $"Server={server}; Database={database}; "
                 + $"Username={username}; Password={password}";
@@ -128,18 +128,18 @@ namespace AceQL.Client.Samples
         public static async Task<AceQLConnection> RemoteConnectionBuilderUsingProxyAsync()
         {
             // Port number is the port number used to start the Web Server:
-            String server = "http://www.aceql.com:9090/aceql";
-            String database = "kawansoft_example";
+            string server = "http://www.aceql.com:9090/aceql";
+            string database = "kawansoft_example";
 
             // (username, password) for authentication on server side.
             // No authentication will be done for our Quick Start:
-            String username = "MyUsername";
-            String password = "MySecret";
+            string username = "MyUsername";
+            string password = "MySecret";
 
             // Proxy will be detected, pass the auth info for proxy that require authentication:
-            String proxyUri = "http://localhost:8080";
-            String proxyUsername = "ndepomereu2";
-            String proxyPassword = null;
+            string proxyUri = "http://localhost:8080";
+            string proxyUsername = "ndepomereu2";
+            string proxyPassword = null;
 
             if (await ExistsAsync("AceQLPclFolder", "password.txt"))
             {
@@ -232,7 +232,7 @@ namespace AceQL.Client.Samples
         private async Task SelectCustomerAndOrderLogAsync(int customerId, int itemId)
         {
             // Display the created Customer:
-            String sql = "select customer_id, fname, lname from customer "
+            string sql = "select customer_id, fname, lname from customer "
                 + " where customer_id = @customer_id";
 
             AceQLCommand command = new AceQLCommand(sql, connection);
@@ -244,8 +244,8 @@ namespace AceQL.Client.Samples
                 {
                     int i = 0;
                     int customerId2 = dataReader.GetInt32(i++);
-                    String fname = dataReader.GetString(i++);
-                    String lname = dataReader.GetString(i++);
+                    string fname = dataReader.GetString(i++);
+                    string lname = dataReader.GetString(i++);
 
                     Console.WriteLine();
                     Console.WriteLine("customer_id : " + customerId2);
@@ -268,7 +268,7 @@ namespace AceQL.Client.Samples
                     int customerId2 = dataReader.GetInt32(i++);
                     int itemId2 = dataReader.GetInt32(i++);
 
-                    String description = dataReader.GetString(i++);
+                    string description = dataReader.GetString(i++);
                     Decimal costPrice = dataReader.GetDecimal(i++);
 
                     DateTime datePlaced = dataReader.GetDateTime(i++).Date;
@@ -299,7 +299,7 @@ namespace AceQL.Client.Samples
         /// <param name="customerId">The customer ID.</param>
         public async Task DeleteCustomerAsync(int customerId)
         {
-            String sql = "delete from customer where customer_id = @customer_id";
+            string sql = "delete from customer where customer_id = @customer_id";
 
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
@@ -315,7 +315,7 @@ namespace AceQL.Client.Samples
         /// <param name="itemId">the item ID.</param>
         public async Task DeleteOrderlogAsync(int customerId, int idemId)
         {
-            String sql = "delete from orderlog where customer_id = @customer_id and item_id = @item_id";
+            string sql = "delete from orderlog where customer_id = @customer_id and item_id = @item_id";
 
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
@@ -332,7 +332,7 @@ namespace AceQL.Client.Samples
         /// <param name="fileName">Simple name of the file. Example: myfile.txt.</param>
         /// <returns>An existing file instance.</returns>
         /// <exception cref="System.IO.FileNotFoundException">If the folder does not exist or the file was not found in the specified folder.</exception>
-        public static async Task<IFile> GetFileAsync(String folderName, String fileName)
+        public static async Task<IFile> GetFileAsync(string folderName, string fileName)
         {
             if (folderName == null)
             {

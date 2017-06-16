@@ -32,7 +32,7 @@ namespace AceQL.Client.Samples
     {
         static void Main(string[] args)
         {
-            int mainToLaunch = 2;
+            int mainToLaunch = 4;
 
             if (mainToLaunch == 1)
             {
@@ -45,6 +45,10 @@ namespace AceQL.Client.Samples
             else if (mainToLaunch == 3)
             {
                 DocSamples.TheMain(args);
+            }
+            else if (mainToLaunch == 4)
+            {
+                WebDocSample.TheMain(args);
             }
         }
     }

@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Samples.Src
 {
-    public class DocSamples
+    public class WebDocSample
     {
         private AceQLConnection connection;
 
@@ -56,38 +56,82 @@ namespace AceQL.Client.Samples.Src
         {
             Console.WriteLine("Building connection with credential...");
             AceQLConnection connection = await ConnectionBuilderAsyncWithCredential();
-            DocSamples docSamples = new DocSamples(connection);
+            WebDocSample webDocSamples = new WebDocSample(connection);
 
-            await docSamples.DeleteCustomers();
+            await webDocSamples.DeleteCustomers();
 
             Console.WriteLine("Insert customer...");
-            await docSamples.InsertCustomer();
+            await webDocSamples.InsertCustomer();
+
+            Console.WriteLine("display customer 1...");
+            await webDocSamples.SelectCustomerOne();
+            Console.WriteLine();
+
+            Console.WriteLine("update customer...");
+            await webDocSamples.UpdateCustomer();
+            Console.WriteLine();
 
             Console.WriteLine("display customer...");
-            await docSamples.SelectCustomer();
+            await webDocSamples.SelectCustomer();
+            Console.WriteLine();
 
-            await docSamples.DeleteCustomers();
-            await docSamples.DeleteOrderlogs();
+            await webDocSamples.DeleteCustomers();
+            await webDocSamples.DeleteOrderlogs();
 
-            await docSamples.InsertCustomerAndOrderLogAsync(1, 1);
+            await webDocSamples.InsertCustomerAndOrderLogAsync(1, 1);
+            Console.WriteLine();
 
-            await docSamples.DeleteOrderlogs();
+            await webDocSamples.DeleteOrderlogs();
 
+            Console.WriteLine();
             Console.WriteLine("Insert BLOB...");
-            await docSamples.InsertBlob(1, 1);
+            await webDocSamples.InsertBlob(1, 1);
 
             Console.WriteLine("Select BLOB...");
-            await docSamples.SelectBlob(1, 1);
+            await webDocSamples.SelectBlob(1, 1);
 
-            await docSamples.DeleteOrderlogs();
+            await webDocSamples.DeleteOrderlogs();
 
+            Console.WriteLine();
             Console.WriteLine("Insert BLOB with ProgressIndicator...");
-            await docSamples.InsertBlobProgressIndicator(1, 1);
+            await webDocSamples.InsertBlobProgressIndicator(1, 1);
 
+            Console.WriteLine();
             Console.WriteLine("Select BLOB...");
-            await docSamples.SelectBlob(1, 1);
+            await webDocSamples.SelectBlob(1, 1);
 
 
+        }
+
+        private async Task UpdateCustomer()
+        {
+            string sql = "update customer set fname = @fname where customer_id = @customer_id";
+
+            AceQLCommand command = new AceQLCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@customer_id", 1);
+            command.Parameters.AddWithValue("@fname", "Jim");
+
+            int rows = await command.ExecuteNonQueryAsync();
+            Console.WriteLine("Rows updated: " + rows);
+        }
+
+        private async Task SelectCustomerOne()
+        {
+            string sql = "select customer_id, customer_title, lname from customer where customer_id = 1";
+            AceQLCommand command = new AceQLCommand(sql, connection);
+
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+            {
+                while (dataReader.Read())
+                {
+                    Console.WriteLine();
+                    int i = 0;
+                    Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                    Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
+                    Console.WriteLine("lname         : " + dataReader.GetValue(i++));
+                }
+            }
         }
 
         private async Task SelectCustomer()
@@ -150,8 +194,7 @@ namespace AceQL.Client.Samples.Src
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
-            // Port number is the port number used to start the Web Server:
-            string server = "http://localhost:9090/aceql";
+            string server = "https://www.aceql.com:9443/aceql";
             string database = "kawansoft_example";
 
             string username = "MyUsername";
@@ -176,14 +219,13 @@ namespace AceQL.Client.Samples.Src
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public static async Task<AceQLConnection> ConnectionBuilderAsyncWithCredential()
         {
-            // Port number is the port number used to start the Web Server:
-            string server = "http://localhost:9090/aceql";
+            string server = "https://www.aceql.com:9443/aceql";
             string database = "kawansoft_example";
 
             string connectionString = $"Server={server}; Database={database}";
 
-            string username = "username";
-            char[] password = GetFromUserInput();
+            string username = "MyUsername";
+            char[] password = { 'M', 'y', 'S', 'e', 'c', 'r', 'e', 't' };
 
             AceQLConnection connection = new AceQLConnection(connectionString)
             {
@@ -233,7 +275,7 @@ namespace AceQL.Client.Samples.Src
         /// Constructor.
         /// </summary>
         /// <param name="connection">The AceQL connection to remote database.</param>
-        public DocSamples(AceQLConnection connection)
+        public WebDocSample(AceQLConnection connection)
         {
             this.connection = connection;
         }
@@ -242,21 +284,23 @@ namespace AceQL.Client.Samples.Src
         // 
         private async Task InsertCustomer()
         {
-            //customer_id integer     not null,
-            //customer_title  char(4)         null,
-            //fname varchar(32)     null,
-            //lname varchar(32) not null,
-            //addressline varchar(64) not null,
-            //town varchar(32) not null,
-            //zipcode         char(10)    not null,
-            //phone varchar(32)     null,
+            string sql = "insert into customer values (1, 'Sir', 'John', 'Doe', " +
+                "'1 Madison Ave', 'New York', 'NY 10010', NULL)";
 
+            AceQLCommand command = new AceQLCommand(sql, connection);
+            int rows = await command.ExecuteNonQueryAsync();
+
+        }
+
+        //command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR);
+        // 
+        private async Task InsertCustomerPreparedStatement()
+        {
             string sql = "insert into customer values " + "" +
                     "(@customer_id, @customer_title, @fname, " +
                     "@lname, @addressline, @town, @zipcode, @phone)";
 
             AceQLCommand command = new AceQLCommand(sql, connection);
-            command.Prepare(); // Optional
 
             command.Parameters.AddWithValue("@customer_id", 1);
             command.Parameters.AddWithValue("@customer_title", "Sir");
@@ -302,8 +346,8 @@ namespace AceQL.Client.Samples.Src
 
                 command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@customer_title", "Sir");
-                command.Parameters.AddWithValue("@fname", "John");
-                command.Parameters.AddWithValue("@lname", "Doe");
+                command.Parameters.AddWithValue("@fname", "Doe");
+                command.Parameters.AddWithValue("@lname", "John");
                 command.Parameters.AddWithValue("@addressline", "1 Madison Ave");
                 command.Parameters.AddWithValue("@town", "New York");
                 command.Parameters.AddWithValue("@zipcode", "NY 10010");

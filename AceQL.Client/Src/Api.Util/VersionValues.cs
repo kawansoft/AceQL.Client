@@ -139,6 +139,7 @@ using System;
 //V 1.0.6
 //30/05/2017 18:14 NDP: Add System.Net.Http.Formatting.Extension package (allows to use again ProgressMessageHandler)
 //30/05/2017 18:14 NDP: Remove Microsoft.Bcl.Build package
+//16/06/2017 18:45 NDP: Clean Samples code
 
 namespace AceQL.Client.Api.Util
 {
@@ -146,6 +147,6 @@ namespace AceQL.Client.Api.Util
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v1.0.6-beta";
-        internal static readonly String DATE = "30-may-2017";
+        internal static readonly String DATE = "16-jun-2017";
     }
 }
