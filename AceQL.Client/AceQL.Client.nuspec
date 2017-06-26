@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
         <title>AceQL HTTP Client SDK (Beta)</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Client toolkit for easy access of remote SQL databases managed with AceQL HTTP. Packaged as a Portable Class Library that works on iOS, Android and Windows.</description>
         <releaseNotes>Add System.Net.Http.Formatting.Extension package (allows to use again ProgressMessageHandler).
-		Remove Microsoft.Bcl.Build package.			  
+		Remove Microsoft.Bcl.Build package.	This versions also supports new simplified JSON format for SQL results. 		  
 		</releaseNotes>
         <copyright>Copyright © 2017</copyright>
         <tags>SQL http remote database</tags>

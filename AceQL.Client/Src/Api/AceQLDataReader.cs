@@ -76,8 +76,8 @@ namespace AceQL.Client.Api
         {
             this.file = file ?? throw new ArgumentNullException("file is null!");
             this.rowsCount = rowsCount;
-            this.connection = connection ?? throw new ArgumentNullException("connection is null!");
 
+            this.connection = connection ?? throw new ArgumentNullException("connection is null!");
             this.aceQLHttpApi = connection.aceQLHttpApi;
 
             rowParser = new RowParser(readStream);
@@ -787,7 +787,12 @@ namespace AceQL.Client.Api
             try
             {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                file.DeleteAsync();
+
+                if (! DEBUG)
+                {
+                    file.DeleteAsync();
+                }
+
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
             catch (Exception exception)

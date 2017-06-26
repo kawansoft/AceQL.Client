@@ -98,26 +98,25 @@ namespace AceQL.Client.Samples
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
-            // Port number is the port number used to start the Web Server:
-            //string server = "http://www.aceql.com:9090/aceql";
             string server = "http://localhost:9090/aceql";
             string database = "kawansoft_example";
 
-            // (username, password) for authentication on server side.
-            // No authentication will be done for our Quick Start:
+            string connectionString = $"Server={server}; Database={database}";
+
             string username = "MyUsername";
-            string password = "MySecret";
+            char[] password = { 'M', 'y', 'S', 'e', 'c', 'r', 'e', 't' };
 
-            string connectionString = $"Server={server}; Database={database}; "
-                + $"Username={username}; Password={password}";
-
-            AceQLConnection connection = new AceQLConnection(connectionString);
+            AceQLConnection connection = new AceQLConnection(connectionString)
+            {
+                Credential = new AceQLCredential(username, password)
+            };
 
             // Opens the connection with the remote database
             await connection.OpenAsync();
 
             return connection;
         }
+
 
         /// <summary>
         /// RemoteConnection Quick Start client example.

@@ -141,13 +141,16 @@ using System;
 //30/05/2017 18:14 NDP: Remove Microsoft.Bcl.Build package
 //16/06/2017 18:45 NDP: Clean Samples code
 //16/06/2017 19:04 NDP: Clean Samples code
+//
+//V 1.0.7
+//26/06/2017 17:34 NDP: Parses new JSON query result format
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.6-beta";
-        internal static readonly String DATE = "16-jun-2017";
+        internal static readonly String VERSION = "v1.0.7-beta";
+        internal static readonly String DATE = "26-jun-2017";
     }
 }

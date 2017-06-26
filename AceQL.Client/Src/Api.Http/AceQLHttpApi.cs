@@ -805,9 +805,11 @@ namespace AceQL.Client.Api.Http
             {
                 { "sql", cmdText },
                 { "prepared_statement", isPreparedStatement.ToString() },
+                { "column_types", "true" }, // Force column_types, mandatory for C# AceQLDataReader
                 { "gzip_result", gzipResult.ToString() },
                 { "pretty_printing", prettyPrinting.ToString() }
             };
+
             if (statementParameters != null)
             {
                 List<string> keyList = new List<string>(statementParameters.Keys);

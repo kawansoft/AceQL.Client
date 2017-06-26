@@ -151,7 +151,26 @@ namespace AceQL.Client.Samples
             catch (Exception exception)
             {
                 Console.WriteLine(exception.ToString());
-            } 
+            }
+
+            sql = "delete from dustomer where customer_id = @parm1 or fname = @parm2  ";
+            command = new AceQLCommand()
+            {
+                CommandText = sql,
+                Connection = connection
+            };
+            command.Parameters.AddWithValue("@parm1", 1);
+            command.Parameters.AddWithValue("@parm2", "Doe");
+
+            try
+            {
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+
 
 
             for (int i = 0; i < 3; i++)

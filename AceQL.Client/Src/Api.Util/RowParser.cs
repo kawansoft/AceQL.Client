@@ -20,6 +20,7 @@
 
 using AceQL.Client.Api.File;
 using Newtonsoft.Json;
+using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,11 +37,6 @@ namespace AceQL.Client.Api.Util
     /// </summary>
     internal class RowParser : IDisposable
     {
-        private const string COL_INDEX = "idx";
-        private const string COL_TYPE = "typ";
-        private const string COL_NAME = "nam";
-        private const string COL_VALUE = "val";
-
         private StreamReader streamReader;
         JsonTextReader reader;
 
@@ -56,6 +52,7 @@ namespace AceQL.Client.Api.Util
         private Dictionary<int, string> colNamesPerColIndex;
         private Dictionary<string, int> colIndexesPerColName;
 
+        //private IFile file;
 
         /// <summary>
         /// Constructor
@@ -65,6 +62,9 @@ namespace AceQL.Client.Api.Util
         {
             streamReader = new StreamReader(readStream);
             reader = new JsonTextReader(streamReader);
+
+            //file = AceQLCommandUtil.GetTraceFileAsync().Result;
+            BuildTypes();
         }
 
         internal Dictionary<int, string> GetTypesPerColIndex()
@@ -88,6 +88,41 @@ namespace AceQL.Client.Api.Util
             return colNamesPerColIndex;
         }
 
+        private void BuildTypes()
+        {
+            typesPerColIndex = new Dictionary<int, string>();
+
+            while (reader.Read())
+            {
+                if (reader.Value == null)
+                {
+                    continue;
+                }
+
+                if (reader.TokenType != JsonToken.PropertyName || ! reader.Value.Equals("column_types"))
+                {
+                    continue;
+                }
+
+                int idx = 0;
+
+                while (reader.Read())
+                {
+                    // We are done at end of row
+                    if (reader.TokenType.Equals(JsonToken.EndArray))
+                    {
+                        return;
+                    }
+
+                    if (reader.Value != null)
+                    {
+                        typesPerColIndex.Add(idx++, reader.Value.ToString());
+                        //PortableFile.AppendAllTextAsync(file, "\r\n" + reader.Value).Wait();
+                    }
+                }
+
+            }
+        }
 
         /// <summary>
         /// Builds the row number.
@@ -109,10 +144,8 @@ namespace AceQL.Client.Api.Util
 
                 int colIndex = 0;
                 String colName = null;
-                String colType = null;
 
                 valuesPerColIndex = new Dictionary<int, object>();
-                typesPerColIndex = new Dictionary<int, string>();
                 colNamesPerColIndex = new Dictionary<int, string>();
                 colIndexesPerColName = new Dictionary<string, int>();
 
@@ -124,51 +157,12 @@ namespace AceQL.Client.Api.Util
                         return;
                     }
 
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_INDEX))
+                    if (reader.TokenType == JsonToken.PropertyName)
                     {
-                        if (!reader.Read())
-                        {
-                            return;
-                        }
-                        String colIndexStr = reader.Value.ToString();
-                        colIndex = Int32.Parse(colIndexStr);
-
-                        Trace();
-                        Trace("" + colIndex);
-
-                    }
-
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_TYPE))
-                    {
-                        if (!reader.Read())
-                        {
-                            return;
-                        }
-                        String colIndexStr = reader.Value.ToString();
-                        colType = reader.Value.ToString();
-                        Trace("" + colType);
-
-                    }
-
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_NAME))
-                    {
-                        if (!reader.Read())
-                        {
-                            return;
-                        }
-                        String colIndexStr = reader.Value.ToString();
                         colName = reader.Value.ToString();
-                        Trace("" + colName);
+                        reader.Read();
 
-                    }
-
-                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals(COL_VALUE))
-                    {
-                        if (!reader.Read())
-                        {
-                            return;
-                        }
-
+                        //PortableFile.AppendAllTextAsync(file, "\r\n" + colName).Wait();
                         String colValue = reader.Value.ToString();
 
                         if (colValue.Equals("NULL"))
@@ -181,21 +175,21 @@ namespace AceQL.Client.Api.Util
                             colValue = colValue.Trim();
                         }
 
-                        // because it's start at 0 on C# instead of 1 in JDBC
-                        colIndex--;
-
                         Trace("" + colValue);
-                        valuesPerColIndex.Add(colIndex, colValue);
-                        typesPerColIndex.Add(colIndex, colType);
 
+                        valuesPerColIndex.Add(colIndex, colValue);
                         colNamesPerColIndex.Add(colIndex, colName);
                         colIndexesPerColName.Add(colName, colIndex);
 
+                        // Do the increment at end to start indexes at 0
+                        colIndex++;
                     }
                 }
 
             }
         }
+
+
 
         /**
          * Says if trace is on

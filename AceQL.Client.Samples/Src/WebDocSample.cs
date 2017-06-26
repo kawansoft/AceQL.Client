@@ -123,17 +123,15 @@ namespace AceQL.Client.Samples.Src
             string sql = "select customer_id, customer_title, lname from customer where customer_id = 1";
 
             using (AceQLCommand command = new AceQLCommand(sql, connection))
+            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+                while (dataReader.Read())
                 {
-                    while (dataReader.Read())
-                    {
-                        Console.WriteLine();
-                        int i = 0;
-                        Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                        Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
-                        Console.WriteLine("lname         : " + dataReader.GetValue(i++));
-                    }
+                    Console.WriteLine();
+                    int i = 0;
+                    Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                    Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
+                    Console.WriteLine("lname         : " + dataReader.GetValue(i++));
                 }
             }
 
