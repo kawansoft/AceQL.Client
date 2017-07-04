@@ -456,51 +456,51 @@ namespace AceQL.Client.Samples.Src
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public async Task SelectBlob(int customerId, int itemId)
         {
-            // Create a transaction because some database engines require autocommit off
-            AceQLTransaction transaction = await connection.BeginTransactionAsync();
+    // Create a transaction because some database engines require autocommit off
+    AceQLTransaction transaction = await connection.BeginTransactionAsync();
 
-            try
+    try
+    {
+        string sql = "select customer_id, item_id, jpeg_image from orderlog" +
+            " where customer_id =  @customer_id and item_id = @item_id";
+
+        AceQLCommand command = new AceQLCommand(sql, connection);
+        command.Parameters.AddWithValue("@customer_id", customerId);
+        command.Parameters.AddWithValue("@item_id", itemId);
+
+        using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+        {
+            while (dataReader.Read())
             {
-                string sql = "select customer_id, item_id, jpeg_image from orderlog" +
-                    " where customer_id =  @customer_id and item_id = @item_id";
+                int i = 0;
+                Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                Console.WriteLine("item_id: " + dataReader.GetValue(i++));
 
-                AceQLCommand command = new AceQLCommand(sql, connection);
-                command.Parameters.AddWithValue("@customer_id", customerId);
-                command.Parameters.AddWithValue("@item_id", itemId);
+                string userPath =
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string blobPath = userPath + "\\koala_download.jpg";
 
-                using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+                Console.WriteLine("Creating file from server BLOB in: " + blobPath);
+
+                // Download Blob
+                using (Stream stream = await dataReader.GetStreamAsync(i++))
                 {
-                    while (dataReader.Read())
+                    using (var fileStream = File.Create(blobPath))
                     {
-                        int i = 0;
-                        Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                        Console.WriteLine("item_id: " + dataReader.GetValue(i++));
-
-                        string userPath =
-                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        string blobPath = userPath + "\\koala_download.jpg";
-
-                        Console.WriteLine("Creating file from server BLOB in: " + blobPath);
-
-                        // Download Blob
-                        using (Stream stream = await dataReader.GetStreamAsync(i++))
-                        {
-                            using (var fileStream = File.Create(blobPath))
-                            {
-                                stream.CopyTo(fileStream);
-                            }
-                        }
+                        stream.CopyTo(fileStream);
                     }
-
-                    await transaction.CommitAsync();
                 }
             }
-            catch (Exception e)
-            {
-                // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
-                await transaction.RollbackAsync();
-                throw e;
-            }
+
+            await transaction.CommitAsync();
+        }
+    }
+    catch (Exception e)
+    {
+        // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
+        await transaction.RollbackAsync();
+        throw e;
+    }
 
         }
     }
