@@ -47,10 +47,9 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// The values per col index
         /// </summary>
-        private Dictionary<int, object> valuesPerColIndex;
-        private Dictionary<int, string> typesPerColIndex;
-        private Dictionary<int, string> colNamesPerColIndex;
-        private Dictionary<string, int> colIndexesPerColName;
+        private Dictionary<int, object> valuesPerColIndex = null;
+        private Dictionary<int, string> typesPerColIndex = null;
+        private Dictionary<string, int> colIndexesPerColName = null;
 
         //private IFile file;
 
@@ -81,11 +80,6 @@ namespace AceQL.Client.Api.Util
         internal Dictionary<string, int> GetColIndexesPerColName()
         {
             return colIndexesPerColName;
-        }
-
-        internal Dictionary<int, string> GetColNamesPerColIndex()
-        {
-            return colNamesPerColIndex;
         }
 
         private void BuildTypes()
@@ -146,8 +140,11 @@ namespace AceQL.Client.Api.Util
                 String colName = null;
 
                 valuesPerColIndex = new Dictionary<int, object>();
-                colNamesPerColIndex = new Dictionary<int, string>();
-                colIndexesPerColName = new Dictionary<string, int>();
+
+                if (colIndexesPerColName == null)
+                {
+                    colIndexesPerColName = new Dictionary<string, int>();
+                }
 
                 while (reader.Read())
                 {
@@ -178,8 +175,11 @@ namespace AceQL.Client.Api.Util
                         Trace("" + colValue);
 
                         valuesPerColIndex.Add(colIndex, colValue);
-                        colNamesPerColIndex.Add(colIndex, colName);
-                        colIndexesPerColName.Add(colName, colIndex);
+
+                        if (rowNum == 1)
+                        {
+                            colIndexesPerColName.Add(colName, colIndex);
+                        }
 
                         // Do the increment at end to start indexes at 0
                         colIndex++;

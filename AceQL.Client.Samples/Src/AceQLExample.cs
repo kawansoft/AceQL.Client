@@ -70,7 +70,7 @@ namespace AceQL.Client.Samples
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLinux;
+            string server = serverUrlLocalhost;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
@@ -296,6 +296,7 @@ namespace AceQL.Client.Samples
                 {
                     Console.WriteLine();
                     int i = 0;
+                    Console.WriteLine("Get values using ordinal values:");
                     Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -305,6 +306,28 @@ namespace AceQL.Client.Samples
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
+
+                    //customer_id
+                    //item_id
+                    //description
+                    //item_cost
+                    //date_placed
+                    //date_shipped
+                    //jpeg_image
+                    //is_delivered
+                    //quantity
+
+                    Console.WriteLine();
+                    Console.WriteLine("Get values using column name values:");
+                    Console.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
+                        + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_id")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_cost")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_placed")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
 
                     Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
                     Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
@@ -326,7 +349,7 @@ namespace AceQL.Client.Samples
             await transaction.CommitAsync();
         }
 
-       
+
 
     }
 }

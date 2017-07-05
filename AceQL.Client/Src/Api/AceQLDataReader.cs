@@ -170,9 +170,18 @@ namespace AceQL.Client.Api
                 rowParser.BuildRowNum(currentRowNum);
 
                 valuesPerColIndex = rowParser.GetValuesPerColIndex();
-                colNamesPerColIndex = rowParser.GetColNamesPerColIndex();
                 colTypesPerColIndex = rowParser.GetTypesPerColIndex();
                 colIndexesPerColName = rowParser.GetColIndexesPerColName();
+
+                // Build first time the Dic of (colIndex, colName) from Dic (colName, colIndex) 
+                if (currentRowNum == 1)
+                {
+                    foreach (KeyValuePair<String, int> theKeyPair in colIndexesPerColName)
+                    {
+                        colNamesPerColIndex.Add(theKeyPair.Value, theKeyPair.Key);
+                    }
+                }
+
             }
             catch (Exception exception)
             {

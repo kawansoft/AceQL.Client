@@ -254,6 +254,7 @@ namespace AceQL.Client.Tests
                 while (dataReader.Read())
                 {
                     Console.WriteLine();
+                    Console.WriteLine("Get values using ordinal values:");
                     int i = 0;
                     Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -264,6 +265,28 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
+
+                    //customer_id
+                    //item_id
+                    //description
+                    //item_cost
+                    //date_placed
+                    //date_shipped
+                    //jpeg_image
+                    //is_delivered
+                    //quantity
+
+                    Console.WriteLine();
+                    Console.WriteLine("Get values using column name values:");
+                    Console.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
+                        + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_id")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_cost")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_placed")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
 
                     Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
                     Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
