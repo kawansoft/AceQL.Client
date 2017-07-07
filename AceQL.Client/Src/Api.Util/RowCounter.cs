@@ -57,14 +57,28 @@ namespace AceQL.Client.Api.Util
                 TextReader textReader = new StreamReader(stream);
                 var reader = new JsonTextReader(textReader);
 
+                // Necessary because a SQL columns could have the name "row_count".
+                // We know that we are reading the good end of file "row_count" if
+                // We are not any more in a array
+                bool isInsideArray = false;
+
                 while (reader.Read())
                 {
                     if (reader.Value == null)
                     {
+                        if (reader.TokenType == JsonToken.StartArray)
+                        {
+                            isInsideArray = true;
+                        }
+                        if (reader.TokenType == JsonToken.EndArray)
+                        {
+                            isInsideArray = false;
+                        }
+
                         continue;
                     }
 
-                    if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_count"))
+                    if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_count") || isInsideArray)
                     {
                         continue;
                     }

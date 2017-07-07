@@ -121,7 +121,7 @@ namespace AceQL.Client.Tests
             await transaction.CommitAsync();
             transaction.Dispose();
 
-            string sql = "delete from customer";
+            string sql = "delete from customer_2";
 
             AceQLCommand command = new AceQLCommand()
             {
@@ -135,7 +135,7 @@ namespace AceQL.Client.Tests
             for (int i = 0; i < 3; i++)
             {
                 sql =
-                "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
+                "insert into customer_2 values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8, @parm9, @parm_10)";
 
                 command = new AceQLCommand(sql, connection);
 
@@ -149,6 +149,8 @@ namespace AceQL.Client.Tests
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
                 command.Parameters.AddWithValue("@parm7", customer_id + "1111");
                 command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
+                command.Parameters.AddWithValue("@parm9", customer_id + "_row_2");
+                command.Parameters.AddWithValue("@parm_10", customer_id + "_row_count");
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
@@ -156,7 +158,7 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            sql = "select * from customer";
+            sql = "select * from customer_2";
             command = new AceQLCommand(sql, connection);
 
             // Our dataReader must be disposed to delete underlying downloaded files
@@ -168,6 +170,8 @@ namespace AceQL.Client.Tests
                     Console.WriteLine();
                     int i = 0;
                     Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -287,6 +291,7 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
+
 
                     Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
                     Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));

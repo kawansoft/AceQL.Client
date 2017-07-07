@@ -147,13 +147,16 @@ using System;
 //
 //V 1.0.8
 //05/07/2017 20:18 NDP: AceQLDataReader & RowParser: optimization of Dictionnaries usage
+//
+//V 1.0.9
+//07/07/2017 16:59 NDP: RowCounter & RowParser: test if "row_count" or "row_num" could be a column name
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.8-beta";
-        internal static readonly String DATE = "05-jul-2017";
+        internal static readonly String VERSION = "v1.0.9-beta";
+        internal static readonly String DATE = "0-jul-2017";
     }
 }

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using AceQL.Client.Api.File;
 using Newtonsoft.Json;
@@ -93,7 +93,7 @@ namespace AceQL.Client.Api.Util
                     continue;
                 }
 
-                if (reader.TokenType != JsonToken.PropertyName || ! reader.Value.Equals("column_types"))
+                if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("column_types"))
                 {
                     continue;
                 }
@@ -124,14 +124,35 @@ namespace AceQL.Client.Api.Util
         /// <param name="rowNum">The row number.</param>
         internal void BuildRowNum(int rowNum)
         {
+            // Value needed because we don't want to take columns with "row_xxx" names as row numbers
+            bool firstStartArrayPassed = false;
+            bool isInsideRowValuesArray = false;
+
             while (reader.Read())
             {
                 if (reader.Value == null)
                 {
+                    if (reader.TokenType == JsonToken.StartArray)
+                    {
+                        if (!firstStartArrayPassed)
+                        {
+                            firstStartArrayPassed = true;
+                        }
+                        else
+                        {
+                            isInsideRowValuesArray = true;
+                        }
+                    }
+
+                    if (reader.TokenType == JsonToken.EndArray)
+                    {
+                        isInsideRowValuesArray = false;
+                    }
+
                     continue;
                 }
 
-                if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum))
+                if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_" + rowNum) || isInsideRowValuesArray)
                 {
                     continue;
                 }
