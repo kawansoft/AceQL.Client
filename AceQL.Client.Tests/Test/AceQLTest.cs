@@ -185,18 +185,16 @@ namespace AceQL.Client.Tests
             Console.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync();
+            //transaction = await connection.BeginTransactionAsync();
+            //await transaction.CommitAsync();
 
             sql = "delete from orderlog";
             command = new AceQLCommand(sql, connection);
             await command.ExecuteNonQueryAsync();
-            command.Dispose();
 
-            await transaction.CommitAsync();
-
-            // Do next inserts in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
 
+            Console.WriteLine("Before insert into orderlog");
             try
             {
                 for (int j = 1; j < 4; j++)
@@ -228,12 +226,11 @@ namespace AceQL.Client.Tests
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.AddWithValue("@parm7", stream);
+                    command.Parameters.Add(new AceQLParameter("@parm7", stream));
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
                     await command.ExecuteNonQueryAsync();
-
                 }
 
                 await transaction.CommitAsync();

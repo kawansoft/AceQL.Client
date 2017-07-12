@@ -109,6 +109,7 @@ namespace AceQL.Client.Samples.Src
 
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
+                command.Prepare();
                 command.Parameters.AddWithValue("@customer_id", 1);
                 command.Parameters.AddWithValue("@fname", "Jim");
 
