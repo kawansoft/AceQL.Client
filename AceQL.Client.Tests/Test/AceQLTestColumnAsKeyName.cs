@@ -29,9 +29,10 @@ using System.Threading.Tasks;
 namespace AceQL.Client.Tests
 {
     /// <summary>
-    /// Tests AceQL client SDK by calling all APIs.
+    /// Class to test that the AceQL JSON key names "row_n" and "row_count" can safely be used as column names.
+    ///A dedicated table customer_2 is used.
     /// </summary>
-    class AceQLTest
+    class AceQLTestColumnAsKeyName
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
@@ -107,8 +108,6 @@ namespace AceQL.Client.Tests
         /// <param name="connection"></param>
         private static async Task ExecuteExample(AceQLConnection connection)
         {
-            string IN_DIRECTORY = "c:\\test\\";
-            string OUT_DIRECTORY = "c:\\test\\out\\";
 
             await connection.OpenAsync();
 
@@ -122,7 +121,7 @@ namespace AceQL.Client.Tests
             await transaction.CommitAsync();
             transaction.Dispose();
 
-            string sql = "delete from customer";
+            string sql = "delete from customer_2";
 
             AceQLCommand command = new AceQLCommand()
             {
@@ -136,7 +135,7 @@ namespace AceQL.Client.Tests
             for (int i = 0; i < 3; i++)
             {
                 sql =
-                "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
+                "insert into customer_2 values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8, @parm9, @parm_10)";
 
                 command = new AceQLCommand(sql, connection);
 
@@ -150,6 +149,8 @@ namespace AceQL.Client.Tests
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
                 command.Parameters.AddWithValue("@parm7", customer_id + "1111");
                 command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
+                command.Parameters.AddWithValue("@parm9", customer_id + "_row_2");
+                command.Parameters.AddWithValue("@parm_10", customer_id + "_row_count");
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
@@ -157,7 +158,7 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            sql = "select * from customer";
+            sql = "select * from customer_2";
             command = new AceQLCommand(sql, connection);
 
             // Our dataReader must be disposed to delete underlying downloaded files
@@ -175,136 +176,14 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++));
-                }
-            }
-
-            Console.WriteLine("Before delete from orderlog");
-
-            // Do next delete in a transaction because of BLOB
-            //transaction = await connection.BeginTransactionAsync();
-            //await transaction.CommitAsync();
-
-            sql = "delete from orderlog";
-            command = new AceQLCommand(sql, connection);
-            await command.ExecuteNonQueryAsync();
-
-            transaction = await connection.BeginTransactionAsync();
-
-            Console.WriteLine("Before insert into orderlog");
-            try
-            {
-                for (int j = 1; j < 4; j++)
-                {
-                    sql =
-                    "insert into orderlog values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8, @parm9)";
-
-                    command = new AceQLCommand(sql, connection);
-
-                    int customer_id = j;
-
-                    string blobPath = IN_DIRECTORY + "username_koala.jpg";
-                    Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
-
-                    //customer_id integer NOT NULL,
-                    //item_id integer NOT NULL,
-                    //description character varying(64) NOT NULL,
-                    //cost_price numeric,
-                    //date_placed date NOT NULL,
-                    //date_shipped timestamp without time zone,
-                    //jpeg_image oid,
-                    //is_delivered numeric,
-                    //quantity integer NOT NULL,
-
-                    command.Parameters.AddWithValue("@parm1", customer_id);
-                    command.Parameters.AddWithValue("@parm2", customer_id);
-                    command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
-                    command.Parameters.AddWithValue("@parm5", DateTime.Now);
-                    command.Parameters.AddWithValue("@parm6", DateTime.Now);
-                    // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.Add(new AceQLParameter("@parm7", stream));
-                    command.Parameters.AddWithValue("@parm8", 1);
-                    command.Parameters.AddWithValue("@parm9", j * 2000);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-
-                await transaction.CommitAsync();
-            }
-            catch (Exception exception)
-            {
-                await transaction.RollbackAsync();
-                throw exception;
-            }
-
-            Console.WriteLine("Before select *  from orderlog");
-
-            // Do next selects in a transaction because of BLOB
-            transaction = await connection.BeginTransactionAsync();
-
-            sql = "select * from orderlog";
-            command = new AceQLCommand(sql, connection);
-
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
-            {
-                int k = 0;
-                while (dataReader.Read())
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Get values using ordinal values:");
-                    int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++));
-
-                    //customer_id
-                    //item_id
-                    //description
-                    //item_cost
-                    //date_placed
-                    //date_shipped
-                    //jpeg_image
-                    //is_delivered
-                    //quantity
-
-                    Console.WriteLine();
-                    Console.WriteLine("Get values using column name values:");
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
-                        + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_id")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_cost")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_placed")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
-                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
-
-
-                    Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
-                    Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
-
-                    // Download Blobs
-                    string blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
-                    k++;
-
-                    using (Stream stream = await dataReader.GetStreamAsync(6))
-                    {
-                        using (var fileStream = File.Create(blobPath))
-                        {
-                            stream.CopyTo(fileStream);
-                        }
-                    }
                 }
             }
 
-            await transaction.CommitAsync();
+            Console.WriteLine("Done.");
+
         }
 
     }

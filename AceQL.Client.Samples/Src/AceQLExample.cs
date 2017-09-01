@@ -64,13 +64,14 @@ namespace AceQL.Client.Samples
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLocalhost = "http://localhost:9090/aceql";
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
+            string serverUrlLocalhostSsl = "https://localhost:9443/aceql";
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLinux;
+            string server = serverUrlLocalhost;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
