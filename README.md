@@ -9,4 +9,4 @@ Install the <a href="https://www.nuget.org/packages/AceQL.Client">NuGet Package<
 
 ## Using AceQL.Client ##
 
-See <a href="https://www.aceql.com/rest/soft/1.0/aceql-http1.0-user-guide-csharp-sdk.pdf">C# Client SDK User Guide</a>.
+See <a href="https://www.aceql.com/DocDownload?doc=aceql-http1.0-user-guide-csharp-sdk.pdf&version=1.0">C# Client SDK User Guide</a>.
