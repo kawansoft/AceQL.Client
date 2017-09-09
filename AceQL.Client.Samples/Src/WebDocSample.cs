@@ -100,6 +100,8 @@ namespace AceQL.Client.Samples.Src
             Console.WriteLine("Select BLOB...");
             await webDocSamples.SelectBlob(1, 1);
 
+            await connection.CloseAsync();
+            Console.WriteLine("Connection closed.");
 
         }
 
@@ -212,6 +214,7 @@ namespace AceQL.Client.Samples.Src
             // Opens the connection with the remote database
             await connection.OpenAsync();
 
+            Console.WriteLine("Connected!");
             return connection;
         }
 
@@ -227,7 +230,6 @@ namespace AceQL.Client.Samples.Src
             string database = "kawansoft_example";
 
             string connectionString = $"Server={server}; Database={database}";
-
             string username = "MyUsername";
             char[] password = { 'M', 'y', 'S', 'e', 'c', 'r', 'e', 't' };
 
@@ -238,6 +240,8 @@ namespace AceQL.Client.Samples.Src
 
             // Opens the connection with the remote database
             await connection.OpenAsync();
+
+            Console.WriteLine("Successfully connected to database " + database + "!");
 
             return connection;
         }
@@ -294,9 +298,11 @@ namespace AceQL.Client.Samples.Src
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
                 int rows = await command.ExecuteNonQueryAsync();
+                Console.WriteLine("Rows updated: " + rows);
             }
 
         }
+
 
         //command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR);
         // 
