@@ -8,14 +8,14 @@ Introduction
 ------------
 
 The SDK allows to wrap the AceQL HTTP APIs and 
-eliminate the tedious works of handling communications errors and 
-parsing JSON results..
-C# application developers can access remote SQL databases and/or SQL 
-databases in the cloud by simply including standard C# SQL calls in 
-their code, just like they would do for an SQL Server database. 
+eliminate the tedious works of handling communications errors and parsing 
+JSON results.
 
-The AceQL C# Client SDK is licensed under the Apache 2.0
-License.
+C# application developers can access remote SQL databases and/or SQL databases 
+in the cloud by simply including standard C# SQL calls in their code, just like 
+they would do for an SQL Server database. 
+
+The AceQL C# Client SDK is licensed under the Apache 2.0 License.
 
 
 AceQL C# Client SDK - Version 1.0.10 - 12-jul-2017
@@ -29,8 +29,8 @@ AceQL C# Client SDK - Version 1.0.9 - 07-jul-2017
 -------------------------------------------------
 
 Bugs fixed:
-- Parsing could fail on Result Sets with columns named 
-  "row_n" or row_count". This has been fixed.
+- Parsing could fail on Result Sets with columns named  "row_n" or row_count".
+  This has been fixed.
   
   
 AceQL C# Client SDK - Version 1.0.8 - 05-jul-2017
@@ -44,17 +44,15 @@ AceQL C# Client SDK - Version 1.0.7 - 26-jun-2017
 -------------------------------------------------
 
 What's New:
-- Support for new simplified JSON format for SQL 
-  results.
+- Support for new simplified JSON format for SQL results.
 
 
 AceQL C# Client SDK - Version 1.0.6 - 16-jun-2017
 -------------------------------------------------
 
 What's New:
-- Add System.Net.Http.Formatting.Extension package 
-  (allows to use again ProgressMessageHandler).
-  Remove Microsoft.Bcl.Build package.
+- Add System.Net.Http.Formatting.Extension package  (allows to use again 
+  ProgressMessageHandler). Remove Microsoft.Bcl.Build package.
 
 
 AceQL C# Client SDK - Version 1.0.5 - 29-may-2017
@@ -89,8 +87,8 @@ AceQL C# Client SDK - Version 1.0.1 - 1-may-2017
 -------------------------------------------------
 
 What's New:
-- Package is now a Portable Class Library that works with Windows, 
-  Android, and iPhone. Works with Xamarin. 
+- Package is now a Portable Class Library that works with Windows, Android, 
+  and iPhone. Works with Xamarin. 
 
 
 AceQL C# Client SDK - Version 1.0.0 - 29-apr-2017
