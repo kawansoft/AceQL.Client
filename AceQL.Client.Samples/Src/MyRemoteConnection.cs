@@ -105,7 +105,7 @@ namespace AceQL.Client.Samples
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
             // Port number is the port number used to start the Web Server:
-            string server = "http://localhost:9090/aceql";
+            string server = "https://www.aceql.com:9443/aceql";
             string database = "kawansoft_example";
 
             string connectionString = $"Server={server}; Database={database}";
