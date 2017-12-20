@@ -153,13 +153,16 @@ using System;
 //
 //V 1.0.10
 //12/07/2017 16:06 NDP: Version date was invalid
+//
+//V 1.1
+//20/12/2017 16:06 NDP: new release (beta is over)
 
 namespace AceQL.Client.Api.Util
 {
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v1.0.10-beta";
-        internal static readonly String DATE = "12-jul-2017";
+        internal static readonly String VERSION = "v1.1";
+        internal static readonly String DATE = "20-dec-2017";
     }
 }

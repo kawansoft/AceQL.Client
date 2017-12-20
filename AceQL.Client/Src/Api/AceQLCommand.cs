@@ -29,6 +29,11 @@ using AceQL.Client.Api.Util;
 using PCLStorage;
 using System.Threading;
 
+/// <summary>
+/// The AceQL.Client.Api namespace allows mobile and desktop application developers 
+/// to access remote SQL databases and/or SQL databases in the cloud by simply including 
+/// standard SQL calls in their code. The syntax is identical to the Microsoft SQL Server C# API.
+/// </summary>
 namespace AceQL.Client.Api
 {
     /// <summary>

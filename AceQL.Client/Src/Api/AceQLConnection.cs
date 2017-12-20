@@ -188,7 +188,6 @@ namespace AceQL.Client.Api
         }
 
 
-
         internal void TestConnectionOpened()
         {
             if (!connectionOpened)

@@ -21,10 +21,13 @@ using AceQL.Client.Api;
 using AceQL.Client.Api.File;
 using PCLStorage;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
+using static System.String;
 
 namespace AceQL.Client.Samples
 {
@@ -34,6 +37,8 @@ namespace AceQL.Client.Samples
     class AceQLExample
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
+
+        
 
         public static void TheMain(string[] args)
         {
@@ -70,6 +75,8 @@ namespace AceQL.Client.Samples
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
+            string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
 
             string server = serverUrlLocalhost;
             string database = "kawansoft_example";
@@ -82,11 +89,20 @@ namespace AceQL.Client.Samples
             //lname character varying(32) NOT NULL,
             //addressline character varying(64),
             //town character varying(32),
-            //zipcode character(10) NOT NULL,
+            //zipscode character(10) NOT NULL,
             //phone character varying(32),
 
-            string connectionString = $"Server={server}; Database={database}; ";
-            //connectionString += $"Username={username}; Password={password}";
+            string connectionString = null;
+            bool useProxy = false;
+
+            if (useProxy) {
+                string proxyUsername = "ndepomereu2";
+                string proxyPassword = "";
+                connectionString = $"Server={server}; Database={database}; ProxyUsername={proxyUsername}; ProxyPassword= {proxyPassword}";
+            }
+            else  {
+                connectionString = $"Server={server}; Database={database}";
+            }
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
 

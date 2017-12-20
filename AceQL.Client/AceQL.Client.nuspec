@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>1.0.10</version>
-        <title>AceQL HTTP Client SDK (Beta)</title>
+        <version>1.1.0</version>
+        <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
         <licenseUrl>https://github.com/kawansoft/AceQL.Client/blob/master/LICENSE</licenseUrl>
@@ -11,7 +11,7 @@
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Client toolkit for easy access of remote SQL databases managed with AceQL HTTP. Packaged as a Portable Class Library that works on Android, iOS, macOS and Windows.</description>
-        <releaseNotes>1) Row parsing has been optimized and is now faster. Test if "row_count" or "row_num" could be a column name. 2) Version date was invalid. This has been fixed.	  
+        <releaseNotes>First release. (End of Beta program).	  
 		</releaseNotes>
         <copyright>Copyright © 2017</copyright>
         <tags>SQL http remote Cloud database</tags>

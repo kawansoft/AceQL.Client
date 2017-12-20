@@ -200,9 +200,11 @@ namespace AceQL.Client.Samples.Src
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
-            string server = "https://www.aceql.com:9443/aceql";
-            string database = "kawansoft_example";
 
+            // C# Example: connection to a remote database
+
+            string server = "https://www.acme.com:9443/aceql";
+            string database = "kawansoft_example";
             string username = "MyUsername";
             string password = "MySecret";
 
@@ -211,10 +213,11 @@ namespace AceQL.Client.Samples.Src
 
             AceQLConnection connection = new AceQLConnection(connectionString);
 
-            // Opens the connection with the remote database
+            // Attempt to establish a connection to the remote SQL database:
             await connection.OpenAsync();
 
-            Console.WriteLine("Connected!");
+            Console.WriteLine("Connected to database " + database + "!");
+
             return connection;
         }
 

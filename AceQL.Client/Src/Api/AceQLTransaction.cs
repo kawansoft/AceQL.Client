@@ -147,8 +147,8 @@ namespace AceQL.Client.Api
 
         /// <summary>
         /// Optional call, does nothing.
-        /// The opened <see cref="AceQLTransaction"/> must be closed  by an <see cref="AceQLTransaction"/>.CommitAsync 
-        /// or an <see cref="AceQLTransaction"/>.RollbackAsync.
+        /// The opened <see cref="AceQLTransaction"/> must be closed  by an <see cref="AceQLTransaction.CommitAsync"/> 
+        /// or an <see cref="AceQLTransaction.RollbackAsync"/>
         /// 
         /// <para/>Method is provided for consistency as a DbTransaction (as a SQL Server SqlTransaction) is <see cref="IDisposable"/>.
         /// </summary>
