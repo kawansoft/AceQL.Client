@@ -78,7 +78,7 @@ namespace AceQL.Client.Samples
             string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLocalhost;
+            string server = serverUrlLinux2;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
