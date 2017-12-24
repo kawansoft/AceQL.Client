@@ -109,7 +109,7 @@ All calls are cancelable before the defined `HttpClient` timeout, as all Async m
 
 Example in `AceQLCommand`:
 
-```c#
+```C#
 public async Task<int> ExecuteNonQueryAsync()
 public async Task<int> ExecuteNonQueryAsync(CancellationToken cancellationToken)
 ```
