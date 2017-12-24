@@ -111,8 +111,8 @@ Example in `AceQLCommand`:
 
 ```c#
 // Versions of ExecuteNonQueryAsync
-public async Task<int> ExecuteNonQueryAsync()
-public async Task<int> ExecuteNonQueryAsync(CancellationToken cancellationToken)
+public async Task<int> ExecuteNonQueryAsync();
+public async Task<int> ExecuteNonQueryAsync(CancellationToken cancellationToken);
 ```
 
 Note that cancellation action impacts only the methods calls of the `System.Net.Http.HttClient` class. Cancellation action has no impact on remote SQL database state.  
