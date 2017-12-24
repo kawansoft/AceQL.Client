@@ -193,7 +193,7 @@ If `ProxyUri` is specified, the value will be used instead of the default `Syste
 Read/Write http timeout may be specified with `Timeout` in milliseconds:
 
 ```c#
-Server = https://www.acme.com:9443/aceql;Database = myDataBase; Username = myUsername; Password = myPassword;Timeout=300000"
+"Server = https://www.acme.com:9443/aceql;Database = myDataBase; Username = myUsername; Password = myPassword;Timeout=300000"
 ```
 
 If Timeout is not specified or equals 0, Microsoft  [HttpClient.Timeout](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.timeout) default value will be used.
