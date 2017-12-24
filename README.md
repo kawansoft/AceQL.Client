@@ -2,8 +2,6 @@
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
-[TOC]
-
 # Fundamentals 
 
 The SDK allows you to wrap the [AceQL HTTP APIs](https://www.aceql.com:8443/DocDownload?doc=https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
