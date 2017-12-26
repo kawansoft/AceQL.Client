@@ -1,4 +1,4 @@
-# AceQL HTTP - C# Client SDK
+# AceQL HTTP 1.0 - C# Client SDK
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
