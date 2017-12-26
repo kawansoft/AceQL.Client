@@ -2,6 +2,40 @@
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
+   * [Fundamentals](#fundamentals)
+      * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
+      * [License](#license)
+      * [AceQL C#Client SDK installation](#aceql-cclient-sdk-installation)
+      * [Data transport](#data-transport)
+         * [Transport format](#transport-format)
+         * [Content streaming and memory management](#content-streaming-and-memory-management)
+      * [Best practices for fast response time](#best-practices-for-fast-response-time)
+   * [Implementation Info](#implementation-info)
+      * [The AceQL SDK classes and methods](#the-aceql-sdk-classes-and-methods)
+         * [Asynchronous implementation](#asynchronous-implementation)
+      * [Data types](#data-types)
+      * [State Management](#state-management)
+   * [Using the AceQL C# Client SDK](#using-the-aceql-c-client-sdk)
+      * [The connection string](#the-connection-string)
+         * [Using NTLM](#using-ntlm)
+         * [Using a Web Proxy](#using-a-web-proxy)
+      * [Handling Exceptions](#handling-exceptions)
+         * [The error type](#the-error-type)
+         * [Most common AceQL server messages](#most-common-aceql-server-messages)
+         * [HTTP Status Codes](#http-status-codes)
+      * [AceQLConnection : Connection Creation &amp;Close](#aceqlconnection--connection-creation-close)
+      * [AceQLCommand: executing SQL statements](#aceqlcommand-executing-sql-statements)
+         * [Inserting NULL values](#inserting-null-values)
+      * [AceQLDataReader: getting queries result](#aceqldatareader-getting-queries-result)
+         * [Reading NULL values](#reading-null-values)
+      * [AceQLTransaction](#aceqltransaction)
+         * [Precisions on transactions](#precisions-on-transactions)
+      * [BLOB management](#blob-management)
+         * [BLOB creation](#blob-creation)
+         * [BLOB reading](#blob-reading)
+      * [Managing BLOB upload progress](#managing-blob-upload-progress)
+
+
 # Fundamentals 
 
 The SDK allows you to wrap the [AceQL HTTP APIs](https://www.aceql.com/DocDownload?doc=https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
