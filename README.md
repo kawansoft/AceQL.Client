@@ -37,15 +37,15 @@
 
 # Fundamentals 
 
-The SDK allows you to wrap the [AceQL HTTP APIs](https://www.aceql.com/DocDownload?doc=https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
+This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
+
+The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
 
 C# application developers can access remote SQL databases and/or SQL databases in the cloud by simply including standard C# SQL calls in their code, just like they would do for an SQL Server database. There is zero learning curve and usage is straight forward.
 
-This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
+The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
 
-The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://www.aceql.com/DocDownload?doc=https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
-
-On the remote side,like the AceQL Server access to the SQL database using Java JDBC, we will somet imes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
+On the remote side,like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
 
 ## Technical operating environment – Portable Class Library
 
@@ -88,7 +88,7 @@ Large content (query results, Blobs/Clobs, etc.) is transferred using files. It 
 
 ## Best practices for fast response time
 
-Every HTTP exchange between the client and server side is time-consuming, because the HTTP call is synchronous and waits for the server's response
+Every HTTP exchange between the client and server side is time-consuming, because the client side  waits for the server's response.
 
 Try to avoid coding SQL calls inside loops, as this can reduce execution speed. Each SQL call will send an http request and wait for the response from the server.
 
@@ -154,7 +154,7 @@ Note that cancellation action impacts only the methods calls of the `System.Net.
 
 The main server side JDBC data types for columns are supported: 
 
-Boolean, Blob/Clob, Integer, Short, Double,Float, BigDecimal, Long, String, Date, Time, Timestamp, URL and Array.
+Boolean, Blob/Clob, Integer, Short, Double, Float, BigDecimal, Long, String, Date, Time, Timestamp, URL and Array.
 
 Note that the AceQL SDK does not allow you to specify data types to use; data types are implicitly chosen with the `AceQLParameter` values.
 
