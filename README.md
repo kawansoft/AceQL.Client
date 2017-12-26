@@ -43,7 +43,7 @@ C# application developers can access remote SQL databases and/or SQL databases i
 
 This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
 
-The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://www.aceql.com/DocDownload?doc=aceql-http1.0-user-guide-server.pdf&version=1.0), whose content is sometimes referred to in this User Guide. 
+The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://www.aceql.com/DocDownload?doc=https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
 
 On the remote side,like the AceQL Server access to the SQL database using Java JDBC, we will somet imes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
 
@@ -169,7 +169,7 @@ The Stateful Mode is the default when creating a session.
 
 State Management is described in detail in:
 
-[AceQLHTTP Server Installation and Configuration Guide](https://www.aceql.com/rest/soft/1.0/aceql-http1.0-user-guide-server.pdf).
+[AceQLHTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md).
 
 You can set the session State in the connection string.
 
@@ -197,7 +197,7 @@ You can specify the session with `Stateless = true`. If not specified, session i
 "Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password = myPassword; Stateless = true"
 ```
 
-See [AceQL HTTP Server Installation and Configuration Guide](https://www.aceql.com/rest/soft/1.0/aceql-http1.0-user-guide-server.pdf) for more information.
+See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md) for more information.
 
 ### Using NTLM
 
