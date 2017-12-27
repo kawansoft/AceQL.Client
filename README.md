@@ -301,7 +301,7 @@ If `errortype` is > 0, the HTTP Status Code can take one the following values re
 | 404 (NOT_FOUND)              | BLOB directory does not exist on server. <br /> BLOB file not found on server. |
 | 500  (INTERNAL_SERVER_ERROR) | The AceQL Server is on failure and raised  an unexpected Java Exception. |
 
-## AceQLConnection: Connection Creation &Close
+## AceQLConnection: Connection Creation & Close
 
 Connection to a remote database is done with `AceQLConnection` class:
 
