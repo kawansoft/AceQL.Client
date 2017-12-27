@@ -45,11 +45,11 @@ C# application developers can access remote SQL databases and/or SQL databases i
 
 The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
 
-On the remote side,like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
+On the remote side, like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
 
 ## Technical operating environment – Portable Class Library
 
-The AceQL C# ClientSDK is entirely written in C# and is packaged as a Portable Class Library, which works on Windows Desktop and on Android, iOS & macOS with Xamarin.
+The AceQL C# Client SDK is entirely written in C# and is packaged as a Portable Class Library, which works on Windows Desktop and on Android, iOS & macOS with Xamarin.
 
 The targets of the library are:
 
@@ -393,7 +393,7 @@ int rows = await command.ExecuteNonQueryAsync();
 ```
 Notes:
 
-It is unnecessary to dispose an `AceQLCommand`. `AceQLCommand.Dispose` calls do nothing andAceQLCommand` is Disposable for ease of existing code migration.
+It is unnecessary to dispose an `AceQLCommand`. `AceQLCommand.Dispose` calls do nothing and `AceQLCommand` is Disposable for ease of existing code migration.
 
 `Prepare` call is optional: statement will always be prepared on the server side if a statement has parameters. This is the way JDBC works.
 
