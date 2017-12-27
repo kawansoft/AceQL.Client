@@ -5,7 +5,7 @@
    * [Fundamentals](#fundamentals)
       * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
       * [License](#license)
-      * [AceQL C#Client SDK installation](#aceql-cclient-sdk-installation)
+      * [AceQL C# Client SDK installation](#aceql-c-client-sdk-installation)
       * [Data transport](#data-transport)
          * [Transport format](#transport-format)
          * [Content streaming and memory management](#content-streaming-and-memory-management)
@@ -64,7 +64,7 @@ The targets of the library are:
 
 The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
 
-## AceQL C#Client SDK installation
+## AceQL C# Client SDK installation
 
 Install the [NuGet Package](https://www.nuget.org/packages/AceQL.Client).
 
