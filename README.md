@@ -169,7 +169,7 @@ The Stateful Mode is the default when creating a session.
 
 State Management is described in detail in:
 
-[AceQLHTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md).
+[AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md).
 
 You can set the session State in the connection string.
 
