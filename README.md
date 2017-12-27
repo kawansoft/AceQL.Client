@@ -23,7 +23,7 @@
          * [The error type](#the-error-type)
          * [Most common AceQL server messages](#most-common-aceql-server-messages)
          * [HTTP Status Codes](#http-status-codes)
-      * [AceQLConnection: Connection Creation &amp; Close](#aceqlconnection-connection-creation-close)
+      * [AceQLConnection: Connection Creation &amp; Close](#aceqlconnection-connection-creation--close)
       * [AceQLCommand: executing SQL statements](#aceqlcommand-executing-sql-statements)
          * [Inserting NULL values](#inserting-null-values)
       * [AceQLDataReader: getting queries result](#aceqldatareader-getting-queries-result)
