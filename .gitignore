@@ -240,3 +240,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/AceQL.Client/Src/Api.Util/VersionLog.txt

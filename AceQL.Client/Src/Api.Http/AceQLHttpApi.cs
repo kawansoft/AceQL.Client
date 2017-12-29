@@ -16,20 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Util;
-using Newtonsoft.Json;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -179,11 +175,16 @@ namespace AceQL.Client.Api.Http
                     throw new ArgumentNullException("Database keyword not found in connection string.");
                 }
 
-                String theUrl = server + "/database/" + database + "/username/" + username + "/connect"
-                    + "?password=" + password + "&stateless=" + stateless;
+                String theUrl = server + "/database/" + database + "/username/" + username + "/connect";
                 ConsoleEmul.WriteLine("theUrl: " + theUrl);
 
-                String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
+                Dictionary<string, string> parametersMap = new Dictionary<string, string>
+                {
+                    { "password", password },
+                    { "stateless", "" + stateless }
+                };
+
+                String result = await CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
                 ConsoleEmul.WriteLine("result: " + result);
 
                 ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
@@ -579,7 +580,7 @@ namespace AceQL.Client.Api.Http
 
         }
 
-
+        /*
         /// <summary>
         /// Executes a POST with parameters.
         /// </summary>
@@ -604,7 +605,36 @@ namespace AceQL.Client.Api.Http
                 throw new ArgumentNullException("postParameters is null!");
             }
 
-            String urlWithaction = url + action;
+            Uri urlWithaction = new Uri(url + action);
+
+            return await callWithPostAsync(urlWithaction, parameters);
+
+        }
+        */
+
+        /// <summary>
+        /// Executes a POST with parameters and returns a Stream
+        /// </summary>
+        /// <param name="theUrl">The Url.</param>
+        /// <param name="parameters">The request parameters.</param>
+        /// <returns>Stream.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// action is null!
+        /// or
+        /// postParameters is null!
+        /// </exception>
+        private async Task<Stream> CallWithPostAsync(Uri theUrl, Dictionary<string, string> parameters)
+        {
+            if (theUrl == null)
+            {
+                throw new ArgumentNullException("urlWithaction is null!");
+            }
+
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("postParameters is null!");
+            }
 
             HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
 
@@ -636,16 +666,15 @@ namespace AceQL.Client.Api.Http
 
             if (!UseCancellationToken)
             {
-                response = await httpClient.PostAsync(urlWithaction, content);
+                response = await httpClient.PostAsync(theUrl, content);
             }
             else
             {
-                response = await httpClient.PostAsync(urlWithaction, content, cancellationToken);
+                response = await httpClient.PostAsync(theUrl, content, cancellationToken);
             }
 
             this.httpStatusCode = response.StatusCode;
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
         }
 
         /// <summary>
@@ -819,7 +848,8 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
-            Stream input = await CallWithPostAsync(action, parametersMap).ConfigureAwait(false);
+            Uri urlWithaction = new Uri(url + action);
+            Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false);
             return input;
         }
 
@@ -842,27 +872,48 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
-            using (Stream input = await CallWithPostAsync(action, parametersMap).ConfigureAwait(false))
-            {
-                String result = null;
+            Uri urlWithaction = new Uri(url + action);
 
+            string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap);
+
+            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+            if (!resultAnalyzer.IsStatusOk())
+            {
+                throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                    resultAnalyzer.GetErrorId(),
+                    resultAnalyzer.GetStackTrace(),
+                    httpStatusCode);
+            }
+
+            int rowCount = resultAnalyzer.GetIntvalue("row_count");
+            return rowCount;
+
+        }
+
+        /// <summary>
+        /// Executes a POST with parameters and returns a Srring
+        /// </summary>
+        /// <param name="theUrl">The Url.</param>
+        /// <param name="parametersMap">The request parameters.</param>
+        /// <returns>Stream.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// action is null!
+        /// or
+        /// postParameters is null!
+        /// </exception>
+        private async Task<string> CallWithPostAsyncReturnString(Uri theUrl, Dictionary<string, string> parametersMap)
+        {
+            String result = null;
+
+            using (Stream input = await CallWithPostAsync(theUrl, parametersMap).ConfigureAwait(false))
+            {
                 if (input != null)
                 {
                     result = new StreamReader(input).ReadToEnd();
                 }
-
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
-                if (!resultAnalyzer.IsStatusOk())
-                {
-                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
-                        resultAnalyzer.GetErrorId(),
-                        resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
-                }
-
-                int rowCount = resultAnalyzer.GetIntvalue("row_count");
-                return rowCount;
             }
+
+            return result;
         }
 
 
@@ -934,7 +985,8 @@ namespace AceQL.Client.Api.Http
             };
             String result = null;
 
-            using (Stream input = await CallWithPostAsync(action, parametersMap).ConfigureAwait(false))
+            Uri urlWithaction = new Uri(url + action);
+            using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
             {
                 if (input != null)
                 {

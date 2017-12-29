@@ -37,9 +37,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Src\Api.File\PortableFile.cs" />
     <Compile Include="Src\Api.Http\AceQLHttpApi.cs" />
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
