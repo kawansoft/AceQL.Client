@@ -5,7 +5,7 @@
    * [Fundamentals](#fundamentals)
       * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
       * [License](#license)
-      * [AceQL Server Side compatiblity](#aceql-server-side-compatiblity)
+      * [AceQL Server side compatibility](#aceql-server-side-compatibility)
       * [AceQL C# Client SDK installation](#aceql-c-client-sdk-installation)
       * [Data transport](#data-transport)
          * [Transport format](#transport-format)
@@ -65,7 +65,7 @@ The targets of the library are:
 
 The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
 
-## AceQL Server Side compatiblity
+## AceQL Server side compatibility
 
 This 2.0 SDK version is compatible with AceQL HTTP v2.0 server version. It does not support previous version AceQL HTTP v1.0.
 
