@@ -67,7 +67,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server Side compatiblity
 
-This 1.0 SDK version is compatible with both  server side AceQL HTTP v1.0 and  AceQL HTTP v2.0.
+This 2.0 SDK version is compatible with AceQL HTTP v2.0 server version. It does not support previous version AceQL HTTP v1.0.
 
 ## AceQL C# Client SDK installation
 
