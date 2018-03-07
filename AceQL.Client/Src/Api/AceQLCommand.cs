@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2017,  KawanSoft SAS
+ * Copyright (C) 2018,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,8 +30,8 @@ using PCLStorage;
 using System.Threading;
 
 /// <summary>
-/// The AceQL.Client.Api namespace allows mobile and desktop application developers 
-/// to access remote SQL databases and/or SQL databases in the cloud by simply including 
+/// The AceQL.Client.Api namespace allows mobile and desktop application developers
+/// to access remote SQL databases and/or SQL databases in the cloud by simply including
 /// standard SQL calls in their code. The syntax is identical to the Microsoft SQL Server C# API.
 /// </summary>
 namespace AceQL.Client.Api

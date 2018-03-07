@@ -1,7 +1,7 @@
 /*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2017,  KawanSoft SAS
+ * Copyright (C) 2018,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@
 
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api.Util;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -46,16 +47,12 @@ namespace AceQL.Client.Api.Http
         /// The server URL
         /// </summary>
         private String server = null;
+        private string username;
 
         /// <summary>
         /// The database
         /// </summary>
         private String database = null;
-
-        /// <summary>
-        /// Says if session is stateless. defaults to false.
-        /// </summary>
-        private bool stateless = false;
 
         /// <summary>
         /// The Proxy Uri, if we don't want 
@@ -162,10 +159,7 @@ namespace AceQL.Client.Api.Http
                 {
                     throw new ArgumentNullException("Server keyword not found in connection string.");
                 }
-                if (username == null)
-                {
-                    throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredential not set.");
-                }
+
                 if (password == null)
                 {
                     throw new ArgumentNullException("Password keyword not found in connection string or AceQLCredential not set");
@@ -175,32 +169,67 @@ namespace AceQL.Client.Api.Http
                     throw new ArgumentNullException("Database keyword not found in connection string.");
                 }
 
-                String theUrl = server + "/database/" + database + "/username/" + username + "/connect";
-                ConsoleEmul.WriteLine("theUrl: " + theUrl);
+                this.username = username ?? throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredential not set.");
 
-                Dictionary<string, string> parametersMap = new Dictionary<string, string>
-                {
-                    { "password", password },
-                    { "stateless", "" + stateless }
-                };
+                UserLoginStore userLoginStore = new UserLoginStore(server, username,
+                    database);
 
-                String result = await CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
-                ConsoleEmul.WriteLine("result: " + result);
+                if (userLoginStore.IsAlreadyLogged()) {
+                    await TraceAsync("Get a new connection with get_connection").ConfigureAwait(false);
+                    String sessionId = userLoginStore.GetSessionId();
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
-                if (!resultAnalyzer.IsStatusOk())
-                {
-                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
-                        resultAnalyzer.GetErrorId(),
-                        resultAnalyzer.GetStackTrace(),
+                    String theUrl = server + "/session/" + sessionId + "/get_connection";
+                    String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
+
+                    await TraceAsync("result: " + result).ConfigureAwait(false);
+
+                    ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result,
                         httpStatusCode);
+
+                    if (!resultAnalyzer.IsStatusOk())
+                    {
+                        throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                            resultAnalyzer.GetErrorId(),
+                            resultAnalyzer.GetStackTrace(),
+                            httpStatusCode);
+                    }
+
+                    String connectionId = resultAnalyzer.GetValue("connection_id");
+                    await TraceAsync("Ok. New Connection created: " + connectionId).ConfigureAwait(false);
+
+                    this.url = server + "/session/" + sessionId + "/connection/"
+                        + connectionId + "/";
                 }
+                else {
+                    String theUrl = server + "/database/" + database + "/username/" + username + "/login";
+                    ConsoleEmul.WriteLine("theUrl: " + theUrl);
 
-                String theSessionId = resultAnalyzer.GetValue("session_id");
+                    Dictionary<string, string> parametersMap = new Dictionary<string, string>
+                    {
+                        { "password", password },
+                        { "client_version", VersionValues.VERSION}
+                    };
 
-                this.url = server + "/session/" + theSessionId + "/";
-                await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
+                    String result = await CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
+                    ConsoleEmul.WriteLine("result: " + result);
+                    await TraceAsync("result: " + result).ConfigureAwait(false);
 
+                    ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                    if (!resultAnalyzer.IsStatusOk())
+                    {
+                        throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                            resultAnalyzer.GetErrorId(),
+                            resultAnalyzer.GetStackTrace(),
+                            httpStatusCode);
+                    }
+
+                    String theSessionId = resultAnalyzer.GetValue("session_id");
+                    String theConnectionId = resultAnalyzer.GetValue("connection_id");
+
+                    this.url = server + "/session/" + theSessionId + "/connection/" + theConnectionId + "/";
+                    userLoginStore.SetSessionId(theSessionId);
+                    await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
+                }
             }
             catch (Exception exception)
             {
@@ -326,7 +355,6 @@ namespace AceQL.Client.Api.Http
             String theDatabase = null;
             String theUsername = null;
             char[] thePassword = null;
-            bool theStateless = false;
             String theProxyUri = null;
             ICredentials theProxyCredentials = null;
 
@@ -372,10 +400,6 @@ namespace AceQL.Client.Api.Http
                 {
                     value = value.Replace("\\semicolon", ";");
                     thePassword = value.ToCharArray();
-                }
-                else if (property.ToLower().Equals("stateless"))
-                {
-                    theStateless = Boolean.Parse(value);
                 }
                 else if (property.ToLower().Equals("ntlm"))
                 {
@@ -444,8 +468,23 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
-            Init(theServer, theDatabase, theUsername, thePassword, theStateless, theProxyUri, theProxyCredentials, theTimeout);
+            Init(theServer, theDatabase, theUsername, thePassword, theProxyUri, theProxyCredentials, theTimeout);
 
+        }
+
+        internal string GetDatabase()
+        {
+            return database;
+        }
+
+        internal string GetUsername()
+        {
+            return username;
+        }
+
+        internal string GetServer()
+        {
+            return server;
         }
 
         /// <summary>
@@ -455,7 +494,6 @@ namespace AceQL.Client.Api.Http
         /// <param name="database">The database.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="stateless">The stateless.</param>
         /// <param name="proxyUri">The Proxy Uri.</param>
         /// <param name="proxyCredentials">The credentials.</param>
         /// <param name="timeout">The timeout.</param>
@@ -469,7 +507,7 @@ namespace AceQL.Client.Api.Http
         /// database is null!
         /// </exception>
 
-        private void Init(string server, string database, string username, char[] password, bool stateless, string proxyUri, ICredentials proxyCredentials, int timeout)
+        private void Init(string server, string database, string username, char[] password, string proxyUri, ICredentials proxyCredentials, int timeout)
         {
             this.server = server;
             this.database = database;
@@ -479,7 +517,6 @@ namespace AceQL.Client.Api.Http
                 this.credential = new AceQLCredential(username, password);
             }
 
-            this.stateless = stateless;
             this.proxyUri = proxyUri;
             this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;

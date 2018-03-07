@@ -38,8 +38,7 @@ namespace AceQL.Client.Samples
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-        
-
+       
         public static void TheMain(string[] args)
         {
             try
@@ -114,6 +113,17 @@ namespace AceQL.Client.Samples
                 connection.Credential = credential;
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
+
+                AceQLConnection connection2 = new AceQLConnection(connectionString)
+                {
+                    Credential = credential
+                };
+
+                await connection2.OpenAsync();
+                Console.WriteLine("connection2.GetServerVersion(): " + await connection2.GetServerVersionAsync());
+
+                await connection2.LogoutAsync().ConfigureAwait(false);
+
             }
 
         }
@@ -127,6 +137,7 @@ namespace AceQL.Client.Samples
             string IN_DIRECTORY = "c:\\test\\";
             string OUT_DIRECTORY = "c:\\test\\out\\";
 
+            AceQLConnection.SetTraceOn(true);
             await connection.OpenAsync();
 
             Console.WriteLine("ConnectionString: " + connection.ConnectionString);

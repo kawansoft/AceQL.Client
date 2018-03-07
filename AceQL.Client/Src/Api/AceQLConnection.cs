@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2017,  KawanSoft SAS
+ * Copyright (C) 2018,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
 using PCLStorage;
 using System.Security;
+using AceQL.Client.Src.Api.Util;
 
 namespace AceQL.Client.Api
 {
@@ -45,6 +46,11 @@ namespace AceQL.Client.Api
         ///  Says if connection is closed
         /// </summary>
         private bool closeAsyncDone;
+
+        /// <summary>
+        ///  Says if user has done a logout/logoff
+        /// </summary>
+        private bool logoutAsyncDone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
@@ -236,7 +242,7 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Closes the connection to the remote database and closes the http session. 
+        /// Closes the connection to the remote database. 
         /// This is the preferred method of closing any open connection.
         /// </summary>
         public async Task CloseAsync()
@@ -246,8 +252,25 @@ namespace AceQL.Client.Api
                 return;
             }
 
-            await aceQLHttpApi.CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+            await aceQLHttpApi.CallApiNoResultAsync("close", null).ConfigureAwait(false);
             closeAsyncDone = true;
+        }
+
+        /// <summary>
+        /// Closes the session to the remote AceQL server and Close on server all the connections to the database. 
+        /// This is the preferred method of closing any open connection.
+        /// </summary>
+        public async Task LogoutAsync()
+        {
+            if (logoutAsyncDone)
+            {
+                return;
+            }
+
+            UserLoginStore loginStore = new UserLoginStore(this.aceQLHttpApi.GetServer(), this.aceQLHttpApi.GetUsername(), this.aceQLHttpApi.GetDatabase());
+            loginStore.Remove();
+            await aceQLHttpApi.CallApiNoResultAsync("logout", null).ConfigureAwait(false);
+            logoutAsyncDone = true;
         }
 
         /// <summary>

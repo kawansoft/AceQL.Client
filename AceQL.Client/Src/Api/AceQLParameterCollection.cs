@@ -1,7 +1,7 @@
 /*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2017,  KawanSoft SAS
+ * Copyright (C) 2018,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -317,7 +317,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Removes the specified <see cref="AceQLParameter"/> from the collection.
         /// </summary>
-        /// <param name="value">The object to remove from the collection.</param>
+        /// <param name="value">The object to Remove from the collection.</param>
         public void Remove(object value)
         {
             for (int i = 0; i < aceqlParameters.Count; i++)
@@ -335,7 +335,7 @@ namespace AceQL.Client.Api
         ///  Removes the <see cref="AceQLParameter"/> from the <see cref="AceQLParameterCollection"/>
         ///  at the specified parameter name.
         /// </summary>
-        /// <param name="parameterName">The name of the <see cref="AceQLParameter"/> to remove.</param>
+        /// <param name="parameterName">The name of the <see cref="AceQLParameter"/> to Remove.</param>
         public void RemoveAt(string parameterName)
         {
             for (int i = 0; i < aceqlParameters.Count; i++)
@@ -353,7 +353,7 @@ namespace AceQL.Client.Api
         ///  Removes the <see cref="AceQLParameter"/> from the <see cref="AceQLParameterCollection"/>
         ///  at the specified index.
         /// </summary>
-        /// <param name="index">The zero-based index of the <see cref="AceQLParameter"/> object to remove.</param>
+        /// <param name="index">The zero-based index of the <see cref="AceQLParameter"/> object to Remove.</param>
         public void RemoveAt(int index)
         {
             aceqlParameters.RemoveAt(index);

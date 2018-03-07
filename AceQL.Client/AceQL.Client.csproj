@@ -42,6 +42,7 @@
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
     <Compile Include="Src\Api.Http\Proxy.cs" />
     <Compile Include="Src\Api.Util\AceQLCommandUtil.cs" />
+    <Compile Include="Src\Api.Util\UserLoginStore.cs" />
     <Compile Include="Src\Api\AceQLCredential.cs" />
     <Compile Include="Src\Api.Util\AceQLTypes.cs" />
     <Compile Include="Src\Api.Util\ConsoleEmul.cs" />
