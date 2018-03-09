@@ -15,7 +15,6 @@
       * [The AceQL SDK classes and methods](#the-aceql-sdk-classes-and-methods)
          * [Asynchronous implementation](#asynchronous-implementation)
       * [Data types](#data-types)
-      * [State Management](#state-management)
    * [Using the AceQL C# Client SDK](#using-the-aceql-c-client-sdk)
       * [The connection string](#the-connection-string)
          * [Using NTLM](#using-ntlm)
@@ -163,23 +162,6 @@ Boolean, Blob/Clob, Integer, Short, Double, Float, BigDecimal, Long, String, Dat
 
 Note that the AceQL SDK does not allow you to specify data types to use; data types are implicitly chosen with the `AceQLParameter` values.
 
-## State Management
-
-AceQL supports two state management modes:
-
-- The Stateful Mode
-- The Stateless Mode
-
-The Stateful Mode is the default when creating a session.
-
-State Management is described in detail in:
-
-[AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md).
-
-You can set the session State in the connection string.
-
-Note that transactions and Connection modifiers calls are not allowed in Stateless mode and will raise an `AceQLException` exception.
-
 # Using the AceQL C# Client SDK
 
 ## The connection string
@@ -194,15 +176,7 @@ Where:
 
 - The Server value is the AceQL Server servlet path and includes the port if necessary
 - The Username and Password are used for authentication by the remote AceQL Server
-- The Database value is the name of the remote database to use for the session
-
-You can specify the session with `Stateless = true`. If not specified, session is stateful: 
-
-```c#
-"Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password = myPassword; Stateless = true"
-```
-
-See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md) for more information.
+- The Database value is the name of the remote database to use for the session. See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-1.0-user-guide-server.md) for more information.
 
 ### Using NTLM
 
@@ -271,21 +245,20 @@ The error type allows you to get the type of error, and where the error occurred
 ### Most common AceQL server messages
 
 | AceQL Sever  Error Messages   (AceQLException.ErrorType  = 2) |
-| ---------------------------------------- |
-| AceQL main  servlet not found in path    |
-| An error occurred  during Blob download  |
-| An error occurred  during Blob upload    |
+| ------------------------------------------------------------ |
+| AceQL main  servlet not found in path                        |
+| An error occurred  during Blob download                      |
+| An error occurred  during Blob upload                        |
 | Blob directory  defined in `DatabaseConfigurator.getBlobDirectory()` does not exist |
-| Connection is  invalidated (probably expired) |
-| Database does not  exist                 |
-| Invalid blob_id.  Cannot be used to create a file |
-| Invalid blob_id. No Blob corresponding to blob_id |
-| Invalid  session_id                      |
-| Invalid username  or password            |
-| No action found  in request              |
-| Operation not  allowed in stateless mode |
-| Unable to get a  Connection              |
-| Unknown SQL  action or not supported by software |
+| Connection is  invalidated (probably expired)                |
+| Database does not  exist                                     |
+| Invalid blob_id.  Cannot be used to create a file            |
+| Invalid blob_id. No Blob corresponding to blob_id            |
+| Invalid  session_id                                          |
+| Invalid username  or password                                |
+| No action found  in request                                  |
+| Unable to get a  Connection                                  |
+| Unknown SQL  action or not supported by software             |
 
 ### HTTP Status Codes
 
@@ -346,7 +319,7 @@ AceQLConnection connection = new AceQLConnection(connectionString)
 // Opens the connection with the remote database
 await connection.OpenAsync();
 ```
-Connection should always be closed when using default Stateful mode, in order to close and release the remote server JDBC connection into the pool .
+Connection should always be closed in order to close and release the remote server JDBC connection into the pool .
 
 The preferred way is to explicitly call `CloseAsync`:
 
@@ -453,7 +426,7 @@ For string columns (CHAR, VARCHAR, etc.), note that when `AceQLDataReader.IsDBNu
 
 ## AceQLTransaction
 
-The AceQL SDK supports SQL transactions in Stateful Mode only:
+The AceQL SDK supports SQL transactions:
 
 ```c#
 // Create a transaction
