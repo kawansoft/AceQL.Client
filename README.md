@@ -140,7 +140,7 @@ The AceQL SDK exposes 2 specific public classes and 1 enumeration:
 
 All SQL calls methods are asynchronous only.
 
-The reason for this is that the AceQL SDK uses the Microsoft `System.Net.Http.HttClient` class for all HTTP operations, which is entirely asynchronous.
+The reason for this is that the AceQL SDK uses the Microsoft `System.Net.Http.HttpClient` class for all HTTP operations, which is entirely asynchronous.
 
 All calls are cancelable before the defined `HttpClient` timeout, as all Async methods offer an overloaded version with a `System.Threading.CancellationToken` parameter.
 
