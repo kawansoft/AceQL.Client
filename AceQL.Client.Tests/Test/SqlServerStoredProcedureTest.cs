@@ -64,8 +64,6 @@ namespace AceQL.Client.Tests
                     SqlServerStoredProcedureTest myRemoteConnection = new SqlServerStoredProcedureTest(
                         connection);
                     Console.WriteLine("Connection created....");
-                    //Console.WriteLine("Press enter to close....");
-                    //Console.ReadLine();
 
                     await myRemoteConnection.CallStoredProcedure();
                     await connection.CloseAsync();
@@ -129,7 +127,7 @@ namespace AceQL.Client.Tests
         }
 
         /// <summary>
-        /// Example of MySQL Stored Procedure.
+        /// Example of MS SQL Server Stored Procedure.
         /// </summary>
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public async Task CallStoredProcedure()
@@ -156,7 +154,6 @@ namespace AceQL.Client.Tests
             Console.WriteLine("BEFORE execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
             Console.WriteLine();
 
-            //await command.ExecuteNonQueryAsync();
             // Our dataReader must be disposed to delete underlying downloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
