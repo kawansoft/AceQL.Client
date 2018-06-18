@@ -366,7 +366,9 @@ namespace AceQL.Client.Samples.Src
                 command.Parameters.AddWithValue("@addressline", "1 Madison Ave");
                 command.Parameters.AddWithValue("@town", "New York");
                 command.Parameters.AddWithValue("@zipcode", "NY 10010");
-                command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
+
+                AceQLNullValue aceQLNullValue = new AceQLNullValue(AceQLNullType.VARCHAR);
+                command.Parameters.Add(new AceQLParameter("@phone", aceQLNullValue));
 
                 await command.ExecuteNonQueryAsync();
 

@@ -465,7 +465,9 @@ try
     command.Parameters.AddWithValue("@addressline", "1 Madison Ave");
     command.Parameters.AddWithValue("@town", "New York");
     command.Parameters.AddWithValue("@zipcode", "NY 10010");
-    command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR));
+    
+    AceQLNullValue aceQLNullValue = new AceQLNullValue(AceQLNullType.VARCHAR);
+    command.Parameters.Add(new AceQLParameter("@phone", aceQLNullValue));
 
     await command.ExecuteNonQueryAsync();
 
@@ -484,8 +486,11 @@ try
     command.Parameters.AddWithValue("@item_cost", 99D);
     command.Parameters.AddWithValue("@date_placed", DateTime.Now);
     command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
-    // No blob for now
-    command.Parameters.Add(new AceQLParameter("@jpeg_image", AceQLNullType.BLOB));
+    
+    // No BLOB for now
+    AceQLNullValue aceQLNullValue = new AceQLNullValue(AceQLNullType.BLOB);
+    command.Parameters.Add(new AceQLParameter("@jpeg_image", aceQLNullValue);
+    
     command.Parameters.AddWithValue("@is_delivered", 1);
     command.Parameters.AddWithValue("@quantity", 1);
 

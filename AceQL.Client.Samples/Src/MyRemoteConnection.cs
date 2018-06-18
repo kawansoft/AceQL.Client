@@ -202,6 +202,7 @@ namespace AceQL.Client.Samples
                 command.Parameters.Add(new AceQLParameter("@parm5", "1 Madison Ave"));
                 command.Parameters.AddWithValue("@parm6", "New York");
                 command.Parameters.AddWithValue("@parm7", "NY 10010");
+
                 command.Parameters.Add(new AceQLParameter("@parm8", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
                 await command.ExecuteNonQueryAsync();
@@ -219,9 +220,9 @@ namespace AceQL.Client.Samples
                 command.Parameters.AddWithValue("@item_cost", 99D);
                 command.Parameters.AddWithValue("@date_placed", DateTime.Now);
                 command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
-                // No blob in our Quick start
-                command.Parameters.Add(new AceQLParameter("@jpeg_image",
-                    AceQLNullType.BLOB));
+
+                // No BLOB in our Quick start
+                command.Parameters.Add(new AceQLParameter("@jpeg_image", new AceQLNullValue(AceQLNullType.BLOB)));
                 command.Parameters.AddWithValue("@is_delivered", 1);
                 command.Parameters.AddWithValue("@quantity", 1);
 
