@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿using AceQL.Client.Api.File;
+using AceQL.Client.Api.File;
 
 using AceQL.Client.Api.Util;
 using Newtonsoft.Json;
@@ -33,70 +33,67 @@ namespace AceQL.Client.Api.Util
     internal class RowCounter
     {
         private bool traceOn;
-        private IFile file;
+
+
+        private StreamReader streamReader;
+        private JsonTextReader reader;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="file">The Result Set JSON file to count the rows for.</param>
-        /// <exception cref="System.ArgumentNullException">The file is null.</exception>
-        public RowCounter(IFile file)
+        /// <param name="readStream">The reading stream on file.</param>
+        public RowCounter(Stream readStream)
         {
-            this.file = file ?? throw new ArgumentNullException("file is null!");
+            streamReader = new StreamReader(readStream);
+            reader = new JsonTextReader(streamReader);
         }
 
         /// <summary>
         /// Gets the row count.
         /// </summary>
         /// <returns>System.Int32.</returns>
-        internal async Task<int> CountAsync()
+        internal int Count()
         {
             Trace();
-            using (Stream stream = await file.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
+
+            // Necessary because a SQL columns could have the name "row_count".
+            // We know that we are reading the good end of file "row_count" if
+            // We are not any more in a array
+            bool isInsideArray = false;
+
+            while (reader.Read())
             {
-                TextReader textReader = new StreamReader(stream);
-                var reader = new JsonTextReader(textReader);
-
-                // Necessary because a SQL columns could have the name "row_count".
-                // We know that we are reading the good end of file "row_count" if
-                // We are not any more in a array
-                bool isInsideArray = false;
-
-                while (reader.Read())
+                if (reader.Value == null)
                 {
-                    if (reader.Value == null)
+                    if (reader.TokenType == JsonToken.StartArray)
                     {
-                        if (reader.TokenType == JsonToken.StartArray)
-                        {
-                            isInsideArray = true;
-                        }
-                        if (reader.TokenType == JsonToken.EndArray)
-                        {
-                            isInsideArray = false;
-                        }
-
-                        continue;
+                        isInsideArray = true;
+                    }
+                    if (reader.TokenType == JsonToken.EndArray)
+                    {
+                        isInsideArray = false;
                     }
 
-                    if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_count") || isInsideArray)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    if (reader.Read())
-                    {
-                        String rowCountStr = reader.Value.ToString();
-                        int rowCount = Int32.Parse(rowCountStr);
+                if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("row_count") || isInsideArray)
+                {
+                    continue;
+                }
 
-                        Trace();
-                        Trace("rowCount: " + rowCount);
-                        return rowCount;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                if (reader.Read())
+                {
+                    String rowCountStr = reader.Value.ToString();
+                    int rowCount = Int32.Parse(rowCountStr);
 
+                    Trace();
+                    Trace("rowCount: " + rowCount);
+                    return rowCount;
+                }
+                else
+                {
+                    return 0;
                 }
 
             }
@@ -144,6 +141,19 @@ namespace AceQL.Client.Api.Util
             {
                 ConsoleEmul.WriteLine();
             }
+        }
+
+        public void Dispose()
+        {
+            if (this.streamReader != null)
+            {
+                this.streamReader.Dispose();
+                if (this.reader != null)
+                {
+                    this.reader.Close();
+                }
+            }
+
         }
 
         /// <summary>

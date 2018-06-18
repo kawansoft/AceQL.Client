@@ -21,6 +21,7 @@
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Util;
 using AceQL.Client.Src.Api.Util;
+using Newtonsoft.Json;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// The trace on
         /// </summary>
-        private static bool TRACE_ON = false;
+        private static bool TRACE_ON = true;
         /// <summary>
         /// The URL
         /// </summary>
@@ -144,7 +145,9 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
+                await TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
                 DecodeConnectionString();
+                await TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
 
                 String username = null;
                 String password = null;
@@ -174,7 +177,8 @@ namespace AceQL.Client.Api.Http
                 UserLoginStore userLoginStore = new UserLoginStore(server, username,
                     database);
 
-                if (userLoginStore.IsAlreadyLogged()) {
+                if (userLoginStore.IsAlreadyLogged())
+                {
                     await TraceAsync("Get a new connection with get_connection").ConfigureAwait(false);
                     String sessionId = userLoginStore.GetSessionId();
 
@@ -200,7 +204,8 @@ namespace AceQL.Client.Api.Http
                     this.url = server + "/session/" + sessionId + "/connection/"
                         + connectionId + "/";
                 }
-                else {
+                else
+                {
                     String theUrl = server + "/database/" + database + "/username/" + username + "/login";
                     ConsoleEmul.WriteLine("theUrl: " + theUrl);
 
@@ -209,6 +214,8 @@ namespace AceQL.Client.Api.Http
                         { "password", password },
                         { "client_version", VersionValues.VERSION}
                     };
+
+                    await TraceAsync("Before CallWithPostAsyncReturnString: " + theUrl);
 
                     String result = await CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
                     ConsoleEmul.WriteLine("result: " + result);
@@ -365,6 +372,12 @@ namespace AceQL.Client.Api.Http
             int theTimeout = 0;
 
             string[] lines = connectionString.Split(';');
+
+            if (lines.Length < 2)
+            {
+                throw new ArgumentException("connectionString does not contain a ; separator: " + connectionString);
+            }
+
             foreach (string line in lines)
             {
                 // If some empty ;
@@ -377,7 +390,7 @@ namespace AceQL.Client.Api.Http
 
                 if (theLines.Length != 2)
                 {
-                    throw new ArgumentException("connectionString token does not contain a = separator: " + line);
+                    throw new ArgumentException("connectionString element token does not contain a = separator: " + line);
                 }
 
                 String property = theLines[0].Trim();
@@ -863,7 +876,7 @@ namespace AceQL.Client.Api.Http
         }
 
 
-        internal async Task<Stream> ExecuteQueryAsync(string cmdText, bool isPreparedStatement, Dictionary<string, string> statementParameters)
+        internal async Task<Stream> ExecuteQueryAsync(string cmdText, AceQLParameterCollection Parameters, bool isStoredProcedure, bool isPreparedStatement, Dictionary<string, string> statementParameters)
         {
             String action = "execute_query";
 
@@ -871,6 +884,7 @@ namespace AceQL.Client.Api.Http
             {
                 { "sql", cmdText },
                 { "prepared_statement", isPreparedStatement.ToString() },
+                { "stored_procedure", isStoredProcedure.ToString() },
                 { "column_types", "true" }, // Force column_types, mandatory for C# AceQLDataReader
                 { "gzip_result", gzipResult.ToString() },
                 { "pretty_printing", prettyPrinting.ToString() }
@@ -890,16 +904,23 @@ namespace AceQL.Client.Api.Http
             return input;
         }
 
-
-        internal async Task<int> ExecuteUpdateAsync(string sql, bool isPreparedStatement, Dictionary<string, string> statementParameters)
+        internal async Task<int> ExecuteUpdateAsync(string sql, AceQLParameterCollection Parameters, bool isStoredProcedure, bool isPreparedStatement, Dictionary<string, string> statementParameters)
         {
             String action = "execute_update";
+
+            // Call raw execute if non query/select stored procedure. (Dirty!! To be corrected.)
+            if (isStoredProcedure)
+            {
+                action = "execute";
+            }
 
             Dictionary<string, string> parametersMap = new Dictionary<string, string>
             {
                 { "sql", sql },
-                { "prepared_statement", isPreparedStatement.ToString() }
+                { "prepared_statement", isPreparedStatement.ToString() },
+                { "stored_procedure", isStoredProcedure.ToString() }
             };
+
             if (statementParameters != null)
             {
                 List<string> keyList = new List<string>(statementParameters.Keys);
@@ -911,7 +932,17 @@ namespace AceQL.Client.Api.Http
 
             Uri urlWithaction = new Uri(url + action);
 
+            SetTraceOn(true);
+            await AceQLConnection.TraceAsync("url: " + url + action);
+
+            foreach (KeyValuePair<String, String> p in parametersMap)
+            {
+                await AceQLConnection.TraceAsync("parm: " + p.Key + " / " + p.Value);
+            }
+
             string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap);
+
+            Debug("result: " + result);
 
             ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
             if (!resultAnalyzer.IsStatusOk())
@@ -923,7 +954,48 @@ namespace AceQL.Client.Api.Http
             }
 
             int rowCount = resultAnalyzer.GetIntvalue("row_count");
+
+            if (isStoredProcedure)
+            {
+                UpdateOutParametersValues(result, Parameters);
+            }
+
             return rowCount;
+
+        }
+
+        /// <summary>
+        /// Update the OUT parameters values
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="parameters"></param>
+        private void UpdateOutParametersValues(string result, AceQLParameterCollection parameters)
+        {
+            //1) Build outParametersDict Dict of (paramerer names, values)
+            //Dictionary<string, string> outParametersDict = new Dictionary<string, string>();
+
+            dynamic xj = JsonConvert.DeserializeObject(result);
+            dynamic xjParametersOutPername = xj.parameters_out_per_name;
+
+            if (xjParametersOutPername == null)
+            {
+                return;
+            }
+
+            String dictStr = xjParametersOutPername.ToString();
+            Dictionary<string, string> outParametersDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(dictStr);
+
+            //2) Scan  foreach AceQLParameterCollection parameters and modify value if parameter name is in outParametersDict
+            foreach (AceQLParameter parameter in parameters)
+            {
+                string parameterName = parameter.ParameterName;
+
+                if (outParametersDict.ContainsKey(parameterName))
+                {
+                    parameter.Value = outParametersDict[parameterName];
+                }
+
+            }
 
         }
 

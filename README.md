@@ -1,4 +1,4 @@
-# AceQL HTTP 2.0 - C# Client SDK
+# AceQL HTTP - C# Client SDK v2.1
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -66,7 +66,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-This 2.0 SDK version is compatible with AceQL HTTP v2.0 server version. It does not support previous version AceQL HTTP v1.0.
+C# Client SDK v2.1 version is compatible with AceQL HTTP v2.0+ server version. It does not support previous version AceQL HTTP v1.0.
 
 ## AceQL C# Client SDK installation
 
@@ -116,25 +116,30 @@ Most SDK class names are the equivalent of Microsoft SQL Server `System.Data.Sql
 Here is the correspondence table for the common classes:
 
 | AceQL Client  <br />AceQL.Client.Api namespace | SQL Server Client  <br />System.Data.SqlClient namespace |
-| ---------------------------------------- | :--------------------------------------- |
-| AceQLCommand                             | SqlCommand                               |
-| AceQLConnection                          | SqlConnection                            |
-| AceQLCredential                          | SqlCredential                            |
-| AceQLDataReader                          | SqlDataReader                            |
-| AceQLParameter                           | SqlParameter                             |
-| AceQLParameterCollection                 | SqlParameterCollection                   |
-| AceQLTransaction                         | SqlTransaction                           |
-| IsolationLevel                           | IsolationLevel                           |
+| ---------------------------------------------- | :------------------------------------------------------- |
+| AceQLCommand                                   | SqlCommand                                               |
+| AceQLConnection                                | SqlConnection                                            |
+| AceQLCredential                                | SqlCredential                                            |
+| AceQLDataReader                                | SqlDataReader                                            |
+| AceQLParameter                                 | SqlParameter                                             |
+| AceQLParameterCollection                       | SqlParameterCollection                                   |
+| AceQLTransaction                               | SqlTransaction                                           |
+| CommandType                                    | CommandType                                              |
+| IsolationLevel                                 | IsolationLevel                                           |
+| ParameterDirection                             | ParameterDirection                                       |
 
 N.B: Because the AceQL SDK is a Portable Class Library, the `System.Data` namespace is not available. Thus, the AceQL SDK does not implement the `System.Data.Db*` classes available on Windows Desktop.
 
 The AceQL SDK exposes 2 specific public classes and 1 enumeration:
 
-| Name                   | Role                                     |
-| ---------------------- | ---------------------------------------- |
-| AceQLException         | Generic Exception implementation  for error reporting.  <br />See [Handling Exceptions](#handling-exceptions). |
-| AceQLNullType          | Enumeration that allows you to define the type of NULL  values for database updates.  See [Inserting NULL values](#inserting-null-values). |
-| AceQLProgressIndicator | Allows you to  retrieve Blob upload progress as a percentage. See [Managing BLOB upload progress](#managing-blob-upload-progress). |
+| Name                            | Role                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| AceQLException                  | Generic Exception implementation  for error reporting.  <br />See [Handling Exceptions](#handling-exceptions). |
+|                                 |                                                              |
+| AceQLNullType<br>AceQLNullValue | Enum and class that allows you to define the type of NULL  values for database updates.  See [Inserting NULL values](#inserting-null-values). |
+| AceQLProgressIndicator          | Allows you to  retrieve Blob upload progress as a percentage. See [Managing BLOB upload progress](#managing-blob-upload-progress). |
+
+
 
 ### Asynchronous implementation 
 
@@ -379,12 +384,22 @@ It is unnecessary to dispose an `AceQLCommand`. `AceQLCommand.Dispose` calls do 
 
 NULL values are handled in a specific way, because the remote server must know the type of the NULL value.
 
-We use the `AceQLNullType` enum to pass the type to the ``AceQLParameter`:
+*The previous SDK v1.x & v2.0 syntax using directly the `AceQLNullType` `enum` values **is not anymore supported** :*
+
+```C#
+// OBSOLETE v1.0 & 2.0syntax. Will trigger a runtime exception on Parameter creation:
+command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR);
+```
+
+Use from now on the `AceQLNullValue` class together with the `AceQLNullType` `enum` to pass the NULL type to the `AceQLParameter`. An `AceQLNullValue` instance is created by passing the parameter's `AceQLNullType` value to the constructor: 
 
 ```c#
-// We don't know the phone number
-command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR));
+// We don't know the phone number:
+command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
 ```
+
+No
+
 ## AceQLDataReader: getting queries result
 
 Let’s do a query on a remote database:

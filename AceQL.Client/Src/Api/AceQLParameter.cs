@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AceQL.Client.Src.Api;
 
 namespace AceQL.Client.Api
 {
@@ -39,12 +40,12 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The value
         /// </summary>
-        private object value = null;
+        private object theValue = null;
 
         /// <summary>
         /// The database type
         /// </summary>
-        private AceQLNullType sqlType;
+        private AceQLNullType aceQLNullType = AceQLNullType.VARCHAR;
 
         private bool isNullValue = false;
 
@@ -54,13 +55,15 @@ namespace AceQL.Client.Api
         private long blobLength = 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLParameter"/> class to pass a NULL value to the remote
-        /// database.
+        /// The parameter direction Input, InputOutput, Output. Defaults to Input.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter to set with a NULL value.</param>
-        /// <param name="value">The <see cref="AceQLNullType"/> value.</param>
-        /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
-        public AceQLParameter(string parameterName, AceQLNullType value)
+        private ParameterDirection direction = ParameterDirection.Input;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLParameter"/> class.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter.</param>
+        public AceQLParameter(string parameterName)
         {
             if (parameterName == null)
             {
@@ -73,9 +76,37 @@ namespace AceQL.Client.Api
             }
 
             this.parameterName = parameterName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLParameter"/> class to pass a NULL value to the remote SQL
+        /// database using an AceQLNullValue class instance.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter to set with a NULL value.</param>
+        /// <param name="value">The <see cref="AceQLNullValue"/>value.</param>
+        /// <exception cref="System.ArgumentNullException">If parameterName or the value is null.</exception>
+        public AceQLParameter(string parameterName, AceQLNullValue value)
+        {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException("parameterName is null!");
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException("value is null!");
+            }
+
+
+            if (!parameterName.StartsWith("@"))
+            {
+                parameterName = "@" + parameterName;
+            }
+
+            this.parameterName = parameterName;
 
             IsNullValue = true;
-            SqlType = sqlType;
+            SqlNullType = value.GetAceQLNullType();
         }
 
         /// <summary>
@@ -96,13 +127,19 @@ namespace AceQL.Client.Api
                 parameterName = "@" + parameterName;
             }
 
-            this.parameterName = parameterName;
-            this.value = value;
-
             if (value == null)
             {
                 throw new ArgumentNullException("Parameter value cannot be null!");
             }
+
+            // Do not allow no more to pass the AceQLNullType Enum type directly.
+            if (value.GetType() == typeof(AceQLNullType))
+            {
+                throw new ArgumentNullException("Parameter " + parameterName + " value cannot be of type AceQLNullType! Use an AceQLNullValue instance to pass a null value parameter");
+            }
+
+            this.parameterName = parameterName;
+            this.theValue = value;
         }
 
         /// <summary>
@@ -140,7 +177,31 @@ namespace AceQL.Client.Api
         {
             get
             {
-                return value;
+                return theValue;
+            }
+
+            set
+            {
+                theValue = value;
+            }
+            
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the parameter is input-only, 
+        /// output-only, bidirectional, 
+        /// or a stored procedure return value parameter.
+        /// </summary>
+        public ParameterDirection Direction {
+
+            get
+            {
+                return direction;
+            }
+
+            set
+            {
+                direction = value;
             }
         }
 
@@ -161,18 +222,18 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// The SQL type
+        /// The SQL type.
         /// </summary>
-        internal AceQLNullType SqlType
+        internal AceQLNullType SqlNullType
         {
             get
             {
-                return sqlType;
+                return aceQLNullType;
             }
 
             set
             {
-                sqlType = value;
+                aceQLNullType = value;
             }
         }
 

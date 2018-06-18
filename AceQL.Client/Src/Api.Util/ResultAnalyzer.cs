@@ -169,40 +169,40 @@ namespace AceQL.Client.Api.Util
                     return null;
                 }
 
-                String value = null;
+                String theValue = null;
 
                 if (name.Equals("session_id"))
                 {
-                    value = xj.session_id;
+                    theValue = xj.session_id;
 
                     //ConsoleEmul.WriteLine("xj       : " + xj);
                     //ConsoleEmul.WriteLine("session_id: " + value);
                 }
                 else if (name.Equals("connection_id"))
                 {
-                    value = xj.connection_id;
+                    theValue = xj.connection_id;
 
                     //ConsoleEmul.WriteLine("xj           : " + xj);
                     //ConsoleEmul.WriteLine("connection_id: " + value);
                 }
                 else if (name.Equals("length"))
                 {
-                    value = xj.length;
+                    theValue = xj.length;
                 }
                 else if (name.Equals("result"))
                 {
-                    value = xj.result;
+                    theValue = xj.result;
                 }
                 else if (name.Equals("row_count"))
                 {
-                    value = xj.row_count;
+                    theValue = xj.row_count;
                 }
                 else
                 {
                     throw new Exception("Illegal name: " + name);
                 }
 
-                return value;
+                return theValue;
             }
             catch (Exception e)
             {

@@ -19,10 +19,10 @@
 
 using AceQL.Client.Api;
 using AceQL.Client.Api.File;
+using AceQL.Client.Src.Api;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,7 +77,7 @@ namespace AceQL.Client.Samples
             string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLinux;
+            string server = serverUrlLocalhost;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
@@ -104,7 +104,6 @@ namespace AceQL.Client.Samples
             }
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
-
             AceQLConnection.SetTraceOn(true);
 
             // Make sure connection is always closed to close and release server connection into the pool
@@ -217,7 +216,7 @@ namespace AceQL.Client.Samples
                 command.Parameters.AddWithValue("@parm5", customer_id + ", road 66");
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
                 command.Parameters.AddWithValue("@parm7", customer_id + "1111");
-                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
+                command.Parameters.Add(new AceQLParameter("@parm8", new AceQLNullValue(AceQLNullType.VARCHAR))); //null value for NULL SQL insert.
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
@@ -247,7 +246,7 @@ namespace AceQL.Client.Samples
                 }
             }
 
-            Console.WriteLine("Before delete from orderlog");
+            Console.WriteLine("Before delete from orderlog 2");
 
             // Do next delete in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -289,7 +288,7 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm1", customer_id);
                     command.Parameters.AddWithValue("@parm2", customer_id);
                     command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
+                    command.Parameters.Add(new AceQLParameter("@parm4", new AceQLNullValue(AceQLNullType.DECIMAL))); //null value for NULL SQL insert.
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)

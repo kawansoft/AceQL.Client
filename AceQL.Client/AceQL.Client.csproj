@@ -42,6 +42,9 @@
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
     <Compile Include="Src\Api.Http\Proxy.cs" />
     <Compile Include="Src\Api.Util\AceQLCommandUtil.cs" />
+    <Compile Include="Src\Api.Util\OutParamBuilder.cs" />
+    <Compile Include="Src\Api.Util\ParametersOutIndex.cs" />
+    <Compile Include="Src\Api.Util\ParametersOutName.cs" />
     <Compile Include="Src\Api.Util\UserLoginStore.cs" />
     <Compile Include="Src\Api\AceQLCredential.cs" />
     <Compile Include="Src\Api.Util\AceQLTypes.cs" />
@@ -57,6 +60,8 @@
     <Compile Include="Src\Api\AceQLConnection.cs" />
     <Compile Include="Src\Api\AceQLDataReader.cs" />
     <Compile Include="Src\Api\AceQLException.cs" />
+    <Compile Include="Src\Api\AceQLNullValue.cs" />
+    <Compile Include="Src\Api\CommandType.cs" />
     <Compile Include="Src\Api\IsolationLevel.cs" />
     <Compile Include="Src\Api\AceQLParameter.cs" />
     <Compile Include="Src\Api\AceQLParameterCollection.cs" />
@@ -64,6 +69,7 @@
     <Compile Include="Src\Api\AceQLProgressIndicator.cs" />
     <Compile Include="Src\Api\AceQLNullType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\Api\ParameterDirection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

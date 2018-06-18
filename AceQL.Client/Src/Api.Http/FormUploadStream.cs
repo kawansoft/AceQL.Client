@@ -40,7 +40,7 @@ namespace AceQL.Client.Api.Http
     /// </summary>
     internal class FormUploadStream
     {
-        internal static bool DEBUG = true;
+        internal static bool DEBUG = false;
         private long tempLen = 0;
 
         /// <summary>

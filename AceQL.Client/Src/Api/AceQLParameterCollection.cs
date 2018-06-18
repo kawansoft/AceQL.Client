@@ -259,7 +259,6 @@ namespace AceQL.Client.Api
 
             AceQLParameter aceQLParameter = new AceQLParameter(parameterName, stream, length);
             aceqlParameters.Add(aceQLParameter);
-            Debug(parameterName + " SqlType: " + aceQLParameter.SqlType);
         }
 
         /// <summary>

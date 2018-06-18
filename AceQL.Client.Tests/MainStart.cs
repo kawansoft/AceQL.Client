@@ -17,6 +17,8 @@
  * limitations under the License. 
  */
 
+using AceQL.Client.Api;
+using AceQL.Client.Tests.Test;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,9 +30,11 @@ namespace AceQL.Client.Tests
 {
     class MainStart
     {
+
         static void Main(string[] args)
         {
-            int mainToLaunch = 1;
+        
+            int mainToLaunch = 5;
 
             if (mainToLaunch == 1)
             {
@@ -39,6 +43,18 @@ namespace AceQL.Client.Tests
             else if (mainToLaunch == 2)
             {
                 AceQLTestColumnAsKeyName.TheMain(args);
+            }
+            else if (mainToLaunch == 3)
+            {
+                JsonTest.TheMain(args);
+            }
+            else if (mainToLaunch == 4)
+            {
+                MySqlStoredProcedureTest.TheMain(args);
+            }
+            else if (mainToLaunch == 5)
+            {
+                SqlServerStoredProcedureTest.TheMain(args);
             }
         }
     }

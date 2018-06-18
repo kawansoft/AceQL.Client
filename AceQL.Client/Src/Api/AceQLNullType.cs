@@ -28,62 +28,62 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BIT.
         /// </summary>
-        BIT = -7,
+        BIT = -7 * (-10000),
 
         /// <summary>
         /// SQL type TINYINT.
         /// </summary>
-        TINYINT = -6,
-
-        /// <summary>
-        /// SQL type SMALLINT.
-        /// </summary>
-        SMALLINT = 5,
-
-        /// <summary>
-        /// SQL type INTEGER.
-        /// </summary>
-        INTEGER = 4,
+        TINYINT = -6 * (-10000),
 
         /// <summary>
         /// SQL type BIGINT.
         /// </summary>
-        BIGINT = -5,
+        BIGINT = -5 * (-10000),
+
+        /// <summary>
+        /// SQL type SMALLINT.
+        /// </summary>
+        SMALLINT = 5 * (-10000),
+
+        /// <summary>
+        /// SQL type INTEGER.
+        /// </summary>
+        INTEGER = 4 * (-10000),
 
         /// <summary>
         /// SQL type FLOAT.
         /// </summary>
-        FLOAT = 6,
+        FLOAT = 6  * (-10000),
 
         /// <summary>
         /// SQL type REAL.
         /// </summary>
-        REAL = 7,
+        REAL = 7 * (-10000),
 
         /// <summary>
         /// SQL type DOUBLE.
         /// </summary>
-        DOUBLE = 8,
+        DOUBLE = 8 * (-10000),
 
         /// <summary>
         /// SQL type NUMERIC.
         /// </summary>
-        NUMERIC = 2,
+        NUMERIC = 2 * (-10000),
 
         /// <summary>
         /// SQL type DECIMAL.
         /// </summary>
-        DECIMAL = 3,
+        DECIMAL = 3 * (-10000),
 
         /// <summary>
         /// SQL type CHAR.
         /// </summary>
-        CHAR = 1,
+        CHAR = 1 * (-10000),
 
         /// <summary>
         /// SQL type VARCHAR.
         /// </summary>
-        VARCHAR = 12,
+        VARCHAR = 12 * (-10000),
 
         ///// <summary>
         ///// SQL type LONGVARCHAR.
@@ -93,17 +93,17 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type DATE.
         /// </summary>
-        DATE = 91,
+        DATE = 91 * (-10000),
 
         /// <summary>
         /// SQL type TIME.
         /// </summary>
-        TIME = 92,
+        TIME = 92 * (-10000),
 
         /// <summary>
         /// SQL type TIMESTAMP.
         /// </summary>
-        TIMESTAMP = 93,
+        TIMESTAMP = 93 * (-10000),
 
         ///// <summary>
         ///// SQL type BINARY.
@@ -153,12 +153,12 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BLOB.
         /// </summary>
-        BLOB = 2004,
+        BLOB = 2004 * (-10000),
 
         /// <summary>
         /// SQL type CLOB.
         /// </summary>
-        CLOB = 2005,
+        CLOB = 2005 * (-10000),
 
         ///// <summary>
         ///// The reference
@@ -173,7 +173,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BOOLEAN.
         /// </summary>
-        BOOLEAN = 16,
+        BOOLEAN = 16 * (-10000),
 
         //------------------------- JDBC 4.0 -----------------------------------
 
@@ -202,7 +202,7 @@ namespace AceQL.Client.Api
         ///// </summary>
         //NCLOB = 2011,
 
- 
+
         ///// <summary>
         ///// The SQLXML
         ///// </summary>

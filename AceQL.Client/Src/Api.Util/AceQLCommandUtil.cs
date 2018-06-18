@@ -125,13 +125,23 @@ namespace AceQL.Client.Api.Util
             // For each parameter 1) get the index 2) get the dbType
             foreach (KeyValuePair<String, int> parameter in paramsIndexInPrepStatement)
             {
-                AceQLParameter aceQLParameter = Parameters.GetAceQLParameter(parameter.Key);
+                AceQLParameter aceQLParameter = this.Parameters.GetAceQLParameter(parameter.Key);
                 int paramIndex = parameter.Value;
-                AceQLNullType sqlType = aceQLParameter.SqlType;
-                Object value = aceQLParameter.Value;
+                AceQLNullType aceQLNullType = aceQLParameter.SqlNullType;
+                Object ParmValue = aceQLParameter.Value;
+
+                //Reconvert SqlType original Java value by diving per 10000 and multiplying per -1:
+                int sqlType = (int)aceQLNullType;
+                sqlType = sqlType / 10000 * -1;
+
+                // For OUT parameters that may be null value
+                if (ParmValue == null)
+                {
+                    ParmValue = "NULL";
+                }
 
                 Debug("paramIndex: " + paramIndex);
-                Debug("value     : " + value + ":");
+                Debug("ParmValue : " + ParmValue + ":");
 
                 if (aceQLParameter.IsNullValue)
                 {
@@ -139,7 +149,7 @@ namespace AceQL.Client.Api.Util
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, "NULL");
                 }
-                else if (value is Stream)
+                else if (ParmValue is Stream)
                 {
                     // All streams are blob for now
                     // This will be enhanced in future version
@@ -147,70 +157,89 @@ namespace AceQL.Client.Api.Util
                     String blobId = BuildUniqueBlobId();
 
                     blobIds.Add(blobId);
-                    blobStreams.Add((Stream)value);
+                    blobStreams.Add((Stream)ParmValue);
                     blobLengths.Add(aceQLParameter.BlobLength);
 
                     String paramType = "BLOB";
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, blobId);
                 }
-                else if (value is string || value is String)
+                else if (ParmValue is string || ParmValue is String)
                 {
                     String paramType = "VARCHAR";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is long)
+                else if (ParmValue is long)
                 {
                     String paramType = "BIGINT";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is int)
+                else if (ParmValue is int)
                 {
                     String paramType = "INTEGER";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is short)
+                else if (ParmValue is short)
                 {
                     String paramType = "TINYINT";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is bool || value is Boolean)
+                else if (ParmValue is bool || ParmValue is Boolean)
                 {
                     String paramType = "BIT";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is float)
+                else if (ParmValue is float)
                 {
                     String paramType = "REAL";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is double || value is Double)
+                else if (ParmValue is double || ParmValue is Double)
                 {
                     String paramType = "DOUBLE_PRECISION";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, value.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
                 }
-                else if (value is DateTime)
+                else if (ParmValue is DateTime)
                 {
                     String paramType = "TIMESTAMP";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)value));
+                    parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)ParmValue));
                 }
-                else if (value is TimeSpan)
+                else if (ParmValue is TimeSpan)
                 {
                     String paramType = "TIME";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)value));
+                    parametersList.Add("param_value_" + paramIndex, ConvertToTimestamp((DateTime)ParmValue));
                 }
                 else
                 {
-                    throw new AceQLException("Type of value is not supported. Value: " + value + " / Type: " + value.GetType(), 2, (Exception)null, HttpStatusCode.OK);
+                    throw new AceQLException("Type of value is not supported. Value: " + ParmValue + " / Type: " + ParmValue.GetType(), 2, (Exception)null, HttpStatusCode.OK);
+                }
+
+                if (! aceQLParameter.IsNullValue && !(ParmValue is Stream))
+                {
+
+                    if (aceQLParameter.Direction == Src.Api.ParameterDirection.InputOutput)
+                    {
+                        parametersList.Add("param_direction_" + paramIndex, "inout");
+                        parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);
+                    }
+                    else if (aceQLParameter.Direction == Src.Api.ParameterDirection.Output)
+                    {
+                        parametersList.Add("param_direction_" + paramIndex, "out");
+                        parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);
+                    }
+                    else
+                    {
+                        // Defaults to "in" on server
+                    }
                 }
 
             }

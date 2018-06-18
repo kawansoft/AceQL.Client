@@ -328,7 +328,7 @@ namespace AceQL.Client.Samples.Src
             //command.Parameters.AddWithValue("@phone", "+1 (212) 586-71XX");
 
             // We don't know the phone number
-            command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR));
+            command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
             int rows = await command.ExecuteNonQueryAsync();
 
@@ -366,7 +366,7 @@ namespace AceQL.Client.Samples.Src
                 command.Parameters.AddWithValue("@addressline", "1 Madison Ave");
                 command.Parameters.AddWithValue("@town", "New York");
                 command.Parameters.AddWithValue("@zipcode", "NY 10010");
-                command.Parameters.Add(new AceQLParameter("@phone", AceQLNullType.VARCHAR));
+                command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
                 await command.ExecuteNonQueryAsync();
 
@@ -386,7 +386,7 @@ namespace AceQL.Client.Samples.Src
                 command.Parameters.AddWithValue("@date_placed", DateTime.Now);
                 command.Parameters.AddWithValue("@date_shipped", DateTime.Now);
                 // No blob for now
-                command.Parameters.Add(new AceQLParameter("@jpeg_image", AceQLNullType.BLOB));
+                command.Parameters.Add(new AceQLParameter("@jpeg_image", new AceQLNullValue(AceQLNullType.BLOB)));
                 command.Parameters.AddWithValue("@is_delivered", 1);
                 command.Parameters.AddWithValue("@quantity", 1);
 

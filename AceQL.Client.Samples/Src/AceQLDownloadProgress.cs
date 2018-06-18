@@ -136,6 +136,7 @@ namespace AceQL.Client.Samples
             // Do next inserts in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
 
+            Console.WriteLine("Before insert into orderlog");
             try
             {
                 sql =
@@ -161,7 +162,9 @@ namespace AceQL.Client.Samples
                 command.Parameters.AddWithValue("@parm1", customer_id);
                 command.Parameters.AddWithValue("@parm2", customer_id);
                 command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
+
+                command.Parameters.Add(new AceQLParameter("@parm4", new AceQLNullValue(AceQLNullType.DECIMAL))); //null value for NULL SQL insert.
+
                 command.Parameters.AddWithValue("@parm5", DateTime.Now);
                 command.Parameters.AddWithValue("@parm6", DateTime.Now);
                 // Adds the Blob. (Stream will be closed by AceQLCommand)

@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using AceQL.Client.Api.Util;
 using PCLStorage;
 using System.Threading;
+using AceQL.Client.Src.Api;
 
 /// <summary>
 /// The AceQL.Client.Api namespace allows mobile and desktop application developers
@@ -67,6 +68,8 @@ namespace AceQL.Client.Api
         private AceQLParameterCollection parameters = null;
 
         private bool prepare;
+
+        private CommandType commandType = CommandType.Text;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLCommand"/> class.
@@ -268,10 +271,11 @@ namespace AceQL.Client.Api
             {
                 IFile file = await GetUniqueResultSetFileAsync().ConfigureAwait(false);
 
+                bool isStoredProcedure = (commandType == CommandType.StoredProcedure ? true : false);
                 Boolean isPreparedStatement = false;
                 Dictionary<string, string> parametersMap = null;
 
-                using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, isPreparedStatement, parametersMap).ConfigureAwait(false))
+                using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, parametersMap).ConfigureAwait(false))
                 {
                     if (aceQLHttpApi.GzipResult)
                     {
@@ -301,8 +305,21 @@ namespace AceQL.Client.Api
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowCounter = new RowCounter(file);
-                int rowsCount = await rowCounter.CountAsync().ConfigureAwait(false);
+                int rowsCount = 0;
+
+                using (Stream readStreamCout = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
+                {
+                    RowCounter rowCounter = new RowCounter(readStreamCout);
+                    rowsCount = rowCounter.Count();
+                }
+
+                if (isStoredProcedure)
+                {
+                    using (Stream readStreamOutParms = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
+                    {
+                        UpdateOutParametersValues(readStreamOutParms, Parameters);
+                    }
+                }
 
                 Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
 
@@ -320,6 +337,27 @@ namespace AceQL.Client.Api
                 {
                     throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.httpStatusCode);
                 }
+            }
+        }
+
+        private void UpdateOutParametersValues(Stream stream, AceQLParameterCollection parameters)
+        {
+            //1) Build outParametersDict Dict of (paramerer names, values)
+            //Dictionary<string, string> outParametersDict = new Dictionary<string, string>();
+            OutParamBuilder outParamBuilder = new OutParamBuilder(stream);
+
+            Dictionary<string, string> outParametersDict = outParamBuilder.GetvaluesPerParamName();
+
+            //2) Scan  foreach AceQLParameterCollection parameters and modify value if parameter name is in outParametersDict
+            foreach (AceQLParameter parameter in parameters)
+            {
+                string parameterName = parameter.ParameterName;
+
+                if (outParametersDict.ContainsKey(parameterName))
+                {
+                    parameter.Value = outParametersDict[parameterName];
+                }
+
             }
         }
 
@@ -358,8 +396,9 @@ namespace AceQL.Client.Api
 
                 IFile file = await GetUniqueResultSetFileAsync().ConfigureAwait(false);
 
+                bool isStoredProcedure = (commandType == CommandType.StoredProcedure ? true : false);
                 bool isPreparedStatement = true;
-                using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false))
+                using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, statementParameters).ConfigureAwait(false))
                 {
                     if (input != null)
                     {
@@ -394,8 +433,21 @@ namespace AceQL.Client.Api
                         aceQLHttpApi.httpStatusCode);
                 }
 
-                RowCounter rowCounter = new RowCounter(file);
-                int rowsCount = await rowCounter.CountAsync().ConfigureAwait(false);
+                int rowsCount = 0;
+
+                using (Stream readStreamCout = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
+                {
+                    RowCounter rowCounter = new RowCounter(readStreamCout);
+                    rowsCount = rowCounter.Count();
+                }
+
+                if (isStoredProcedure)
+                {
+                    using (Stream readStreamOutParms = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
+                    {
+                        UpdateOutParametersValues(readStreamOutParms, Parameters);
+                    }
+                }
 
                 Stream readStream = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false);
 
@@ -464,9 +516,10 @@ namespace AceQL.Client.Api
                     parametersMap.Add(key, statementParameters[key]);
                 }
 
+                bool isStoredProcedure = (commandType == CommandType.StoredProcedure ? true : false);
                 bool isPreparedStatement = true;
 
-                int result = await aceQLHttpApi.ExecuteUpdateAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false);
+                int result = await aceQLHttpApi.ExecuteUpdateAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, statementParameters).ConfigureAwait(false);
                 return result;
             }
             catch (Exception exception)
@@ -492,12 +545,11 @@ namespace AceQL.Client.Api
         /// </exception>
         private async Task<int> ExecuteUpdateAsStatementAsync()
         {
+            bool isStoredProcedure = (commandType == CommandType.StoredProcedure ? true : false);
             bool isPreparedStatement = false;
             Dictionary<string, string> statementParameters = null;
-            return await aceQLHttpApi.ExecuteUpdateAsync(cmdText, isPreparedStatement, statementParameters).ConfigureAwait(false);
+            return await aceQLHttpApi.ExecuteUpdateAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, statementParameters).ConfigureAwait(false);
         }
-
-
 
         /// <summary>
         /// Gets ot set SQL statement to execute against a remote SQL database.
@@ -565,6 +617,12 @@ namespace AceQL.Client.Api
                 return parameters;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating how the CommandText property is to be interpreted.
+        /// </summary>
+        /// <value>The <see cref="CommandType"/>.</value>
+        public CommandType CommandType { get => commandType; set => commandType = value; }
 
         /// <summary>
         /// Disposes this instance. This call is optional and does nothing because all resources are released after 

@@ -202,7 +202,7 @@ namespace AceQL.Client.Samples
                 command.Parameters.Add(new AceQLParameter("@parm5", "1 Madison Ave"));
                 command.Parameters.AddWithValue("@parm6", "New York");
                 command.Parameters.AddWithValue("@parm7", "NY 10010");
-                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR));
+                command.Parameters.Add(new AceQLParameter("@parm8", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
                 await command.ExecuteNonQueryAsync();
 

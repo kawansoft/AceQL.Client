@@ -35,6 +35,9 @@
     <ApplicationIcon>aceql.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
       <HintPath>..\packages\PCLStorage.1.0.2\lib\net45\PCLStorage.dll</HintPath>
     </Reference>
@@ -55,6 +58,10 @@
     <Compile Include="Test\AceQLTestColumnAsKeyName.cs" />
     <Compile Include="Test\AceQLTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\ConsoleEmul.cs" />
+    <Compile Include="Test\JsonTest.cs" />
+    <Compile Include="Test\SqlServerStoredProcedureTest.cs" />
+    <Compile Include="Test\MySqlStoredProcedureTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

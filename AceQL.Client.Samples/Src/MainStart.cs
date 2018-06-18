@@ -17,6 +17,7 @@
  * limitations under the License. 
  */
 
+using AceQL.Client.Api;
 using AceQL.Client.Samples;
 using AceQL.Client.Samples.Src;
 using System;
@@ -32,6 +33,7 @@ namespace AceQL.Client.Samples
     {
         static void Main(string[] args)
         {
+                        
             int mainToLaunch = 2;
 
             if (mainToLaunch == 1)
