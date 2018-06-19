@@ -329,6 +329,8 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
+                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
@@ -457,6 +459,8 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
+                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
@@ -524,6 +528,8 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
+                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;

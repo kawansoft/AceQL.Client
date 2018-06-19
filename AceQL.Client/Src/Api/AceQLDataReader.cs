@@ -44,7 +44,7 @@ namespace AceQL.Client.Api
         /// </summary>
         private AceQLHttpApi aceQLHttpApi;
 
-        private bool traceOn = false;
+        private bool traceOn = AceQLHttpApi.IsTraceOn();
 
         private int currentRowNum = 0;
         private int rowsCount;
@@ -118,11 +118,13 @@ namespace AceQL.Client.Api
         /// Traces the specified string.
         /// </summary>
         /// <param name="s">The string to trace.</param>
-        private void Trace(String s)
+        private async void TraceAsync(String s)
         {
             if (traceOn)
             {
+                s = DateTime.Now + " " + s;
                 System.Diagnostics.Debug.WriteLine("");
+                await AceQLHttpApi.TraceAsync(s);
             }
         }
 
@@ -270,7 +272,6 @@ namespace AceQL.Client.Api
                 return isClosed;
             }
         }
-
 
         /// <summary>
         /// Downloads the Blob and gets the stream.

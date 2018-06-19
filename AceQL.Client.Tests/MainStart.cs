@@ -33,7 +33,7 @@ namespace AceQL.Client.Tests
 
         static void Main(string[] args)
         {
-        
+
             int mainToLaunch = 5;
 
             if (mainToLaunch == 1)

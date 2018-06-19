@@ -22,14 +22,14 @@ AceQL C# Client SDK - Version 2.1 - 18-june-2017
 -----------------------------------------------
 
 What's New:
- - This version allows to call remote store stored procedures.
+ - This version allows to call remote stored procedures.
  - Syntax for setting NULL values has  been changed. See 
    User Guide.
  - This version requires AceQL Pro HTTP v2.1 server for 
    stored procedures calls.
 
    
-AceQL C# Client SDK - Version 2.0 - 07-mar-2017
+AceQL C# Client SDK - Version 2.0 - 07-mar-2018
 -----------------------------------------------
 
 What's New:

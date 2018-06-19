@@ -240,6 +240,8 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
+                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
@@ -269,6 +271,7 @@ namespace AceQL.Client.Api.Http
         {
             if (TRACE_ON)
             {
+                contents = DateTime.Now + " " + contents;
                 IFile file = await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
                 await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
             }
@@ -762,6 +765,8 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
@@ -810,6 +815,8 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
@@ -1149,6 +1156,8 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
+                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+
                 if (exception.GetType() == typeof(AceQLException))
                 {
                     throw exception;
