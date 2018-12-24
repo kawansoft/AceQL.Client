@@ -41,11 +41,11 @@
 
 This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
 
-The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-2.1-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
+The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-3.1-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
 
 C# application developers can access remote SQL databases and/or SQL databases in the cloud by simply including standard C# SQL calls in their code, just like they would do for an SQL Server database. There is zero learning curve and usage is straight forward.
 
-The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-2.1-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
+The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-3.1-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
 
 On the remote side, like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
 
@@ -68,7 +68,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-C# Client SDK v2.1 version is compatible with AceQL HTTP v2.0+ server version. It does not support previous version AceQL HTTP v1.0.
+C# Client SDK v3.0 version is compatible with AceQL HTTP v2.0+ and v3.0+ server version. It does not support previous version AceQL HTTP v1.0.
 
 ## AceQL C# Client SDK installation
 
@@ -183,7 +183,7 @@ Where:
 
 - The Server value is the AceQL Server servlet path and includes the port if necessary
 - The Username and Password are used for authentication by the remote AceQL Server
-- The Database value is the name of the remote database to use for the session. See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-2.1-user-guide-server.md) for more information.
+- The Database value is the name of the remote database to use for the session. See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-3.1-user-guide-server.md) for more information.
 
 ### Using NTLM
 
