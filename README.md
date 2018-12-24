@@ -1,4 +1,6 @@
-# AceQL HTTP - C# Client SDK v2.1
+# AceQL HTTP 
+
+# C# Client SDK v3.0 - December 2018, 24
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
