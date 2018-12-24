@@ -38,13 +38,43 @@ namespace AceQL.Client.Samples
     {
         private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-       
+        public const string serverUrlLocalhost = "http://localhost:9090/aceql";
+        public const string serverUrlLocalhostSsl = "https://localhost:9443/aceql";
+        public const string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
+        public const string serverUrlLinux = "https://www.aceql.com:9443/aceql";
+        public const string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
+
+        public const string database_kawansoft_example = "kawansoft_example";
+        public const string database_kawansoft_example_2 = "kawansoft_example_2";
+
+        public static string server = serverUrlLocalhost;
+        public static string database = database_kawansoft_example;
+
+        private static bool CONSOLE_INPUT_DONE = false;
+
         public static void TheMain(string[] args)
         {
             try
             {
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\aceql_csharp_init.txt";
 
-                DoIt(args).Wait();
+                string databaseToUse = database_kawansoft_example;
+                if (File.Exists(path))
+                {
+                    databaseToUse = File.ReadAllText(path);
+                }
+
+                Console.WriteLine("path         : " + path + ":");
+                Console.WriteLine("databaseToUse: " + databaseToUse + ":");
+                database = databaseToUse;
+                
+                bool doContinue = true;
+                while (doContinue)
+                {
+                    DoIt(args).Wait();
+                    doContinue = true;
+                }
+
                 //DoIt(args).GetAwaiter().GetResult();
 
                 Console.WriteLine();
@@ -65,20 +95,6 @@ namespace AceQL.Client.Samples
         static async Task DoIt(string[] args)
         {
 
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhost = "http://localhost:9090/aceql";
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhostSsl = "https://localhost:9443/aceql";
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinux = "https://www.aceql.com:9443/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-
-            string server = serverUrlLocalhost;
-            string database = "kawansoft_example";
             string username = "username";
             string password = "password";
 
@@ -104,11 +120,12 @@ namespace AceQL.Client.Samples
             }
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
-            AceQLConnection.SetTraceOn(true);
 
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
+                //connection.SetTraceOn(true);
+
                 connection.Credential = credential;
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
@@ -135,8 +152,6 @@ namespace AceQL.Client.Samples
         {
             string IN_DIRECTORY = "c:\\test\\";
             string OUT_DIRECTORY = "c:\\test\\out\\";
-
-            AceQLConnection.SetTraceOn(true);
             await connection.OpenAsync();
 
             Console.WriteLine("ConnectionString: " + connection.ConnectionString);
@@ -145,6 +160,14 @@ namespace AceQL.Client.Samples
             Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
             Console.WriteLine("AceQL local folder: ");
             Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+
+            if (! CONSOLE_INPUT_DONE)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Press enter to close....");
+                Console.ReadLine();
+                CONSOLE_INPUT_DONE = true;
+            }
 
             AceQLTransaction transaction = await connection.BeginTransactionAsync();
             await transaction.CommitAsync();
@@ -256,7 +279,15 @@ namespace AceQL.Client.Samples
             await command.ExecuteNonQueryAsync();
             command.Dispose();
 
+            Console.WriteLine("After delete from orderlog 2");
+
             await transaction.CommitAsync();
+
+            Boolean doBlob = true;
+            if (! doBlob)
+            {
+                return;
+            }
 
             // Do next inserts in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -272,7 +303,11 @@ namespace AceQL.Client.Samples
 
                     int customer_id = j;
 
-                    string blobPath = IN_DIRECTORY + "username_koala.jpg";
+                    string blobPath = null;
+
+                    int index = getIndexFromDatabase();
+                    blobPath = IN_DIRECTORY + "username_koala_" + index + ".jpg"; 
+                    
                     Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
 
                     //customer_id integer NOT NULL,
@@ -292,14 +327,18 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
+
                     command.Parameters.AddWithValue("@parm7", stream);
+
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
+                    Console.WriteLine("Before await command.ExecuteNonQueryAsync()");
                     await command.ExecuteNonQueryAsync();
-
+                    Console.WriteLine("After await command.ExecuteNonQueryAsync()");
                 }
 
+                Console.WriteLine("transaction.CommitAsync()");
                 await transaction.CommitAsync();
             }
             catch (Exception exception)
@@ -360,7 +399,8 @@ namespace AceQL.Client.Samples
                     Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
 
                     // Download Blobs
-                    string blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
+                    int index = getIndexFromDatabase();
+                    string blobPath = OUT_DIRECTORY + "username_koala_" + index + "_" + k + ".jpg";
                     k++;
 
                     using (Stream stream = await dataReader.GetStreamAsync(6))
@@ -376,7 +416,20 @@ namespace AceQL.Client.Samples
             await transaction.CommitAsync();
         }
 
+        private static int getIndexFromDatabase()
+        {
+            if (database.Equals(database_kawansoft_example)) {
+                return 1;
+            }
+            else if (database.Equals(database_kawansoft_example_2))
+            {
+                return 2;
+            }
+            else
+            {
+                throw new NotImplementedException("No index for database: " + database);
+            }
 
-
+        }
     }
 }

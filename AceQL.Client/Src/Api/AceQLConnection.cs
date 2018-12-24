@@ -18,16 +18,14 @@
  */
 
 
-using AceQL.Client.Api.File;
 using AceQL.Client.Api.Http;
+using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api.Util;
+using PCLStorage;
 using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AceQL.Client.Api.Util;
-using PCLStorage;
-using System.Security;
-using AceQL.Client.Src.Api.Util;
 
 namespace AceQL.Client.Api
 {
@@ -115,18 +113,18 @@ namespace AceQL.Client.Api
         /// <summary>
         /// Traces this instance.
         /// </summary>
-        internal static async Task TraceAsync()
+        internal async Task TraceAsync()
         {
-            await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
+            await aceQLHttpApi.TraceAsync().ConfigureAwait(false);
         }
 
         /// <summary>
         /// Traces the specified string.
         /// </summary>
         /// <param name="s">The string to trace</param>
-        internal static async Task TraceAsync(String s)
+        internal async Task TraceAsync(String s)
         {
-            await AceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
+            await aceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -310,18 +308,18 @@ namespace AceQL.Client.Api
         /// Says if trace is on. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
         /// </summary>
         /// <returns>true if trace is on, else false.</returns>
-        public static bool IsTraceOn()
+        public bool IsTraceOn()
         {
-            return AceQLHttpApi.IsTraceOn();
+            return aceQLHttpApi.IsTraceOn();
         }
 
         /// <summary>
         /// Sets the trace on/off. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
         /// </summary>
         /// <param name="traceOn">If true, trace will be on; else trace will be off.</param>
-        public static void SetTraceOn(bool traceOn)
+        public void SetTraceOn(bool traceOn)
         {
-            AceQLHttpApi.SetTraceOn(traceOn);
+            aceQLHttpApi.SetTraceOn(traceOn);
         }
 
 

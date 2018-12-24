@@ -21,7 +21,6 @@ using AceQL.Client.Api;
 using AceQL.Client.Api.File;
 using PCLStorage;
 using System;
-using System.Data;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,8 +88,6 @@ namespace AceQL.Client.Samples
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
 
-            AceQLConnection.SetTraceOn(true);
-
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
@@ -107,6 +104,7 @@ namespace AceQL.Client.Samples
         /// <param name="connection"></param>
         private static async Task ExecuteExample(AceQLConnection connection)
         {
+            //Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string IN_DIRECTORY = "c:\\test\\";
             string OUT_DIRECTORY = "c:\\test\\out\\";
 

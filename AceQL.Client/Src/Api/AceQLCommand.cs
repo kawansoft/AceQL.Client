@@ -16,25 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-﻿
+
 
 using AceQL.Client.Api.Http;
+using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api;
+using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Threading.Tasks;
-using AceQL.Client.Api.Util;
-using PCLStorage;
 using System.Threading;
-using AceQL.Client.Src.Api;
+using System.Threading.Tasks;
 
-/// <summary>
-/// The AceQL.Client.Api namespace allows mobile and desktop application developers
-/// to access remote SQL databases and/or SQL databases in the cloud by simply including
-/// standard SQL calls in their code. The syntax is identical to the Microsoft SQL Server C# API.
-/// </summary>
 namespace AceQL.Client.Api
 {
     /// <summary>
@@ -329,7 +323,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -459,7 +453,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -528,7 +522,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {

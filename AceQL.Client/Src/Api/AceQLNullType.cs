@@ -19,6 +19,12 @@
 ﻿
 namespace AceQL.Client.Api
 {
+    internal class Factor
+    {
+        // We multiply original Jav enum value per -10000 to be sure the int value is never used as 
+        // prepared statement parameter by user?
+        internal const int FACTOR = -10000;
+    }
 
     /// <summary>
     /// Specifies the SQL type to pass to the server when setting a value to NULL with <see cref="AceQLParameter"/>.
@@ -28,62 +34,62 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BIT.
         /// </summary>
-        BIT = -7 * (-10000),
+        BIT = -7 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type TINYINT.
         /// </summary>
-        TINYINT = -6 * (-10000),
+        TINYINT = -6 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type BIGINT.
         /// </summary>
-        BIGINT = -5 * (-10000),
+        BIGINT = -5 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type SMALLINT.
         /// </summary>
-        SMALLINT = 5 * (-10000),
+        SMALLINT = 5 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type INTEGER.
         /// </summary>
-        INTEGER = 4 * (-10000),
+        INTEGER = 4 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type FLOAT.
         /// </summary>
-        FLOAT = 6  * (-10000),
+        FLOAT = 6  * Factor.FACTOR,
 
         /// <summary>
         /// SQL type REAL.
         /// </summary>
-        REAL = 7 * (-10000),
+        REAL = 7 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type DOUBLE.
         /// </summary>
-        DOUBLE = 8 * (-10000),
+        DOUBLE = 8 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type NUMERIC.
         /// </summary>
-        NUMERIC = 2 * (-10000),
+        NUMERIC = 2 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type DECIMAL.
         /// </summary>
-        DECIMAL = 3 * (-10000),
+        DECIMAL = 3 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type CHAR.
         /// </summary>
-        CHAR = 1 * (-10000),
+        CHAR = 1 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type VARCHAR.
         /// </summary>
-        VARCHAR = 12 * (-10000),
+        VARCHAR = 12 * Factor.FACTOR,
 
         ///// <summary>
         ///// SQL type LONGVARCHAR.
@@ -93,17 +99,17 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type DATE.
         /// </summary>
-        DATE = 91 * (-10000),
+        DATE = 91 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type TIME.
         /// </summary>
-        TIME = 92 * (-10000),
+        TIME = 92 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type TIMESTAMP.
         /// </summary>
-        TIMESTAMP = 93 * (-10000),
+        TIMESTAMP = 93 * Factor.FACTOR,
 
         ///// <summary>
         ///// SQL type BINARY.
@@ -153,12 +159,12 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BLOB.
         /// </summary>
-        BLOB = 2004 * (-10000),
+        BLOB = 2004 * Factor.FACTOR,
 
         /// <summary>
         /// SQL type CLOB.
         /// </summary>
-        CLOB = 2005 * (-10000),
+        CLOB = 2005 * Factor.FACTOR,
 
         ///// <summary>
         ///// The reference
@@ -173,7 +179,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// SQL type BOOLEAN.
         /// </summary>
-        BOOLEAN = 16 * (-10000),
+        BOOLEAN = 16 * Factor.FACTOR,
 
         //------------------------- JDBC 4.0 -----------------------------------
 

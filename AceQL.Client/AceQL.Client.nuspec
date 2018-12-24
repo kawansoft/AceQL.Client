@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>2.1.1</version>
+        <version>3.0.0</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -10,15 +10,15 @@
         <projectUrl>https://github.com/kawansoft/AceQL.Client</projectUrl>
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>This version is designed to operate with AceQL HTTP v2.0 or v2.1 on server  side. 
+        <description>This version is designed to operate with AceQL HTTP v2.0, v2.1, v3.0 or v3.1 on server  side. 
 		It now fully supports stored procedure calls on MS SQL Server (and also on MySQL, PostgreSQL and Oracle).
-		AceQL HTTP Server v2.1 is required for stored procedure calls.
+		AceQL HTTP Server v2.1+ is required for stored procedure calls.
 		Note that this version is not compatible with AceQL HTTP v1.0 server side.
 		</description>
         <releaseNotes>
-		Syntax for passing a null value to an AceQLParemeter has changed and uses now the AceQLNullValue class.
-		See User Guide on GitHub.
-		Trace is done with datetime and includes now all exceptions stack traces.
+		Trace default was on. This would slow down execution. This has been fixed: trace default status is off.
+		Trace management was static: there was only one trace file for all threads. This has been fixed: there is
+		now one trace file per thread.
 		</releaseNotes>
         <copyright>Copyright © 2018</copyright>
         <tags>SQL http remote Cloud database</tags>

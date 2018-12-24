@@ -55,7 +55,6 @@ namespace AceQL.Client.Tests
 
             try
             {
-                AceQLConnection.SetTraceOn(true);
 
                 // Make sure connection is always closed in order to close and release
                 // server connection into the pool
@@ -139,11 +138,15 @@ namespace AceQL.Client.Tests
 
             AceQLParameter aceQLParameter1 = new AceQLParameter("@parm1", 0);
 
-            AceQLParameter aceQLParameter2 = new AceQLParameter("@parm2", 2);
-            aceQLParameter2.Direction = ParameterDirection.InputOutput;
+            AceQLParameter aceQLParameter2 = new AceQLParameter("@parm2", 2)
+            {
+                Direction = ParameterDirection.InputOutput
+            };
 
-            AceQLParameter aceQLParameter3 = new AceQLParameter("@parm3");
-            aceQLParameter3.Direction = ParameterDirection.Output;
+            AceQLParameter aceQLParameter3 = new AceQLParameter("@parm3")
+            {
+                Direction = ParameterDirection.Output
+            };
 
             command.Parameters.Add(aceQLParameter1);
             command.Parameters.Add(aceQLParameter2);

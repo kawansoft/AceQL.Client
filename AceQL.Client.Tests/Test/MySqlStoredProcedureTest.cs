@@ -55,8 +55,7 @@ namespace AceQL.Client.Tests
 
             try
             {
-                AceQLConnection.SetTraceOn(true);
-
+       
                 // Make sure connection is always closed in order to close and release
                 // server connection into the pool
                 using (AceQLConnection connection = await ConnectionBuilderAsync())

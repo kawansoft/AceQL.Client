@@ -90,7 +90,8 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// The trace on
         /// </summary>
-        private static bool TRACE_ON = true;
+        private  bool traceOn = false;
+
         /// <summary>
         /// The URL
         /// </summary>
@@ -104,11 +105,16 @@ namespace AceQL.Client.Api.Http
         private bool useCancellationToken = false;
 
         /// <summary>
+        /// The trace file for debug
+        /// </summary>
+        private IFile file = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
         /// </summary>
         internal AceQLHttpApi()
         {
-
+           
         }
 
         /// <summary>
@@ -119,6 +125,11 @@ namespace AceQL.Client.Api.Http
         /// <exception cref="System.ArgumentException">connectionString token does not contain a = separator: " + line</exception>
         internal AceQLHttpApi(String connectionString)
         {
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException("connectionString is null!");
+            }
+
             this.connectionString = connectionString;
         }
 
@@ -240,7 +251,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -258,7 +269,7 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// Traces this instance.
         /// </summary>
-        internal static async Task TraceAsync()
+        internal async Task TraceAsync()
         {
             await TraceAsync("").ConfigureAwait(false);
         }
@@ -267,12 +278,16 @@ namespace AceQL.Client.Api.Http
         /// Traces the specified string.
         /// </summary>
         /// <param name="contents">The string to trace</param>
-        internal static async Task TraceAsync(String contents)
+        internal async Task TraceAsync(String contents)
         {
-            if (TRACE_ON)
+           
+            if (traceOn)
             {
+                if (file == null)
+                {
+                  file =  await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
+                }
                 contents = DateTime.Now + " " + contents;
-                IFile file = await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
                 await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
             }
         }
@@ -939,12 +954,12 @@ namespace AceQL.Client.Api.Http
 
             Uri urlWithaction = new Uri(url + action);
 
-            SetTraceOn(true);
-            await AceQLConnection.TraceAsync("url: " + url + action);
+            //SetTraceOn(true);
+            await TraceAsync("url: " + url + action);
 
             foreach (KeyValuePair<String, String> p in parametersMap)
             {
-                await AceQLConnection.TraceAsync("parm: " + p.Key + " / " + p.Value);
+                await TraceAsync("parm: " + p.Key + " / " + p.Value);
             }
 
             string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap);
@@ -1156,7 +1171,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await AceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -1173,18 +1188,18 @@ namespace AceQL.Client.Api.Http
         /// Says if trace is on
         /// </summary>
         /// <returns>true if trace is on</returns>
-        internal static bool IsTraceOn()
+        internal bool IsTraceOn()
         {
-            return TRACE_ON;
+            return traceOn;
         }
 
         /// <summary>
         /// Sets the trace on/off
         /// </summary>
         /// <param name="traceOn">if true, trace will be on; else race will be off</param>
-        internal static void SetTraceOn(bool traceOn)
+        internal void SetTraceOn(bool traceOn)
         {
-            TRACE_ON = traceOn;
+            this.traceOn = traceOn;
         }
 
         /// <summary>

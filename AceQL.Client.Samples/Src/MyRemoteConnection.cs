@@ -57,8 +57,6 @@ namespace AceQL.Client.Samples
                 int customerId = 1;
                 int itemId = 1;
 
-                AceQLConnection.SetTraceOn(true);
-
                 // Make sure connection is always closed in order to close and release
                 // server connection into the pool
                 using (AceQLConnection connection = await ConnectionBuilderAsync())

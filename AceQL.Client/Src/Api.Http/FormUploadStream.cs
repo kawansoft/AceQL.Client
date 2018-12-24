@@ -93,10 +93,8 @@ namespace AceQL.Client.Api.Http
                 {
                     if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " num: " + num);
                 }
-
             };
             
-
             StringContent stringContentBlobId = new StringContent(blobId);
 
             try
@@ -105,11 +103,12 @@ namespace AceQL.Client.Api.Http
                 multipart.Add(stringContentBlobId, '"' + "blob_id" + '"');
                 multipart.Add(new StreamContent(stream), '"' + "file" + '"', '"' + blobId + '"');
 
-                await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
-                await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
-                await AceQLHttpApi.TraceAsync("url     : " + url).ConfigureAwait(false);
-                await AceQLHttpApi.TraceAsync("blob_id : " + blobId).ConfigureAwait(false);
-                await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
+                // TODO: maybe have a trace file in? So pass AceQLHttpApi to constructor.
+                //await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
+                //await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
+                //await AceQLHttpApi.TraceAsync("url     : " + url).ConfigureAwait(false);
+                //await AceQLHttpApi.TraceAsync("blob_id : " + blobId).ConfigureAwait(false);
+                //await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
 
                 if (DEBUG)
                 {

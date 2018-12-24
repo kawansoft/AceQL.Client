@@ -44,8 +44,6 @@ namespace AceQL.Client.Api
         /// </summary>
         private AceQLHttpApi aceQLHttpApi;
 
-        private bool traceOn = AceQLHttpApi.IsTraceOn();
-
         private int currentRowNum = 0;
         private int rowsCount;
 
@@ -91,7 +89,7 @@ namespace AceQL.Client.Api
         /// <returns><c>true</c> if [is trace on]; otherwise, <c>false</c>.</returns>
         internal bool IsTraceOn()
         {
-            return traceOn;
+            return aceQLHttpApi.IsTraceOn();
         }
 
         /// <summary>
@@ -100,7 +98,7 @@ namespace AceQL.Client.Api
         /// <param name="traceOn">if set to <c>true</c> [trace on].</param>
         internal void SetTraceOn(bool traceOn)
         {
-            this.traceOn = traceOn;
+            aceQLHttpApi.SetTraceOn(traceOn);
         }
 
         /// <summary>
@@ -108,7 +106,7 @@ namespace AceQL.Client.Api
         /// </summary>
         private void Trace()
         {
-            if (traceOn)
+            if (IsTraceOn())
             {
                 ConsoleEmul.WriteLine();
             }
@@ -120,11 +118,10 @@ namespace AceQL.Client.Api
         /// <param name="s">The string to trace.</param>
         private async void TraceAsync(String s)
         {
-            if (traceOn)
+            if (IsTraceOn())
             {
-                s = DateTime.Now + " " + s;
-                System.Diagnostics.Debug.WriteLine("");
-                await AceQLHttpApi.TraceAsync(s);
+                System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + s);
+                await aceQLHttpApi.TraceAsync(s);
             }
         }
 

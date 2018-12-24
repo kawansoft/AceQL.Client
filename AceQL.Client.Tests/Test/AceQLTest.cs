@@ -18,10 +18,7 @@
  */
 
 using AceQL.Client.Api;
-using AceQL.Client.Api.File;
-using PCLStorage;
 using System;
-using System.Data;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,8 +86,6 @@ namespace AceQL.Client.Tests
             //connectionString += $"Username={username}; Password={password}";
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
-
-            AceQLConnection.SetTraceOn(true);
 
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))

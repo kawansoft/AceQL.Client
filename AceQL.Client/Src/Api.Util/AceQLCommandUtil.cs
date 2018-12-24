@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace AceQL.Client.Api.Util
@@ -132,7 +133,7 @@ namespace AceQL.Client.Api.Util
 
                 //Reconvert SqlType original Java value by diving per 10000 and multiplying per -1:
                 int sqlType = (int)aceQLNullType;
-                sqlType = sqlType / 10000 * -1;
+                sqlType = sqlType / (int) AceQLNullType.CHAR;
 
                 // For OUT parameters that may be null value
                 if (ParmValue == null)
@@ -267,7 +268,10 @@ namespace AceQL.Client.Api.Util
             IFolder folder = await rootFolder.CreateFolderAsync(Parms.ACEQL_PCL_FOLDER,
                 CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
 
-            IFile file = await folder.CreateFileAsync(Parms.TRACE_TXT, CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+            //\AppData\Local\KawanSoft\AceQL.Client.Samples\3.0.0.0\AceQLPclFolder
+
+            string pathTraceTxt = "Trace_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + "_" + Guid.NewGuid().ToString() + ".txt";
+            IFile file = await folder.CreateFileAsync(pathTraceTxt, CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
             return file;
         }
 
