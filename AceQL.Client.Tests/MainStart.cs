@@ -19,6 +19,7 @@
 
 using AceQL.Client.Api;
 using AceQL.Client.Tests.Test;
+using Safester.Test;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,13 +29,14 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    class MainStart
+    public class MainStart
     {
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            HttpTest.DoIt().Wait();
 
-            int mainToLaunch = 5;
+            int mainToLaunch = 6;
 
             if (mainToLaunch == 1)
             {
@@ -57,5 +59,6 @@ namespace AceQL.Client.Tests
                 SqlServerStoredProcedureTest.TheMain(args);
             }
         }
+
     }
 }
