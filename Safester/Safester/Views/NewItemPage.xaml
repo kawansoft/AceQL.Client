@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Safester.Views.NewItemPage"
+             xmlns:local="clr-namespace:Safester.Services.Converters"
+             xmlns:autocomplete="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{i18n:Translate NewMail}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:FileNameSizeConverter x:Key="nameSizeToString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="" Icon="clipyellow.png" Clicked="AddFile_Clicked">
+        </ToolbarItem>
+        <ToolbarItem Text="{i18n:Translate SaveAsDraft}" Clicked="Save_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="draft.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Text="{i18n:Translate Send}" Clicked="Send_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout x:Name="indicator" 
+                    Padding="12"
+                    IsVisible = "false"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+                    <ActivityIndicator x:Name="activityIndicator"
+                        StyleId="Login_actindicator"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </StackLayout>
+                <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" Margin="0, 0, 0, 0" Spacing="5" Padding="15">
+                    <StackLayout Margin="0" Padding="0" Spacing="5" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate MailTo}" WidthRequest="40" FontSize="Medium" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
+                        <autocomplete:SfAutoComplete HeightRequest="40" TextSize="15" x:Name="suggestBoxTo" HorizontalOptions="FillAndExpand" DisplayMemberPath="displayName" SuggestionMode="Contains" MultiSelectMode="Token" DropDownItemHeight="65" DropDownBackgroundColor="White">
+                            <autocomplete:SfAutoComplete.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Orientation="Vertical" Padding="6, 4" Spacing="2">
+                                        <Label Text="{Binding recipientName}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <Label Text="{Binding recipientEmailAddr}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <BoxView HeightRequest="1" Margin="5, 5" Color="{StaticResource DropListSeparatorColor}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </autocomplete:SfAutoComplete.ItemTemplate>
+                        </autocomplete:SfAutoComplete>
+                    </StackLayout>
+                    <StackLayout Margin="0" Padding="0" Spacing="5" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate MailCc}" WidthRequest="40" FontSize="Medium" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                        <autocomplete:SfAutoComplete HeightRequest="40" TextSize="15" x:Name="suggestBoxCc" HorizontalOptions="FillAndExpand" DisplayMemberPath="displayName" SuggestionMode="Contains" MultiSelectMode="Token" DropDownItemHeight="65" DropDownBackgroundColor="White">
+                            <autocomplete:SfAutoComplete.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Orientation="Vertical" Padding="6, 4" Spacing="2">
+                                        <Label Text="{Binding recipientName}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <Label Text="{Binding recipientEmailAddr}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <BoxView HeightRequest="1" Margin="5, 5" Color="{StaticResource DropListSeparatorColor}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </autocomplete:SfAutoComplete.ItemTemplate>
+                        </autocomplete:SfAutoComplete>
+                    </StackLayout>
+                    <StackLayout Margin="0" Padding="0" Spacing="5" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate MailBcc}" WidthRequest="40" FontSize="Medium" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                        <autocomplete:SfAutoComplete HeightRequest="40" TextSize="15" x:Name="suggestBoxBcc" HorizontalOptions="FillAndExpand" DisplayMemberPath="displayName" SuggestionMode="Contains" MultiSelectMode="Token" DropDownItemHeight="65" DropDownBackgroundColor="White">
+                            <autocomplete:SfAutoComplete.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Orientation="Vertical" Padding="6, 4" Spacing="2">
+                                        <Label Text="{Binding recipientName}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <Label Text="{Binding recipientEmailAddr}" FontSize="Medium" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HeightRequest="28"/>
+                                        <BoxView HeightRequest="1" Margin="5, 5" Color="{StaticResource DropListSeparatorColor}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </autocomplete:SfAutoComplete.ItemTemplate>
+                        </autocomplete:SfAutoComplete>
+                    </StackLayout>
+                    <StackLayout Margin="0" Padding="0" Spacing="5" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate MailSubject}" WidthRequest="70" FontSize="Medium" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                        <Entry Text="{Binding Subject}" HeightRequest="40" x:Name="entrySubject" FontSize="Medium" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                    <BoxView HeightRequest="1" Color="Gray" />
+                    <StackLayout x:Name="layoutAttachment" Spacing="5" Orientation="Vertical" >
+                        <StackLayout Spacing="5" Margin="0" Padding="0" Orientation="Horizontal">
+                            <ListView x:Name="listAttachment" ItemsSource="{Binding Attachments}" HorizontalOptions="FillAndExpand" HeightRequest="50" RowHeight="20" HasUnevenRows="true">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="10, 2, 10, 2" VerticalOptions="Center" >
+                                                <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="Black" Text="{Binding ., Converter={StaticResource nameSizeToString}}" FontSize="12"></Label> 
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <!--<StackLayout Margin="0" Padding="0" Spacing="5" HorizontalOptions="End" VerticalOptions="CenterAndExpand">
+                                <Button Text="Add File" Clicked="AddFile_Clicked" HeightRequest="40" />
+                                <Button Text="Clear All" Clicked="ClearAll_Clicked" HorizontalOptions="End" HeightRequest="40" />
+                            </StackLayout>-->
+                        </StackLayout>
+                        <BoxView HeightRequest="1" Color="Gray" />
+                    </StackLayout>
+                    <!--<Label Text="Body" FontSize="Medium" />-->
+                    <Editor x:Name="editorBody" Placeholder="{i18n:Translate TypeText}" FontSize="Medium" VerticalOptions="FillAndExpand"/>
+                </StackLayout>
+            </AbsoluteLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

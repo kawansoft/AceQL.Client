@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Safester.Views.SettingsPage"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{i18n:Translate Settings}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{i18n:Translate Save}" Clicked="Save_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <TableView Intent="Menu" HasUnevenRows="true" x:Name="tableSettings" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <TableRoot >
+                <TableSection Title="{i18n:Translate Name}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Entry x:Name="entryName" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate Product}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label x:Name="entryProduct" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate CryptographySettings}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label x:Name="entryCrypto" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate MailboxSize}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label x:Name="entryMailBoxSize" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate Notification}" TextColor="{ StaticResource Primary }" >
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{i18n:Translate AllowNotification}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                            <Switch x:Name="switchNotification" HorizontalOptions="EndAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{i18n:Translate Email}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                            <Entry x:Name="entryEmail" HorizontalOptions="FillAndExpand" Keyboard="Email"/>
+                        </StackLayout>                            
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate MessagePerScroll}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Entry x:Name="entryCountPerScroll" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="{i18n:Translate Signature}" TextColor="{ StaticResource Primary }">
+                    <ViewCell>
+                        <StackLayout Padding="20,10" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{i18n:Translate AddSignatureHint}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                            <Switch x:Name="switchSignature"/>
+                            <Button x:Name="btnSignature" Text="{i18n:Translate AddSignature}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell >
+                        <BoxView HeightRequest="1" Color="Transparent"/>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

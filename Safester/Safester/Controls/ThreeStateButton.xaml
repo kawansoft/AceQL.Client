@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Safester.Controls.ThreeStateButton">
+    <ContentView.Content>
+        <Frame CornerRadius="5" BorderColor="{StaticResource Primary}" BackgroundColor="Transparent" Padding="0" Margin="10, 10, 10, 5" IsClippedToBounds="true">
+            <StackLayout Orientation="Horizontal" Spacing="0" Margin="0" Padding="0" HorizontalOptions="Start" HeightRequest="35" IsClippedToBounds="true">
+                <Label x:Name="yesView" Text="Yes" WidthRequest="80" VerticalOptions="CenterAndExpand" XAlign="Center" YAlign="Center"
+                           TextColor="{StaticResource Primary}" FontSize="14" HeightRequest="35" />
+                <Label x:Name="noView" Text="No" WidthRequest="80" VerticalOptions="CenterAndExpand" XAlign="Center" YAlign="Center"
+                           TextColor="{StaticResource Primary}" FontSize="14" HeightRequest="35" />
+                <Label x:Name="interView" Text="N/A" WidthRequest="80" VerticalOptions="CenterAndExpand" XAlign="Center" YAlign="Center"
+                           TextColor="{StaticResource Primary}" FontSize="14" HeightRequest="35" />
+            </StackLayout>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{i18n:Translate Drafts}"
+             x:Class="Safester.Views.DraftItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{i18n:Translate Compose}" Clicked="ComposeItem_Clicked" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout>
+        <ListView x:Name="ItemsListView"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>                      
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding ShowToRecipients}"
+                                LineBreakMode="NoWrap"
+                                TextColor="Black"
+                                FontSize="16" />
+                            <Label Text="{Binding subject}"
+                                LineBreakMode="NoWrap"
+                                TextColor="Black"
+                                FontSize="14" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

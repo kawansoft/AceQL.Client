@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:i18n="clr-namespace:Safester.Utils"
+    x:Class="Safester.Views.SignatureInputPage" >
+    <StackLayout VerticalOptions="Center" 
+        HorizontalOptions="FillAndExpand" 
+        Padding="20, 10, 20, 10" 
+        Opacity="1">
+        <Frame BackgroundColor="White" CornerRadius="5">
+            <StackLayout Padding="0, 10, 0, 10" >
+                <Label x:Name="labelSignature"
+                    Text="{i18n:Translate AddSignature}"/>              
+                <Editor x:Name="entrySignature" HorizontalOptions="FillAndExpand" HeightRequest="200" />                         
+                <Button x:Name="OkButton" 
+                    Text="{i18n:Translate OK}" 
+                    Clicked="Save_Clicked"/>
+                <Button x:Name="CancelButton" 
+                    Text="{i18n:Translate Cancel}" 
+                    Clicked="Cancel_Clicked"/>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

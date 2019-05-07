@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Safester.Views.RegisterPage"
+             xmlns:cc="clr-namespace:Safester.Controls"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             BackgroundColor="{ StaticResource Primary }"
+             Title="{i18n:Translate RegisterUser}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Create" Clicked="Save_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout x:Name="indicator" 
+                    Padding="12"
+                    IsVisible = "false"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+                    <ActivityIndicator x:Name="activityIndicator"
+                        StyleId="Login_actindicator"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </StackLayout>
+                <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" Padding="50, 30, 50, 30">
+                    <Label Text="{i18n:Translate RegisterUserHint}" 
+                           TextColor="White"
+                           Margin="0, 0, 0, 10"/>
+                    <Label Text="{i18n:Translate Name}" TextColor="White"/>
+                    <cc:RoundedBorderEntry x:Name="entryName" 
+                                           TextColor="Black" 
+                                           PlaceholderColor="#CCCCCC" 
+                                           FontSize="15" 
+                                           HeightRequest="40" 
+                                           HorizontalOptions="FillAndExpand"
+                                           Margin="0, 0, 0, 10"/>
+                    <Label Text="{i18n:Translate Email}" TextColor="White" Margin="0, 0, 20, 0"/>
+                    <cc:RoundedBorderEntry x:Name="entryEmail" 
+                                           TextColor="Black" 
+                                           PlaceholderColor="#CCCCCC" 
+                                           FontSize="15" 
+                                           HeightRequest="40" 
+                                           HorizontalOptions="FillAndExpand" 
+                                           Keyboard="Email"/>
+                    <Label Text="{i18n:Translate RegisterUserHint1}" 
+                           TextColor="White" 
+                           FontSize="12" 
+                           FontAttributes="Italic" 
+                           Margin="0, 0, 0, 10"/>
+                    <Label Text="{i18n:Translate Passphrase}" TextColor="White" Margin="0, 0, 20, 0"/>
+                    <cc:RoundedBorderEntry x:Name="entryPassword" 
+                                           TextColor="Black" 
+                                           PlaceholderColor="#CCCCCC" 
+                                           FontSize="15" 
+                                           HeightRequest="40" 
+                                           HorizontalOptions="FillAndExpand" 
+                                           IsPassword="true"
+                                           Margin="0, 0, 0, 10"/>
+                    <Label Text="{i18n:Translate ConfirmPassphrase}" TextColor="White" Margin="0, 0, 20, 0"/>
+                    <cc:RoundedBorderEntry x:Name="entryConfirmPassword" 
+                                           TextColor="Black" 
+                                           PlaceholderColor="#CCCCCC" 
+                                           FontSize="15" 
+                                           HeightRequest="40" 
+                                           HorizontalOptions="FillAndExpand" 
+                                           IsPassword="true"/>
+                    
+                    <Label Text="{i18n:Translate Coupon}" TextColor="White" Margin="0, 0, 20, 0"/>
+                    <cc:RoundedBorderEntry x:Name="entryCoupon" 
+                                           TextColor="Black" 
+                                           PlaceholderColor="#CCCCCC" 
+                                           FontSize="15" 
+                                           HeightRequest="40" 
+                                           HorizontalOptions="FillAndExpand" />
+                </StackLayout>
+            </AbsoluteLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

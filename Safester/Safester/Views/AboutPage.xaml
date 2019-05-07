@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Safester.Views.AboutPage"
+             BackgroundColor="{StaticResource Primary}"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{i18n:Translate About}">
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" Padding="50, 50">
+            <Image Source="logo.png" HorizontalOptions="FillAndExpand" HeightRequest="100" Aspect="AspectFit" Margin="50, 50"/>
+            <Label HorizontalOptions="CenterAndExpand" FontSize="18" Margin="0, 0, 0, 20">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Safester v1.2.2 - 06/05/2019" TextColor="White" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label HorizontalOptions="CenterAndExpand" FontSize="18" Margin="0, 0, 0, 20">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="{i18n:Translate Copyright}" TextColor="White" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label x:Name="lblUrl" HorizontalOptions="CenterAndExpand" FontSize="18" Margin="0, 0, 0, 20">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="https://www.safester.net" TextColor="{StaticResource LinkTextColor}"/>
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label HorizontalOptions="CenterAndExpand" FontSize="18">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="{i18n:Translate SupportReportBug}" TextColor="White" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label x:Name="lblEmail" HorizontalOptions="CenterAndExpand" FontSize="18">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="contact@safester.net" TextColor="{StaticResource LinkTextColor}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

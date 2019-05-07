@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Safester.Services.Converters"
+             x:Class="Safester.Views.ItemDetailPage"
+             xmlns:html="clr-namespace:Safester.Controls"
+             xmlns:lc="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms"
+             xmlns:lb="clr-namespace:XLabs.Forms.Behaviors;assembly=XLabs.Forms"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DateConverter x:Key="longToDate" />
+            <local:SizeConverter x:Key="sizeToString" />
+            <local:FileNameSizeConverter x:Key="nameSizeToString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="" Icon="mail_reply.png" Clicked="ReplyItem_Clicked" >
+        </ToolbarItem>
+        <ToolbarItem Text="" Icon="mail_reply_all.png" Clicked="ReplyAllItem_Clicked" >
+        </ToolbarItem>
+        <ToolbarItem Text="" Icon="trash.png" Clicked="DeleteItem_Clicked" >
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 0" Spacing="5" Padding="15">
+            <StackLayout x:Name="layoutFrom" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailFrom}" WidthRequest="70" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding FromRecipient}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+            </StackLayout>        
+            <StackLayout x:Name="layoutToRecipient" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailTo}" WidthRequest="70" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding ToRecipients}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout x:Name="layoutCcRecipient" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailCc}" WidthRequest="70" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding CcRecipients}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout x:Name="layoutBccRecipient" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailBcc}" WidthRequest="70" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding BccRecipients}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout x:Name="layoutSubject" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailSubject}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding Subject}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" MaxLines="3"/>
+            </StackLayout>
+            <StackLayout x:Name="layoutDate" Spacing="5" Orientation="Horizontal" >
+                <Label Text="{i18n:Translate MailDate}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding MessageDate, Converter={StaticResource longToDate}}" TextColor="Black" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"/>
+            </StackLayout>
+            <BoxView HeightRequest="1" Color="Gray" />
+            <StackLayout x:Name="layoutAttachment" Spacing="5" Orientation="Vertical" >
+                <ListView x:Name="listAttachment" ItemsSource="{Binding Attachments}" HorizontalOptions="FillAndExpand" HeightRequest="50" RowHeight="20" HasUnevenRows="true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="10, 2, 10, 2" VerticalOptions="Center" >
+                                    <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="Black" Text="{Binding ., Converter={StaticResource nameSizeToString}}" FontSize="12"></Label> 
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <BoxView HeightRequest="1" Color="Gray" />
+            </StackLayout>
+            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                <Label Text="{i18n:Translate MailDisplayMsgAsStored}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" VerticalOptions="CenterAndExpand"/>
+                <Switch x:Name="switchShowOriginal" HorizontalOptions="End"/>
+            </StackLayout>
+            <BoxView HeightRequest="1" Color="Gray" Margin="0, 0, 0, 5"/>
+            <html:HtmlLabel x:Name="htmlLabel" TextColor="Black" />
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

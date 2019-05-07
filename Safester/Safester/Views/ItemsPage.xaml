@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Safester.Views.ItemsPage"
+             xmlns:local="clr-namespace:Safester.Services.Converters"
+             xmlns:cc="clr-namespace:Safester.Controls"
+             xmlns:i18n="clr-namespace:Safester.Utils"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Compose" Clicked="ComposeItem_Clicked" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DateConverter x:Key="longToDate" />
+            <local:SizeConverter x:Key="sizeToString" />
+            <local:BoolToFontAttrConverter x:Key="boolToFontAttr" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                CachingStrategy="RecycleElement"
+                IsPullToRefreshEnabled="true"
+                ItemSelected="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="10, 8, 10, 8" RowSpacing="5" ColumnSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="imgAttachment" Source="clipyellow.png" 
+                                    Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                    IsVisible="{Binding hasAttachs}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1">
+                                <Label Text="{Binding senderName}"
+                                    LineBreakMode="TailTruncation"
+                                    HorizontalOptions="FillAndExpand"
+                                   FontAttributes="{Binding IsRead, Converter={StaticResource boolToFontAttr}}"
+                                    TextColor="Black"
+                                    FontSize="16" />
+                                <Label Text="{Binding date, Converter={StaticResource longToDate}}"
+                                    LineBreakMode="TailTruncation"
+                                    HorizontalOptions="End"
+                                    WidthRequest="150"
+                                    HorizontalTextAlignment="End"
+                                       FontAttributes="{Binding IsRead, Converter={StaticResource boolToFontAttr}}"
+                                    TextColor="Blue"
+                                    FontSize="14" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1">
+                                <Label Text="{Binding subject}"
+                                    LineBreakMode="TailTruncation"
+                                    HorizontalOptions="FillAndExpand"
+                                       FontAttributes="{Binding IsRead, Converter={StaticResource boolToFontAttr}}"
+                                    TextColor="Black"
+                                    FontSize="16" />
+                                <Label Text="{Binding size, Converter={StaticResource sizeToString}}"
+                                    LineBreakMode="TailTruncation"
+                                    HorizontalOptions="End"
+                                    WidthRequest="100"
+                                    HorizontalTextAlignment="End"
+                                       FontAttributes="{Binding IsRead, Converter={StaticResource boolToFontAttr}}"
+                                    TextColor="Blue"
+                                    FontSize="14" />
+                              </StackLayout>
+                        </Grid>
+                        <ViewCell.ContextActions>
+                            <MenuItem Clicked="OnDelete" CommandParameter="{Binding .}"
+                               Text="{i18n:Translate Delete}" IsDestructive="True" />
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>
