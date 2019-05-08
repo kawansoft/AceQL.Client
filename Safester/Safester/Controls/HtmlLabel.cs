@@ -25,6 +25,7 @@
 using System.Text;
 using Xamarin.Forms;
 
+
 namespace Safester.Controls
 {
     public class HtmlLabel : Label
