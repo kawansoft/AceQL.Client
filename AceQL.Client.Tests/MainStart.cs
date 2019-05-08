@@ -34,9 +34,7 @@ namespace AceQL.Client.Tests
 
         public static void Main(string[] args)
         {
-            HttpTest.DoIt().Wait();
-
-            int mainToLaunch = 6;
+            int mainToLaunch = 1;
 
             if (mainToLaunch == 1)
             {

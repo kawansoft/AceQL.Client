@@ -68,7 +68,7 @@ namespace AceQL.Client.Tests
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLinux;
+            string server = serverUrlLinuxNoSSL;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
@@ -145,7 +145,7 @@ namespace AceQL.Client.Tests
                 command.Parameters.AddWithValue("@parm5", customer_id + ", road 66");
                 command.Parameters.AddWithValue("@parm6", "Town_" + customer_id);
                 command.Parameters.AddWithValue("@parm7", customer_id + "1111");
-                command.Parameters.Add(new AceQLParameter("@parm8", AceQLNullType.VARCHAR)); //null value for NULL SQL insert.
+                command.Parameters.Add(new AceQLParameter("@parm8", new AceQLNullValue(AceQLNullType.VARCHAR))); //null value for NULL SQL insert.
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 await command.ExecuteNonQueryAsync(cancellationTokenSource.Token);
