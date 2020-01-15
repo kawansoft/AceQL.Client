@@ -643,6 +643,8 @@ To activate the update mechanism:
 ```
 You then can read `ProgressIndicator.Percent` property in your watching thread.
 
+
+
 ------
 
 
