@@ -1,6 +1,6 @@
 # AceQL HTTP 
 
-## C# Client SDK v3.0 - December 2018, 24
+## C# Client SDK v4.0 - January 2020, 15
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -57,7 +57,7 @@ The targets of the library are:
 
 - NetFramework 4.5
 - ASP.NETCore 1.0
-- Windows8
+- Windows8.x, Windows 10.
 - Xamarin.Android
 - Xamarin.iOS/ Xamarin.iOS Classic
 - Xamarin.Mac
@@ -68,7 +68,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-C# Client SDK v3.0 version is compatible with AceQL HTTP v2.0+ and v3.0+ server version. It does not support previous version AceQL HTTP v1.0.
+C# Client SDK v4.0 version is compatible with AceQL HTTP v2.0+ server version. It does not support previous version AceQL HTTP v1.0.
 
 ## AceQL C# Client SDK installation
 

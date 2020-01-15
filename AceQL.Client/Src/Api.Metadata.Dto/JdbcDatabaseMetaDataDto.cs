@@ -16,33 +16,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-
-namespace AceQL.Client.Api
+namespace AceQL.Client.Api.Metadata.Dto
 {
+
     /// <summary>
-    /// Specifies the type of a parameter within a query.
+    /// Class JdbcDatabaseMetaDataDto.
     /// </summary>
-    public enum ParameterDirection
+    internal class JdbcDatabaseMetaDataDto
     {
-        /// <summary>
-        /// The parameter is an input parameter.
-        /// </summary>
-        Input = 1,
 
         /// <summary>
-        /// The parameter is an output parameter.
+        /// The JDBC database meta data
         /// </summary>
-        Output = 2,
+        private JdbcDatabaseMetaData jdbcDatabaseMetaData = null;
 
         /// <summary>
-        /// The parameter is capable of both input and output.
+        /// Initializes a new instance of the <see cref="JdbcDatabaseMetaDataDto"/> class.
         /// </summary>
-        InputOutput = 3,
+        /// <param name="jdbcDatabaseMetaData">The JDBC database meta data.</param>
+        public JdbcDatabaseMetaDataDto(JdbcDatabaseMetaData jdbcDatabaseMetaData)
+        {
+            this.jdbcDatabaseMetaData = jdbcDatabaseMetaData;
+        }
 
         /// <summary>
-        /// The parameter represents a return value from an operation such as a stored procedure,
-        /// built-in function, or user-defined function.
+        /// Gets the JDBC database meta data.
         /// </summary>
-        ReturnValue = 6
+        /// <value>The JDBC database meta data.</value>
+        public JdbcDatabaseMetaData JdbcDatabaseMetaData { get => jdbcDatabaseMetaData; }
     }
 }

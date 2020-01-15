@@ -241,3 +241,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /AceQL.Client/Src/Api.Util/VersionLog.txt
+/html_doc
+/csharpdoc_sdk

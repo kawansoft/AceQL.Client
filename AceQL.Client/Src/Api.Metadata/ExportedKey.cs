@@ -16,33 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AceQL.Client.Api
+namespace AceQL.Client.Api.Metadata
 {
     /// <summary>
-    /// Specifies the type of a parameter within a query.
+    /// Class ExportedKey.A SQL Foreign Key.
+    /// Implements the <see cref="AceQL.Client.Api.Metadata.ForeignKey" />
     /// </summary>
-    public enum ParameterDirection
+    /// <seealso cref="AceQL.Client.Api.Metadata.ForeignKey" />
+    public class ExportedKey : ForeignKey
     {
-        /// <summary>
-        /// The parameter is an input parameter.
-        /// </summary>
-        Input = 1,
 
-        /// <summary>
-        /// The parameter is an output parameter.
-        /// </summary>
-        Output = 2,
-
-        /// <summary>
-        /// The parameter is capable of both input and output.
-        /// </summary>
-        InputOutput = 3,
-
-        /// <summary>
-        /// The parameter represents a return value from an operation such as a stored procedure,
-        /// built-in function, or user-defined function.
-        /// </summary>
-        ReturnValue = 6
     }
+
 }

@@ -31,9 +31,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Api
 {
-    /// <summary>
-    /// Represents a SQL statement to execute against a remote SQL database.
-    /// </summary>
+    /// <summary>Represents a SQL statement to execute against a remote SQL database.</summary>
     public class AceQLCommand : IDisposable
     {
         /// <summary>

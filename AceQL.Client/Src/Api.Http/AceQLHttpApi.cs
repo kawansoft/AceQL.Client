@@ -19,6 +19,8 @@
 
 
 using AceQL.Client.Api.File;
+using AceQL.Client.Api.Metadata;
+using AceQL.Client.Api.Metadata.Dto;
 using AceQL.Client.Api.Util;
 using AceQL.Client.Src.Api.Util;
 using Newtonsoft.Json;
@@ -1183,6 +1185,205 @@ namespace AceQL.Client.Api.Http
                 }
             }
         }
+
+        /// <summary>
+        /// Databases the schema download.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <returns>Task&lt;Stream&gt;.</returns>
+        /// <exception cref="ArgumentNullException">format is null!</exception>
+        /// <exception cref="AceQLException">0</exception>
+        /// 
+        internal async Task<Stream> DbSchemaDownloadAsync(String format, String tableName)
+        {
+            if (format == null)
+            {
+                throw new ArgumentNullException("format is null!");
+            }
+
+            try
+            {
+                String theUrl = this.url + "/metadata_query/db_schema_download?format=" + format;
+
+                if (tableName != null)
+                {
+                    tableName = tableName.ToLower();
+                    theUrl += "&table_name=" + tableName;
+                }
+
+                Stream input = await CallWithGetReturnStreamAsync(theUrl);
+                return input;
+            }
+            catch (Exception exception)
+            {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the database metadata.
+        /// </summary>
+        /// <returns>Task&lt;System.String&gt;.</returns>
+        /// <exception cref="AceQLException">
+        /// 0
+        /// </exception>
+        internal async Task<JdbcDatabaseMetaDataDto> GetDbMetadataAsync()
+        {
+            try
+            {
+                String commandName = "metadata_query/get_db_metadata";
+                String result = await CallWithGetAsync(commandName, null).ConfigureAwait(false);
+
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
+                {
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
+                        httpStatusCode);
+                }
+
+                JdbcDatabaseMetaDataDto jdbcDatabaseMetaDataDto = JsonConvert.DeserializeObject<JdbcDatabaseMetaDataDto>(result); 
+                return jdbcDatabaseMetaDataDto;
+            }
+            catch (Exception exception)
+            {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the table names.
+        /// </summary>
+        /// <param name="tableType">Type of the table.</param>
+        /// <returns>Task&lt;TableNamesDto&gt;.</returns>
+        /// <exception cref="AceQLException">
+        /// 0
+        /// </exception>
+        internal async Task<TableNamesDto> GetTableNamesAsync(String tableType)
+        {
+            try
+            {
+                String action = "metadata_query/get_table_names";
+
+                Dictionary<string, string> parametersMap = new Dictionary<string, string>();
+                if (tableType != null)
+                {
+                    parametersMap.Add("table_type", tableType);
+                }
+
+                String result = null;
+
+                Uri urlWithaction = new Uri(url + action);
+                using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
+                {
+                    if (input != null)
+                    {
+                        result = new StreamReader(input).ReadToEnd();
+                    }
+                }
+
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
+                {
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
+                        httpStatusCode);
+                }
+
+                TableNamesDto tableNamesDto = JsonConvert.DeserializeObject<TableNamesDto>(result);
+                return tableNamesDto;
+            }
+            catch (Exception exception)
+            {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the table.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <returns>Task&lt;TableDto&gt;.</returns>
+        /// <exception cref="AceQLException">
+        /// 0
+        /// </exception>
+        internal async Task<TableDto> GetTableAsync(String tableName)
+        {
+            try
+            {
+                String action = "metadata_query/get_table";
+
+                Dictionary<string, string> parametersMap = new Dictionary<string, string>();
+                parametersMap.Add("table_name", tableName);
+
+                String result = null;
+
+                Uri urlWithaction = new Uri(url + action);
+                using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
+                {
+                    if (input != null)
+                    {
+                        result = new StreamReader(input).ReadToEnd();
+                    }
+                }
+
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                if (!resultAnalyzer.IsStatusOk())
+                {
+                    throw new AceQLException(resultAnalyzer.GetErrorMessage(),
+                        resultAnalyzer.GetErrorId(),
+                        resultAnalyzer.GetStackTrace(),
+                        httpStatusCode);
+                }
+
+                TableDto tableDto = JsonConvert.DeserializeObject<TableDto>(result);
+                return tableDto;
+            }
+            catch (Exception exception)
+            {
+                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+
+                if (exception.GetType() == typeof(AceQLException))
+                {
+                    throw exception;
+                }
+                else
+                {
+                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Says if trace is on

@@ -1,6 +1,6 @@
 
                  AceQL C# Client SDK
-                    Version 3.0
+                    Version 4.0
                    Release Notes
 
 
@@ -16,6 +16,16 @@ in the cloud by simply including standard C# SQL calls in their code, just like
 they would do for an SQL Server database. 
 
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
+
+AceQL C# Client SDK - Version 4.0 - 15-Jan-2020
+-----------------------------------------------
+
+What's New:
+- The new metadata API allows downloading the remote database schema
+  in HTML or text format, to get the remote database main properties, 
+  to get the list of tables, and to get the details of each table.
+  It also allows wrapping remote tables, columns, indexes, etc into
+  easy to use C# classes: Table, Index, Column, etc.
 
 
 AceQL C# Client SDK - Version 3.0 - 24-dec-2018

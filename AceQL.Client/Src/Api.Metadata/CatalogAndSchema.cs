@@ -16,33 +16,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AceQL.Client.Api
+namespace AceQL.Client.Api.Metadata
 {
+
     /// <summary>
-    /// Specifies the type of a parameter within a query.
+    /// Parent of all metadata of objects: they all belong to a catalog and schema.
     /// </summary>
-    public enum ParameterDirection
+    public class CatalogAndSchema
     {
-        /// <summary>
-        /// The parameter is an input parameter.
-        /// </summary>
-        Input = 1,
+
+        private string catalog = "";
+        private string schema = "";
+
+        /// <summary>Gets or sets the catalog.</summary>
+        /// <value>The catalog.</value>
+        public virtual string Catalog
+        {
+            get
+            {
+                return catalog;
+            }
+            set
+            {
+                this.catalog = value;
+            }
+        }
 
         /// <summary>
-        /// The parameter is an output parameter.
+        /// Gets or sets the schema.
         /// </summary>
-        Output = 2,
-
-        /// <summary>
-        /// The parameter is capable of both input and output.
-        /// </summary>
-        InputOutput = 3,
-
-        /// <summary>
-        /// The parameter represents a return value from an operation such as a stored procedure,
-        /// built-in function, or user-defined function.
-        /// </summary>
-        ReturnValue = 6
+        /// <value>The schema.</value>
+        public virtual string Schema
+        {
+            get
+            {
+                return schema;
+            }
+            set
+            {
+                this.schema = value;
+            }
+        }
     }
 }
+

@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AceQL.Client.Src.Api
+namespace AceQL.Client.Api
 {
     /// <summary>
     /// Specifies how a command string is interpreted.

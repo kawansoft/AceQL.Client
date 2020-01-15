@@ -64,11 +64,11 @@ namespace AceQL.Client.Tests
             string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinuxNoSSL = "http://www.aceql.com:9090/aceql";
+            string serverUrlLinuxNoSSL = "http://www.aceql.com:8081/aceql";
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLinuxNoSSL;
+            string server = serverUrlLocalhost;
             string database = "kawansoft_example";
             string username = "username";
             string password = "password";
@@ -215,11 +215,20 @@ namespace AceQL.Client.Tests
                     command.Parameters.AddWithValue("@parm1", customer_id);
                     command.Parameters.AddWithValue("@parm2", customer_id);
                     command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.Add(new AceQLParameter("@parm4", AceQLNullType.DECIMAL)); //null value for NULL SQL insert.
+                    command.Parameters.Add(new AceQLParameter("@parm4", new AceQLNullValue(AceQLNullType.DECIMAL))); //null value for NULL SQL insert.
                     command.Parameters.AddWithValue("@parm5", DateTime.Now);
                     command.Parameters.AddWithValue("@parm6", DateTime.Now);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
-                    command.Parameters.Add(new AceQLParameter("@parm7", stream));
+                    bool useBlob = true;
+                    if (useBlob)
+                    {
+                        command.Parameters.Add(new AceQLParameter("@parm7", stream));
+                    }
+                    else
+                    {
+                        command.Parameters.Add(new AceQLParameter("@parm7", new AceQLNullValue(AceQLNullType.BLOB)));
+                    }
+                    
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 

@@ -58,6 +58,11 @@ namespace AceQL.Client.Api
             aceQLHttpApi = new AceQLHttpApi();
         }
 
+        internal AceQLHttpApi GetAceQLHttpApi()
+        {
+            return aceQLHttpApi;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class  when given a string that contains the connection string.
         /// </summary>

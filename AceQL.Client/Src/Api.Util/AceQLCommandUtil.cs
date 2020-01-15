@@ -227,12 +227,12 @@ namespace AceQL.Client.Api.Util
                 if (! aceQLParameter.IsNullValue && !(ParmValue is Stream))
                 {
 
-                    if (aceQLParameter.Direction == Src.Api.ParameterDirection.InputOutput)
+                    if (aceQLParameter.Direction == Api.ParameterDirection.InputOutput)
                     {
                         parametersList.Add("param_direction_" + paramIndex, "inout");
                         parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);
                     }
-                    else if (aceQLParameter.Direction == Src.Api.ParameterDirection.Output)
+                    else if (aceQLParameter.Direction ==Api.ParameterDirection.Output)
                     {
                         parametersList.Add("param_direction_" + paramIndex, "out");
                         parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);

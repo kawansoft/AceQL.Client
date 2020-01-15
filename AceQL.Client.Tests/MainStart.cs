@@ -18,7 +18,10 @@
  */
 
 using AceQL.Client.Api;
+using AceQL.Client.Api.Metadata;
+using AceQL.Client.Api.Metadata.Dto;
 using AceQL.Client.Tests.Test;
+using Newtonsoft.Json;
 using Safester.Test;
 using System;
 using System.Collections.Generic;
@@ -34,7 +37,7 @@ namespace AceQL.Client.Tests
 
         public static void Main(string[] args)
         {
-            int mainToLaunch = 1;
+            int mainToLaunch = 6;
 
             if (mainToLaunch == 1)
             {
@@ -55,6 +58,11 @@ namespace AceQL.Client.Tests
             else if (mainToLaunch == 5)
             {
                 SqlServerStoredProcedureTest.TheMain(args);
+            }
+            else if (mainToLaunch == 6)
+            {
+                AceQLTest.TheMain(args);
+                AceQLTestMetadata.TheMain(args);
             }
         }
 
