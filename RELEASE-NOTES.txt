@@ -34,7 +34,6 @@ AceQL C# Client SDK - Version 3.0 - 24-dec-2018
 What's New:
  - Trace default was on. This would slow down execution.
    This has been fixed: trace default status is off.
-		
  - Trace management was static: there was only one trace file for all threads. 
    This has been fixed: there is now one trace file per thread.
  - This version allows to call remote stored procedures.
