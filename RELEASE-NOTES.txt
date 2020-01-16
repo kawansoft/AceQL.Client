@@ -36,8 +36,7 @@ What's New:
    This has been fixed: trace default status is off.
 		
  - Trace management was static: there was only one trace file for all threads. 
-   This has been fixed: there is
- now one trace file per thread.
+   This has been fixed: there is now one trace file per thread.
  - This version allows to call remote stored procedures.
  - Syntax for setting NULL values has  been changed. See 
    User Guide.
