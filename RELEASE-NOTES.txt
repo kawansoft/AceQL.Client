@@ -18,14 +18,14 @@ they would do for an SQL Server database.
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
 
 
-AceQL C# Client SDK - Version 4.0.1 - 20-Jan-2020
+AceQL C# Client SDK - Version 4.0.2 - 20-Jan-2020
 -------------------------------------------------
 
 What's New:
 - RemoteDatabaseMetaData instance creation is now done using
   AceQLConnection.GetRemoteDatabaseMetaData().
 - Overload RemoteDatabaseMetaData.DbSchemaDownloadAsync() method.
-- Update abd clean XML Documentation.
+- Update and clean XML Documentation.
 
 
 AceQL C# Client SDK - Version 4.0 - 15-Jan-2020

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>4.0.1</version>
+        <version>4.0.2</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -10,14 +10,10 @@
         <projectUrl>https://github.com/kawansoft/AceQL.Client</projectUrl>
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>AceQL allows C# and Xamarin developers to access remote SQL databases and/or SQL databases
-		in the cloud by simply including standard SQL calls in their code.
-		AceQL operates with AceQL HTTP on server side. See www.aceql.com for more info.
+        <description>AceQL allows C# and Xamarin developers to access remote SQL databases and/or SQL databases in the cloud by simply including standard SQL calls in their code. AceQL operates with AceQL HTTP on server side. See www.aceql.com for more info.
 		</description>
         <releaseNotes>
-		AceQL includes now meta data query function in order to display the remote database schema and/or 
-		populate C# classes that wrap the database info.
-		This version is designed to operate with AceQL HTTP v2.0+ on server  side. 
+		AceQL includes now metadata query function in order to display the remote database schema and/or populate C# classes that wrap the database info. This version is designed to operate with AceQL HTTP v2.0+ on server side. AceQL HTTP v4.0+ is required for metadata calls.  
 		</releaseNotes>	
         <copyright>Copyright © 2020</copyright>
         <tags>SQL over http remote jdbc cloud database Xamarin</tags>
