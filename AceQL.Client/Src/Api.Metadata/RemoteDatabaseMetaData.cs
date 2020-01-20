@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2018,  KawanSoft SAS
+ * Copyright (C) 2020,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,8 @@
 using AceQL.Client.Api.Http;
 using AceQL.Client.Api.Metadata.Dto;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AceQL.Client.Api.Metadata
@@ -45,7 +42,7 @@ namespace AceQL.Client.Api.Metadata
         /// </summary>
         /// <param name="aceQLConnection">the Connection to the remote database.</param>
         /// <exception cref="System.NullReferenceException">aceQLConnection is null!</exception>
-        public RemoteDatabaseMetaData(AceQLConnection aceQLConnection)
+        internal RemoteDatabaseMetaData(AceQLConnection aceQLConnection)
         {
             if (aceQLConnection == null)
             {
@@ -53,9 +50,28 @@ namespace AceQL.Client.Api.Metadata
             }
             this.aceQLHttpApi = aceQLConnection.GetAceQLHttpApi();
         }
+        
+        /// <summary>
+        /// Downloads into a stream the schema of the remote database using HTML format.
+        /// </summary>
+        /// <returns>Task&lt;Stream&gt;.</returns>
+        public async Task<Stream> DbSchemaDownloadAsync()
+        {
+            return await DbSchemaDownloadAsync(null, null);
+        }
 
         /// <summary>
-        /// Downloads into a stream the schema of the remote database
+        /// Downloads into a stream the schema of the remote database, using the specified format.
+        /// </summary>
+        /// <param name="format">The format. "html" or "text". Defaults to "html" if null.</param>
+        /// <returns>Task&lt;Stream&gt;.</returns>
+        public async Task<Stream> DbSchemaDownloadAsync(String format)
+        {
+            return await DbSchemaDownloadAsync(format, null);
+        }
+
+        /// <summary>
+        /// Downloads into a stream the schema of the remote database.
         /// </summary>
         /// <param name="format">The format. "html" or "text". Defaults to "html" if null.</param>
         /// <param name="tableName">the table name, without dot separator. Defaults to all tables if null.</param>

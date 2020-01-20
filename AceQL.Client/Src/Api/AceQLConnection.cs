@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2018,  KawanSoft SAS
+ * Copyright (C) 2020,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@
 
 
 using AceQL.Client.Api.Http;
+using AceQL.Client.Api.Metadata;
 using AceQL.Client.Api.Util;
 using AceQL.Client.Src.Api.Util;
 using PCLStorage;
@@ -124,6 +125,15 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
+        /// Creates a RemoteDatabaseMetaData in order to query remote database metadata info.
+        /// </summary>
+        /// <returns>RemoteDatabaseMetaData.</returns>
+        public RemoteDatabaseMetaData GetRemoteDatabaseMetaData()
+        {
+            return new RemoteDatabaseMetaData(this);
+        }
+
+        /// <summary>
         /// Traces the specified string.
         /// </summary>
         /// <param name="s">The string to trace</param>
@@ -195,7 +205,6 @@ namespace AceQL.Client.Api
             AceQLTransaction aceQLTransaction = new AceQLTransaction(this);
             return aceQLTransaction;
         }
-
 
         internal void TestConnectionOpened()
         {

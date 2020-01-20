@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -10,16 +10,17 @@
         <projectUrl>https://github.com/kawansoft/AceQL.Client</projectUrl>
         <iconUrl>https://www.aceql.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>This version is designed to operate with AceQL HTTP v2.0+ on server  side. 
-		It now fully supports stored procedure calls on MS SQL Server (and also on MySQL, PostgreSQL and Oracle).
-		AceQL HTTP Server v2.1+ is required for stored procedure calls.
+        <description>AceQL allows C# and Xamarin developers to access remote SQL databases and/or SQL databases
+		in the cloud by simply including standard SQL calls in their code.
+		AceQL operates with AceQL HTTP on server side. See www.aceql.com for more info.
 		</description>
         <releaseNotes>
 		AceQL includes now meta data query function in order to display the remote database schema and/or 
 		populate C# classes that wrap the database info.
+		This version is designed to operate with AceQL HTTP v2.0+ on server  side. 
 		</releaseNotes>	
         <copyright>Copyright © 2020</copyright>
-        <tags>SQL over http remote jdbc cloud database</tags>
+        <tags>SQL over http remote jdbc cloud database Xamarin</tags>
         <dependencies>
             <dependency id="Newtonsoft.Json" version="10.0.2" />
             <dependency id="PCLStorage" version="1.0.2" />

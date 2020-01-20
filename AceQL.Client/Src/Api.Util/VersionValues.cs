@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2018,  KawanSoft SAS
+ * Copyright (C) 2020,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ namespace AceQL.Client.Api.Util
     internal class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
-        internal static readonly String VERSION = "v4.0";
-        internal static readonly String DATE = "15-Jan-2020";
+        internal static readonly String VERSION = "v4.0.1";
+        internal static readonly String DATE = "20-Jan-2020";
     }
 }

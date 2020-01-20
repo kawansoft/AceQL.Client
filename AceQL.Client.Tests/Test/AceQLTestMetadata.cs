@@ -113,14 +113,13 @@ namespace AceQL.Client.Tests
             Console.WriteLine("AceQL local folder: ");
             Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
-            RemoteDatabaseMetaData remoteDatabaseMetaData = new RemoteDatabaseMetaData(connection);
+            RemoteDatabaseMetaData remoteDatabaseMetaData = connection.GetRemoteDatabaseMetaData();
 
             string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string schemaFilePath = userPath + "\\remote_database_schema.html";
-            Console.WriteLine("schemaFilePath: " + schemaFilePath);
+            string schemaFilePath = userPath + "\\db_schema.out.html";
 
-            // Download Blob
-            using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync("html", null))
+            // Download Schema in HTML format:
+            using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync())
             {
                 using (var fileStream = File.Create(schemaFilePath))
                 {
@@ -129,34 +128,46 @@ namespace AceQL.Client.Tests
             }
 
             System.Diagnostics.Process.Start(schemaFilePath);
-
             Console.WriteLine("Creating schema done.");
 
             JdbcDatabaseMetaData jdbcDatabaseMetaData = await remoteDatabaseMetaData.GetJdbcDatabaseMetaDataAsync();
+            Console.WriteLine("Major Version: " + jdbcDatabaseMetaData.GetJDBCMajorVersion);
+            Console.WriteLine("Minor Version: " + jdbcDatabaseMetaData.GetJDBCMinorVersion);
+            Console.WriteLine("IsReadOnly   : " + jdbcDatabaseMetaData.IsReadOnly);
+
             Console.WriteLine("JdbcDatabaseMetaData: " + jdbcDatabaseMetaData.ToString().Substring(1, 200));
             Console.WriteLine();
 
+            Console.WriteLine("Get the table names:");
             List<String> tableNames = await remoteDatabaseMetaData.GetTableNamesAsync();
 
+            Console.WriteLine("Print the column details of each table:");
             foreach (String tableName in tableNames)
             {
-                Console.WriteLine("tableName: " + tableName);
+                Table table = await remoteDatabaseMetaData.GetTableAsync(tableName);
+
+                Console.WriteLine("Columns:");
+                foreach(Column column in table.Columns)
+                {
+                    Console.WriteLine(column);
+                }
             }
+
             Console.WriteLine();
 
             String name = "orderlog";
-            Table table = await remoteDatabaseMetaData.GetTableAsync(name);
+            Table tableOrderlog = await remoteDatabaseMetaData.GetTableAsync(name);
 
-            Console.WriteLine("table name: " + table.TableName);
+            Console.WriteLine("table name: " + tableOrderlog.TableName);
             Console.WriteLine("table keys: ");
-            List<PrimaryKey> primakeys = table.PrimaryKeys;
+            List<PrimaryKey> primakeys = tableOrderlog.PrimaryKeys;
             foreach (PrimaryKey primaryKey in primakeys)
             {
                 Console.WriteLine("==> primaryKey: " + primaryKey);
             }
             Console.WriteLine();
 
-            Console.WriteLine("Full table: " + table);
+            Console.WriteLine("Full table: " + tableOrderlog);
 
             Console.WriteLine();
             Console.WriteLine("Done.");

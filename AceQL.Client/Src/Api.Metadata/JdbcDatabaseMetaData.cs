@@ -1,7 +1,7 @@
 ﻿/*
  * This file is part of AceQL C# Client SDK.
  * AceQL C# Client SDK: Remote SQL access over HTTP with AceQL HTTP.                                 
- * Copyright (C) 2018,  KawanSoft SAS
+ * Copyright (C) 2020,  KawanSoft SAS
  * (http://www.kawansoft.com). All rights reserved.                                
  *                                                                               
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ namespace AceQL.Client.Api.Metadata
 {
     /// <summary>
     /// Class JdbcDatabaseMetaData. An instance contains main SQL meta info sent by the remote JDBC Driver.
+    /// The info matches the JDBC <a href="https://docs.oracle.com/javase/8/docs/api/java/sql/DatabaseMetaData.html">DatabaseMetaData</a> main values.
     /// </summary>
     public class JdbcDatabaseMetaData
     {

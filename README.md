@@ -1,10 +1,10 @@
 # AceQL HTTP 
 
-## C# Client SDK v4.0 - January 2020, 15
+## C# Client SDK v4.0.1 - January 2020, 20
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
-   * [Fundamentals](#fundamentals)
+ * [Fundamentals](#fundamentals)
       * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
       * [License](#license)
       * [AceQL Server side compatibility](#aceql-server-side-compatibility)
@@ -36,6 +36,10 @@
          * [BLOB creation](#blob-creation)
          * [BLOB reading](#blob-reading)
       * [Managing BLOB upload progress](#managing-blob-upload-progress)
+      * [Using the Metadata Query API](#using-the-metadata-query-api)
+         * [Downloading database schema into a file](#downloading-database-schema-into-a-file)
+         * [Accessing remote database main properties](#accessing-remote-database-main-properties)
+         * [Getting Details of Tables and Columns](#getting-details-of-tables-and-columns)
 
 # Fundamentals 
 
@@ -642,6 +646,77 @@ To activate the update mechanism:
   connection.SetProgressIndicator(progressIndicator);
 ```
 You then can read `ProgressIndicator.Percent` property in your watching thread.
+
+## Using the Metadata Query API 
+
+The metadata API allows:
+
+- downloading a remote database schema
+  in HTML or text format
+- to get a remote database main properties.
+- to get the list of tables, 
+- to get the details of each table. 
+
+It also allows wrapping remote tables, columns, indexes, etc. into
+easy to use provided Java classes: Table, Index, Column, etc.
+
+First step is to get an instance of `RemoteDatabaseMetaData`:
+
+```C#
+RemoteDatabaseMetaData remoteDatabaseMetaData = connection.GetRemoteDatabaseMetaData();
+```
+
+### Downloading database schema into a file
+
+Downloading a schema into a Java `File` is done through the method. See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/4.0/csharpdoc_sdk/):
+
+```C#
+string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+string schemaFilePath = userPath + "\\db_schema.out.html";
+
+// Download Schema in HTML format:
+using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync())
+{
+	using (var fileStream = File.Create(schemaFilePath))
+	{
+		stream.CopyTo(fileStream);
+	}
+}
+```
+
+See an example of the built HTML schema:  [db_schema.out.html](https://www.aceql.com/rest/soft/4.0/src/db_schema.out.html)
+
+### Accessing remote database main properties
+
+The `JdbcDatabaseMetaData` class wraps instance the main value retrieved by a remote server JDBC call to `java.sql.Connection.getMetaData`():
+
+```C#
+JdbcDatabaseMetaData jdbcDatabaseMetaData = await remoteDatabaseMetaData.GetJdbcDatabaseMetaDataAsync();
+Console.WriteLine("Major Version: " + jdbcDatabaseMetaData.GetJDBCMajorVersion);
+Console.WriteLine("Minor Version: " + jdbcDatabaseMetaData.GetJDBCMinorVersion);
+Console.WriteLine("IsReadOnly   : " + jdbcDatabaseMetaData.IsReadOnly);
+```
+
+### Getting Details of Tables and Columns
+
+See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/4.0/csharpdoc_sdk/):
+
+```C#
+Console.WriteLine("Get the table names:");
+List<String> tableNames = await remoteDatabaseMetaData.GetTableNamesAsync();
+
+Console.WriteLine("Print the column details of each table:");
+foreach (String tableName in tableNames)
+{
+	Table table = await remoteDatabaseMetaData.GetTableAsync(tableName);
+
+	Console.WriteLine("Columns:");
+	foreach(Column column in table.Columns)
+	{
+		Console.WriteLine(column);
+	}
+}
+```
 
 
 
