@@ -1,6 +1,6 @@
 
                  AceQL C# Client SDK
-                    Version 4.0.1
+                    Version 4.0.2
                     Release Notes
 
 
