@@ -678,9 +678,9 @@ string schemaFilePath = userPath + "\\db_schema.out.html";
 using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync())
 {
 	using (var fileStream = File.Create(schemaFilePath))
-	{
-		stream.CopyTo(fileStream);
-	}
+    {
+        stream.CopyTo(fileStream);
+    }
 }
 ```
 
