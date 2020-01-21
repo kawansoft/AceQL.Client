@@ -677,7 +677,7 @@ string schemaFilePath = userPath + "\\db_schema.out.html";
 // Download Schema in HTML format:
 using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync())
 {
-	using (var fileStream = File.Create(schemaFilePath))
+    using (var fileStream = File.Create(schemaFilePath))
     {
         stream.CopyTo(fileStream);
     }
@@ -708,13 +708,13 @@ List<String> tableNames = await remoteDatabaseMetaData.GetTableNamesAsync();
 Console.WriteLine("Print the column details of each table:");
 foreach (String tableName in tableNames)
 {
-	Table table = await remoteDatabaseMetaData.GetTableAsync(tableName);
+    Table table = await remoteDatabaseMetaData.GetTableAsync(tableName);
 
-	Console.WriteLine("Columns:");
-	foreach(Column column in table.Columns)
-	{
-		Console.WriteLine(column);
-	}
+    Console.WriteLine("Columns:");
+    foreach(Column column in table.Columns)
+    {
+        Console.WriteLine(column);
+    }
 }
 ```
 
