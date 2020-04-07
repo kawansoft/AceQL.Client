@@ -204,7 +204,7 @@ namespace AceQL.Client.Samples.Src
             // C# Example: connection to a remote database
 
             string server = "https://www.acme.com:9443/aceql";
-            string database = "kawansoft_example";
+            string database = "sampledb";
             string username = "MyUsername";
             string password = "MySecret";
 
@@ -230,7 +230,7 @@ namespace AceQL.Client.Samples.Src
         public static async Task<AceQLConnection> ConnectionBuilderAsyncWithCredential()
         {
             string server = "https://www.aceql.com:9443/aceql";
-            string database = "kawansoft_example";
+            string database = "sampledb";
 
             string connectionString = $"Server={server}; Database={database}";
             string username = "MyUsername";

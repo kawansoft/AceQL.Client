@@ -36,7 +36,6 @@ namespace AceQL.Client.Tests
         {
             try
             {
-
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
@@ -64,14 +63,18 @@ namespace AceQL.Client.Tests
             string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinuxNoSSL = "http://www.aceql.com:8081/aceql";
+            string serverUrlLinuxNoSSL = "http://www.runsafester.net:8081/aceql";
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
             string server = serverUrlLocalhost;
-            string database = "kawansoft_example";
-            string username = "username";
-            string password = "password";
+            string database = "sampledb";
+            string username = "user1";
+            string password = "password1";
+
+            //LDAP Tests
+            //username = "cn=read-only-admin,dc=example,dc=com";
+            //string password = "password";
 
             //customer_id integer NOT NULL,
             //customer_title character(4),
@@ -129,7 +132,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 300; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";

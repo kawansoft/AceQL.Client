@@ -152,7 +152,7 @@ namespace AceQL.Client.Samples.Src
         {
             // Port number is the port number used to start the Web Server:
             string server = "http://localhost:9090/aceql";
-            string database = "kawansoft_example";
+            string database = "sampledb";
 
             string username = "MyUsername";
             string password = "MySecret";
@@ -178,7 +178,7 @@ namespace AceQL.Client.Samples.Src
         {
             // Port number is the port number used to start the Web Server:
             string server = "http://localhost:9090/aceql";
-            string database = "kawansoft_example";
+            string database = "sampledb";
 
             string connectionString = $"Server={server}; Database={database}";
 

@@ -83,7 +83,7 @@ namespace AceQL.Client.Api.Http
         /// <summary>
         /// The pretty printing
         /// </summary>
-        bool prettyPrinting = false;
+        const bool prettyPrinting = true;
         /// <summary>
         /// The gzip result
         /// </summary>
@@ -293,24 +293,6 @@ namespace AceQL.Client.Api.Http
                 await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether [pretty printing] is on or off.
-        /// </summary>
-        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
-        internal bool PrettyPrinting
-        {
-            get
-            {
-                return prettyPrinting;
-            }
-
-            set
-            {
-                prettyPrinting = value;
-            }
-        }
-
 
 
         /// <summary>

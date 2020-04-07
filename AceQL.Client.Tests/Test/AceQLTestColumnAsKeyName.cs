@@ -68,7 +68,7 @@ namespace AceQL.Client.Tests
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
             string server = serverUrlLocalhost;
-            string database = "kawansoft_example";
+            string database = "sampledb";
             string username = "username";
             string password = "password";
 

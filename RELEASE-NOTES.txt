@@ -1,6 +1,6 @@
 
                  AceQL C# Client SDK
-                    Version 4.0.2
+                    Version 4.0.3
                     Release Notes
 
 
@@ -16,6 +16,15 @@ in the cloud by simply including standard C# SQL calls in their code, just like
 they would do for an SQL Server database. 
 
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
+
+AceQL C# Client SDK - Version 4.0.3 - 07-Apr-2020
+-------------------------------------------------
+
+What's New:
+- The AceQLConnection.PrettyPrinting property
+  method has been removed, as the server requires JSON 
+  pretty-printing to always be on in order to avoid hazardous 
+  line splitting. 
 
 
 AceQL C# Client SDK - Version 4.0.2 - 20-Jan-2020

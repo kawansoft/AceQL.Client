@@ -428,24 +428,6 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Gets a value indicating whether [pretty printing] is on or off. Defaults to false.
-        /// </summary>
-        /// <value><c>true</c> if [pretty printing]; otherwise, <c>false</c>.</value>
-        public bool PrettyPrinting
-        {
-            get
-            {
-                return aceQLHttpApi.PrettyPrinting;
-            }
-
-            set
-            {
-                aceQLHttpApi.PrettyPrinting = value;
-            }
-        }
-
-
-        /// <summary>
         /// Gets or sets a value indicating whether SQL result sets are returned compressed with the GZIP file format
         /// before download. Defaults to true.
         /// </summary>

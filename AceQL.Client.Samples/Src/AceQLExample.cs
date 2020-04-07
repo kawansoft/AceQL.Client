@@ -44,11 +44,11 @@ namespace AceQL.Client.Samples
         public const string serverUrlLinux = "https://www.aceql.com:9443/aceql";
         public const string serverUrlLinux2 = "http://www.aceql.com:9090/aceql";
 
-        public const string database_kawansoft_example = "kawansoft_example";
-        public const string database_kawansoft_example_2 = "kawansoft_example_2";
+        public const string database_sampledb = "sampledb";
+        public const string database_sampledb_2 = "sampledb_2";
 
         public static string server = serverUrlLocalhost;
-        public static string database = database_kawansoft_example;
+        public static string database = database_sampledb;
 
         private static bool CONSOLE_INPUT_DONE = false;
 
@@ -58,7 +58,7 @@ namespace AceQL.Client.Samples
             {
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\aceql_csharp_init.txt";
 
-                string databaseToUse = database_kawansoft_example;
+                string databaseToUse = database_sampledb;
                 if (File.Exists(path))
                 {
                     databaseToUse = File.ReadAllText(path);
@@ -418,10 +418,10 @@ namespace AceQL.Client.Samples
 
         private static int getIndexFromDatabase()
         {
-            if (database.Equals(database_kawansoft_example)) {
+            if (database.Equals(database_sampledb)) {
                 return 1;
             }
-            else if (database.Equals(database_kawansoft_example_2))
+            else if (database.Equals(database_sampledb_2))
             {
                 return 2;
             }
