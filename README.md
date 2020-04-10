@@ -45,11 +45,11 @@
 
 This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
 
-The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-4.0-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
+The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-5.0.1-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
 
 C# application developers can access remote SQL databases and/or SQL databases in the cloud by simply including standard C# SQL calls in their code, just like they would do for an SQL Server database. There is zero learning curve and usage is straight forward.
 
-The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-4.0-user-guide-server.md), whose content is sometimes referred to in this User Guide. 
+The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/README.md), whose content is sometimes referred to in this User Guide. 
 
 On the remote side, like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
 
@@ -187,7 +187,7 @@ Where:
 
 - The Server value is the AceQL Server servlet path and includes the port if necessary
 - The Username and Password are used for authentication by the remote AceQL Server
-- The Database value is the name of the remote database to use for the session. See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-3.1-user-guide-server.md) for more information.
+- The Database value is the name of the remote database to use for the session. See [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/README.md) for more information.
 
 ### Using NTLM
 
@@ -668,7 +668,7 @@ RemoteDatabaseMetaData remoteDatabaseMetaData = connection.GetRemoteDatabaseMeta
 
 ### Downloading database schema into a file
 
-Downloading a schema into a Java `File` is done through the method. See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/4.0/csharpdoc_sdk/):
+Downloading a schema into a Java `File` is done through the method. See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/5.0.1/csharpdoc_sdk/):
 
 ```C#
 string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -684,7 +684,7 @@ using (Stream stream = await remoteDatabaseMetaData.DbSchemaDownloadAsync())
 }
 ```
 
-See an example of the built HTML schema:  [db_schema.out.html](https://www.aceql.com/rest/soft/4.0/src/db_schema.out.html)
+See an example of the built HTML schema:  [db_schema.out.html](https://www.aceql.com/rest/soft/5.0.1/src/db_schema.out.html)
 
 ### Accessing remote database main properties
 
@@ -699,7 +699,7 @@ Console.WriteLine("IsReadOnly   : " + jdbcDatabaseMetaData.IsReadOnly);
 
 ### Getting Details of Tables and Columns
 
-See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/4.0/csharpdoc_sdk/):
+See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/5.0.1/csharpdoc_sdk/):
 
 ```C#
 Console.WriteLine("Get the table names:");
