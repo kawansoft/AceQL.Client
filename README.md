@@ -658,7 +658,7 @@ The metadata API allows:
 - to get the details of each table. 
 
 It also allows wrapping remote tables, columns, indexes, etc. into
-easy to use provided Java classes: Table, Index, Column, etc.
+easy to use provided C# classes: Table, Index, Column, etc.
 
 First step is to get an instance of `RemoteDatabaseMetaData`:
 
@@ -668,7 +668,7 @@ RemoteDatabaseMetaData remoteDatabaseMetaData = connection.GetRemoteDatabaseMeta
 
 ### Downloading database schema into a file
 
-Downloading a schema into a Java `File` is done through the method. See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/5.0.1/csharpdoc_sdk/):
+Downloading a schema into a  `File` is done through the method. See the `RemoteDatabaseMetaData` [Documentation](https://www.aceql.com/rest/soft/5.0.1/csharpdoc_sdk/):
 
 ```C#
 string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
