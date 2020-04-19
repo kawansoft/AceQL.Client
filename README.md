@@ -652,8 +652,8 @@ You then can read `ProgressIndicator.Percent` property in your watching thread.
 The metadata API allows:
 
 - downloading a remote database schema
-  in HTML or text format
-- to get a remote database main properties.
+  in HTML or text format,
+- to get a remote database main properties,
 - to get the list of tables, 
 - to get the details of each table. 
 
