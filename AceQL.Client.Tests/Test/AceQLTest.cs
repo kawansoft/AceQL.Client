@@ -72,9 +72,16 @@ namespace AceQL.Client.Tests
             string username = "user1";
             string password = "password1";
 
+            bool useLdapAuth = true;
             //LDAP Tests
-            //username = "cn=read-only-admin,dc=example,dc=com";
-            //string password = "password";
+            if (useLdapAuth)
+            {
+                Console.WriteLine("WARNING: using LDAP!");
+                username = "cn=read-only-admin,dc=example,dc=com";
+                //username = "CN=L. Eagle,O=Sue\\2C Grabbit and Runn,C=GB";
+                password = "password";
+            }
+
 
             //customer_id integer NOT NULL,
             //customer_title character(4),
