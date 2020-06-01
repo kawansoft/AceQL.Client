@@ -654,7 +654,7 @@ Some working environments (Intranet, etc.) require that the client user authenti
 
 In this case, you may use directly the native HTTP [login](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-5.0.2-user-guide-api.md#login) API to authenticate the users and retrieve the `session_id` returned by the API.
 
-The `session_id` value that will set directly into the `connectionString`  or passed to an `AceQLCredential`:
+The `session_id` value will be set directly into the `connectionString`  or passed to an `AceQLCredential`:
 
 ```C#
  // Port number is the port number used to start the Web Server:
