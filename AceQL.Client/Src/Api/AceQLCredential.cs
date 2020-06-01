@@ -21,13 +21,14 @@
 namespace AceQL.Client.Api
 {
     /// <summary>
-    /// <see cref="AceQLCredential"/> provides a more secure way than using a connection string to specify the username or password for a login attempt.
+    /// <see cref="AceQLCredential"/> provides a more secure way than using a connection string to specify the username, password or Session ID for a login attempt.
     /// <para/>Note that this version does not encrypt the password. This could and should be done in a future version.
     /// </summary>
     public sealed  class AceQLCredential
     {
         private string username;
         private char[] password;
+        private string sessionId;
 
         /// <summary>
         /// Creates an object of type <see cref="AceQLCredential"/>.
@@ -42,6 +43,18 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AceQLCredential"/> class. This constructor allows authentication without a password using a 
+        /// session_id value returned by AceQL login API on server side.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="sessionId">The session_id value returned by AceQL login API on server side.</param>
+        public AceQLCredential(string username, string sessionId)
+        {
+            this.username = username ?? throw new ArgumentNullException("username is null!");
+            this.sessionId = sessionId ?? throw new ArgumentNullException("sessionId is null!");
+        }
+
+        /// <summary>
         /// Returns the username component of the <see cref="AceQLCredential" /> object.
         /// </summary>
         /// <value>The username.</value>
@@ -52,5 +65,11 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <value>The password.</value>
         public char[] Password { get => password; }
+
+        /// <summary>
+        /// Gets the Session ID created by AceQL on server side.
+        /// </summary>
+        /// <value>The Session ID created by AceQL on server side.</value>
+        public string SessionId { get => sessionId;}
     }
 }

@@ -50,12 +50,15 @@ namespace AceQL.Client.Api.Http
         /// The server URL
         /// </summary>
         private String server = null;
+
         private string username;
+        private string sessionId = null;
 
         /// <summary>
         /// The database
         /// </summary>
         private String database = null;
+        private char[] password = null;
 
         /// <summary>
         /// The Proxy Uri, if we don't want 
@@ -102,7 +105,7 @@ namespace AceQL.Client.Api.Http
         private string connectionString;
 
         private AceQLProgressIndicator progressIndicator;
-        private AceQLCredential credential;
+        private AceQLCredential credential = null;
         private CancellationToken cancellationToken;
         private bool useCancellationToken = false;
 
@@ -161,14 +164,20 @@ namespace AceQL.Client.Api.Http
                 await TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
                 DecodeConnectionString();
                 await TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
-
-                String username = null;
-                String password = null;
-
+                
                 if (credential != null)
                 {
                     username = credential.Username;
-                    password = new String(credential.Password);
+
+                    if (credential.Password != null)
+                    {
+                        password = credential.Password;
+                    }
+
+                    if (credential.SessionId != null)
+                    {
+                        sessionId = credential.SessionId;
+                    }
                 }
 
                 if (server == null)
@@ -176,10 +185,11 @@ namespace AceQL.Client.Api.Http
                     throw new ArgumentNullException("Server keyword not found in connection string.");
                 }
 
-                if (password == null)
+                if (password == null && sessionId == null)
                 {
-                    throw new ArgumentNullException("Password keyword not found in connection string or AceQLCredential not set");
+                    throw new ArgumentNullException("Password keyword or SessionId keyword not found in connection string or AceQLCredential not set");
                 }
+
                 if (database == null)
                 {
                     throw new ArgumentNullException("Database keyword not found in connection string.");
@@ -189,6 +199,11 @@ namespace AceQL.Client.Api.Http
 
                 UserLoginStore userLoginStore = new UserLoginStore(server, username,
                     database);
+
+                if (sessionId != null)
+                {
+                    userLoginStore.SetSessionId(sessionId);
+                }
 
                 if (userLoginStore.IsAlreadyLogged())
                 {
@@ -224,7 +239,7 @@ namespace AceQL.Client.Api.Http
 
                     Dictionary<string, string> parametersMap = new Dictionary<string, string>
                     {
-                        { "password", password },
+                        { "password", new String(password) },
                         { "client_version", VersionValues.VERSION}
                     };
 
@@ -364,6 +379,8 @@ namespace AceQL.Client.Api.Http
             String theDatabase = null;
             String theUsername = null;
             char[] thePassword = null;
+            String theSessionid = null;
+
             String theProxyUri = null;
             ICredentials theProxyCredentials = null;
 
@@ -388,15 +405,28 @@ namespace AceQL.Client.Api.Http
                     continue;
                 }
 
-                string[] theLines = line.Split('=');
-
-                if (theLines.Length != 2)
+                if (! line.Contains("="))
                 {
                     throw new ArgumentException("connectionString element token does not contain a = separator: " + line);
                 }
 
-                String property = theLines[0].Trim();
-                String value = theLines[1].Trim();
+                String property = line.Trim().Substring(0, line.Trim().IndexOf("="));
+                String value = line.Trim().Substring(line.Trim().IndexOf("=") + 1);
+
+                // Security check
+                if (property == null)
+                {
+                    throw new ArgumentException("Can not find left of = in connectionString element token. Please correct connection string: " + line);
+                }
+                if (value == null)
+                {
+                    throw new ArgumentException("Can not find right of = in connectionString element token. Please correct connection string: " + line);
+                }
+
+                property = property.Trim();
+                value = value.Trim();
+
+                ConsoleEmul.WriteLine("property: " + property + " (value: " + value + ")");
 
                 if (property.ToLower().Equals("server"))
                 {
@@ -454,6 +484,10 @@ namespace AceQL.Client.Api.Http
                         proxyPassword = null;
                     }
                 }
+                else if (property.ToLower().Equals("sessionid"))
+                {
+                    theSessionid = value;
+                }
                 else if (property.ToLower().Equals("timeout"))
                 {
                     theTimeout = Int32.Parse(value);
@@ -463,13 +497,6 @@ namespace AceQL.Client.Api.Http
             Debug("connectionString   : " + connectionString);
             Debug("theProxyUri        : " + theProxyUri);
             Debug("theProxyCredentials: " + proxyUsername + " / " + proxyPassword);
-
-            // username & password maybe set by Credential
-            if (credential != null)
-            {
-                theUsername = credential.Username;
-                thePassword = credential.Password;
-            }
 
             if (isNTLM)
             {
@@ -483,7 +510,7 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
-            Init(theServer, theDatabase, theUsername, thePassword, theProxyUri, theProxyCredentials, theTimeout);
+            Init(theServer, theDatabase, theUsername, thePassword, theProxyUri, theProxyCredentials, theSessionid, theTimeout);
 
         }
 
@@ -511,6 +538,7 @@ namespace AceQL.Client.Api.Http
         /// <param name="password">The password.</param>
         /// <param name="proxyUri">The Proxy Uri.</param>
         /// <param name="proxyCredentials">The credentials.</param>
+        /// <param name="sessionid">The sessionId.</param>
         /// <param name="timeout">The timeout.</param>
         /// <exception cref="System.ArgumentNullException">
         /// server is null!
@@ -522,16 +550,13 @@ namespace AceQL.Client.Api.Http
         /// database is null!
         /// </exception>
 
-        private void Init(string server, string database, string username, char[] password, string proxyUri, ICredentials proxyCredentials, int timeout)
+        private void Init(string server, string database, string username, char[] password, string proxyUri, ICredentials proxyCredentials, string sessionid, int timeout)
         {
             this.server = server;
             this.database = database;
-
-            if (username != null && password != null && credential == null)
-            {
-                this.credential = new AceQLCredential(username, password);
-            }
-
+            this.username = username;
+            this.password = password;
+            this.sessionId = sessionid;
             this.proxyUri = proxyUri;
             this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;

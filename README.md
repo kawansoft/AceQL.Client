@@ -1,10 +1,10 @@
 # AceQL HTTP 
 
-## C# Client SDK v4.0.3 - April 2020, 7
+## C# Client SDK v4.1 - June 2020, 1
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
- * [Fundamentals](#fundamentals)
+   * [Fundamentals](#fundamentals)
       * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
       * [License](#license)
       * [AceQL Server side compatibility](#aceql-server-side-compatibility)
@@ -35,7 +35,8 @@
       * [BLOB management](#blob-management)
          * [BLOB creation](#blob-creation)
          * [BLOB reading](#blob-reading)
-      * [Managing BLOB upload progress](#managing-blob-upload-progress)
+         * [Managing BLOB upload progress](#managing-blob-upload-progress)
+      * [Using outer Authentication without a password  and with an AceQL Session ID](#using-outer-authentication-without-a-password--and-with-an-aceql-session-id)
       * [Using the Metadata Query API](#using-the-metadata-query-api)
          * [Downloading database schema into a file](#downloading-database-schema-into-a-file)
          * [Accessing remote database main properties](#accessing-remote-database-main-properties)
@@ -72,7 +73,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-C# Client SDK v4.0.3 version is compatible with AceQL HTTP v2.0+ server version. AceQL HTTP v4.0+ is required for metadata calls.
+C# Client SDK v4.1 version requires AceQL HTTP v5.0.2+ server version. 
 
 ## AceQL C# Client SDK installation
 
@@ -625,7 +626,7 @@ catch (Exception e)
     throw e;
 }
 ```
-## Managing BLOB upload progress
+### Managing BLOB upload progress
 
 You may want to give your users a progress bar when uploading Blob(s).
 
@@ -646,6 +647,36 @@ To activate the update mechanism:
   connection.SetProgressIndicator(progressIndicator);
 ```
 You then can read `ProgressIndicator.Percent` property in your watching thread.
+
+## Using outer Authentication without a password  and with an AceQL Session ID
+
+Some working environments (Intranet, etc.) require that the client user authenticates himself without a password. Thus, it is not possible for this users to authenticate though the AceQL client SDK.
+
+In this case, you may use directly the native HTTP [login](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-5.0.2-user-guide-api.md#login) API to authenticate the users and retrieve the `session_id` returned by the API.
+
+The `session_id` value that will set directly into the `connectionString`  or passed to an `AceQLCredential`:
+
+```C#
+ // Port number is the port number used to start the Web Server:
+string server = "https://www.acme.com:9443/aceql";
+string database = "kawansoft_example";
+
+string connectionString = $"Server={server}; Database={database}";
+
+string username = "username";
+string sessionId = GetSessionIdFromLoginAPI();
+
+AceQLConnection connection = new AceQLConnection(connectionString)
+{
+    // Authentication will be done without password and using the sessionId.
+    Credential = new AceQLCredential(username, sessionId);
+};
+
+// Opens the connection with the remote database
+await connection.OpenAsync();`
+```
+
+
 
 ## Using the Metadata Query API 
 

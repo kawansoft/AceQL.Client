@@ -34,6 +34,7 @@ namespace AceQL.Client.Tests
 
         public static void TheMain(string[] args)
         {
+
             try
             {
                 DoIt(args).Wait();
@@ -82,7 +83,6 @@ namespace AceQL.Client.Tests
                 password = "password";
             }
 
-
             //customer_id integer NOT NULL,
             //customer_title character(4),
             //fname character varying(32),
@@ -93,17 +93,37 @@ namespace AceQL.Client.Tests
             //phone character varying(32),
 
             string connectionString = $"Server={server}; Database={database}; ";
-            //connectionString += $"Username={username}; Password={password}";
 
-            AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
+            Boolean doItWithCredential = false;
 
-            // Make sure connection is always closed to close and release server connection into the pool
-            using (AceQLConnection connection = new AceQLConnection(connectionString))
+            if (!doItWithCredential)
             {
-                connection.Credential = credential;
-                await ExecuteExample(connection).ConfigureAwait(false);
-                await connection.CloseAsync();
+                connectionString += $"Username={username}; Password={password}";
+
+                Console.WriteLine("Using connectionString with Username & Password: " + connectionString);
+
+                // Make sure connection is always closed to close and release server connection into the pool
+                using (AceQLConnection connection = new AceQLConnection(connectionString))
+                {
+                    await ExecuteExample(connection).ConfigureAwait(false);
+                    await connection.CloseAsync();
+                }
             }
+            else
+            {
+
+                AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
+                Console.WriteLine("Using AceQLCredential : " + credential);
+
+                // Make sure connection is always closed to close and release server connection into the pool
+                using (AceQLConnection connection = new AceQLConnection(connectionString))
+                {
+                    connection.Credential = credential;
+                    await ExecuteExample(connection).ConfigureAwait(false);
+                    await connection.CloseAsync();
+                }
+            }
+
 
         }
 
@@ -111,7 +131,7 @@ namespace AceQL.Client.Tests
         /// Executes our example using an <see cref="AceQLConnection"/> 
         /// </summary>
         /// <param name="connection"></param>
-        private static async Task ExecuteExample(AceQLConnection connection)
+        public static async Task ExecuteExample(AceQLConnection connection)
         {
             string IN_DIRECTORY = "c:\\test\\";
             string OUT_DIRECTORY = "c:\\test\\out\\";
