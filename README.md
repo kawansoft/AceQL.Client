@@ -5,6 +5,7 @@
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
    * [Fundamentals](#fundamentals)
+      * [Contributors](#contributors)
       * [Technical operating environment – Portable Class Library](#technical-operating-environment--portable-class-library)
       * [License](#license)
       * [AceQL Server side compatibility](#aceql-server-side-compatibility)
@@ -36,7 +37,7 @@
          * [BLOB creation](#blob-creation)
          * [BLOB reading](#blob-reading)
          * [Managing BLOB upload progress](#managing-blob-upload-progress)
-      * [Advanced Usage](#advanced-usage)
+      * [Advanced Features](#advanced-features)
          * [Using outer authentication without a password  and with an AceQL Session ID](#using-outer-authentication-without-a-password--and-with-an-aceql-session-id)
          * [Enable default system authentication](#enable-default-system-authentication)
       * [Using the Metadata Query API](#using-the-metadata-query-api)
@@ -56,6 +57,10 @@ C# application developers can access remote SQL databases and/or SQL databases i
 The AceQL Server operation is described in [AceQL HTTP Server Installation and Configuration Guide](https://github.com/kawansoft/aceql-http/blob/master/README.md), whose content is sometimes referred to in this User Guide. 
 
 On the remote side, like the AceQL Server access to the SQL database using Java JDBC, we will sometimes use the JDBC terminology (ResultSet, etc.) in this document. Nevertheless, knowledge of Java or JDBC is *not* a requirement.
+
+## Contributors
+
+Thanks to Gilles Echégut for the great input on the development and the documentation of [Advanced Features](#advanced-features).
 
 ## Technical operating environment – Portable Class Library
 
@@ -653,7 +658,7 @@ You then can read `ProgressIndicator.Percent` property in your watching thread.
 
 
 
-## Advanced Usage
+## Advanced Features
 
 ### Using outer authentication without a password  and with an AceQL Session ID
 
