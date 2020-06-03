@@ -1,6 +1,6 @@
 # AceQL HTTP 
 
-## C# Client SDK v4.1 - June 2020, 1
+## C# Client SDK v4.2 - June 2020, 3
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -36,11 +36,14 @@
          * [BLOB creation](#blob-creation)
          * [BLOB reading](#blob-reading)
          * [Managing BLOB upload progress](#managing-blob-upload-progress)
-      * [Using outer Authentication without a password  and with an AceQL Session ID](#using-outer-authentication-without-a-password--and-with-an-aceql-session-id)
+      * [Advanced Usage](#advanced-usage)
+         * [Using outer authentication without a password  and with an AceQL Session ID](#using-outer-authentication-without-a-password--and-with-an-aceql-session-id)
+         * [Enable default system authentication](#enable-default-system-authentication)
       * [Using the Metadata Query API](#using-the-metadata-query-api)
          * [Downloading database schema into a file](#downloading-database-schema-into-a-file)
          * [Accessing remote database main properties](#accessing-remote-database-main-properties)
          * [Getting Details of Tables and Columns](#getting-details-of-tables-and-columns)
+
 
 # Fundamentals 
 
@@ -73,7 +76,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-C# Client SDK v4.1 version requires AceQL HTTP v5.0.2+ server version. 
+C# Client SDK v4.2 version requires AceQL HTTP v5.0.2+ server version. 
 
 ## AceQL C# Client SDK installation
 
@@ -648,7 +651,11 @@ To activate the update mechanism:
 ```
 You then can read `ProgressIndicator.Percent` property in your watching thread.
 
-## Using outer Authentication without a password  and with an AceQL Session ID
+
+
+## Advanced Usage
+
+### Using outer authentication without a password  and with an AceQL Session ID
 
 Some working environments (Intranet, etc.) require that the client user authenticates himself without a password. Thus, it is not possible for this users to authenticate though the AceQL client SDK.
 
@@ -674,6 +681,16 @@ AceQLConnection connection = new AceQLConnection(connectionString)
 
 // Opens the connection with the remote database
 await connection.OpenAsync();`
+```
+
+### Enable default system authentication
+
+The boolean `EnableDefaultSystemAuthentication` may be set in the connection string in order to enable default system authentication. 
+
+This is useful for configurations where a third party system (for instance IIS) is placed between the client and the AceQL Server and checks natively the authentication (for instance with Active Directory):
+
+```C#
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; EnableDefaultSystemAuthentication=True"
 ```
 
 

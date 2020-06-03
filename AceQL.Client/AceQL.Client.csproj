@@ -39,7 +39,9 @@
   <ItemGroup>
     <Compile Include="Src\Api.File\PortableFile.cs" />
     <Compile Include="Src\Api.Http\AceQLHttpApi.cs" />
+    <Compile Include="Src\Api.Http\ConnectionStringDecoder.cs" />
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
+    <Compile Include="Src\Api.Http\HttpClientHandlerBuilder.cs" />
     <Compile Include="Src\Api.Http\Proxy.cs" />
     <Compile Include="Src\Api.Metadata.Dto\JdbcDatabaseMetaDataDto.cs" />
     <Compile Include="Src\Api.Metadata.Dto\TableDto.cs" />

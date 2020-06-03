@@ -20,6 +20,7 @@
 
 using AceQL.Client.Api.File;
 using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api.Http;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -44,12 +45,13 @@ namespace AceQL.Client.Api.Http
         private long tempLen = 0;
 
         /// <summary>
-        /// Uploads a file using a blob reference
+        /// Uploads a file using a blob reference.
         /// </summary>
         /// <param name="url"></param>
         /// <param name="proxyUri"></param>
         /// <param name="credentials"></param>
         /// <param name="timeout"></param>
+        /// <param name="enableDefaultSystemAuthentication"></param>
         /// <param name="blobId"></param>
         /// <param name="stream"></param>
         /// <param name="totalLength"></param> 
@@ -58,9 +60,9 @@ namespace AceQL.Client.Api.Http
         /// <param name="useCancellationToken"></param> 
         /// <returns></returns>
         internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
-            int timeout, String blobId, Stream stream, long totalLength, AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
+            int timeout, bool enableDefaultSystemAuthentication, String blobId, Stream stream, long totalLength, AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
         {
-            HttpClientHandler handler = AceQLHttpApi.BuildHttpClientHandler(proxyUri, credentials);
+            HttpClientHandler handler = HttpClientHandlerBuilder.Build(proxyUri, credentials, enableDefaultSystemAuthentication);
 
             ProgressMessageHandler processMessageHander = new ProgressMessageHandler(handler);
             HttpClient httpClient = new HttpClient(processMessageHander);

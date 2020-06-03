@@ -22,6 +22,7 @@ using AceQL.Client.Api.File;
 using AceQL.Client.Api.Metadata;
 using AceQL.Client.Api.Metadata.Dto;
 using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api.Http;
 using AceQL.Client.Src.Api.Util;
 using Newtonsoft.Json;
 using PCLStorage;
@@ -41,8 +42,6 @@ namespace AceQL.Client.Api.Http
     /// </summary>
     internal class AceQLHttpApi
     {
-        private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
-        private const string ESCAPED_SEMICOLON = "\\;";
 
         internal static bool DEBUG = false;
 
@@ -74,6 +73,7 @@ namespace AceQL.Client.Api.Http
         /// The timeout in milliseconds
         /// </summary>
         private int timeout = 0;
+        private bool enableDefaultSystemAuthentication = false;
 
         /// <summary>
         /// The HTTP status code
@@ -138,7 +138,6 @@ namespace AceQL.Client.Api.Http
             this.connectionString = connectionString;
         }
 
-
         internal AceQLHttpApi(string connectionString, AceQLCredential credential) : this(connectionString)
         {
             if (connectionString == null)
@@ -162,7 +161,19 @@ namespace AceQL.Client.Api.Http
             try
             {
                 await TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
-                DecodeConnectionString();
+                //DecodeConnectionString();
+                ConnectionStringDecoder connectionStringDecoder = new ConnectionStringDecoder();
+                connectionStringDecoder.Decode(connectionString);
+                this.server = connectionStringDecoder.Server;
+                this.database = connectionStringDecoder.Database;
+                this.username = connectionStringDecoder.Username;
+                this.password = connectionStringDecoder.Password;
+                this.sessionId = connectionStringDecoder.SessionId;
+                this.proxyUri = connectionStringDecoder.ProxyUri;
+                this.proxyCredentials = connectionStringDecoder.ProxyCredentials;
+                this.timeout = connectionStringDecoder.Timeout;
+                this.enableDefaultSystemAuthentication = connectionStringDecoder.EnableDefaultSystemAuthentication;
+
                 await TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
                 
                 if (credential != null)
@@ -362,158 +373,6 @@ namespace AceQL.Client.Api.Http
         public bool UseCancellationToken { get => useCancellationToken; }
 
 
-        /// <summary>
-        /// Decode connection string and load elements in memory.
-        /// </summary>
-        private void DecodeConnectionString()
-        {
-            if (connectionString == null)
-            {
-                throw new ArgumentNullException("connectionString has not been set and is null!");
-            }
-
-            // Replace escaped "\;"
-            connectionString = connectionString.Replace(ESCAPED_SEMICOLON, ESCAPED_SEMICOLON_WORD);
-
-            String theServer = null;
-            String theDatabase = null;
-            String theUsername = null;
-            char[] thePassword = null;
-            String theSessionid = null;
-
-            String theProxyUri = null;
-            ICredentials theProxyCredentials = null;
-
-            bool isNTLM = false;
-            String proxyUsername = null;
-            String proxyPassword = null;
-
-            int theTimeout = 0;
-
-            string[] lines = connectionString.Split(';');
-
-            if (lines.Length < 2)
-            {
-                throw new ArgumentException("connectionString does not contain a ; separator: " + connectionString);
-            }
-
-            foreach (string line in lines)
-            {
-                // If some empty ;
-                if (line.Trim().Length <= 2)
-                {
-                    continue;
-                }
-
-                if (! line.Contains("="))
-                {
-                    throw new ArgumentException("connectionString element token does not contain a = separator: " + line);
-                }
-
-                String property = line.Trim().Substring(0, line.Trim().IndexOf("="));
-                String value = line.Trim().Substring(line.Trim().IndexOf("=") + 1);
-
-                // Security check
-                if (property == null)
-                {
-                    throw new ArgumentException("Can not find left of = in connectionString element token. Please correct connection string: " + line);
-                }
-                if (value == null)
-                {
-                    throw new ArgumentException("Can not find right of = in connectionString element token. Please correct connection string: " + line);
-                }
-
-                property = property.Trim();
-                value = value.Trim();
-
-                ConsoleEmul.WriteLine("property: " + property + " (value: " + value + ")");
-
-                if (property.ToLower().Equals("server"))
-                {
-                    theServer = value;
-                }
-                else if (property.ToLower().Equals("database"))
-                {
-                    theDatabase = value;
-                }
-                else if (property.ToLower().Equals("username"))
-                {
-                    value = value.Replace("\\semicolon", ";");
-                    theUsername = value;
-                }
-                else if (property.ToLower().Equals("password"))
-                {
-                    value = value.Replace("\\semicolon", ";");
-                    thePassword = value.ToCharArray();
-                }
-                else if (property.ToLower().Equals("ntlm"))
-                {
-                    isNTLM = Boolean.Parse(value);
-                }
-                else if (property.ToLower().Equals("proxyuri"))
-                {
-
-                    theProxyUri = value;
-                    // Set to null a "null" string
-                    if (theProxyUri.ToLower().Equals("null") || theProxyUri.Length == 0)
-                    {
-                        theProxyUri = null;
-                    }
-                    ConsoleEmul.WriteLine("theProxyUri:" + theProxyUri + ":");
-                }
-                else if (property.ToLower().Equals("proxyusername"))
-                {
-                    value = value.Replace(ESCAPED_SEMICOLON_WORD, ";");
-                    proxyUsername = value;
-
-                    // Set to null a "null" string
-                    if (proxyUsername.ToLower().Equals("null") || proxyUsername.Length == 0)
-                    {
-                        proxyUsername = null;
-                    }
-
-                }
-                else if (property.ToLower().Equals("proxypassword"))
-                {
-                    value = value.Replace("\\semicolon", ";");
-                    proxyPassword = value;
-
-                    // Set to null a "null" string
-                    if (proxyPassword.ToLower().Equals("null") || proxyPassword.Length == 0)
-                    {
-                        proxyPassword = null;
-                    }
-                }
-                else if (property.ToLower().Equals("sessionid"))
-                {
-                    theSessionid = value;
-                }
-                else if (property.ToLower().Equals("timeout"))
-                {
-                    theTimeout = Int32.Parse(value);
-                }
-            }
-
-            Debug("connectionString   : " + connectionString);
-            Debug("theProxyUri        : " + theProxyUri);
-            Debug("theProxyCredentials: " + proxyUsername + " / " + proxyPassword);
-
-            if (isNTLM)
-            {
-                theProxyCredentials = CredentialCache.DefaultCredentials;
-            }
-            else
-            {
-                if (proxyUsername != null && proxyPassword != null)
-                {
-                    theProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
-                }
-            }
-
-            Init(theServer, theDatabase, theUsername, thePassword, theProxyUri, theProxyCredentials, theSessionid, theTimeout);
-
-        }
-
         internal string GetDatabase()
         {
             return database;
@@ -530,107 +389,13 @@ namespace AceQL.Client.Api.Http
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
-        /// </summary>
-        /// <param name="server">The server URL.</param>
-        /// <param name="database">The database.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="proxyUri">The Proxy Uri.</param>
-        /// <param name="proxyCredentials">The credentials.</param>
-        /// <param name="sessionid">The sessionId.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// server is null!
-        /// or
-        /// username is null!
-        /// or
-        /// password is null!
-        /// or
-        /// database is null!
-        /// </exception>
-
-        private void Init(string server, string database, string username, char[] password, string proxyUri, ICredentials proxyCredentials, string sessionid, int timeout)
-        {
-            this.server = server;
-            this.database = database;
-            this.username = username;
-            this.password = password;
-            this.sessionId = sessionid;
-            this.proxyUri = proxyUri;
-            this.proxyCredentials = proxyCredentials;
-            this.timeout = timeout;
-        }
-
-
-        /// <summary>
-        /// Build an HttpClient instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
-        /// </summary>
-        /// <param name="proxyUri"></param>
-        /// <param name="credentials">The credentials to use for an authenticated proxy. null if none.</param>
-        /// <returns>The HtpClientHandler.</returns>
-        internal static HttpClientHandler BuildHttpClientHandler(string proxyUri, ICredentials credentials)
-        {
-            Proxy proxy = null;
-            // Used to test if have Proxy defined in IE
-            String proxyUriToUse = null;
-
-            // Test if used the default Web Proxy or the one passed in connection string:
-            if (proxyUri == null)
-            {
-                proxyUriToUse = System.Net.WebRequest.DefaultWebProxy.GetProxy(new Uri("http://www.google.com")).ToString();
-            }
-            else
-            {
-                proxy = new Proxy(proxyUri);
-                proxyUriToUse = proxy.GetProxy(new Uri("http://www.google.com")).ToString();
-            }
-
-            Debug("uriProxy: " + proxyUriToUse);
-
-            if (credentials != null && credentials.GetType() == typeof(NetworkCredential))
-            {
-                Debug("credentials: " + ((NetworkCredential)credentials).UserName + "/" + ((NetworkCredential)credentials).Password);
-            }
-
-            if (proxyUriToUse.Contains("http://www.google.com"))
-            {
-                Debug("System.Net.WebRequest.DefaultWebProxy is default");
-                HttpClientHandler handler = new HttpClientHandler();
-                return handler;
-            }
-            else
-            {
-                HttpClientHandler httpClientHandler = new HttpClientHandler()
-                {
-                    UseProxy = true,
-                    UseDefaultCredentials = false
-                };
-
-                if (proxy == null)
-                {
-                    httpClientHandler.Proxy = System.Net.WebRequest.DefaultWebProxy;
-                }
-                else
-                {
-                    httpClientHandler.Proxy = proxy;
-                }
-
-                httpClientHandler.Proxy.Credentials = credentials;
-                httpClientHandler.PreAuthenticate = true;
-                return httpClientHandler;
-            }
-
-        }
-
-        /// <summary>
         /// Calls the with get return stream.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Stream.</returns>
         private async Task<Stream> CallWithGetReturnStreamAsync(String url)
         {
-            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
+            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
 
             if (timeout != 0)
             {
@@ -657,37 +422,6 @@ namespace AceQL.Client.Api.Http
 
         }
 
-        /*
-        /// <summary>
-        /// Executes a POST with parameters.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="parameters">The request parameters.</param>
-        /// <returns>Stream.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// action is null!
-        /// or
-        /// postParameters is null!
-        /// </exception>
-        private async Task<Stream> CallWithPostAsync(String action, Dictionary<string, string> parameters)
-        {
-
-            if (action == null)
-            {
-                throw new ArgumentNullException("action is null!");
-            }
-
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("postParameters is null!");
-            }
-
-            Uri urlWithaction = new Uri(url + action);
-
-            return await callWithPostAsync(urlWithaction, parameters);
-
-        }
-        */
 
         /// <summary>
         /// Executes a POST with parameters and returns a Stream
@@ -713,7 +447,7 @@ namespace AceQL.Client.Api.Http
                 throw new ArgumentNullException("postParameters is null!");
             }
 
-            HttpClient httpClient = new HttpClient(BuildHttpClientHandler(proxyUri, proxyCredentials));
+            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
 
             if (timeout != 0)
             {
@@ -1089,7 +823,7 @@ namespace AceQL.Client.Api.Http
             FormUploadStream formUploadStream = new FormUploadStream();
             HttpResponseMessage response = null;
 
-            response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, blobId, stream,
+            response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication,  blobId, stream,
                 totalLength, progressIndicator, cancellationToken, useCancellationToken).ConfigureAwait(false);
 
             this.httpStatusCode = response.StatusCode;

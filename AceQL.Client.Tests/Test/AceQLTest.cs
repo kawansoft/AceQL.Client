@@ -98,7 +98,7 @@ namespace AceQL.Client.Tests
 
             if (!doItWithCredential)
             {
-                connectionString += $"Username={username}; Password={password}";
+                connectionString += $"Username={username}; Password={password}; EnableDefaultSystemAuthentication=True";
 
                 Console.WriteLine("Using connectionString with Username & Password: " + connectionString);
 
