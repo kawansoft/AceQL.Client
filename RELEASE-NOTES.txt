@@ -1,7 +1,7 @@
 
                  AceQL C# Client SDK
-                    Version 4.2
-                   Release Notes
+                    Version 4.2.1
+                    Release Notes
 
 
 Introduction
@@ -16,6 +16,23 @@ in the cloud by simply including standard C# SQL calls in their code, just like
 they would do for an SQL Server database. 
 
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
+
+
+AceQL C# Client SDK - Version 4.2.1 - 06-Jun-2020
+-------------------------------------------------
+ 
+What's New:
+- Parameter names checking has been enhanced.
+- Missing parameter values are now more cleanly detected.
+- Parameter errors have now cleaner messages.
+- Most parameter checks are done locally, without submitting the requests 
+  to the remote server.
+
+Bugs fixed:
+- Using a parameter whose name was a substring of the name of another parameter
+  would raise an Exception. 
+  Example: insert into my_table values (@NAME, @NAMESPACE)
+  This has been fixed. 
 
 
 AceQL C# Client SDK - Version 4.2 - 03-Jun-2020
