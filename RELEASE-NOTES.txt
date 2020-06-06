@@ -1,7 +1,7 @@
 
                  AceQL C# Client SDK
-                    Version 4.1
-                   Release Notes
+                    Version 4.2.1
+                    Release Notes
 
 
 Introduction
@@ -17,6 +17,17 @@ they would do for an SQL Server database.
 
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
 
+
+AceQL C# Client SDK - Version 4.2.1 - 06-Jun-2020
+-------------------------------------------------
+ 
+What's New:
+- Enable default system authentication. This is useful for configurations where a 
+  third party system (for instance IIS) is placed between the client and the AceQL 
+  Server and checks natively the authentication (for instance with Active Directory).
+
+Bugs fixed:
+- 
 
 AceQL C# Client SDK - Version 4.2 - 03-Jun-2020
 -----------------------------------------------

@@ -183,8 +183,9 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            sql = "select * from customer";
+            sql = "select * from customer where customer_id > @parm1";
             command = new AceQLCommand(sql, connection);
+            command.Parameters.AddWithValue("@parm1", 1);
 
             // Our dataReader must be disposed to delete underlying downloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())

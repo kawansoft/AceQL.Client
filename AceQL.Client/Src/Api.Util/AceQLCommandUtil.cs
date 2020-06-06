@@ -352,7 +352,7 @@ namespace AceQL.Client.Api.Util
         private HashSet<string> GetValidParamsInSqlCommand()
         {
             HashSet<string> theParamsSet = new HashSet<string>();
-            char[] separators = { '(', ')', ';', ' ', '+', '-', '/', '*', '=', '\'', '\"', ',' };
+            char[] separators = { '(', ')', ';', ' ', '+', '-', '/', '*', '=', '\'', '\"', '?', '!', ':', '#', '&', '-', '<', '<', '{', '}', '[', ']', '|', '%', ',' };
             String[] splits = cmdText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
             //for (int i = 0; i < splits.Count(); i++)
