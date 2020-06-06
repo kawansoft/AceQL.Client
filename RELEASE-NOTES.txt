@@ -22,12 +22,18 @@ AceQL C# Client SDK - Version 4.2.1 - 06-Jun-2020
 -------------------------------------------------
  
 What's New:
-- Enable default system authentication. This is useful for configurations where a 
-  third party system (for instance IIS) is placed between the client and the AceQL 
-  Server and checks natively the authentication (for instance with Active Directory).
+- Parameter names checking has been enhanced.
+- Missing parameter values are now more cleanly detected.
+- Parameter errors have now cleaner messages.
+- Most parameter checks are done locally, without submitting the requests 
+  to the remote server.
 
 Bugs fixed:
-- 
+- Using a parameter whose name was a substring of the name of another parameter
+  would raise an Exception. 
+  Example: insert into my_table values (@NAME, @NAMESPACE)
+  This has been fixed. 
+
 
 AceQL C# Client SDK - Version 4.2 - 03-Jun-2020
 -----------------------------------------------
