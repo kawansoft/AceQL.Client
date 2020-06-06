@@ -34,6 +34,8 @@ namespace AceQL.Client.Api.Util
     /// </summary>
     internal class AceQLCommandUtil
     {
+        public static readonly string[] PARM_SEPARATORS = { "(", ")", ";", " ", "+", "-", "/", "*", "=", "\'", "\"", "?", "!", ":", "#", "&", "-", "<", "<", "{", "}", "[", "]", "|", "%", "," };
+
         internal static bool DEBUG = false;
 
         /// <summary>
@@ -352,19 +354,7 @@ namespace AceQL.Client.Api.Util
         private HashSet<string> GetValidParamsInSqlCommand()
         {
             HashSet<string> theParamsSet = new HashSet<string>();
-            char[] separators = { '(', ')', ';', ' ', '+', '-', '/', '*', '=', '\'', '\"', '?', '!', ':', '#', '&', '-', '<', '<', '{', '}', '[', ']', '|', '%', ',' };
-            String[] splits = cmdText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-            //for (int i = 0; i < splits.Count(); i++)
-            //{
-            //    String validParam = "@" + splits[i].Trim();
-
-            //    if (cmdText.Contains(validParam))
-            //    {
-            //        theParamsSet.Add(validParam);
-            //        //ConsoleEmul.WriteLine(validParam);
-            //    }
-            //}
+            String[] splits = cmdText.Split(PARM_SEPARATORS, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string splitted in splits)
             {

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>4.2</version>
+        <version>4.2.1</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -13,7 +13,7 @@
         <description>AceQL allows C# and Xamarin developers to access remote SQL databases and/or SQL databases in the cloud by simply including standard SQL calls in their code. AceQL operates with AceQL HTTP on server side. See www.aceql.com for more info.
 		</description>
         <releaseNotes>
-		This version allows to enable default system authentication. It requires AceQL HTTP v5.0.2+ server version.  
+		Parameter names checking has been enhanced. See release notes. This version requires AceQL HTTP v5.0.2+ server version.  
 		</releaseNotes>	
         <copyright>Copyright © 2020</copyright>
         <tags>SQL over http remote jdbc cloud database Xamarin</tags>

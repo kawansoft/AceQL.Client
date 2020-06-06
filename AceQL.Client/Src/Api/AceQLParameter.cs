@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AceQL.Client.Api.Util;
 using AceQL.Client.Src.Api;
 
 namespace AceQL.Client.Api
@@ -70,6 +71,8 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("parameterName is null!");
             }
 
+            CheckParameterName(parameterName);
+
             if (!parameterName.StartsWith("@"))
             {
                 parameterName = "@" + parameterName;
@@ -97,6 +100,7 @@ namespace AceQL.Client.Api
                 throw new ArgumentNullException("value is null!");
             }
 
+            CheckParameterName(parameterName);
 
             if (!parameterName.StartsWith("@"))
             {
@@ -107,6 +111,28 @@ namespace AceQL.Client.Api
 
             IsNullValue = true;
             SqlNullType = value.GetAceQLNullType();
+        }
+
+        /// <summary>
+        /// Checks the name of the parameter. It must not contain separator values as defined AceQLCommandUtil.PARM_SEPARATORS.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void CheckParameterName(string parameterName)
+        {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException("parameterName is null!");
+            }
+
+            foreach (string separator in AceQLCommandUtil.PARM_SEPARATORS)
+            {
+                if (parameterName.Contains(separator))
+                {
+                    throw new ArgumentException("Invalid parameter name contains forbidden \"" + separator + "\" char: " + parameterName);
+                }
+            }
+
         }
 
         /// <summary>
@@ -126,6 +152,8 @@ namespace AceQL.Client.Api
             {
                 parameterName = "@" + parameterName;
             }
+
+            CheckParameterName(parameterName);
 
             if (value == null)
             {
