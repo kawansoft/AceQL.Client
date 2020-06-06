@@ -133,7 +133,7 @@ namespace AceQL.Client.Api.Util
 
                 //Reconvert SqlType original Java value by diving per 10000 and multiplying per -1:
                 int sqlType = (int)aceQLNullType;
-                sqlType = sqlType / (int) AceQLNullType.CHAR;
+                sqlType = sqlType / (int)AceQLNullType.CHAR;
 
                 // For OUT parameters that may be null value
                 if (ParmValue == null)
@@ -224,7 +224,7 @@ namespace AceQL.Client.Api.Util
                     throw new AceQLException("Type of value is not supported. Value: " + ParmValue + " / Type: " + ParmValue.GetType(), 2, (Exception)null, HttpStatusCode.OK);
                 }
 
-                if (! aceQLParameter.IsNullValue && !(ParmValue is Stream))
+                if (!aceQLParameter.IsNullValue && !(ParmValue is Stream))
                 {
 
                     if (aceQLParameter.Direction == Api.ParameterDirection.InputOutput)
@@ -232,7 +232,7 @@ namespace AceQL.Client.Api.Util
                         parametersList.Add("param_direction_" + paramIndex, "inout");
                         parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);
                     }
-                    else if (aceQLParameter.Direction ==Api.ParameterDirection.Output)
+                    else if (aceQLParameter.Direction == Api.ParameterDirection.Output)
                     {
                         parametersList.Add("param_direction_" + paramIndex, "out");
                         parametersList.Add("out_param_name_" + paramIndex, aceQLParameter.ParameterName);
@@ -282,59 +282,104 @@ namespace AceQL.Client.Api.Util
         /// <exception cref="System.ArgumentException">Invalid parameter not exists in SQL command: " + theParm</exception>
         internal Dictionary<String, int> GetPreparedStatementParametersDic()
         {
-            HashSet<String> theParamsSet = GetValidParams();
+            HashSet<String> theParamsSetInSqlCommand = GetValidParamsInSqlCommand();
 
-            SortedDictionary<int, String> paramsIndexOf = new SortedDictionary<int, String>();
+            List<String> parameterNamesList = new List<string>();
 
+            // 1) Create the list of rparameters and check that Added parameters exist in SQL command
             for (int i = 0; i < Parameters.Count; i++)
             {
-                if (DEBUG)
-                {
-                    //ConsoleEmul.WriteLine(Parameters[i] + " / " + Parameters[i].Value);
-                }
-
                 String theParm = Parameters[i].ToString();
 
-                if (!theParamsSet.Contains(theParm))
+                if (!theParamsSetInSqlCommand.Contains(theParm))
                 {
-                    throw new ArgumentException("Invalid parameter that not exists in SQL command: " + theParm);
+                    throw new ArgumentException("Can not add value for the invalid parameter name: " + theParm);
                 }
-
-                int index = cmdText.IndexOf(theParm);
-
-                paramsIndexOf.Add(index, theParm);
+                parameterNamesList.Add(theParm);
             }
 
-            // Build the parameters
+            // 2) Check that all SQL Command parameters have been set
+            CheckAllParametersExistInSqlCommand(theParamsSetInSqlCommand, Parameters);
+
+            // Build the parameters dictonary with rank of each parameter
             Dictionary<String, int> paramsIndexInPrepStatement = new Dictionary<String, int>();
 
             int parameterIndex = 0;
-            foreach (KeyValuePair<int, String> p in paramsIndexOf)
+            foreach (String parameterName in parameterNamesList)
             {
                 parameterIndex++;
-                paramsIndexInPrepStatement.Add(p.Value, parameterIndex);
+
+                if (paramsIndexInPrepStatement.ContainsKey(parameterName))
+                {
+                    throw new ArgumentException("Can not add twice a value for the parameter: " + parameterName);
+                }
+
+                paramsIndexInPrepStatement.Add(parameterName, parameterIndex);
             }
             return paramsIndexInPrepStatement;
+        }
+
+        /// <summary>
+        /// Checks all parameters exist in SQL command. Will throw an Exception if a parameter is missing.
+        /// </summary>
+        /// <param name="theParamsSetInSqlCommand">The parameters set in SQL command.</param>
+        /// <param name="parameters">The parameters.</param>
+        private static void CheckAllParametersExistInSqlCommand(HashSet<string> theParamsSetInSqlCommand, AceQLParameterCollection parameters)
+        {
+            HashSet<string> parameterNames = new HashSet<string>();
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                String theParm = parameters[i].ToString();
+                parameterNames.Add(theParm);
+            }
+
+            List<string> theParamsListInSqlCommand = theParamsSetInSqlCommand.ToList();
+
+            foreach (string theParamInSqlCommand in theParamsListInSqlCommand)
+            {
+                if (!parameterNames.Contains(theParamInSqlCommand))
+                {
+                    throw new ArgumentException("Missing parameter value for parameter name: " + theParamInSqlCommand);
+                }
+            }
         }
 
         /// <summary>
         /// Gets the valid parameters.
         /// </summary>
         /// <returns>HashSet&lt;System.String&gt;.</returns>
-        private HashSet<string> GetValidParams()
+        private HashSet<string> GetValidParamsInSqlCommand()
         {
             HashSet<string> theParamsSet = new HashSet<string>();
-            char[] separators = { '@', ',', '(', ')', ' ', '=' };
+            char[] separators = { '(', ')', ';', ' ', '+', '-', '/', '*', '=', '\'', '\"', ',' };
             String[] splits = cmdText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < splits.Count(); i++)
-            {
-                String validParam = "@" + splits[i].Trim();
 
-                if (cmdText.Contains(validParam))
+            //for (int i = 0; i < splits.Count(); i++)
+            //{
+            //    String validParam = "@" + splits[i].Trim();
+
+            //    if (cmdText.Contains(validParam))
+            //    {
+            //        theParamsSet.Add(validParam);
+            //        //ConsoleEmul.WriteLine(validParam);
+            //    }
+            //}
+
+            foreach (string splitted in splits)
+            {
+                if (!splitted.StartsWith("@"))
                 {
-                    theParamsSet.Add(validParam);
-                    //ConsoleEmul.WriteLine(validParam);
+                    continue;
                 }
+
+                if (theParamsSet.Contains(splitted.Trim()))
+                {
+                    throw new ArgumentException("This parameter is duplicate in SQL command: " + splitted.Trim());
+                }
+
+                theParamsSet.Add(splitted.Trim());
+
             }
 
             return theParamsSet;

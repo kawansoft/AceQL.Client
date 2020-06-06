@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceQL.Client.Samples", "AceQL.Client.Samples\AceQL.Client.Samples.csproj", "{2084D7CF-95C3-431E-9D42-90A59A0CE1CC}"
 EndProject
@@ -30,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B0762D3-D455-45BD-8A34-C317B7CC0549}
 	EndGlobalSection
 EndGlobal

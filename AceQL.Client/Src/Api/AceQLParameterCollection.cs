@@ -38,7 +38,7 @@ namespace AceQL.Client.Api
         /// The AceQL Parameters
         /// </summary>
         private List<AceQLParameter> aceqlParameters = new List<AceQLParameter>();
-        private string cmdText;
+        private string cmdText = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLParameterCollection"/> class.
