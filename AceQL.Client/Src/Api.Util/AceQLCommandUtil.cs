@@ -18,6 +18,7 @@
  */
 
 
+using AceQL.Client.Src.Api.Util;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace AceQL.Client.Api.Util
     /// </summary>
     internal class AceQLCommandUtil
     {
-        public static readonly string[] PARM_SEPARATORS = { "(", ")", ";", " ", "+", "-", "/", "*", "=", "\'", "\"", "?", "!", ":", "#", "&", "-", "<", "<", "{", "}", "[", "]", "|", "%", "," };
+        public static readonly string[] PARM_SEPARATORS = { "(", ")", ";", " ", "+", "-", "/", "*", "=", "\'", "\"", "?", "!", ":", "#", "&", "-", "<", ">", "{", "}", "[", "]", "|", "%", "," };
 
         internal static bool DEBUG = false;
 
@@ -400,18 +401,13 @@ namespace AceQL.Client.Api.Util
         /// <returns>String.</returns>
         internal static String ConvertToTimestamp(DateTime dateTime)
         {
-            double theDouble = (TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
-
-            theDouble = theDouble * 1000;
+            double theDouble = (TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
             String theTimeString = theDouble.ToString();
-            int commaIndex = theTimeString.IndexOf(",");
 
-            if (commaIndex <= 0)
-            {
-                return theTimeString;
-            }
-
-            return theTimeString.Substring(0, commaIndex);
+            // Remove "." or ',' depending on Locale:
+            theTimeString = StringUtils.SubstringBefore(theTimeString, ",");
+            theTimeString = StringUtils.SubstringBefore(theTimeString, ".");
+            return theTimeString;
         }
 
         private void Debug(string s)

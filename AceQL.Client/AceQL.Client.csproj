@@ -60,6 +60,7 @@
     <Compile Include="Src\Api.Util\OutParamBuilder.cs" />
     <Compile Include="Src\Api.Util\ParametersOutIndex.cs" />
     <Compile Include="Src\Api.Util\ParametersOutName.cs" />
+    <Compile Include="Src\Api.Util\StringUtils.cs" />
     <Compile Include="Src\Api.Util\UserLoginStore.cs" />
     <Compile Include="Src\Api\AceQLCredential.cs" />
     <Compile Include="Src\Api.Util\AceQLTypes.cs" />
