@@ -67,7 +67,7 @@ namespace AceQL.Client.Samples
                 Console.WriteLine("path         : " + path + ":");
                 Console.WriteLine("databaseToUse: " + databaseToUse + ":");
                 database = databaseToUse;
-                
+
                 bool doContinue = true;
                 while (doContinue)
                 {
@@ -110,12 +110,14 @@ namespace AceQL.Client.Samples
             string connectionString = null;
             bool useProxy = false;
 
-            if (useProxy) {
+            if (useProxy)
+            {
                 string proxyUsername = "ndepomereu2";
                 string proxyPassword = "";
                 connectionString = $"Server={server}; Database={database}; ProxyUsername={proxyUsername}; ProxyPassword= {proxyPassword}";
             }
-            else  {
+            else
+            {
                 connectionString = $"Server={server}; Database={database}";
             }
 
@@ -161,7 +163,7 @@ namespace AceQL.Client.Samples
             Console.WriteLine("AceQL local folder: ");
             Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
-            if (! CONSOLE_INPUT_DONE)
+            if (!CONSOLE_INPUT_DONE)
             {
                 Console.WriteLine();
                 Console.WriteLine("Press enter to close....");
@@ -284,7 +286,7 @@ namespace AceQL.Client.Samples
             await transaction.CommitAsync();
 
             Boolean doBlob = true;
-            if (! doBlob)
+            if (!doBlob)
             {
                 return;
             }
@@ -306,8 +308,8 @@ namespace AceQL.Client.Samples
                     string blobPath = null;
 
                     int index = getIndexFromDatabase();
-                    blobPath = IN_DIRECTORY + "username_koala_" + index + ".jpg"; 
-                    
+                    blobPath = IN_DIRECTORY + "username_koala_" + index + ".jpg";
+
                     Stream stream = new FileStream(blobPath, FileMode.Open, System.IO.FileAccess.Read);
 
                     //customer_id integer NOT NULL,
@@ -391,6 +393,7 @@ namespace AceQL.Client.Samples
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_cost")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_placed")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_shipped")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
@@ -418,7 +421,8 @@ namespace AceQL.Client.Samples
 
         private static int getIndexFromDatabase()
         {
-            if (database.Equals(database_sampledb)) {
+            if (database.Equals(database_sampledb))
+            {
                 return 1;
             }
             else if (database.Equals(database_sampledb_2))

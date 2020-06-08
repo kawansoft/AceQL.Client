@@ -1,6 +1,6 @@
 # AceQL HTTP 
 
-## C# Client SDK v4.2.1 - June 2020, 6
+## C# Client SDK v4.2.2 - June 2020, 8
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -81,7 +81,7 @@ The SDK is licensed with the liberal [Apache 2.0](https://www.apache.org/license
 
 ## AceQL Server side compatibility
 
-C# Client SDK v4.2.1 version requires AceQL HTTP v5.0.2+ server version. 
+C# Client SDK v4.2.2 version requires AceQL HTTP v5.0.2+ server version. 
 
 ## AceQL C# Client SDK installation
 

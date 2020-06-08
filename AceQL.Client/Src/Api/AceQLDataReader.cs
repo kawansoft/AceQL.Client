@@ -27,6 +27,7 @@ using System.Net;
 using System.Threading.Tasks;
 using PCLStorage;
 using System.Threading;
+using System.Globalization;
 
 namespace AceQL.Client.Api
 {
@@ -449,7 +450,7 @@ namespace AceQL.Client.Api
                 return 0;
             }
 
-            return Decimal.Parse(valuesPerColIndex[ordinal].ToString());
+            return Decimal.Parse(valuesPerColIndex[ordinal].ToString(), CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -472,7 +473,7 @@ namespace AceQL.Client.Api
                 return 0;
             }
 
-            return Double.Parse(valuesPerColIndex[ordinal].ToString());
+            return Double.Parse(valuesPerColIndex[ordinal].ToString(), CultureInfo.InvariantCulture);
         }
 
         ///// <summary>
@@ -516,7 +517,7 @@ namespace AceQL.Client.Api
                 return 0;
             }
 
-            return float.Parse(valuesPerColIndex[ordinal].ToString());
+            return float.Parse(valuesPerColIndex[ordinal].ToString(), CultureInfo.InvariantCulture);
         }
 
         ///// <summary>

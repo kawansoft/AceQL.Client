@@ -246,9 +246,10 @@ namespace AceQL.Client.Tests
                     command.Parameters.AddWithValue("@parm1", customer_id);
                     command.Parameters.AddWithValue("@parm2", customer_id);
                     command.Parameters.AddWithValue("@parm3", "Description_" + customer_id);
-                    command.Parameters.Add(new AceQLParameter("@parm4", new AceQLNullValue(AceQLNullType.DECIMAL))); //null value for NULL SQL insert.
-                    command.Parameters.AddWithValue("@parm5", DateTime.Now);
-                    command.Parameters.AddWithValue("@parm6", DateTime.Now);
+                    //command.Parameters.Add(new AceQLParameter("@parm4", new AceQLNullValue(AceQLNullType.DECIMAL))); //null value for NULL SQL insert.
+                    command.Parameters.AddWithValue("@parm4", 45.4);
+                    command.Parameters.AddWithValue("@parm5", DateTime.UtcNow);
+                    command.Parameters.AddWithValue("@parm6", DateTime.UtcNow);
                     // Adds the Blob. (Stream will be closed by AceQLCommand)
                     bool useBlob = true;
                     if (useBlob)
@@ -318,6 +319,7 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_cost")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_placed")) + "\n"
+                        + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("date_shipped")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("jpeg_image")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));

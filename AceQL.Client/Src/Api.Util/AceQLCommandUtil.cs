@@ -202,13 +202,13 @@ namespace AceQL.Client.Api.Util
                 {
                     String paramType = "REAL";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString().Replace(",", "."));
                 }
                 else if (ParmValue is double || ParmValue is Double)
                 {
                     String paramType = "DOUBLE_PRECISION";
                     parametersList.Add("param_type_" + paramIndex, paramType);
-                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString());
+                    parametersList.Add("param_value_" + paramIndex, ParmValue.ToString().Replace(",", "."));
                 }
                 else if (ParmValue is DateTime)
                 {
