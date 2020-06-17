@@ -50,7 +50,7 @@
 
 This document describes how to use the AceQL C# Client SDK and gives some details about how it operates with the AceQL Server side.
 
-The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-5.0.1-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
+The SDK allows you to wrap the [AceQL HTTP APIs](https://github.com/kawansoft/aceql-http/blob/master/aceql-http-5.0.3-user-guide-api.md) and eliminate the tedious work of handling communication errors and parsing JSON results.
 
 C# application developers can access remote SQL databases and/or SQL databases in the cloud by simply including standard C# SQL calls in their code, just like they would do for an SQL Server database. There is zero learning curve and usage is straight forward.
 
