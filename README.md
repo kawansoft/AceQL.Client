@@ -1,3 +1,6 @@
+![GitHub top language](https://img.shields.io/github/languages/top/kawansoft/AceQL.Client) ![GitHub issues](https://img.shields.io/github/issues/kawansoft/AceQL.Client) ![GitHub](https://img.shields.io/github/license/kawansoft/AceQL.Client) 
+![Nuget](https://img.shields.io/nuget/dt/AceQL.Client)![GitHub last commit (branch)](https://img.shields.io/github/last-commit/kawansoft/AceQL.Client/master) ![GitHub contributors](https://img.shields.io/github/contributors/kawansoft/AceQL.Client)
+
 # AceQL HTTP 
 
 ## C# Client SDK v4.2.2 - June 2020, 8
