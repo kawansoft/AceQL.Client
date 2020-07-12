@@ -291,13 +291,13 @@ namespace AceQL.Client.Api
                     }
                 }
 
-                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.httpStatusCode);
+                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.HttpStatusCode);
                 if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
                 {
                     throw new AceQLException(streamResultAnalyzer.GetErrorMessage(),
                         streamResultAnalyzer.GetErrorType(),
                         streamResultAnalyzer.GetStackTrace(),
-                        aceQLHttpApi.httpStatusCode);
+                        aceQLHttpApi.HttpStatusCode);
                 }
 
                 int rowsCount = 0;
@@ -332,7 +332,7 @@ namespace AceQL.Client.Api
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.HttpStatusCode);
                 }
             }
         }
@@ -421,13 +421,13 @@ namespace AceQL.Client.Api
 
                 }
 
-                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.httpStatusCode);
+                StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.HttpStatusCode);
                 if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
                 {
                     throw new AceQLException(streamResultAnalyzer.GetErrorMessage(),
                         streamResultAnalyzer.GetErrorType(),
                         streamResultAnalyzer.GetStackTrace(),
-                        aceQLHttpApi.httpStatusCode);
+                        aceQLHttpApi.HttpStatusCode);
                 }
 
                 int rowsCount = 0;
@@ -462,7 +462,7 @@ namespace AceQL.Client.Api
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.HttpStatusCode);
                 }
             }
         }
@@ -531,7 +531,7 @@ namespace AceQL.Client.Api
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.HttpStatusCode);
                 }
 
             }

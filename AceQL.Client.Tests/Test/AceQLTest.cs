@@ -34,7 +34,6 @@ namespace AceQL.Client.Tests
 
         public static void TheMain(string[] args)
         {
-
             try
             {
                 DoIt(args).Wait();
@@ -51,9 +50,7 @@ namespace AceQL.Client.Tests
                 Console.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
-
         }
-
 
         static async Task DoIt(string[] args)
         {
@@ -123,8 +120,6 @@ namespace AceQL.Client.Tests
                     await connection.CloseAsync();
                 }
             }
-
-
         }
 
         /// <summary>
@@ -159,7 +154,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 300; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";

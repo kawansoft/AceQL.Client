@@ -75,11 +75,6 @@ namespace AceQL.Client.Api.Http
         private int timeout = 0;
         private bool enableDefaultSystemAuthentication = false;
 
-        /// <summary>
-        /// The HTTP status code
-        /// </summary>
-        internal HttpStatusCode httpStatusCode;
-
         // Future usage
         //int connectTimeout = 0;
 
@@ -156,7 +151,6 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
-
                 //DecodeConnectionString();
                 ConnectionStringDecoder connectionStringDecoder = new ConnectionStringDecoder();
                 connectionStringDecoder.Decode(connectionString);
@@ -233,14 +227,14 @@ namespace AceQL.Client.Api.Http
                     await simpleTracer.TraceAsync("result: " + result).ConfigureAwait(false);
 
                     ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result,
-                        httpStatusCode);
+                        HttpStatusCode);
 
                     if (!resultAnalyzer.IsStatusOk())
                     {
                         throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                             resultAnalyzer.GetErrorId(),
                             resultAnalyzer.GetStackTrace(),
-                            httpStatusCode);
+                            HttpStatusCode);
                     }
 
                     String connectionId = resultAnalyzer.GetValue("connection_id");
@@ -263,16 +257,17 @@ namespace AceQL.Client.Api.Http
                     await simpleTracer.TraceAsync("Before CallWithPostAsyncReturnString: " + theUrl);
 
                     String result = await httpManager.CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
+
                     ConsoleEmul.WriteLine("result: " + result);
                     await simpleTracer.TraceAsync("result: " + result).ConfigureAwait(false);
 
-                    ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                    ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, HttpStatusCode);
                     if (!resultAnalyzer.IsStatusOk())
                     {
                         throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                             resultAnalyzer.GetErrorId(),
                             resultAnalyzer.GetStackTrace(),
-                            httpStatusCode);
+                            HttpStatusCode);
                     }
 
                     String theSessionId = resultAnalyzer.GetValue("session_id");
@@ -293,7 +288,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
 
@@ -350,6 +345,11 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         public bool UseCancellationToken { get => useCancellationToken; }
 
+        /// <summary>
+        /// Gets the HTTP status code of hte latsexecuted HTTP call
+        /// </summary>
+        /// <value>The HTTP status code.</value>
+        public HttpStatusCode HttpStatusCode { get => httpManager.HttpStatusCode; }
 
         internal string GetDatabase()
         {
@@ -390,13 +390,13 @@ namespace AceQL.Client.Api.Http
 
                 String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpManager.HttpStatusCode);
                 if (!resultAnalyzer.IsStatusOk())
                 {
                     throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                         resultAnalyzer.GetErrorId(),
                         resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
+                        httpManager.HttpStatusCode);
                 }
 
             }
@@ -410,7 +410,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, httpManager.HttpStatusCode);
                 }
             }
         }
@@ -438,13 +438,13 @@ namespace AceQL.Client.Api.Http
 
                 String result = await CallWithGetAsync(commandName, commandOption).ConfigureAwait(false);
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpManager.HttpStatusCode);
                 if (!resultAnalyzer.IsStatusOk())
                 {
                     throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                         resultAnalyzer.GetErrorId(),
                         resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
+                        httpManager.HttpStatusCode);
                 }
 
                 return resultAnalyzer.GetResult();
@@ -460,7 +460,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, httpManager.HttpStatusCode);
                 }
             }
         }
@@ -482,10 +482,7 @@ namespace AceQL.Client.Api.Http
             }
 
             return await httpManager.CallWithGetAsync(urlWithaction).ConfigureAwait(false);
-
         }
-
-
 
         internal async Task<Stream> ExecuteQueryAsync(string cmdText, AceQLParameterCollection Parameters, bool isStoredProcedure, bool isPreparedStatement, Dictionary<string, string> statementParameters)
         {
@@ -555,13 +552,13 @@ namespace AceQL.Client.Api.Http
 
             Debug("result: " + result);
 
-            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpManager.HttpStatusCode);
             if (!resultAnalyzer.IsStatusOk())
             {
                 throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                     resultAnalyzer.GetErrorId(),
                     resultAnalyzer.GetStackTrace(),
-                    httpStatusCode);
+                    httpManager.HttpStatusCode);
             }
 
             int rowCount = resultAnalyzer.GetIntvalue("row_count");
@@ -605,9 +602,7 @@ namespace AceQL.Client.Api.Http
                 {
                     parameter.Value = outParametersDict[parameterName];
                 }
-
             }
-
         }
 
         /// <summary>
@@ -672,10 +667,9 @@ namespace AceQL.Client.Api.Http
             response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication,  blobId, stream,
                 totalLength, progressIndicator, cancellationToken, useCancellationToken).ConfigureAwait(false);
 
-            this.httpStatusCode = response.StatusCode;
+            httpManager.HttpStatusCode = response.StatusCode;
 
             Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            HttpStatusCode httpStatusCode = response.StatusCode;
 
             String result = null;
             if (streamResult != null)
@@ -708,26 +702,25 @@ namespace AceQL.Client.Api.Http
             Uri urlWithaction = new Uri(url + action);
             using (Stream input = await httpManager.CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
             {
+
                 if (input != null)
                 {
                     result = new StreamReader(input).ReadToEnd();
                 }
-
             }
 
-            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+            ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, HttpStatusCode);
             if (!resultAnalyzer.IsStatusOk())
             {
                 throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                     resultAnalyzer.GetErrorId(),
                     resultAnalyzer.GetStackTrace(),
-                    httpStatusCode);
+                    HttpStatusCode);
             }
 
             String lengthStr = resultAnalyzer.GetValue("length");
             long length = Convert.ToInt64(lengthStr);
             return length;
-
         }
 
 
@@ -768,7 +761,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
         }
@@ -812,7 +805,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
         }
@@ -831,13 +824,13 @@ namespace AceQL.Client.Api.Http
                 String commandName = "metadata_query/get_db_metadata";
                 String result = await CallWithGetAsync(commandName, null).ConfigureAwait(false);
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, HttpStatusCode);
                 if (!resultAnalyzer.IsStatusOk())
                 {
                     throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                         resultAnalyzer.GetErrorId(),
                         resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
+                        HttpStatusCode);
                 }
 
                 JdbcDatabaseMetaDataDto jdbcDatabaseMetaDataDto = JsonConvert.DeserializeObject<JdbcDatabaseMetaDataDto>(result); 
@@ -853,7 +846,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
         }
@@ -889,13 +882,13 @@ namespace AceQL.Client.Api.Http
                     }
                 }
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, HttpStatusCode);
                 if (!resultAnalyzer.IsStatusOk())
                 {
                     throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                         resultAnalyzer.GetErrorId(),
                         resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
+                        HttpStatusCode);
                 }
 
                 TableNamesDto tableNamesDto = JsonConvert.DeserializeObject<TableNamesDto>(result);
@@ -911,7 +904,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
         }
@@ -944,13 +937,13 @@ namespace AceQL.Client.Api.Http
                     }
                 }
 
-                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
+                ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, HttpStatusCode);
                 if (!resultAnalyzer.IsStatusOk())
                 {
                     throw new AceQLException(resultAnalyzer.GetErrorMessage(),
                         resultAnalyzer.GetErrorId(),
                         resultAnalyzer.GetStackTrace(),
-                        httpStatusCode);
+                        HttpStatusCode);
                 }
 
                 TableDto tableDto = JsonConvert.DeserializeObject<TableDto>(result);
@@ -966,7 +959,7 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
-                    throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
+                    throw new AceQLException(exception.Message, 0, exception, HttpStatusCode);
                 }
             }
         }

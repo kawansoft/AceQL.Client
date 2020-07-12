@@ -35,14 +35,11 @@ namespace AceQL.Client.Src.Api.Http
         /// <summary>
         /// The HTTP status code
         /// </summary>
-        internal HttpStatusCode httpStatusCode;
-
-        /// <summary>
-        /// Says it use has passed a CancellationToken
-        /// </summary>
-        public bool UseCancellationToken { get => useCancellationToken; }
+        private HttpStatusCode httpStatusCode;
 
         private SimpleTracer simpleTracer = new SimpleTracer();
+
+        HttpClient httpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpManager"/> class.
@@ -57,7 +54,25 @@ namespace AceQL.Client.Src.Api.Http
             this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;
             this.enableDefaultSystemAuthentication = enableDefaultSystemAuthentication;
+
+            buildHttpClient();
         }
+
+        private void buildHttpClient()
+        {
+             httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
+        }
+
+        /// <summary>
+        /// Says it use has passed a CancellationToken
+        /// </summary>
+        public bool UseCancellationToken { get => useCancellationToken; }
+
+        /// <summary>
+        /// Gets the HTTP status code of the last HTTP call.
+        /// </summary>
+        /// <value>The HTTP status code.</value>
+        internal HttpStatusCode HttpStatusCode { get => httpStatusCode; set => httpStatusCode = value; }
 
         /// <summary>
         /// To be call at end of each of each public aysnc(CancellationToken) calls to reset to false the usage of a CancellationToken with http calls
@@ -85,8 +100,6 @@ namespace AceQL.Client.Src.Api.Http
         /// <returns>Stream.</returns>
         internal async Task<Stream> CallWithGetReturnStreamAsync(String url)
         {
-            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
-
             if (timeout != 0)
             {
                 long nanoseconds = 1000000 * timeout;
@@ -109,7 +122,6 @@ namespace AceQL.Client.Src.Api.Http
             HttpContent content = response.Content;
 
             return await content.ReadAsStreamAsync().ConfigureAwait(false);
-
         }
 
         /// <summary>
@@ -134,8 +146,6 @@ namespace AceQL.Client.Src.Api.Http
             {
                 throw new ArgumentNullException("postParameters is null!");
             }
-
-            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
 
             if (timeout != 0)
             {
@@ -184,7 +194,6 @@ namespace AceQL.Client.Src.Api.Http
         /// <exception cref="System.ArgumentNullException">url is null!</exception>
         public async Task<string> CallWithGetAsync(String url)
         {
-
             if (url == null)
             {
                 throw new ArgumentNullException("url is null!");
@@ -207,7 +216,6 @@ namespace AceQL.Client.Src.Api.Http
                 
                 return responseString;
             }
-
         }
 
         /// <summary>
@@ -241,7 +249,6 @@ namespace AceQL.Client.Src.Api.Http
                     result = new StreamReader(input).ReadToEnd();
                 }
             }
-
             return result;
         }
 
