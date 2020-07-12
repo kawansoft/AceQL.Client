@@ -54,10 +54,11 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt(string[] args)
         {
-
+            /*
             await HttpClientLoopTest.Test();
             bool doReturn = true;
             if (doReturn) return;
+            */
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLocalhost = "http://localhost:9090/aceql";
