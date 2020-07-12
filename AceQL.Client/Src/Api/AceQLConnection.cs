@@ -117,29 +117,12 @@ namespace AceQL.Client.Api
 
 
         /// <summary>
-        /// Traces this instance.
-        /// </summary>
-        internal async Task TraceAsync()
-        {
-            await aceQLHttpApi.TraceAsync().ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Creates a RemoteDatabaseMetaData in order to query remote database metadata info.
         /// </summary>
         /// <returns>RemoteDatabaseMetaData.</returns>
         public RemoteDatabaseMetaData GetRemoteDatabaseMetaData()
         {
             return new RemoteDatabaseMetaData(this);
-        }
-
-        /// <summary>
-        /// Traces the specified string.
-        /// </summary>
-        /// <param name="s">The string to trace</param>
-        internal async Task TraceAsync(String s)
-        {
-            await aceQLHttpApi.TraceAsync(s).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -318,24 +301,6 @@ namespace AceQL.Client.Api
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         }
-        /// <summary>
-        /// Says if trace is on. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
-        /// </summary>
-        /// <returns>true if trace is on, else false.</returns>
-        public bool IsTraceOn()
-        {
-            return aceQLHttpApi.IsTraceOn();
-        }
-
-        /// <summary>
-        /// Sets the trace on/off. If on, a trace is done on the file "trace.txt" in the path of value AceQL.Client.Api.GetAceQLLocalFolderAsync().
-        /// </summary>
-        /// <param name="traceOn">If true, trace will be on; else trace will be off.</param>
-        public void SetTraceOn(bool traceOn)
-        {
-            aceQLHttpApi.SetTraceOn(traceOn);
-        }
-
 
         /// <summary>
         /// Returns the progress indicator variable that will store Blob/Clob upload progress between 0 and 100.

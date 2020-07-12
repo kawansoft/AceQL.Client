@@ -42,6 +42,7 @@
     <Compile Include="Src\Api.Http\ConnectionStringDecoder.cs" />
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
     <Compile Include="Src\Api.Http\HttpClientHandlerBuilder.cs" />
+    <Compile Include="Src\Api.Http\HttpManager.cs" />
     <Compile Include="Src\Api.Http\Proxy.cs" />
     <Compile Include="Src\Api.Metadata.Dto\JdbcDatabaseMetaDataDto.cs" />
     <Compile Include="Src\Api.Metadata.Dto\TableDto.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Src\Api.Util\OutParamBuilder.cs" />
     <Compile Include="Src\Api.Util\ParametersOutIndex.cs" />
     <Compile Include="Src\Api.Util\ParametersOutName.cs" />
+    <Compile Include="Src\Api.Util\SimpleTracer.cs" />
     <Compile Include="Src\Api.Util\StringUtils.cs" />
     <Compile Include="Src\Api.Util\UserLoginStore.cs" />
     <Compile Include="Src\Api\AceQLCredential.cs" />

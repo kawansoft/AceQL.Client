@@ -62,6 +62,7 @@ namespace AceQL.Client.Api
         /// The JSON file containing the Result Set
         /// </summary>
         private IFile file;
+        private bool traceOn;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLDataReader"/> class.
@@ -83,31 +84,12 @@ namespace AceQL.Client.Api
             this.rowsCount = rowsCount;
         }
 
-
-        /// <summary>
-        /// Determines whether [is trace on].
-        /// </summary>
-        /// <returns><c>true</c> if [is trace on]; otherwise, <c>false</c>.</returns>
-        internal bool IsTraceOn()
-        {
-            return aceQLHttpApi.IsTraceOn();
-        }
-
-        /// <summary>
-        /// Sets the trace on.
-        /// </summary>
-        /// <param name="traceOn">if set to <c>true</c> [trace on].</param>
-        internal void SetTraceOn(bool traceOn)
-        {
-            aceQLHttpApi.SetTraceOn(traceOn);
-        }
-
         /// <summary>
         /// Traces this instance.
         /// </summary>
         private void Trace()
         {
-            if (IsTraceOn())
+            if (traceOn)
             {
                 ConsoleEmul.WriteLine();
             }
@@ -117,12 +99,11 @@ namespace AceQL.Client.Api
         /// Traces the specified string.
         /// </summary>
         /// <param name="s">The string to trace.</param>
-        private async void TraceAsync(String s)
+        private void TraceAsync(String s)
         {
-            if (IsTraceOn())
+            if (traceOn)
             {
                 System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + s);
-                await aceQLHttpApi.TraceAsync(s);
             }
         }
 

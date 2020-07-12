@@ -92,10 +92,6 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         bool gzipResult = true;
 
-        /// <summary>
-        /// The trace on
-        /// </summary>
-        private  bool traceOn = false;
 
         /// <summary>
         /// The URL
@@ -109,10 +105,10 @@ namespace AceQL.Client.Api.Http
         private CancellationToken cancellationToken;
         private bool useCancellationToken = false;
 
-        /// <summary>
-        /// The trace file for debug
-        /// </summary>
-        private IFile file = null;
+        internal SimpleTracer simpleTracer = new SimpleTracer();
+
+        // The HttpManager that contains the HtttClient to use
+        private HttpManager httpManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
@@ -160,7 +156,7 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
-                await TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
+
                 //DecodeConnectionString();
                 ConnectionStringDecoder connectionStringDecoder = new ConnectionStringDecoder();
                 connectionStringDecoder.Decode(connectionString);
@@ -174,7 +170,13 @@ namespace AceQL.Client.Api.Http
                 this.timeout = connectionStringDecoder.Timeout;
                 this.enableDefaultSystemAuthentication = connectionStringDecoder.EnableDefaultSystemAuthentication;
 
-                await TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
+                if (connectionStringDecoder.EnableTrace)
+                {
+                    simpleTracer.SetTraceOn(true);
+                }
+
+                await simpleTracer.TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
+                await simpleTracer.TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
                 
                 if (credential != null)
                 {
@@ -208,6 +210,10 @@ namespace AceQL.Client.Api.Http
 
                 this.username = username ?? throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredential not set.");
 
+                // Create the HttpManager instance
+                this.httpManager = new HttpManager(proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication);
+                this.httpManager.SetSimpleTracer(simpleTracer);
+
                 UserLoginStore userLoginStore = new UserLoginStore(server, username,
                     database);
 
@@ -218,13 +224,13 @@ namespace AceQL.Client.Api.Http
 
                 if (userLoginStore.IsAlreadyLogged())
                 {
-                    await TraceAsync("Get a new connection with get_connection").ConfigureAwait(false);
+                    await simpleTracer.TraceAsync("Get a new connection with get_connection").ConfigureAwait(false);
                     String sessionId = userLoginStore.GetSessionId();
 
                     String theUrl = server + "/session/" + sessionId + "/get_connection";
-                    String result = await CallWithGetAsync(theUrl).ConfigureAwait(false);
+                    String result = await httpManager.CallWithGetAsync(theUrl).ConfigureAwait(false);
 
-                    await TraceAsync("result: " + result).ConfigureAwait(false);
+                    await simpleTracer.TraceAsync("result: " + result).ConfigureAwait(false);
 
                     ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result,
                         httpStatusCode);
@@ -238,7 +244,7 @@ namespace AceQL.Client.Api.Http
                     }
 
                     String connectionId = resultAnalyzer.GetValue("connection_id");
-                    await TraceAsync("Ok. New Connection created: " + connectionId).ConfigureAwait(false);
+                    await simpleTracer.TraceAsync("Ok. New Connection created: " + connectionId).ConfigureAwait(false);
 
                     this.url = server + "/session/" + sessionId + "/connection/"
                         + connectionId + "/";
@@ -254,11 +260,11 @@ namespace AceQL.Client.Api.Http
                         { "client_version", VersionValues.VERSION}
                     };
 
-                    await TraceAsync("Before CallWithPostAsyncReturnString: " + theUrl);
+                    await simpleTracer.TraceAsync("Before CallWithPostAsyncReturnString: " + theUrl);
 
-                    String result = await CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
+                    String result = await httpManager.CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
                     ConsoleEmul.WriteLine("result: " + result);
-                    await TraceAsync("result: " + result).ConfigureAwait(false);
+                    await simpleTracer.TraceAsync("result: " + result).ConfigureAwait(false);
 
                     ResultAnalyzer resultAnalyzer = new ResultAnalyzer(result, httpStatusCode);
                     if (!resultAnalyzer.IsStatusOk())
@@ -274,12 +280,12 @@ namespace AceQL.Client.Api.Http
 
                     this.url = server + "/session/" + theSessionId + "/connection/" + theConnectionId + "/";
                     userLoginStore.SetSessionId(theSessionId);
-                    await TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
+                    await simpleTracer.TraceAsync("OpenAsync url: " + this.url).ConfigureAwait(false);
                 }
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -292,34 +298,6 @@ namespace AceQL.Client.Api.Http
             }
 
         }
-
-
-        /// <summary>
-        /// Traces this instance.
-        /// </summary>
-        internal async Task TraceAsync()
-        {
-            await TraceAsync("").ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Traces the specified string.
-        /// </summary>
-        /// <param name="contents">The string to trace</param>
-        internal async Task TraceAsync(String contents)
-        {
-           
-            if (traceOn)
-            {
-                if (file == null)
-                {
-                  file =  await AceQLCommandUtil.GetTraceFileAsync().ConfigureAwait(false);
-                }
-                contents = DateTime.Now + " " + contents;
-                await PortableFile.AppendAllTextAsync(file, "\r\n" + contents).ConfigureAwait(false);
-            }
-        }
-
 
         /// <summary>
         /// Gets a value indicating whether [gzip result] is on or off.
@@ -388,105 +366,6 @@ namespace AceQL.Client.Api.Http
             return server;
         }
 
-        /// <summary>
-        /// Calls the with get return stream.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>Stream.</returns>
-        private async Task<Stream> CallWithGetReturnStreamAsync(String url)
-        {
-            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
-
-            if (timeout != 0)
-            {
-                long nanoseconds = 1000000 * timeout;
-                httpClient.Timeout = new TimeSpan(nanoseconds / 100);
-            }
-
-            HttpResponseMessage response = null;
-
-            if (!UseCancellationToken)
-            {
-                response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-            }
-            else
-            {
-                response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-            }
-
-            this.httpStatusCode = response.StatusCode;
-
-            HttpContent content = response.Content;
-
-            return await content.ReadAsStreamAsync().ConfigureAwait(false);
-
-        }
-
-
-        /// <summary>
-        /// Executes a POST with parameters and returns a Stream
-        /// </summary>
-        /// <param name="theUrl">The Url.</param>
-        /// <param name="parameters">The request parameters.</param>
-        /// <returns>Stream.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// action is null!
-        /// or
-        /// postParameters is null!
-        /// </exception>
-        private async Task<Stream> CallWithPostAsync(Uri theUrl, Dictionary<string, string> parameters)
-        {
-            if (theUrl == null)
-            {
-                throw new ArgumentNullException("urlWithaction is null!");
-            }
-
-
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("postParameters is null!");
-            }
-
-            HttpClient httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
-
-            if (timeout != 0)
-            {
-                long nanoseconds = 1000000 * timeout;
-                httpClient.Timeout = new TimeSpan(nanoseconds / 100);
-            }
-
-            MultipartFormDataContent formData = new MultipartFormDataContent();
-
-            // This is the postdata
-            var postData = new List<KeyValuePair<string, string>>();
-
-            await TraceAsync().ConfigureAwait(false);
-            await TraceAsync("----------------------------------------").ConfigureAwait(false);
-            await TraceAsync(url).ConfigureAwait(false);
-
-            foreach (var param in parameters)
-            {
-                postData.Add(new KeyValuePair<string, string>(param.Key, param.Value));
-                await TraceAsync("param: " + param.Key + "/" + param.Value);
-            }
-            await TraceAsync("----------------------------------------").ConfigureAwait(false);
-
-            HttpContent content = new FormUrlEncodedContent(postData);
-
-            HttpResponseMessage response = null;
-
-            if (!UseCancellationToken)
-            {
-                response = await httpClient.PostAsync(theUrl, content);
-            }
-            else
-            {
-                response = await httpClient.PostAsync(theUrl, content, cancellationToken);
-            }
-
-            this.httpStatusCode = response.StatusCode;
-            return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-        }
 
         /// <summary>
         /// Calls the API no result.
@@ -523,7 +402,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -573,7 +452,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -602,43 +481,10 @@ namespace AceQL.Client.Api.Http
                 urlWithaction += "/" + actionParameter;
             }
 
-            return await CallWithGetAsync(urlWithaction).ConfigureAwait(false);
+            return await httpManager.CallWithGetAsync(urlWithaction).ConfigureAwait(false);
 
         }
 
-        /// <summary>
-        /// Calls the with get.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>String.</returns>
-        /// <exception cref="System.ArgumentNullException">url is null!</exception>
-        private async Task<string> CallWithGetAsync(String url)
-        {
-
-            if (url == null)
-            {
-                throw new ArgumentNullException("url is null!");
-            }
-
-            using (Stream stream = await CallWithGetReturnStreamAsync(url).ConfigureAwait(false))
-            {
-                if (stream == null)
-                {
-                    return null;
-                }
-
-                var responseString = new StreamReader(stream).ReadToEnd();
-
-                await TraceAsync().ConfigureAwait(false);
-                await TraceAsync("----------------------------------------").ConfigureAwait(false);
-                await TraceAsync(url).ConfigureAwait(false);
-                await TraceAsync(responseString).ConfigureAwait(false);
-                await TraceAsync("----------------------------------------").ConfigureAwait(false);
-
-                return responseString;
-            }
-
-        }
 
 
         internal async Task<Stream> ExecuteQueryAsync(string cmdText, AceQLParameterCollection Parameters, bool isStoredProcedure, bool isPreparedStatement, Dictionary<string, string> statementParameters)
@@ -665,7 +511,7 @@ namespace AceQL.Client.Api.Http
             }
 
             Uri urlWithaction = new Uri(url + action);
-            Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false);
+            Stream input = await httpManager.CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false);
             return input;
         }
 
@@ -698,11 +544,11 @@ namespace AceQL.Client.Api.Http
             Uri urlWithaction = new Uri(url + action);
 
             //SetTraceOn(true);
-            await TraceAsync("url: " + url + action);
+            await simpleTracer.TraceAsync("url: " + url + action);
 
             foreach (KeyValuePair<String, String> p in parametersMap)
             {
-                await TraceAsync("parm: " + p.Key + " / " + p.Value);
+                await simpleTracer.TraceAsync("parm: " + p.Key + " / " + p.Value);
             }
 
             string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap);
@@ -779,7 +625,7 @@ namespace AceQL.Client.Api.Http
         {
             String result = null;
 
-            using (Stream input = await CallWithPostAsync(theUrl, parametersMap).ConfigureAwait(false))
+            using (Stream input = await httpManager.CallWithPostAsync(theUrl, parametersMap).ConfigureAwait(false))
             {
                 if (input != null)
                 {
@@ -860,7 +706,7 @@ namespace AceQL.Client.Api.Http
             String result = null;
 
             Uri urlWithaction = new Uri(url + action);
-            using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
+            using (Stream input = await httpManager.CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
             {
                 if (input != null)
                 {
@@ -909,12 +755,12 @@ namespace AceQL.Client.Api.Http
                 //Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
 
                 String theUrl = this.url + "/blob_download?blob_id=" + blobId;
-                Stream input = await CallWithGetReturnStreamAsync(theUrl);
+                Stream input = await httpManager.CallWithGetReturnStreamAsync(theUrl);
                 return input;
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -953,12 +799,12 @@ namespace AceQL.Client.Api.Http
                     theUrl += "&table_name=" + tableName;
                 }
 
-                Stream input = await CallWithGetReturnStreamAsync(theUrl);
+                Stream input = await httpManager.CallWithGetReturnStreamAsync(theUrl);
                 return input;
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -999,7 +845,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -1035,7 +881,7 @@ namespace AceQL.Client.Api.Http
                 String result = null;
 
                 Uri urlWithaction = new Uri(url + action);
-                using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
+                using (Stream input = await httpManager.CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
                 {
                     if (input != null)
                     {
@@ -1057,7 +903,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -1090,7 +936,7 @@ namespace AceQL.Client.Api.Http
                 String result = null;
 
                 Uri urlWithaction = new Uri(url + action);
-                using (Stream input = await CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
+                using (Stream input = await httpManager.CallWithPostAsync(urlWithaction, parametersMap).ConfigureAwait(false))
                 {
                     if (input != null)
                     {
@@ -1112,7 +958,7 @@ namespace AceQL.Client.Api.Http
             }
             catch (Exception exception)
             {
-                await TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -1123,25 +969,6 @@ namespace AceQL.Client.Api.Http
                     throw new AceQLException(exception.Message, 0, exception, httpStatusCode);
                 }
             }
-        }
-
-
-        /// <summary>
-        /// Says if trace is on
-        /// </summary>
-        /// <returns>true if trace is on</returns>
-        internal bool IsTraceOn()
-        {
-            return traceOn;
-        }
-
-        /// <summary>
-        /// Sets the trace on/off
-        /// </summary>
-        /// <param name="traceOn">if true, trace will be on; else race will be off</param>
-        internal void SetTraceOn(bool traceOn)
-        {
-            this.traceOn = traceOn;
         }
 
         /// <summary>

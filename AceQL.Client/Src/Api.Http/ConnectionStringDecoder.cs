@@ -26,6 +26,7 @@ namespace AceQL.Client.Src.Api.Http
         private ICredentials proxyCredentials = null;
         private int timeout = 0;
         private bool enableDefaultSystemAuthentication = false;
+        private bool enableTrace;
 
 
         /// <summary>
@@ -167,6 +168,10 @@ namespace AceQL.Client.Src.Api.Http
                 {
                     theTimeout = Int32.Parse(value);
                 }
+                else if (property.ToLower().Equals("enableTrace"))
+                {
+                    enableTrace = Boolean.Parse(value);
+                }
             }
 
             Debug("connectionString   : " + connectionString);
@@ -196,7 +201,10 @@ namespace AceQL.Client.Src.Api.Http
         public string ProxyUri { get => proxyUri; }
         public ICredentials ProxyCredentials { get => proxyCredentials;  }
         public int Timeout { get => timeout;  }
+
         public bool EnableDefaultSystemAuthentication { get => enableDefaultSystemAuthentication; }
+
+        public bool EnableTrace { get => enableTrace; }
 
         internal static void Debug(string s)
         {

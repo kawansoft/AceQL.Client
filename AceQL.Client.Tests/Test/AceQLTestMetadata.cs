@@ -70,7 +70,7 @@ namespace AceQL.Client.Tests
             string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
-            string server = serverUrlLocalhost;
+            string server = serverUrlLinuxNoSSL;
             string database = "sampledb";
             string username = "cn=read-only-admin,dc=example,dc=com";
             string password = "password";

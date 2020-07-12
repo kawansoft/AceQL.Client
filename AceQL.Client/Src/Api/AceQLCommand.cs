@@ -21,6 +21,7 @@
 using AceQL.Client.Api.Http;
 using AceQL.Client.Api.Util;
 using AceQL.Client.Src.Api;
+using AceQL.Client.Src.Api.Util;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace AceQL.Client.Api
         /// The instance that does all http stuff
         /// </summary>
         private AceQLHttpApi aceQLHttpApi;
+        private SimpleTracer simpleTracer = new SimpleTracer();
 
         /// <summary>
         /// The text of the query.
@@ -105,6 +107,7 @@ namespace AceQL.Client.Api
 
             this.connection = connection;
             this.aceQLHttpApi = connection.aceQLHttpApi;
+            this.simpleTracer = aceQLHttpApi.simpleTracer;
 
         }
 
@@ -321,7 +324,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -451,7 +454,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
@@ -520,7 +523,7 @@ namespace AceQL.Client.Api
             }
             catch (Exception exception)
             {
-                await aceQLHttpApi.TraceAsync(exception.ToString()).ConfigureAwait(false);
+                await simpleTracer.TraceAsync(exception.ToString()).ConfigureAwait(false);
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
