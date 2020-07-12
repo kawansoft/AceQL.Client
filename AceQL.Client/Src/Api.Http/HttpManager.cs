@@ -1,4 +1,5 @@
-﻿using AceQL.Client.Src.Api.Util;
+﻿using AceQL.Client.Api.Util;
+using AceQL.Client.Src.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,6 +41,8 @@ namespace AceQL.Client.Src.Api.Http
         private SimpleTracer simpleTracer = new SimpleTracer();
 
         HttpClient httpClient;
+        private int proxyAuthentcationCall = 0;
+        private int proxyAuthentcationCallLimit = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpManager"/> class.
@@ -119,6 +122,20 @@ namespace AceQL.Client.Src.Api.Http
 
             this.httpStatusCode = response.StatusCode;
 
+            // Allows a retry for 407, because can happen time to time with Web proxies 
+            if (this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+            {
+                proxyAuthentcationCall++;
+                if (proxyAuthentcationCall <= proxyAuthentcationCallLimit) {
+                    Stream input = await CallWithGetReturnStreamAsync(url);
+                    return input;
+                }
+            }
+            else
+            {
+                proxyAuthentcationCall = 0;
+            }
+
             HttpContent content = response.Content;
 
             return await content.ReadAsStreamAsync().ConfigureAwait(false);
@@ -183,6 +200,22 @@ namespace AceQL.Client.Src.Api.Http
             }
 
             this.httpStatusCode = response.StatusCode;
+
+            // Allows a retry for 407, because can happen time to time with Web proxies 
+            if (this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+            {
+                proxyAuthentcationCall++;
+                if (proxyAuthentcationCall <= proxyAuthentcationCallLimit)
+                {
+                    Stream input = await CallWithPostAsync(theUrl, parameters);
+                    return input;
+                }
+            }
+            else
+            {
+                proxyAuthentcationCall = 0;
+            }
+
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
 

@@ -13,8 +13,8 @@ namespace AceQL.Client.Tests
         public static HttpClient buildHttpClient()
         {
             String proxyUri0 = "http://localhost:8080";
-            string proxyUsername = "ndepomereu2";
-            string proxyPassword = "loveme*$neo1";
+            string proxyUsername = "**********";
+            string proxyPassword = "**********";
             ICredentials proxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             WebProxy proxy = new WebProxy(proxyUri0);
