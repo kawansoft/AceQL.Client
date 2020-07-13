@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safester.Test
+namespace AceQL.Client.Tests
 {
     public class HttpTest
     {
@@ -70,7 +70,7 @@ namespace Safester.Test
             string url = "https://www.runsafester.net/api/login";
             Uri theUri = new Uri(url);
 
-            Console.WriteLine("calling: " + url);
+            AceQLConsole.WriteLine("calling: " + url);
 
             Dictionary<string, string> parametersMap = new Dictionary<string, string>
             {
@@ -78,13 +78,13 @@ namespace Safester.Test
                 { "passphrase",  "82223bafcd814f5d5600"},
             };
 
-            Console.WriteLine("calling parameters:");
+            AceQLConsole.WriteLine("calling parameters:");
 
             foreach (KeyValuePair<string, string> kvp in parametersMap)
             {
-                Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                AceQLConsole.WriteLine("Key/Value = " +  kvp.Key + "/" +  kvp.Value);
             }
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
             HttpTest httpTest = new HttpTest();
 
@@ -98,7 +98,7 @@ namespace Safester.Test
                 }
             }
 
-            Console.WriteLine("result: " + result);
+            AceQLConsole.WriteLine("result: " + result);
             Console.ReadLine();
 
         }

@@ -60,6 +60,7 @@
     <Compile Include="Test\AceQLTestColumnAsKeyName.cs" />
     <Compile Include="Test\AceQLTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\AceQLConsole.cs" />
     <Compile Include="Test\ConsoleEmul.cs" />
     <Compile Include="Test\HttpClientBuilder.cs" />
     <Compile Include="Test\HttpClientLoopTest.cs" />

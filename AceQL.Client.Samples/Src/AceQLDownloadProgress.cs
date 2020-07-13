@@ -42,15 +42,15 @@ namespace AceQL.Client.Samples
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -110,16 +110,16 @@ namespace AceQL.Client.Samples
 
             await connection.OpenAsync();
 
-            Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
-            Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQL local folder: ");
+            AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
             AceQLTransaction transaction = await connection.BeginTransactionAsync();
             await transaction.CommitAsync();
             transaction.Dispose();
 
-            Console.WriteLine("Before delete from orderlog");
+            AceQLConsole.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -134,7 +134,7 @@ namespace AceQL.Client.Samples
             // Do next inserts in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
 
-            Console.WriteLine("Before insert into orderlog");
+            AceQLConsole.WriteLine("Before insert into orderlog");
             try
             {
                 sql =
@@ -180,7 +180,7 @@ namespace AceQL.Client.Samples
                 throw exception;
             }
 
-            Console.WriteLine("Before select *  from orderlog");
+            AceQLConsole.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -193,9 +193,9 @@ namespace AceQL.Client.Samples
                 int k = 0;
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"

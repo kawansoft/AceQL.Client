@@ -38,15 +38,15 @@ namespace AceQL.Client.Samples.Src
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -54,54 +54,54 @@ namespace AceQL.Client.Samples.Src
 
         static async Task DoIt(string[] args)
         {
-            Console.WriteLine("Building connection with credential...");
+            AceQLConsole.WriteLine("Building connection with credential...");
             AceQLConnection connection = await ConnectionBuilderAsyncWithCredential().ConfigureAwait(false);
             WebDocSample webDocSamples = new WebDocSample(connection);
 
             await webDocSamples.DeleteCustomers().ConfigureAwait(false);
 
-            Console.WriteLine("Insert customer...");
+            AceQLConsole.WriteLine("Insert customer...");
             await webDocSamples.InsertCustomer().ConfigureAwait(false);
 
-            Console.WriteLine("display customer 1...");
+            AceQLConsole.WriteLine("display customer 1...");
             await webDocSamples.SelectCustomerOne().ConfigureAwait(false);
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
-            Console.WriteLine("update customer...");
+            AceQLConsole.WriteLine("update customer...");
             await webDocSamples.UpdateCustomer().ConfigureAwait(false);
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
-            Console.WriteLine("display customer...");
+            AceQLConsole.WriteLine("display customer...");
             await webDocSamples.SelectCustomer().ConfigureAwait(false);
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
             await webDocSamples.DeleteCustomers().ConfigureAwait(false);
             await webDocSamples.DeleteOrderlogs().ConfigureAwait(false);
 
             await webDocSamples.InsertCustomerAndOrderLogAsync(1, 1).ConfigureAwait(false);
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
             await webDocSamples.DeleteOrderlogs().ConfigureAwait(false);
 
-            Console.WriteLine();
-            Console.WriteLine("Insert BLOB...");
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("Insert BLOB...");
             await webDocSamples.InsertBlob(1, 1).ConfigureAwait(false);
 
-            Console.WriteLine("Select BLOB...");
+            AceQLConsole.WriteLine("Select BLOB...");
             await webDocSamples.SelectBlob(1, 1).ConfigureAwait(false);
 
             await webDocSamples.DeleteOrderlogs();
 
-            Console.WriteLine();
-            Console.WriteLine("Insert BLOB with ProgressIndicator...");
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("Insert BLOB with ProgressIndicator...");
             await webDocSamples.InsertBlobProgressIndicator(1, 1).ConfigureAwait(false);
 
-            Console.WriteLine();
-            Console.WriteLine("Select BLOB...");
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("Select BLOB...");
             await webDocSamples.SelectBlob(1, 1).ConfigureAwait(false);
 
             await connection.CloseAsync();
-            Console.WriteLine("Connection closed.");
+            AceQLConsole.WriteLine("Connection closed.");
 
         }
 
@@ -116,7 +116,7 @@ namespace AceQL.Client.Samples.Src
                 command.Parameters.AddWithValue("@fname", "Jim");
 
                 int rows = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("Rows updated: " + rows);
+                AceQLConsole.WriteLine("Rows updated: " + rows);
             }
 
         }
@@ -130,11 +130,11 @@ namespace AceQL.Client.Samples.Src
             {
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                    Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
-                    Console.WriteLine("lname         : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("customer_title: " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("lname         : " + dataReader.GetValue(i++));
                 }
             }
 
@@ -153,18 +153,18 @@ namespace AceQL.Client.Samples.Src
                 while (dataReader.Read())
                 {
                     //customer_id integer     not null,
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                    Console.WriteLine("customer_title: " + dataReader.GetValue(i++));
-                    Console.WriteLine("fname         : " + dataReader.GetValue(i++));
-                    Console.WriteLine("lname         : " + dataReader.GetValue(i++));
-                    Console.WriteLine("addressline   : " + dataReader.GetValue(i++));
-                    Console.WriteLine("town          : " + dataReader.GetValue(i++));
-                    Console.WriteLine("zipcode       : " + dataReader.GetValue(i++));
-                    Console.WriteLine("phone         : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("customer_title: " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("fname         : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("lname         : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("addressline   : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("town          : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("zipcode       : " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("phone         : " + dataReader.GetValue(i++));
 
-                    Console.WriteLine("Is phone NULL? : " + dataReader.IsDBNull(7));
+                    AceQLConsole.WriteLine("Is phone NULL? : " + dataReader.IsDBNull(7));
                 }
             }
         }
@@ -216,7 +216,7 @@ namespace AceQL.Client.Samples.Src
             // Attempt to establish a connection to the remote SQL database:
             await connection.OpenAsync();
 
-            Console.WriteLine("Connected to database " + database + "!");
+            AceQLConsole.WriteLine("Connected to database " + database + "!");
 
             return connection;
         }
@@ -244,7 +244,7 @@ namespace AceQL.Client.Samples.Src
             // Opens the connection with the remote database
             await connection.OpenAsync();
 
-            Console.WriteLine("Successfully connected to database " + database + "!");
+            AceQLConsole.WriteLine("Successfully connected to database " + database + "!");
 
             return connection;
         }
@@ -290,7 +290,7 @@ namespace AceQL.Client.Samples.Src
             using (AceQLCommand command = new AceQLCommand(sql, connection))
             {
                 int rows = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("Rows updated: " + rows);
+                AceQLConsole.WriteLine("Rows updated: " + rows);
             }
 
         }
@@ -316,7 +316,7 @@ namespace AceQL.Client.Samples.Src
             command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
             int rows = await command.ExecuteNonQueryAsync();
-            Console.WriteLine("Rows updated: " + rows);
+            AceQLConsole.WriteLine("Rows updated: " + rows);
 
         }
 
@@ -365,7 +365,7 @@ namespace AceQL.Client.Samples.Src
 
                 command = new AceQLCommand(sql, connection);
 
-                Console.WriteLine("insert into orderlog...");
+                AceQLConsole.WriteLine("insert into orderlog...");
 
                 command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@item_id", itemId);
@@ -416,8 +416,8 @@ namespace AceQL.Client.Samples.Src
                 string blobPath = userPath + "\\koala.jpg";
                 Stream stream = new FileStream(blobPath, FileMode.Open, FileAccess.Read);
 
-                Console.WriteLine("blobPath: " + blobPath);
-                Console.WriteLine("insert into orderlog...");
+                AceQLConsole.WriteLine("blobPath: " + blobPath);
+                AceQLConsole.WriteLine("insert into orderlog...");
 
                 command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@item_id", itemId);
@@ -467,8 +467,8 @@ namespace AceQL.Client.Samples.Src
                 Stream stream = new FileStream(blobPath, FileMode.Open, FileAccess.Read);
                 long length = new FileInfo(blobPath).Length;
 
-                Console.WriteLine("blobPath: " + blobPath);
-                Console.WriteLine("insert into orderlog...");
+                AceQLConsole.WriteLine("blobPath: " + blobPath);
+                AceQLConsole.WriteLine("insert into orderlog...");
 
                 command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@item_id", itemId);
@@ -520,14 +520,14 @@ namespace AceQL.Client.Samples.Src
                     while (dataReader.Read())
                     {
                         int i = 0;
-                        Console.WriteLine("customer_id   : " + dataReader.GetValue(i++));
-                        Console.WriteLine("item_id: " + dataReader.GetValue(i++));
+                        AceQLConsole.WriteLine("customer_id   : " + dataReader.GetValue(i++));
+                        AceQLConsole.WriteLine("item_id: " + dataReader.GetValue(i++));
 
                         string userPath =
                             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                         string blobPath = userPath + "\\koala_download.jpg";
 
-                        Console.WriteLine("Creating file from server BLOB in: " + blobPath);
+                        AceQLConsole.WriteLine("Creating file from server BLOB in: " + blobPath);
 
                         // Download Blob
                         using (Stream stream = await dataReader.GetStreamAsync(i++))

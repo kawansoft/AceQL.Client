@@ -24,35 +24,35 @@ namespace AceQL.Client.Tests
                 {
                     OutParamBuilder outParamBuilder = new OutParamBuilder(stream);
 
-                    Console.WriteLine();
-                    Console.WriteLine("------- Dicts Display ------");
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
+                    AceQLConsole.WriteLine("------- Dicts Display ------");
+                    AceQLConsole.WriteLine();
 
-                    Console.WriteLine("------- GetvaluesPerParamIndex() ------");
+                    AceQLConsole.WriteLine("------- GetvaluesPerParamIndex() ------");
                     foreach (KeyValuePair<int, string> outParameter in outParamBuilder.GetvaluesPerParamIndex())
                     {
-                        Console.WriteLine(outParameter.Key + " / " + outParameter.Value);
+                        AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
                     }
 
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
 
-                    Console.WriteLine("------- GetvaluesPerParamName() ------");
+                    AceQLConsole.WriteLine("------- GetvaluesPerParamName() ------");
                     foreach (KeyValuePair<string, string> outParameter in outParamBuilder.GetvaluesPerParamName())
                     {
-                        Console.WriteLine(outParameter.Key + " / " + outParameter.Value);
+                        AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
                     }
 
                 }
                 */
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -112,14 +112,14 @@ namespace AceQL.Client.Tests
                     {
                         paramName = reader.Value.ToString();
                         paramName = paramName.Trim();
-                        Console.WriteLine("property: " + paramName + ":");
+                        AceQLConsole.WriteLine("property: " + paramName + ":");
                     }
                     else if(reader.TokenType == JsonToken.String)
                     {
    
                         paramValue = reader.Value.ToString();
-                        Console.WriteLine("paramIndex: " + paramName + ":");
-                        Console.WriteLine("value     : " + paramValue + ":");
+                        AceQLConsole.WriteLine("paramIndex: " + paramName + ":");
+                        AceQLConsole.WriteLine("value     : " + paramValue + ":");
                         if (paramValue.Equals("NULL"))
                         {
                             paramValue = null;
@@ -140,7 +140,7 @@ namespace AceQL.Client.Tests
                     // We are done at end of row
                     if (reader.TokenType.Equals(JsonToken.EndObject))
                     {
-                        Console.WriteLine("Break!");
+                        AceQLConsole.WriteLine("Break!");
                         break;
                     }
                     */
@@ -148,20 +148,20 @@ namespace AceQL.Client.Tests
  
             }
 
-            Console.WriteLine();
-            Console.WriteLine("------- dict display ------");
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("------- dict display ------");
+            AceQLConsole.WriteLine();
 
             foreach (KeyValuePair<int, string> outParameter in valuesPerParamIndex)
             {
-                Console.WriteLine(outParameter.Key + " / " + outParameter.Value);
+                AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
             }
 
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
             foreach (KeyValuePair<string, string> outParameter in valuesPerParamName)
             {
-                Console.WriteLine(outParameter.Key + " / " + outParameter.Value);
+                AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
             }
 
             stream.Close();
@@ -171,8 +171,8 @@ namespace AceQL.Client.Tests
         public static void JsonParseResultAsString()
         {
             string jsonResult = File.ReadAllText(@"C:\test\json_out.txt");
-            Console.WriteLine(jsonResult);
-            Console.WriteLine();
+            AceQLConsole.WriteLine(jsonResult);
+            AceQLConsole.WriteLine();
 
             dynamic xj = JsonConvert.DeserializeObject(jsonResult);
             dynamic xjParametersOutPername = xj.parameters_out_per_name;
@@ -180,20 +180,20 @@ namespace AceQL.Client.Tests
             if (xjParametersOutPername != null)
             {
                 String dictStr = xjParametersOutPername.ToString();
-                Console.WriteLine("dictStr:" + dictStr);
-                Console.WriteLine();
+                AceQLConsole.WriteLine("dictStr:" + dictStr);
+                AceQLConsole.WriteLine();
 
                 Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(dictStr);
 
                 // For each parameter 1) get the index 2) get the dbType
                 foreach (KeyValuePair<String, string> theParameter in dict)
                 {
-                    Console.WriteLine(theParameter.Key + " / " + theParameter.Value);
+                    AceQLConsole.WriteLine(theParameter.Key + " / " + theParameter.Value);
                 }
             }
             else
             {
-                Console.WriteLine("No Out parameters per name");
+                AceQLConsole.WriteLine("No Out parameters per name");
             }
         }
     }

@@ -40,15 +40,15 @@ namespace AceQL.Client.Tests
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -105,11 +105,11 @@ namespace AceQL.Client.Tests
 
             await connection.OpenAsync();
 
-            Console.WriteLine("host: " + connection.ConnectionString);
-            Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
-            Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            AceQLConsole.WriteLine("host: " + connection.ConnectionString);
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQL local folder: ");
+            AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
             AceQLTransaction transaction = await connection.BeginTransactionAsync();
             await transaction.CommitAsync();
@@ -161,9 +161,9 @@ namespace AceQL.Client.Tests
                 //await dataReader.ReadAsync(new CancellationTokenSource().Token)
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -176,7 +176,7 @@ namespace AceQL.Client.Tests
                 }
             }
 
-            Console.WriteLine("Done.");
+            AceQLConsole.WriteLine("Done.");
 
         }
 

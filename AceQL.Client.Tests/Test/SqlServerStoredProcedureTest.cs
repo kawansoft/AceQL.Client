@@ -62,22 +62,22 @@ namespace AceQL.Client.Tests
                 {
                     SqlServerStoredProcedureTest myRemoteConnection = new SqlServerStoredProcedureTest(
                         connection);
-                    Console.WriteLine("Connection created....");
+                    AceQLConsole.WriteLine("Connection created....");
 
                     await myRemoteConnection.CallStoredProcedure();
                     await connection.CloseAsync();
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
 
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
         }
@@ -152,10 +152,10 @@ namespace AceQL.Client.Tests
             command.Parameters.Add(aceQLParameter2);
             command.Parameters.Add(aceQLParameter3);
 
-            Console.WriteLine(sql);
-            Console.WriteLine("BEFORE execute @parm2: " + aceQLParameter2.ParameterName + " / " + aceQLParameter2.Value + " (" + aceQLParameter2.Value.GetType() + ")");
-            Console.WriteLine("BEFORE execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
-            Console.WriteLine();
+            AceQLConsole.WriteLine(sql);
+            AceQLConsole.WriteLine("BEFORE execute @parm2: " + aceQLParameter2.ParameterName + " / " + aceQLParameter2.Value + " (" + aceQLParameter2.Value.GetType() + ")");
+            AceQLConsole.WriteLine("BEFORE execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
+            AceQLConsole.WriteLine();
 
             // Our dataReader must be disposed to delete underlying downloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
@@ -164,12 +164,12 @@ namespace AceQL.Client.Tests
                 while (dataReader.Read())
                 {
                     int i = 2;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++));
                 }
             }
-            Console.WriteLine();
-            Console.WriteLine("AFTER execute @parm2: " + aceQLParameter2.ParameterName + " / " + aceQLParameter2.Value + " (" + aceQLParameter2.Value.GetType() + ")");
-            Console.WriteLine("AFTER execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("AFTER execute @parm2: " + aceQLParameter2.ParameterName + " / " + aceQLParameter2.Value + " (" + aceQLParameter2.Value.GetType() + ")");
+            AceQLConsole.WriteLine("AFTER execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
 
         }
      

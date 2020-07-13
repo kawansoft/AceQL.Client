@@ -64,8 +64,8 @@ namespace AceQL.Client.Samples
                     databaseToUse = File.ReadAllText(path);
                 }
 
-                Console.WriteLine("path         : " + path + ":");
-                Console.WriteLine("databaseToUse: " + databaseToUse + ":");
+                AceQLConsole.WriteLine("path         : " + path + ":");
+                AceQLConsole.WriteLine("databaseToUse: " + databaseToUse + ":");
                 database = databaseToUse;
 
                 bool doContinue = true;
@@ -77,15 +77,15 @@ namespace AceQL.Client.Samples
 
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -138,7 +138,7 @@ namespace AceQL.Client.Samples
                 };
 
                 await connection2.OpenAsync();
-                Console.WriteLine("connection2.GetServerVersion(): " + await connection2.GetServerVersionAsync());
+                AceQLConsole.WriteLine("connection2.GetServerVersion(): " + await connection2.GetServerVersionAsync());
 
                 await connection2.LogoutAsync().ConfigureAwait(false);
 
@@ -156,17 +156,17 @@ namespace AceQL.Client.Samples
             string OUT_DIRECTORY = "c:\\test\\out\\";
             await connection.OpenAsync();
 
-            Console.WriteLine("ConnectionString: " + connection.ConnectionString);
-            Console.WriteLine();
-            Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
-            Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            AceQLConsole.WriteLine("ConnectionString: " + connection.ConnectionString);
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQL local folder: ");
+            AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
             if (!CONSOLE_INPUT_DONE)
             {
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
                 CONSOLE_INPUT_DONE = true;
             }
@@ -202,7 +202,7 @@ namespace AceQL.Client.Samples
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.ToString());
             }
 
             sql = "delete from dustomer where customer_id = @parm1 or fname = @parm2  ";
@@ -220,7 +220,7 @@ namespace AceQL.Client.Samples
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.ToString());
             }
 
 
@@ -258,9 +258,9 @@ namespace AceQL.Client.Samples
                 //await dataReader.ReadAsync(new CancellationTokenSource().Token)
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -271,7 +271,7 @@ namespace AceQL.Client.Samples
                 }
             }
 
-            Console.WriteLine("Before delete from orderlog 2");
+            AceQLConsole.WriteLine("Before delete from orderlog 2");
 
             // Do next delete in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -281,7 +281,7 @@ namespace AceQL.Client.Samples
             await command.ExecuteNonQueryAsync();
             command.Dispose();
 
-            Console.WriteLine("After delete from orderlog 2");
+            AceQLConsole.WriteLine("After delete from orderlog 2");
 
             await transaction.CommitAsync();
 
@@ -335,12 +335,12 @@ namespace AceQL.Client.Samples
                     command.Parameters.AddWithValue("@parm8", 1);
                     command.Parameters.AddWithValue("@parm9", j * 2000);
 
-                    Console.WriteLine("Before await command.ExecuteNonQueryAsync()");
+                    AceQLConsole.WriteLine("Before await command.ExecuteNonQueryAsync()");
                     await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("After await command.ExecuteNonQueryAsync()");
+                    AceQLConsole.WriteLine("After await command.ExecuteNonQueryAsync()");
                 }
 
-                Console.WriteLine("transaction.CommitAsync()");
+                AceQLConsole.WriteLine("transaction.CommitAsync()");
                 await transaction.CommitAsync();
             }
             catch (Exception exception)
@@ -349,7 +349,7 @@ namespace AceQL.Client.Samples
                 throw exception;
             }
 
-            Console.WriteLine("Before select *  from orderlog");
+            AceQLConsole.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -362,10 +362,10 @@ namespace AceQL.Client.Samples
                 int k = 0;
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("Get values using ordinal values:");
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("Get values using ordinal values:");
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -385,9 +385,9 @@ namespace AceQL.Client.Samples
                     //is_delivered
                     //quantity
 
-                    Console.WriteLine();
-                    Console.WriteLine("Get values using column name values:");
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
+                    AceQLConsole.WriteLine();
+                    AceQLConsole.WriteLine("Get values using column name values:");
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
                         + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_id")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
@@ -398,8 +398,8 @@ namespace AceQL.Client.Samples
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("is_delivered")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
 
-                    Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
-                    Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
+                    AceQLConsole.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
+                    AceQLConsole.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
 
                     // Download Blobs
                     int index = getIndexFromDatabase();

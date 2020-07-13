@@ -25,25 +25,25 @@ namespace AceQL.Client.Tests
                 HttpResponseMessage response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
                 Stream stream = await response.Content.ReadAsStreamAsync();
                 var responseString = new StreamReader(stream).ReadToEnd();
-                Console.WriteLine("response " + responseString);
+                AceQLConsole.WriteLine("response " + responseString);
 
                 HttpStatusCode statusCode = response.StatusCode;
                 if (statusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
                 {
-                    Console.WriteLine("REBUILD HttpClient");
+                    AceQLConsole.WriteLine("REBUILD HttpClient");
                     httpClient.Dispose();
                     httpClient = HttpClientBuilder.buildHttpClient();
                 }
 
-                Console.WriteLine();
+                AceQLConsole.WriteLine();
 
                 url = "http://www.runsafester.net";
                 response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
                 stream = await response.Content.ReadAsStreamAsync();
                 responseString = new StreamReader(stream).ReadToEnd();
-                Console.WriteLine("response " + responseString);
+                AceQLConsole.WriteLine("response " + responseString);
 
-                Console.WriteLine();
+                AceQLConsole.WriteLine();
                 //Thread.Sleep(100);
             }
             httpClient.Dispose();

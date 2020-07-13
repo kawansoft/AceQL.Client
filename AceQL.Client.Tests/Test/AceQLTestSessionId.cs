@@ -39,15 +39,15 @@ namespace AceQL.Client.Tests
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -70,7 +70,7 @@ namespace AceQL.Client.Tests
             if (! doItWithCredential)
             {
                 connectionString += $"; Username={username}; SessionId={sessionId}";
-                Console.WriteLine("Using connectionString with SessionId: " + connectionString);
+                AceQLConsole.WriteLine("Using connectionString with SessionId: " + connectionString);
 
                 // Make sure connection is always closed to close and release server connection into the pool
                 using (AceQLConnection connection = new AceQLConnection(connectionString))
@@ -81,7 +81,7 @@ namespace AceQL.Client.Tests
             }
             else
             {
-                Console.WriteLine("Using AceQLCredential with SessionId: " + sessionId);
+                AceQLConsole.WriteLine("Using AceQLCredential with SessionId: " + sessionId);
                 AceQLCredential credential = new AceQLCredential(username, sessionId);
 
                 // Make sure connection is always closed to close and release server connection into the pool

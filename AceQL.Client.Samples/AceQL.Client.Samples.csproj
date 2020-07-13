@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\AceQLConsole.cs" />
     <Compile Include="Src\AceQLDownloadProgress.cs" />
     <Compile Include="Src\AceQLExample.cs" />
     <Compile Include="Src\MainStart.cs" />

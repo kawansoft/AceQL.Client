@@ -66,29 +66,29 @@ namespace AceQL.Client.Samples
 
                     // Delete previous instances, so that user can recall 
 
-                    Console.WriteLine("deleting customer...");
+                    AceQLConsole.WriteLine("deleting customer...");
                     await myRemoteConnection.DeleteCustomerAsync(customerId).ConfigureAwait(false); ;
 
-                    Console.WriteLine("deleting orderlog...");
+                    AceQLConsole.WriteLine("deleting orderlog...");
                     await myRemoteConnection.DeleteOrderlogAsync(customerId, itemId).ConfigureAwait(false); ;
 
                     await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId).ConfigureAwait(false); ;
                     await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId).ConfigureAwait(false); ;
 
                     await connection.CloseAsync().ConfigureAwait(false); ;
-                    Console.WriteLine("The end...");
+                    AceQLConsole.WriteLine("The end...");
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
 
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
         }
@@ -256,10 +256,10 @@ namespace AceQL.Client.Samples
                     string fname = dataReader.GetString(i++);
                     string lname = dataReader.GetString(i++);
 
-                    Console.WriteLine();
-                    Console.WriteLine("customer_id : " + customerId2);
-                    Console.WriteLine("fname       : " + fname);
-                    Console.WriteLine("lname       : " + lname);
+                    AceQLConsole.WriteLine();
+                    AceQLConsole.WriteLine("customer_id : " + customerId2);
+                    AceQLConsole.WriteLine("fname       : " + fname);
+                    AceQLConsole.WriteLine("lname       : " + lname);
                 }
             }
 
@@ -288,14 +288,14 @@ namespace AceQL.Client.Samples
                     bool is_delivered = dataReader.GetInt32(i++) == 1 ? true : false;
                     int quantity = dataReader.GetInt32(i++);
 
-                    Console.WriteLine("customer_id : " + customerId2);
-                    Console.WriteLine("item_id     : " + itemId2);
-                    Console.WriteLine("description : " + description);
-                    Console.WriteLine("cost_price  : " + costPrice);
-                    Console.WriteLine("date_placed : " + datePlaced.Date);
-                    Console.WriteLine("date_shipped: " + dateShipped);
-                    Console.WriteLine("is_delivered: " + is_delivered);
-                    Console.WriteLine("quantity    : " + quantity);
+                    AceQLConsole.WriteLine("customer_id : " + customerId2);
+                    AceQLConsole.WriteLine("item_id     : " + itemId2);
+                    AceQLConsole.WriteLine("description : " + description);
+                    AceQLConsole.WriteLine("cost_price  : " + costPrice);
+                    AceQLConsole.WriteLine("date_placed : " + datePlaced.Date);
+                    AceQLConsole.WriteLine("date_shipped: " + dateShipped);
+                    AceQLConsole.WriteLine("is_delivered: " + is_delivered);
+                    AceQLConsole.WriteLine("quantity    : " + quantity);
                 }
             }
 

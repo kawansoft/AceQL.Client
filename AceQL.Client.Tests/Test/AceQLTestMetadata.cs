@@ -39,18 +39,18 @@ namespace AceQL.Client.Tests
         {
             try
             {
-                Console.WriteLine("AceQLTestMetadata Begin...");
+                AceQLConsole.WriteLine("AceQLTestMetadata Begin...");
                 DoIt(args).Wait();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
 
@@ -107,11 +107,11 @@ namespace AceQL.Client.Tests
         {
             await connection.OpenAsync();
 
-            Console.WriteLine("host: " + connection.ConnectionString);
-            Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
-            Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            AceQLConsole.WriteLine("host: " + connection.ConnectionString);
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQL local folder: ");
+            AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
             RemoteDatabaseMetaData remoteDatabaseMetaData = connection.GetRemoteDatabaseMetaData();
 
@@ -128,49 +128,49 @@ namespace AceQL.Client.Tests
             }
 
             System.Diagnostics.Process.Start(schemaFilePath);
-            Console.WriteLine("Creating schema done.");
+            AceQLConsole.WriteLine("Creating schema done.");
 
             JdbcDatabaseMetaData jdbcDatabaseMetaData = await remoteDatabaseMetaData.GetJdbcDatabaseMetaDataAsync();
-            Console.WriteLine("Major Version: " + jdbcDatabaseMetaData.GetJDBCMajorVersion);
-            Console.WriteLine("Minor Version: " + jdbcDatabaseMetaData.GetJDBCMinorVersion);
-            Console.WriteLine("IsReadOnly   : " + jdbcDatabaseMetaData.IsReadOnly);
+            AceQLConsole.WriteLine("Major Version: " + jdbcDatabaseMetaData.GetJDBCMajorVersion);
+            AceQLConsole.WriteLine("Minor Version: " + jdbcDatabaseMetaData.GetJDBCMinorVersion);
+            AceQLConsole.WriteLine("IsReadOnly   : " + jdbcDatabaseMetaData.IsReadOnly);
 
-            Console.WriteLine("JdbcDatabaseMetaData: " + jdbcDatabaseMetaData.ToString().Substring(1, 200));
-            Console.WriteLine();
+            AceQLConsole.WriteLine("JdbcDatabaseMetaData: " + jdbcDatabaseMetaData.ToString().Substring(1, 200));
+            AceQLConsole.WriteLine();
 
-            Console.WriteLine("Get the table names:");
+            AceQLConsole.WriteLine("Get the table names:");
             List<String> tableNames = await remoteDatabaseMetaData.GetTableNamesAsync();
 
-            Console.WriteLine("Print the column details of each table:");
+            AceQLConsole.WriteLine("Print the column details of each table:");
             foreach (String tableName in tableNames)
             {
                 Table table = await remoteDatabaseMetaData.GetTableAsync(tableName);
 
-                Console.WriteLine("Columns:");
+                AceQLConsole.WriteLine("Columns:");
                 foreach(Column column in table.Columns)
                 {
-                    Console.WriteLine(column);
+                    AceQLConsole.WriteLine(column.ToString());
                 }
             }
 
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
             String name = "orderlog";
             Table tableOrderlog = await remoteDatabaseMetaData.GetTableAsync(name);
 
-            Console.WriteLine("table name: " + tableOrderlog.TableName);
-            Console.WriteLine("table keys: ");
+            AceQLConsole.WriteLine("table name: " + tableOrderlog.TableName);
+            AceQLConsole.WriteLine("table keys: ");
             List<PrimaryKey> primakeys = tableOrderlog.PrimaryKeys;
             foreach (PrimaryKey primaryKey in primakeys)
             {
-                Console.WriteLine("==> primaryKey: " + primaryKey);
+                AceQLConsole.WriteLine("==> primaryKey: " + primaryKey);
             }
-            Console.WriteLine();
+            AceQLConsole.WriteLine();
 
-            Console.WriteLine("Full table: " + tableOrderlog);
+            AceQLConsole.WriteLine("Full table: " + tableOrderlog);
 
-            Console.WriteLine();
-            Console.WriteLine("Done.");
+            AceQLConsole.WriteLine();
+            AceQLConsole.WriteLine("Done.");
 
         }
 

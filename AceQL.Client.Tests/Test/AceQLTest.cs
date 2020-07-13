@@ -39,15 +39,15 @@ namespace AceQL.Client.Tests
                 DoIt(args).Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
-                Console.WriteLine();
-                Console.WriteLine("Press enter to close....");
+                AceQLConsole.WriteLine();
+                AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-                Console.WriteLine(exception.StackTrace);
-                Console.WriteLine("Press enter to close...");
+                AceQLConsole.WriteLine(exception.ToString());
+                AceQLConsole.WriteLine(exception.StackTrace);
+                AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
         }
@@ -79,7 +79,7 @@ namespace AceQL.Client.Tests
             //LDAP Tests
             if (useLdapAuth)
             {
-                Console.WriteLine("WARNING: using LDAP!");
+                AceQLConsole.WriteLine("WARNING: using LDAP!");
                 username = "cn=read-only-admin,dc=example,dc=com";
                 //username = "CN=L. Eagle,O=Sue\\2C Grabbit and Runn,C=GB";
                 password = "password";
@@ -102,7 +102,7 @@ namespace AceQL.Client.Tests
             {
                 connectionString += $"Username={username}; Password={password}; EnableDefaultSystemAuthentication=True";
 
-                Console.WriteLine("Using connectionString with Username & Password: " + connectionString);
+                AceQLConsole.WriteLine("Using connectionString with Username & Password: " + connectionString);
 
                 // Make sure connection is always closed to close and release server connection into the pool
                 using (AceQLConnection connection = new AceQLConnection(connectionString))
@@ -115,7 +115,7 @@ namespace AceQL.Client.Tests
             {
 
                 AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
-                Console.WriteLine("Using AceQLCredential : " + credential);
+                AceQLConsole.WriteLine("Using AceQLCredential : " + credential);
 
                 // Make sure connection is always closed to close and release server connection into the pool
                 using (AceQLConnection connection = new AceQLConnection(connectionString))
@@ -138,11 +138,11 @@ namespace AceQL.Client.Tests
 
             await connection.OpenAsync();
 
-            Console.WriteLine("host: " + connection.ConnectionString);
-            Console.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            Console.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
-            Console.WriteLine("AceQL local folder: ");
-            Console.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
+            AceQLConsole.WriteLine("host: " + connection.ConnectionString);
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQL local folder: ");
+            AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
             AceQLTransaction transaction = await connection.BeginTransactionAsync();
             await transaction.CommitAsync();
@@ -193,9 +193,9 @@ namespace AceQL.Client.Tests
                 //await dataReader.ReadAsync(new CancellationTokenSource().Token)
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
+                    AceQLConsole.WriteLine();
                     int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -206,7 +206,7 @@ namespace AceQL.Client.Tests
                 }
             }
 
-            Console.WriteLine("Before delete from orderlog");
+            AceQLConsole.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
             //transaction = await connection.BeginTransactionAsync();
@@ -218,7 +218,7 @@ namespace AceQL.Client.Tests
 
             transaction = await connection.BeginTransactionAsync();
 
-            Console.WriteLine("Before insert into orderlog");
+            AceQLConsole.WriteLine("Before insert into orderlog");
             try
             {
                 for (int j = 1; j < 4; j++)
@@ -275,7 +275,7 @@ namespace AceQL.Client.Tests
                 throw exception;
             }
 
-            Console.WriteLine("Before select *  from orderlog");
+            AceQLConsole.WriteLine("Before select *  from orderlog");
 
             // Do next selects in a transaction because of BLOB
             transaction = await connection.BeginTransactionAsync();
@@ -288,10 +288,10 @@ namespace AceQL.Client.Tests
                 int k = 0;
                 while (dataReader.Read())
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Get values using ordinal values:");
+                    AceQLConsole.WriteLine();
+                    AceQLConsole.WriteLine("Get values using ordinal values:");
                     int i = 0;
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
@@ -311,9 +311,9 @@ namespace AceQL.Client.Tests
                     //is_delivered
                     //quantity
 
-                    Console.WriteLine();
-                    Console.WriteLine("Get values using column name values:");
-                    Console.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
+                    AceQLConsole.WriteLine();
+                    AceQLConsole.WriteLine("Get values using column name values:");
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("customer_id"))
                         + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("item_id")) + "\n"
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("description")) + "\n"
@@ -325,8 +325,8 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(dataReader.GetOrdinal("quantity")));
 
 
-                    Console.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
-                    Console.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
+                    AceQLConsole.WriteLine("==> dataReader.IsDBNull(3): " + dataReader.IsDBNull(3));
+                    AceQLConsole.WriteLine("==> dataReader.IsDBNull(4): " + dataReader.IsDBNull(4));
 
                     // Download Blobs
                     string blobPath = OUT_DIRECTORY + "username_koala_" + k + ".jpg";
