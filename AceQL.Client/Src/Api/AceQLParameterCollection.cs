@@ -32,13 +32,13 @@ namespace AceQL.Client.Api
     /// </summary>
     public class AceQLParameterCollection : IList, ICollection, IEnumerable
     {
-        internal static bool DEBUG = false;
+        internal static bool DEBUG;
 
         /// <summary>
         /// The AceQL Parameters
         /// </summary>
-        private List<AceQLParameter> aceqlParameters = new List<AceQLParameter>();
-        private string cmdText = null;
+        private readonly List<AceQLParameter> aceqlParameters = new List<AceQLParameter>();
+        private readonly string cmdText;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLParameterCollection"/> class.
@@ -285,11 +285,6 @@ namespace AceQL.Client.Api
         /// <exception cref="System.ArgumentNullException">If parameterName is null.</exception>
         public int IndexOf(object value)
         {
-            //if (value == null)
-            //{
-            //    throw new ArgumentNullException("value is null!");
-            //}
-
             for (int i = 0; i < aceqlParameters.Count; i++)
             {
                 AceQLParameter aceQLParameter = aceqlParameters[i];

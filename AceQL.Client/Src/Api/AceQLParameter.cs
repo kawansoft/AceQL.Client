@@ -37,23 +37,23 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The parameter name
         /// </summary>
-        private string parameterName;
+        private readonly string parameterName;
         /// <summary>
         /// The value
         /// </summary>
-        private object theValue = null;
+        private object theValue;
 
         /// <summary>
         /// The database type
         /// </summary>
         private AceQLNullType aceQLNullType = AceQLNullType.VARCHAR;
 
-        private bool isNullValue = false;
+        private bool isNullValue;
 
         /// <summary>
         /// The length of the BLOB to upload
         /// </summary>
-        private long blobLength = 0;
+        private readonly long blobLength;
 
         /// <summary>
         /// The parameter direction Input, InputOutput, Output. Defaults to Input.
@@ -118,7 +118,7 @@ namespace AceQL.Client.Api
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <exception cref="NotImplementedException"></exception>
-        private void CheckParameterName(string parameterName)
+        private static void CheckParameterName(string parameterName)
         {
             if (parameterName == null)
             {
@@ -283,8 +283,7 @@ namespace AceQL.Client.Api
         /// <returns>A string that contains <see cref="AceQLParameter"/></returns>
         public override string ToString()
         {
-            //NO! Must return parameterName!
-            //return "name: " + parameterName + " / " + "DbType: " + dbType + " / " + "value: " + value;
+            //Warning: Must only return parameterName!
             return parameterName;
         }
     }

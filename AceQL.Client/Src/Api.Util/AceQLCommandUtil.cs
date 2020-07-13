@@ -22,6 +22,7 @@ using AceQL.Client.Src.Api.Util;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,7 +38,7 @@ namespace AceQL.Client.Api.Util
     {
         public static readonly string[] PARM_SEPARATORS = { "(", ")", ";", " ", "+", "-", "/", "*", "=", "\'", "\"", "?", "!", ":", "#", "&", "-", "<", ">", "{", "}", "[", "]", "|", "%", "," };
 
-        internal static bool DEBUG = false;
+        internal static readonly bool DEBUG;
 
         /// <summary>
         /// The command text
@@ -46,16 +47,16 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// The parameters
         /// </summary>
-        private AceQLParameterCollection Parameters;
+        private readonly AceQLParameterCollection Parameters;
 
         /// <summary>
         /// The BLOB ids
         /// </summary>
-        private List<String> blobIds = new List<string>();
+        private readonly List<String> blobIds = new List<string>();
         /// <summary>
         /// The BLOB file streams
         /// </summary>
-        private List<Stream> blobStreams = new List<Stream>();
+        private readonly List<Stream> blobStreams = new List<Stream>();
 
         private List<long> blobLengths = new List<long>();
 
@@ -122,8 +123,6 @@ namespace AceQL.Client.Api.Util
         {
             Dictionary<String, int> paramsIndexInPrepStatement = GetPreparedStatementParametersDic();
 
-            //List<PrepStatementParameter> parametersList = new List<PrepStatementParameter>();
-
             Dictionary<string, string> parametersList = new Dictionary<string, string>();
 
             // For each parameter 1) get the index 2) get the dbType
@@ -149,7 +148,7 @@ namespace AceQL.Client.Api.Util
 
                 if (aceQLParameter.IsNullValue)
                 {
-                    String paramType = "TYPE_NULL" + (int)sqlType;
+                    String paramType = "TYPE_NULL" + sqlType;
                     parametersList.Add("param_type_" + paramIndex, paramType);
                     parametersList.Add("param_value_" + paramIndex, "NULL");
                 }
@@ -402,7 +401,7 @@ namespace AceQL.Client.Api.Util
         internal static String ConvertToTimestamp(DateTime dateTime)
         {
             double theDouble = (TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-            String theTimeString = theDouble.ToString();
+            String theTimeString = theDouble.ToString(CultureInfo.InvariantCulture);
 
             // Remove "." or ',' depending on Locale:
             theTimeString = StringUtils.SubstringBefore(theTimeString, ",");
@@ -410,7 +409,7 @@ namespace AceQL.Client.Api.Util
             return theTimeString;
         }
 
-        private void Debug(string s)
+        private static void Debug(string s)
         {
             if (DEBUG)
             {

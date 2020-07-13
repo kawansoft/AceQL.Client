@@ -31,24 +31,24 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The HTTP status code.
         /// </summary>
-        private HttpStatusCode httpStatusCode;
+        private readonly HttpStatusCode httpStatusCode;
 
         /// <summary>
         /// The reason.
         /// </summary>
-        private string reason;
+        private readonly string reason;
         /// <summary>
         /// The error type.
         /// </summary>
-        private int errorType;
+        private readonly int errorType;
         /// <summary>
         /// The remote Java stack trace.
         /// </summary>
-        private string remoteStackTrace;
+        private readonly string remoteStackTrace;
         /// <summary>
         /// The exception.
         /// </summary>
-        private Exception exceptionCause;
+        private readonly Exception exceptionCause;
 
         /// <summary>
         /// Gets the error message.

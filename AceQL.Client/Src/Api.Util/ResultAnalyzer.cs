@@ -36,16 +36,16 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// The json result
         /// </summary>
-        private string jsonResult;
-        private HttpStatusCode httpStatusCode;
+        private readonly string jsonResult;
+        private readonly HttpStatusCode httpStatusCode;
 
         /// <summary>
         /// We try to find status. If error parsing, invalidJsonStream = true
         /// </summary>
-        private bool invalidJsonStream = false;
+        private bool invalidJsonStream;
 
         /** Exception when parsing the JSON stream. Future usage */
-        private Exception parseException = null;
+        private Exception parseException;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultAnalyzer"/> class.
@@ -158,7 +158,7 @@ namespace AceQL.Client.Api.Util
 
             if (IsInvalidJsonStream())
             {
-                return null; ;
+                return null;
             }
 
             try
@@ -174,16 +174,10 @@ namespace AceQL.Client.Api.Util
                 if (name.Equals("session_id"))
                 {
                     theValue = xj.session_id;
-
-                    //ConsoleEmul.WriteLine("xj       : " + xj);
-                    //ConsoleEmul.WriteLine("session_id: " + value);
                 }
                 else if (name.Equals("connection_id"))
                 {
                     theValue = xj.connection_id;
-
-                    //ConsoleEmul.WriteLine("xj           : " + xj);
-                    //ConsoleEmul.WriteLine("connection_id: " + value);
                 }
                 else if (name.Equals("length"))
                 {
@@ -199,7 +193,7 @@ namespace AceQL.Client.Api.Util
                 }
                 else
                 {
-                    throw new Exception("Illegal name: " + name);
+                    throw new ArgumentException("Illegal name: " + name);
                 }
 
                 return theValue;
@@ -220,7 +214,7 @@ namespace AceQL.Client.Api.Util
         {
             if (IsInvalidJsonStream())
             {
-                return 0; ;
+                return 0;
             }
 
             try

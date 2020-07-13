@@ -13,7 +13,8 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class ConnectionStringDecoder
     {
-        internal static bool DEBUG = false;
+        internal static readonly bool DEBUG;
+
         private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
         private const string ESCAPED_SEMICOLON = "\\;";
 
@@ -24,7 +25,7 @@ namespace AceQL.Client.Src.Api.Http
         private string sessionId;
         private string proxyUri;
         private ICredentials proxyCredentials;
-        private int timeout = 0;
+        private int timeout;
         private bool enableDefaultSystemAuthentication;
         private bool enableTrace;
 
@@ -90,75 +91,75 @@ namespace AceQL.Client.Src.Api.Http
 
                 ConsoleEmul.WriteLine("property: " + property + " (value: " + value + ")");
 
-                if (property.ToLower().Equals("server"))
+                if (property.ToLowerInvariant().Equals("server"))
                 {
                     server = value;
                 }
-                else if (property.ToLower().Equals("database"))
+                else if (property.ToLowerInvariant().Equals("database"))
                 {
                     database = value;
                 }
-                else if (property.ToLower().Equals("username"))
+                else if (property.ToLowerInvariant().Equals("username"))
                 {
                     value = value.Replace("\\semicolon", ";");
                     username = value;
                 }
-                else if (property.ToLower().Equals("password"))
+                else if (property.ToLowerInvariant().Equals("password"))
                 {
                     value = value.Replace("\\semicolon", ";");
                     password = value.ToCharArray();
                 }
-                else if (property.ToLower().Equals("ntlm"))
+                else if (property.ToLowerInvariant().Equals("ntlm"))
                 {
                     isNTLM = Boolean.Parse(value);
                 }
-                else if (property.ToLower().Equals("proxyuri"))
+                else if (property.ToLowerInvariant().Equals("proxyuri"))
                 {
 
                     proxyUri = value;
                     // Set to null a "null" string
-                    if (proxyUri.ToLower().Equals("null") || proxyUri.Length == 0)
+                    if (proxyUri.ToLowerInvariant().Equals("null") || proxyUri.Length == 0)
                     {
                         proxyUri = null;
                     }
                     ConsoleEmul.WriteLine("proxyUri:" + proxyUri + ":");
                 }
-                else if (property.ToLower().Equals("proxyusername"))
+                else if (property.ToLowerInvariant().Equals("proxyusername"))
                 {
                     value = value.Replace(ESCAPED_SEMICOLON_WORD, ";");
                     proxyUsername = value;
 
                     // Set to null a "null" string
-                    if (proxyUsername.ToLower().Equals("null") || proxyUsername.Length == 0)
+                    if (proxyUsername.ToLowerInvariant().Equals("null") || proxyUsername.Length == 0)
                     {
                         proxyUsername = null;
                     }
 
                 }
-                else if (property.ToLower().Equals("proxypassword"))
+                else if (property.ToLowerInvariant().Equals("proxypassword"))
                 {
                     value = value.Replace("\\semicolon", ";");
                     proxyPassword = value;
 
                     // Set to null a "null" string
-                    if (proxyPassword.ToLower().Equals("null") || proxyPassword.Length == 0)
+                    if (proxyPassword.ToLowerInvariant().Equals("null") || proxyPassword.Length == 0)
                     {
                         proxyPassword = null;
                     }
                 }
-                else if (property.ToLower().Equals("sessionid"))
+                else if (property.ToLowerInvariant().Equals("sessionid"))
                 {
                     sessionId = value;
                 }
-                else if (property.ToLower().Equals("enabledefaultsystemauthentication"))
+                else if (property.ToLowerInvariant().Equals("enabledefaultsystemauthentication"))
                 {
                     enableDefaultSystemAuthentication = Boolean.Parse(value);
                 }
-                else if (property.ToLower().Equals("timeout"))
+                else if (property.ToLowerInvariant().Equals("timeout"))
                 {
                     timeout = Int32.Parse(value);
                 }
-                else if (property.ToLower().Equals("enableTrace"))
+                else if (property.ToLowerInvariant().Equals("enableTrace"))
                 {
                     enableTrace = Boolean.Parse(value);
                 }

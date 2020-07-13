@@ -36,10 +36,9 @@ namespace AceQL.Client.Api
     /// <seealso cref="System.IDisposable" />
     public class AceQLConnection : IDisposable
     {
-        internal static bool DEBUG = false;
 
-        internal AceQLHttpApi aceQLHttpApi = null;
-        private bool connectionOpened = false;
+        internal AceQLHttpApi aceQLHttpApi;
+        private bool connectionOpened;
 
         /// <summary>
         ///  Says if connection is closed
@@ -147,7 +146,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                await OpenAsync();
+                await OpenAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -168,7 +167,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await BeginTransactionAsync();
+                return await BeginTransactionAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -212,7 +211,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await BeginTransactionAsync(isolationLevel);
+                return await BeginTransactionAsync(isolationLevel).ConfigureAwait(false);
             }
             finally
             {
@@ -324,7 +323,7 @@ namespace AceQL.Client.Api
         /// Returns the AceQL Client SDK current Version.
         /// </summary>
         /// <returns>the AceQL SDK current Version.</returns>
-        public String GetClientVersion()
+        public static String GetClientVersion()
         {
             return AceQL.Client.Api.Util.Version.GetVersion();
         }
@@ -342,7 +341,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await GetServerVersionAsync();
+                return await GetServerVersionAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -438,23 +437,6 @@ namespace AceQL.Client.Api
             set
             {
                 aceQLHttpApi.Credential = value;
-            }
-        }
-
-        ///// <summary>
-        ///// Creates a new object that is a copy of the current instance.
-        ///// </summary>
-        ///// <returns>A new object that is a copy of this instance.</returns>
-        //public object Clone()
-        //{
-        //    return new AceQLConnection(ConnectionString);
-        //}
-
-        private void Debug(string s)
-        {
-            if (DEBUG)
-            {
-                ConsoleEmul.WriteLine(DateTime.Now + " " + s);
             }
         }
 

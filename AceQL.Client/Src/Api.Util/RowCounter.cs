@@ -33,8 +33,6 @@ namespace AceQL.Client.Api.Util
     internal class RowCounter
     {
         private bool traceOn;
-
-        private readonly StreamReader streamReader;
         private readonly JsonTextReader reader;
 
         /// <summary>
@@ -43,7 +41,7 @@ namespace AceQL.Client.Api.Util
         /// <param name="readStream">The reading stream on file.</param>
         public RowCounter(Stream readStream)
         {
-            streamReader = new StreamReader(readStream);
+            StreamReader streamReader = new StreamReader(readStream);
             reader = new JsonTextReader(streamReader);
         }
 

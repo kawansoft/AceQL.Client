@@ -32,19 +32,19 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The table name
         /// </summary>
-        private string tableName = null;
+        private string tableName;
         /// <summary>
         /// The column name
         /// </summary>
-        private string columnName = null;
+        private string columnName;
         /// <summary>
         /// The key sequence
         /// </summary>
-        private int keySequence = 0;
+        private int keySequence;
         /// <summary>
         /// The primary key name
         /// </summary>
-        private string primaryKeyName = null;
+        private string primaryKeyName;
 
         /// <summary>
         /// Gets or sets the name of the table.

@@ -139,7 +139,7 @@ namespace AceQL.Client.Tests
             await connection.OpenAsync();
 
             AceQLConsole.WriteLine("host: " + connection.ConnectionString);
-            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
+            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + AceQLConnection.GetClientVersion());
             AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
             AceQLConsole.WriteLine("AceQL local folder: ");
             AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
@@ -159,7 +159,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 3; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";

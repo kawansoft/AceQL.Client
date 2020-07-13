@@ -30,8 +30,8 @@ namespace AceQL.Client.Src.Api.Http
         /// <summary>
         /// The timeout in milliseconds
         /// </summary>
-        private int timeout = 0;
-        private bool enableDefaultSystemAuthentication = false;
+        private readonly int timeout = 0;
+        private readonly bool enableDefaultSystemAuthentication;
 
         /// <summary>
         /// The HTTP status code
@@ -41,8 +41,7 @@ namespace AceQL.Client.Src.Api.Http
         private SimpleTracer simpleTracer = new SimpleTracer();
 
         HttpClient httpClient;
-        private int proxyAuthentcationCallCount = 0;
-
+        private int proxyAuthentcationCallCount;
         private int proxyAuthentcationCallLimit = 1;
 
         /// <summary>
@@ -134,7 +133,7 @@ namespace AceQL.Client.Src.Api.Http
             {
                 proxyAuthentcationCallCount++;
                 if (proxyAuthentcationCallCount <= proxyAuthentcationCallLimit) {
-                    Stream input = await CallWithGetReturnStreamAsync(url);
+                    Stream input = await CallWithGetReturnStreamAsync(url).ConfigureAwait(false);
                     return input;
                 }
             }
@@ -177,8 +176,6 @@ namespace AceQL.Client.Src.Api.Http
                 httpClient.Timeout = new TimeSpan(nanoseconds / 100);
             }
 
-            MultipartFormDataContent formData = new MultipartFormDataContent();
-
             // This is the postdata
             var postData = new List<KeyValuePair<string, string>>();
 
@@ -189,7 +186,7 @@ namespace AceQL.Client.Src.Api.Http
             foreach (var param in parameters)
             {
                 postData.Add(new KeyValuePair<string, string>(param.Key, param.Value));
-                //await TraceAsync("param: " + param.Key + "/" + param.Value);
+                await simpleTracer.TraceAsync("param: " + param.Key + "/" + param.Value).ConfigureAwait(false);
             }
             await simpleTracer.TraceAsync("----------------------------------------").ConfigureAwait(false);
 
@@ -214,7 +211,7 @@ namespace AceQL.Client.Src.Api.Http
                 proxyAuthentcationCallCount++;
                 if (proxyAuthentcationCallCount <= proxyAuthentcationCallLimit)
                 {
-                    Stream input = await CallWithPostAsync(theUrl, parameters);
+                    Stream input = await CallWithPostAsync(theUrl, parameters).ConfigureAwait(false);
                     return input;
                 }
             }
