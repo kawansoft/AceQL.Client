@@ -65,7 +65,7 @@ namespace AceQL.Client.Tests
             }
             else if (mainToLaunch == 7)
             {
-                AceQLTestSessionId.TheMain(args);
+                AceQLTestSessionId.TheMain();
                 AceQLTestMetadata.TheMain(args);
             }
 

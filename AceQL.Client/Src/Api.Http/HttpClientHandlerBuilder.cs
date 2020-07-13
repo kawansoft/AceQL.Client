@@ -13,9 +13,9 @@ namespace AceQL.Client.Src.Api.Http
     /// <summary>
     /// Class HttpClientHandlerBuilder. Allows to build an HttpClientHandler.
     /// </summary>
-    internal class HttpClientHandlerBuilder
+    static internal class HttpClientHandlerBuilder
     {
-        internal static bool DEBUG = false;
+        internal readonly static bool DEBUG;
 
         /// <summary>
         /// Build an HttpClientHandler instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
@@ -62,7 +62,7 @@ namespace AceQL.Client.Src.Api.Http
             }
             else
             {
-                HttpClientHandler httpClientHandler = new HttpClientHandler()
+                HttpClientHandler httpClientHandler = new HttpClientHandler
                 {
                     UseProxy = true,
                     UseDefaultCredentials = false

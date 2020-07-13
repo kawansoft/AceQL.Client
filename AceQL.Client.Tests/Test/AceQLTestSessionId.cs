@@ -30,14 +30,12 @@ namespace AceQL.Client.Tests
     /// </summary>
     class AceQLTestSessionId
     {
-        private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-        public static void TheMain(string[] args)
+        public static void TheMain()
         {
             try
             {
-                DoIt(args).Wait();
-                //DoIt(args).GetAwaiter().GetResult();
+                DoIt().Wait();
 
                 AceQLConsole.WriteLine();
                 AceQLConsole.WriteLine("Press enter to close....");
@@ -54,7 +52,7 @@ namespace AceQL.Client.Tests
         }
 
 
-        static async Task DoIt(string[] args)
+        static async Task DoIt()
         {
 
             string serverUrlLocalhost = "http://localhost:9090/aceql";

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    class JsonTest
+    static class JsonTest
     {
         public static void TheMain(string[] args)
         {
@@ -17,33 +17,6 @@ namespace AceQL.Client.Tests
 
             try
             {
-                //JsonParseResultAsString();
-                //JsonParseResultAsFile();
-                /*
-                using (Stream stream = File.OpenRead(@"C:\test\json_out.txt"))
-                {
-                    OutParamBuilder outParamBuilder = new OutParamBuilder(stream);
-
-                    AceQLConsole.WriteLine();
-                    AceQLConsole.WriteLine("------- Dicts Display ------");
-                    AceQLConsole.WriteLine();
-
-                    AceQLConsole.WriteLine("------- GetvaluesPerParamIndex() ------");
-                    foreach (KeyValuePair<int, string> outParameter in outParamBuilder.GetvaluesPerParamIndex())
-                    {
-                        AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
-                    }
-
-                    AceQLConsole.WriteLine();
-
-                    AceQLConsole.WriteLine("------- GetvaluesPerParamName() ------");
-                    foreach (KeyValuePair<string, string> outParameter in outParamBuilder.GetvaluesPerParamName())
-                    {
-                        AceQLConsole.WriteLine(outParameter.Key + " / " + outParameter.Value);
-                    }
-
-                }
-                */
                 AceQLConsole.WriteLine();
                 AceQLConsole.WriteLine("Press enter to close....");
                 Console.ReadLine();
@@ -75,21 +48,6 @@ namespace AceQL.Client.Tests
 
             while (reader.Read())
             {
-                /*
-                if (reader.Value == null)
-                {
-                    if (reader.TokenType == JsonToken.StartArray)
-                    {
-                        isInsideArray = true;
-                    }
-                    if (reader.TokenType == JsonToken.EndArray)
-                    {
-                        isInsideArray = false;
-                    }
-
-                    continue;
-                }
-                */
 
                 if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("parameters_out_per_index") || isInsideArray)
                 {
