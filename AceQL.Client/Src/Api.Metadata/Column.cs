@@ -32,9 +32,9 @@ namespace AceQL.Client.Api.Metadata
     public class Column : CatalogAndSchema
     {
 
-        public const string columnNoNulls = "columnNoNulls";
-        public const string columnNullable = "columnNullable";
-        public const string columnNullableUnknown = "columnNullableUnknown";
+        public static readonly string columnNoNulls = "columnNoNulls";
+        public static readonly string columnNullable = "columnNullable";
+        public static readonly string columnNullableUnknown = "columnNullableUnknown";
 
         /**
      * <pre>
@@ -72,71 +72,71 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The column name
         /// </summary>
-        private String columnName = null;
+        private String columnName;
         /// <summary>
         /// The table name
         /// </summary>
-        private String tableName = null;
+        private String tableName;
         /// <summary>
         /// The type name
         /// </summary>
-        private String typeName = null;
+        private String typeName;
         /// <summary>
         /// The size
         /// </summary>
-        private int size = 0;
+        private int size;
         /// <summary>
         /// The decimal digits
         /// </summary>
-        private int decimalDigits = 0;
+        private int decimalDigits;
         /// <summary>
         /// The radix
         /// </summary>
-        private int radix = 0;
+        private int radix;
         /// <summary>
         /// The nullable
         /// </summary>
-        private String nullable = null;
+        private String nullable;
         /// <summary>
         /// The remarks
         /// </summary>
-        private String remarks = null;
+        private String remarks;
         /// <summary>
         /// The default value
         /// </summary>
-        private String defaultValue = null;
+        private String defaultValue;
         /// <summary>
         /// The character octet length
         /// </summary>
-        private int charOctetLength = 0;
+        private int charOctetLength;
         /// <summary>
         /// The ordinal position
         /// </summary>
-        private int ordinalPosition = 0;
+        private int ordinalPosition;
         /// <summary>
         /// The is nullable
         /// </summary>
-        private String isNullable = null;
+        private String isNullable;
         /// <summary>
         /// The scope catalog
         /// </summary>
-        private String scopeCatalog = null;
+        private String scopeCatalog;
         /// <summary>
         /// The scope schema
         /// </summary>
-        private String scopeSchema = null;
+        private String scopeSchema;
         /// <summary>
         /// The scope table
         /// </summary>
-        private String scopeTable = null;
+        private String scopeTable;
         /// <summary>
         /// The source data type
         /// </summary>
-        private short sourceDataType = 0;
+        private short sourceDataType;
         /// <summary>
         /// The is autoincrement
         /// </summary>
-        private String isAutoincrement = null;
+        private String isAutoincrement;
 
         /// <summary>
         /// Gets or sets the name of the column.

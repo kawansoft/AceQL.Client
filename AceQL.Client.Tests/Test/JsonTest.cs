@@ -94,14 +94,6 @@ namespace AceQL.Client.Tests
 
                     }
                        
-                    /*
-                    // We are done at end of row
-                    if (reader.TokenType.Equals(JsonToken.EndObject))
-                    {
-                        AceQLConsole.WriteLine("Break!");
-                        break;
-                    }
-                    */
                 }
  
             }

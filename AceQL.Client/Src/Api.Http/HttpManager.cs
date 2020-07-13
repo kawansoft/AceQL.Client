@@ -17,20 +17,20 @@ namespace AceQL.Client.Src.Api.Http
         /// <summary>
         /// The Proxy Uri, if we don't want 
         /// </summary>
-        private string proxyUri = null;
+        private string proxyUri;
 
         /// <summary>
         /// The credentials
         /// </summary>
-        private ICredentials proxyCredentials = null;
+        private readonly ICredentials proxyCredentials;
 
         private CancellationToken cancellationToken;
-        private bool useCancellationToken = false;
+        private bool useCancellationToken;
 
         /// <summary>
         /// The timeout in milliseconds
         /// </summary>
-        private readonly int timeout = 0;
+        private readonly int timeout;
         private readonly bool enableDefaultSystemAuthentication;
 
         /// <summary>

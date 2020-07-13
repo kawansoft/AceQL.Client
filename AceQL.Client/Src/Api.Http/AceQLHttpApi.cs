@@ -43,40 +43,37 @@ namespace AceQL.Client.Api.Http
     internal class AceQLHttpApi
     {
 
-        internal static bool DEBUG = false;
+        internal static readonly bool DEBUG;
 
         /// <summary>
         /// The server URL
         /// </summary>
-        private String server = null;
+        private String server ;
 
         private string username;
-        private string sessionId = null;
+        private string sessionId ;
 
         /// <summary>
         /// The database
         /// </summary>
-        private String database = null;
-        private char[] password = null;
+        private String database ;
+        private char[] password ;
 
         /// <summary>
         /// The Proxy Uri, if we don't want 
         /// </summary>
-        private string proxyUri = null;
+        private string proxyUri ;
 
         /// <summary>
         /// The credentials
         /// </summary>
-        private ICredentials proxyCredentials = null;
+        private ICredentials proxyCredentials ;
 
         /// <summary>
         /// The timeout in milliseconds
         /// </summary>
-        private int timeout = 0;
-        private bool enableDefaultSystemAuthentication = false;
-
-        // Future usage
-        //int connectTimeout = 0;
+        private int timeout;
+        private bool enableDefaultSystemAuthentication;
 
         /// <summary>
         /// The pretty printing
@@ -96,9 +93,9 @@ namespace AceQL.Client.Api.Http
         private string connectionString;
 
         private AceQLProgressIndicator progressIndicator;
-        private AceQLCredential credential = null;
+        private AceQLCredential credential ;
         private CancellationToken cancellationToken;
-        private bool useCancellationToken = false;
+        private bool useCancellationToken;
 
         internal SimpleTracer simpleTracer = new SimpleTracer();
 
@@ -151,7 +148,6 @@ namespace AceQL.Client.Api.Http
         {
             try
             {
-                //DecodeConnectionString();
                 ConnectionStringDecoder connectionStringDecoder = new ConnectionStringDecoder();
                 connectionStringDecoder.Decode(connectionString);
                 this.server = connectionStringDecoder.Server;
@@ -219,7 +215,7 @@ namespace AceQL.Client.Api.Http
                 if (userLoginStore.IsAlreadyLogged())
                 {
                     await simpleTracer.TraceAsync("Get a new connection with get_connection").ConfigureAwait(false);
-                    String sessionId = userLoginStore.GetSessionId();
+                    sessionId = userLoginStore.GetSessionId();
 
                     String theUrl = server + "/session/" + sessionId + "/get_connection";
                     String result = await httpManager.CallWithGetAsync(theUrl).ConfigureAwait(false);
@@ -284,7 +280,7 @@ namespace AceQL.Client.Api.Http
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {
@@ -406,7 +402,7 @@ namespace AceQL.Client.Api.Http
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {
@@ -456,7 +452,7 @@ namespace AceQL.Client.Api.Http
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {
@@ -540,7 +536,6 @@ namespace AceQL.Client.Api.Http
 
             Uri urlWithaction = new Uri(url + action);
 
-            //SetTraceOn(true);
             await simpleTracer.TraceAsync("url: " + url + action);
 
             foreach (KeyValuePair<String, String> p in parametersMap)
@@ -548,7 +543,7 @@ namespace AceQL.Client.Api.Http
                 await simpleTracer.TraceAsync("parm: " + p.Key + " / " + p.Value);
             }
 
-            string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap);
+            string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap).ConfigureAwait(false);
 
             Debug("result: " + result);
 
@@ -577,10 +572,9 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         /// <param name="result"></param>
         /// <param name="parameters"></param>
-        private void UpdateOutParametersValues(string result, AceQLParameterCollection parameters)
+        private static void UpdateOutParametersValues(string result, AceQLParameterCollection parameters)
         {
             //1) Build outParametersDict Dict of (paramerer names, values)
-            //Dictionary<string, string> outParametersDict = new Dictionary<string, string>();
 
             dynamic xj = JsonConvert.DeserializeObject(result);
             dynamic xjParametersOutPername = xj.parameters_out_per_name;
@@ -739,14 +733,6 @@ namespace AceQL.Client.Api.Http
 
             try
             {
-                //String action = "blob_download";
-                //Dictionary<string, string> parameters = new Dictionary<string, string>
-                //{
-                //    { "blob_id", blobId }
-                //};
-
-                //Stream input = await CallWithPostAsync(action, parameters).ConfigureAwait(false);
-
                 String theUrl = this.url + "/blob_download?blob_id=" + blobId;
                 Stream input = await httpManager.CallWithGetReturnStreamAsync(theUrl);
                 return input;
@@ -788,7 +774,7 @@ namespace AceQL.Client.Api.Http
 
                 if (tableName != null)
                 {
-                    tableName = tableName.ToLower();
+                    tableName = tableName.ToLowerInvariant();
                     theUrl += "&table_name=" + tableName;
                 }
 
@@ -1006,19 +992,10 @@ namespace AceQL.Client.Api.Http
         /// Returns the SDK current Version.
         /// </summary>
         /// <returns>the SDK current Version.</returns>
-        internal String GetVersion()
+        internal static String GetVersion()
         {
             return Util.Version.GetVersion();
         }
-
-        ///// <summary>
-        ///// Creates a new object that is a copy of the current instance.
-        ///// </summary>
-        ///// <returns>A new object that is a copy of this instance.</returns>
-        //internal object Clone()
-        //{
-        //    return new AceQLHttpApi();
-        //}
 
 
         /// <summary>

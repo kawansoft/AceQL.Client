@@ -37,19 +37,19 @@ namespace AceQL.Client.Api.Util
     /// </summary>
     internal class RowParser : IDisposable
     {
-        private StreamReader streamReader;
-        JsonTextReader reader;
+        private readonly StreamReader streamReader;
+        private readonly JsonTextReader reader;
 
         /// <summary>
         /// The trace on
         /// </summary>
-        private bool traceOn = false;
+        private bool traceOn;
         /// <summary>
         /// The values per col index
         /// </summary>
-        private Dictionary<int, object> valuesPerColIndex = null;
-        private Dictionary<int, string> typesPerColIndex = null;
-        private Dictionary<string, int> colIndexesPerColName = null;
+        private Dictionary<int, object> valuesPerColIndex;
+        private Dictionary<int, string> typesPerColIndex;
+        private Dictionary<string, int> colIndexesPerColName;
 
         //private IFile file;
 
@@ -62,7 +62,6 @@ namespace AceQL.Client.Api.Util
             streamReader = new StreamReader(readStream);
             reader = new JsonTextReader(streamReader);
 
-            //file = AceQLCommandUtil.GetTraceFileAsync().Result;
             BuildTypes();
         }
 
@@ -111,7 +110,6 @@ namespace AceQL.Client.Api.Util
                     if (reader.Value != null)
                     {
                         typesPerColIndex.Add(idx++, reader.Value.ToString());
-                        //PortableFile.AppendAllTextAsync(file, "\r\n" + reader.Value).Wait();
                     }
                 }
 
@@ -180,7 +178,6 @@ namespace AceQL.Client.Api.Util
                         colName = reader.Value.ToString();
                         reader.Read();
 
-                        //PortableFile.AppendAllTextAsync(file, "\r\n" + colName).Wait();
                         String colValue = reader.Value.ToString();
 
                         if (colValue.Equals("NULL"))
@@ -211,7 +208,6 @@ namespace AceQL.Client.Api.Util
         }
 
 
-
         /**
          * Says if trace is on
          * 
@@ -239,17 +235,6 @@ namespace AceQL.Client.Api.Util
         internal void SetTraceOn(bool traceOn)
         {
             this.traceOn = traceOn;
-        }
-
-        /// <summary>
-        /// Traces this instance.
-        /// </summary>
-        private void Trace()
-        {
-            if (traceOn)
-            {
-                ConsoleEmul.WriteLine();
-            }
         }
 
         /// <summary>

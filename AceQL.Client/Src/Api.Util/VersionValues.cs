@@ -21,7 +21,7 @@ using System;
 
 namespace AceQL.Client.Api.Util
 {
-    internal class VersionValues
+    internal static class VersionValues
     {
         internal static readonly String PRODUCT = "AceQL HTTP Client SDK";
         internal static readonly String VERSION = "v4.3";

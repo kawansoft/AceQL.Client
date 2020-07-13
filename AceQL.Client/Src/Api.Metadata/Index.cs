@@ -36,64 +36,64 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The table index statistic
         /// </summary>
-        public static string tableIndexStatistic = "tableIndexStatistic";
+        public static readonly string tableIndexStatistic = "tableIndexStatistic";
         /// <summary>
         /// The table index clustered
         /// </summary>
-        public static string tableIndexClustered = "tableIndexClustered";
+        public static readonly string tableIndexClustered = "tableIndexClustered";
         /// <summary>
         /// The table index hashed
         /// </summary>
-        public static string tableIndexHashed = "tableIndexHashed";
+        public static readonly string tableIndexHashed = "tableIndexHashed";
         /// <summary>
         /// The table index other
         /// </summary>
-        public static string tableIndexOther = "tableIndexOther";
+        public static readonly string tableIndexOther = "tableIndexOther";
 
         /// <summary>
         /// The index name
         /// </summary>
-        private string indexName = null;
+        private string indexName;
         /// <summary>
         /// The table name
         /// </summary>
-        private string tableName = null;
+        private string tableName;
         /// <summary>
         /// The non unique
         /// </summary>
-        private bool nonUnique = false;
+        private bool nonUnique;
         /// <summary>
         /// The index qualifier
         /// </summary>
-        private string indexQualifier = null;
+        private string indexQualifier;
         /// <summary>
         /// The type
         /// </summary>
-        private string type = null;
+        private string type ;
         /// <summary>
         /// The ordinal position
         /// </summary>
-        private int ordinalPosition = 0;
+        private int ordinalPosition;
         /// <summary>
         /// The column name
         /// </summary>
-        private string columnName = null;
+        private string columnName;
         /// <summary>
         /// The ascending or descending
         /// </summary>
-        private string ascendingOrDescending = null;
+        private string ascendingOrDescending;
         /// <summary>
         /// The cardinality
         /// </summary>
-        private long cardinality = 0;
+        private long cardinality;
         /// <summary>
         /// The pages
         /// </summary>
-        private long pages = 0;
+        private long pages;
         /// <summary>
         /// The filter condition
         /// </summary>
-        private string filterCondition = null;
+        private string filterCondition;
 
         /// <summary>
         /// Gets or sets the name of the index.

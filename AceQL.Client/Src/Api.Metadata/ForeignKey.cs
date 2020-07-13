@@ -36,84 +36,84 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The imported key cascade
         /// </summary>
-        public const string importedKeyCascade = "importedKeyCascade";
+        public static readonly string importedKeyCascade = "importedKeyCascade";
         /// <summary>
         /// The imported key restrict
         /// </summary>
-        public const string importedKeyRestrict = "importedKeyRestrict";
+        public static readonly string importedKeyRestrict = "importedKeyRestrict";
         /// <summary>
         /// The imported key set null
         /// </summary>
-        public const string importedKeySetNull = "importedKeySetNull";
+        public static readonly string importedKeySetNull = "importedKeySetNull";
         /// <summary>
         /// The imported key no action
         /// </summary>
-        public const string importedKeyNoAction = "importedKeyNoAction";
+        public static readonly string importedKeyNoAction = "importedKeyNoAction";
         /// <summary>
         /// The imported key set default
         /// </summary>
-        public const string importedKeySetDefault = "importedKeySetDefault";
+        public static readonly string importedKeySetDefault = "importedKeySetDefault";
         /// <summary>
         /// The imported key initially deferred
         /// </summary>
-        public const string importedKeyInitiallyDeferred = "importedKeyInitiallyDeferred";
+        public static readonly string importedKeyInitiallyDeferred = "importedKeyInitiallyDeferred";
         /// <summary>
         /// The imported key initially immediate
         /// </summary>
-        public const string importedKeyInitiallyImmediate = "importedKeyInitiallyImmediate";
+        public static readonly string importedKeyInitiallyImmediate = "importedKeyInitiallyImmediate";
         /// <summary>
         /// The imported key not deferrable
         /// </summary>
-        public const string importedKeyNotDeferrable = "importedKeyNotDeferrable";
+        public static readonly string importedKeyNotDeferrable = "importedKeyNotDeferrable";
 
         /// <summary>
         /// The primary key table
         /// </summary>
-        private String primaryKeyTable = null;
+        private String primaryKeyTable;
         /// <summary>
         /// The primary key column
         /// </summary>
-        private String primaryKeyColumn = null;
+        private String primaryKeyColumn;
         /// <summary>
         /// The foreign key catalog
         /// </summary>
-        private String foreignKeyCatalog = null;
+        private String foreignKeyCatalog;
         /// <summary>
         /// The foreign key schema
         /// </summary>
-        private String foreignKeySchema = null;
+        private String foreignKeySchema;
         /// <summary>
         /// The foreign key table
         /// </summary>
-        private String foreignKeyTable = null;
+        private String foreignKeyTable;
         /// <summary>
         /// The foreign key column
         /// </summary>
-        private String foreignKeyColumn = null;
+        private String foreignKeyColumn;
         /// <summary>
         /// The key sequence
         /// </summary>
-        private int keySequence = 0;
+        private int keySequence;
         /// <summary>
         /// The update rule
         /// </summary>
-        private String updateRule = null;
+        private String updateRule;
         /// <summary>
         /// The delete rule
         /// </summary>
-        private String deleteRule = null;
+        private String deleteRule;
         /// <summary>
         /// The foreign key name
         /// </summary>
-        private String foreignKeyName = null;
+        private String foreignKeyName;
         /// <summary>
         /// The primary key name
         /// </summary>
-        private String primaryKeyName = null;
+        private String primaryKeyName;
         /// <summary>
         /// The deferrability
         /// </summary>
-        private int deferrability = 0;
+        private int deferrability;
 
         /// <summary>
         /// Gets or sets the primary key table.

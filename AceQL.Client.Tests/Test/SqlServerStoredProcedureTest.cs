@@ -38,7 +38,7 @@ namespace AceQL.Client.Tests
         /// <summary>
         /// The connection to the remote database
         /// </summary>
-        AceQLConnection connection = null;
+        readonly AceQLConnection connection;
 
         public static void TheMain(string[] args)
         {
@@ -58,14 +58,14 @@ namespace AceQL.Client.Tests
 
                 // Make sure connection is always closed in order to close and release
                 // server connection into the pool
-                using (AceQLConnection connection = await ConnectionBuilderAsync())
+                using (AceQLConnection theConnection = await ConnectionBuilderAsync().ConfigureAwait(false))
                 {
                     SqlServerStoredProcedureTest myRemoteConnection = new SqlServerStoredProcedureTest(
-                        connection);
+                        theConnection);
                     AceQLConsole.WriteLine("Connection created....");
 
-                    await myRemoteConnection.CallStoredProcedure();
-                    await connection.CloseAsync();
+                    await myRemoteConnection.CallStoredProcedure().ConfigureAwait(false);
+                    await theConnection.CloseAsync();
                 }
 
                 AceQLConsole.WriteLine();
@@ -105,15 +105,15 @@ namespace AceQL.Client.Tests
             string connectionString = $"Server={server}; Database={database}; "
                 + $"Username={username}; Password={password};";
 
-            AceQLConnection connection = new AceQLConnection(connectionString);
+            AceQLConnection theConnection = new AceQLConnection(connectionString);
 
             // Opens the connection with the remote database.
             // On the server side, a JDBC connection is extracted from the connection 
             // pool created by the server at startup. The connection will remain ours 
             // during the session.
-            await connection.OpenAsync();
+            await theConnection.OpenAsync();
 
-            return connection;
+            return theConnection;
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace AceQL.Client.Tests
                 while (dataReader.Read())
                 {
                     int i = 2;
-                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++));
+                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i));
                 }
             }
             AceQLConsole.WriteLine();

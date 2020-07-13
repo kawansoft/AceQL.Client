@@ -44,13 +44,13 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// The trace on
         /// </summary>
-        private bool traceOn = false;
+        private bool traceOn;
 
         /// <summary>
         /// The values per col index
         /// </summary>
-        private Dictionary<int, string> valuesPerParamIndex = new Dictionary<int, string>();
-        private Dictionary<string, string> valuesPerParamName = new Dictionary<string, string>();
+        private readonly Dictionary<int, string> valuesPerParamIndex = new Dictionary<int, string>();
+        private readonly Dictionary<string, string> valuesPerParamName = new Dictionary<string, string>();
 
         /// <summary>
         /// Constructor
@@ -78,21 +78,6 @@ namespace AceQL.Client.Api.Util
 
             while (reader.Read())
             {
-                /*
-                if (reader.Value == null)
-                {
-                    if (reader.TokenType == JsonToken.StartArray)
-                    {
-                        isInsideArray = true;
-                    }
-                    if (reader.TokenType == JsonToken.EndArray)
-                    {
-                        isInsideArray = false;
-                    }
-
-                    continue;
-                }
-                */
 
                 if (reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("parameters_out_per_index") || isInsideArray)
                 {
@@ -196,7 +181,7 @@ namespace AceQL.Client.Api.Util
         /// <summary>
         /// Traces this instance.
         /// </summary>
-        private void Trace()
+        internal void Trace()
         {
             if (traceOn)
             {

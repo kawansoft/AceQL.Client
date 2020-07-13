@@ -39,7 +39,7 @@ namespace AceQL.Client.Api
         /// The instance that does all http stuff
         /// </summary>
         private AceQLHttpApi aceQLHttpApi;
-        private SimpleTracer simpleTracer = new SimpleTracer();
+        private readonly SimpleTracer simpleTracer = new SimpleTracer();
 
         /// <summary>
         /// The text of the query.
@@ -59,7 +59,7 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The parameters
         /// </summary>
-        private AceQLParameterCollection parameters = null;
+        private AceQLParameterCollection parameters;
 
         private bool prepare;
 
@@ -139,7 +139,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await ExecuteReaderAsync();
+                return await ExecuteReaderAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -198,7 +198,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await ExecuteNonQueryAsync();
+                return await ExecuteNonQueryAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -247,7 +247,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await ExecuteQueryAsStatementAsync();
+                return await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -337,12 +337,10 @@ namespace AceQL.Client.Api
             }
         }
 
-        private void UpdateOutParametersValues(Stream stream, AceQLParameterCollection parameters)
+        private static void UpdateOutParametersValues(Stream stream, AceQLParameterCollection parameters)
         {
             //1) Build outParametersDict Dict of (paramerer names, values)
-            //Dictionary<string, string> outParametersDict = new Dictionary<string, string>();
             OutParamBuilder outParamBuilder = new OutParamBuilder(stream);
-
             Dictionary<string, string> outParametersDict = outParamBuilder.GetvaluesPerParamName();
 
             //2) Scan  foreach AceQLParameterCollection parameters and modify value if parameter name is in outParametersDict

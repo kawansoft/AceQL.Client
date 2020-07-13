@@ -30,14 +30,12 @@ namespace AceQL.Client.Tests
     /// </summary>
     class AceQLTest
     {
-        private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
         public static void TheMain(string[] args)
         {
             try
             {
-                DoIt(args).Wait();
-                //DoIt(args).GetAwaiter().GetResult();
+                DoIt().Wait();
 
                 AceQLConsole.WriteLine();
                 AceQLConsole.WriteLine("Press enter to close....");
@@ -52,13 +50,15 @@ namespace AceQL.Client.Tests
             }
         }
 
-        static async Task DoIt(string[] args)
+        static async Task DoIt()
         {
-            /*
-            await HttpClientLoopTest.Test();
-            bool doReturn = true;
-            if (doReturn) return;
-            */
+            bool doLoop = false;
+            if (doLoop)
+            {
+                await HttpClientLoopTest.Test().ConfigureAwait(false);
+                bool doReturn = true;
+                if (doReturn) return;
+            }
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLocalhost = "http://localhost:9090/aceql";
@@ -150,7 +150,7 @@ namespace AceQL.Client.Tests
 
             string sql = "delete from customer";
 
-            AceQLCommand command = new AceQLCommand()
+            AceQLCommand command = new AceQLCommand
             {
                 CommandText = sql,
                 Connection = connection
@@ -202,16 +202,13 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++));
+                        + "GetValue: " + dataReader.GetValue(i));
                 }
             }
 
             AceQLConsole.WriteLine("Before delete from orderlog");
 
             // Do next delete in a transaction because of BLOB
-            //transaction = await connection.BeginTransactionAsync();
-            //await transaction.CommitAsync();
-
             sql = "delete from orderlog";
             command = new AceQLCommand(sql, connection);
             await command.ExecuteNonQueryAsync();
@@ -269,10 +266,10 @@ namespace AceQL.Client.Tests
 
                 await transaction.CommitAsync();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 await transaction.RollbackAsync();
-                throw exception;
+                throw;
             }
 
             AceQLConsole.WriteLine("Before select *  from orderlog");

@@ -31,16 +31,15 @@ namespace AceQL.Client.Tests
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLTestMetadata
+    static class AceQLTestMetadata
     {
-        private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
-        public static void TheMain(string[] args)
+        public static void TheMain()
         {
             try
             {
                 AceQLConsole.WriteLine("AceQLTestMetadata Begin...");
-                DoIt(args).Wait();
+                DoIt().Wait();
 
                 AceQLConsole.WriteLine();
                 AceQLConsole.WriteLine("Press enter to close....");
@@ -57,7 +56,7 @@ namespace AceQL.Client.Tests
         }
 
 
-        static async Task DoIt(string[] args)
+        static async Task DoIt()
         {
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -85,7 +84,6 @@ namespace AceQL.Client.Tests
             //phone character varying(32),
 
             string connectionString = $"Server={server}; Database={database}; ";
-            //connectionString += $"Username={username}; Password={password}";
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
 

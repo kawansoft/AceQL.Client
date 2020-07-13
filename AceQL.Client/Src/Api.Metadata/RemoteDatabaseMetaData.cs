@@ -35,18 +35,18 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The Http instance that does all Http stuff
         /// </summary>
-        private AceQLHttpApi aceQLHttpApi = null;
+        private readonly AceQLHttpApi aceQLHttpApi;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="aceQLConnection">the Connection to the remote database.</param>
-        /// <exception cref="System.NullReferenceException">aceQLConnection is null!</exception>
+        /// <exception cref="ArgumentNullException">aceQLConnection is null!</exception>
         internal RemoteDatabaseMetaData(AceQLConnection aceQLConnection)
         {
             if (aceQLConnection == null)
             {
-                throw new System.NullReferenceException("aceQLConnection is null!");
+                throw new ArgumentNullException("aceQLConnection is null!");
             }
             this.aceQLHttpApi = aceQLConnection.GetAceQLHttpApi();
         }
@@ -57,7 +57,7 @@ namespace AceQL.Client.Api.Metadata
         /// <returns>Task&lt;Stream&gt;.</returns>
         public async Task<Stream> DbSchemaDownloadAsync()
         {
-            return await DbSchemaDownloadAsync(null, null);
+            return await DbSchemaDownloadAsync(null, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace AceQL.Client.Api.Metadata
         /// <returns>Task&lt;Stream&gt;.</returns>
         public async Task<Stream> DbSchemaDownloadAsync(String format)
         {
-            return await DbSchemaDownloadAsync(format, null);
+            return await DbSchemaDownloadAsync(format, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -128,12 +128,12 @@ namespace AceQL.Client.Api.Metadata
         /// </summary>
         /// <param name="name">The name of the table without dot separator.</param>
         /// <returns>Task&lt;Table&gt;.</returns>
-        /// <exception cref="System.NullReferenceException">name is null!</exception>
+        /// <exception cref="ArgumentNullException">name is null!</exception>
         public async Task<Table> GetTableAsync(string name)
         {
             if (name == null)
             {
-                throw new System.NullReferenceException("name is null!");
+                throw new ArgumentNullException("name is null!");
             }
             TableDto tableDto = await aceQLHttpApi.GetTableAsync(name);
             Table table = tableDto.Table;

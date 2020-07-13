@@ -28,7 +28,7 @@ namespace AceQL.Client.Tests
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLTestSessionId
+    static class AceQLTestSessionId
     {
 
         public static void TheMain()

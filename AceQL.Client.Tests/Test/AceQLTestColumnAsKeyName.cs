@@ -28,17 +28,15 @@ namespace AceQL.Client.Tests
     /// Class to test that the AceQL JSON key names "row_n" and "row_count" can safely be used as column names.
     ///A dedicated table customer_2 is used.
     /// </summary>
-    class AceQLTestColumnAsKeyName
+    static class AceQLTestColumnAsKeyName
     {
-        private const string ACEQL_PCL_FOLDER = "AceQLPclFolder";
 
         public static void TheMain(string[] args)
         {
             try
             {
 
-                DoIt(args).Wait();
-                //DoIt(args).GetAwaiter().GetResult();
+                DoIt().Wait();
 
                 AceQLConsole.WriteLine();
                 AceQLConsole.WriteLine("Press enter to close....");
@@ -55,7 +53,7 @@ namespace AceQL.Client.Tests
         }
 
 
-        static async Task DoIt(string[] args)
+        static async Task DoIt()
         {
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -82,7 +80,6 @@ namespace AceQL.Client.Tests
             //phone character varying(32),
 
             string connectionString = $"Server={server}; Database={database}; ";
-            //connectionString += $"Username={username}; Password={password}";
 
             AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
 
@@ -117,7 +114,7 @@ namespace AceQL.Client.Tests
 
             string sql = "delete from customer_2";
 
-            AceQLCommand command = new AceQLCommand()
+            AceQLCommand command = new AceQLCommand
             {
                 CommandText = sql,
                 Connection = connection
@@ -172,7 +169,7 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++));
+                        + "GetValue: " + dataReader.GetValue(i));
                 }
             }
 

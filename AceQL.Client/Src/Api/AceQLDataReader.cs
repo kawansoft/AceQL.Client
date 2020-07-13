@@ -38,31 +38,30 @@ namespace AceQL.Client.Api
     /// </summary>
     public class AceQLDataReader : IDisposable
     {
-        internal static bool DEBUG = false;
+        private static bool DEBUG;
 
         /// <summary>
         /// The instance that does all http stuff
         /// </summary>
-        private AceQLHttpApi aceQLHttpApi;
+        private readonly AceQLHttpApi aceQLHttpApi;
 
-        private int currentRowNum = 0;
-        private int rowsCount;
+        private int currentRowNum;
+        private readonly int rowsCount;
 
-        RowParser rowParser = null;
-        private bool isClosed = false;
+        readonly RowParser rowParser;
+        private bool isClosed;
 
         private Dictionary<int, object> valuesPerColIndex = new Dictionary<int, object>();
         private Dictionary<int, string> colTypesPerColIndex = new Dictionary<int, string>();
         private Dictionary<int, string> colNamesPerColIndex = new Dictionary<int, string>();
         private Dictionary<string, int> colIndexesPerColName = new Dictionary<string, int>();
 
-        private AceQLConnection connection;
+        private readonly AceQLConnection connection;
 
         /// <summary>
         /// The JSON file containing the Result Set
         /// </summary>
-        private IFile file;
-        private bool traceOn;
+        private readonly IFile file;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLDataReader"/> class.
@@ -84,28 +83,6 @@ namespace AceQL.Client.Api
             this.rowsCount = rowsCount;
         }
 
-        /// <summary>
-        /// Traces this instance.
-        /// </summary>
-        private void Trace()
-        {
-            if (traceOn)
-            {
-                ConsoleEmul.WriteLine();
-            }
-        }
-
-        /// <summary>
-        /// Traces the specified string.
-        /// </summary>
-        /// <param name="s">The string to trace.</param>
-        private void TraceAsync(String s)
-        {
-            if (traceOn)
-            {
-                System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + s);
-            }
-        }
 
         /// <summary>
         /// Advances the reader to the next record. 
@@ -121,7 +98,7 @@ namespace AceQL.Client.Api
         {
             Task<bool> task = new Task<bool>(Read);
             task.Start();
-            return await task;
+            return await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -266,7 +243,7 @@ namespace AceQL.Client.Api
             {
                 // Global var avoids to propagate cancellationToken as parameter to all methods... 
                 aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await GetStreamAsync(ordinal);
+                return await GetStreamAsync(ordinal).ConfigureAwait(false);
             }
             finally
             {
@@ -321,68 +298,68 @@ namespace AceQL.Client.Api
         }
 
 
-        ///// <summary>
-        ///// Gets the byte.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <returns>System.Byte.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public byte GetByte(int ordinal)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        /// <summary>
+        /// Gets the byte.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <returns>System.Byte.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public byte GetByte(int ordinal)
+        {
+            throw new NotSupportedException();
+        }
 
-        ///// <summary>
-        ///// Gets the bytes.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <param name="dataOffset">The data offset.</param>
-        ///// <param name="buffer">The buffer.</param>
-        ///// <param name="bufferOffset">The buffer offset.</param>
-        ///// <param name="length">The length.</param>
-        ///// <returns>System.Int64.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        /// <summary>
+        /// Gets the bytes.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="bufferOffset">The buffer offset.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>System.Int64.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
+        {
+            throw new NotSupportedException();
+        }
 
-        ///// <summary>
-        ///// Gets the character.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <returns>System.Char.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public char GetChar(int ordinal)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        /// <summary>
+        /// Gets the character.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <returns>System.Char.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public char GetChar(int ordinal)
+        {
+            throw new NotSupportedException();
+        }
 
-        ///// <summary>
-        ///// Gets the chars.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <param name="dataOffset">The data offset.</param>
-        ///// <param name="buffer">The buffer.</param>
-        ///// <param name="bufferOffset">The buffer offset.</param>
-        ///// <param name="length">The length.</param>
-        ///// <returns>System.Int64.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        /// <summary>
+        /// Gets the chars.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <param name="dataOffset">The data offset.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="bufferOffset">The buffer offset.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>System.Int64.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
+        {
+            throw new NotSupportedException();
+        }
 
-        ///// <summary>
-        ///// Gets the name of the data type.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <returns>System.String.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public string GetDataTypeName(int ordinal)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        /// <summary>
+        /// Gets the name of the data type.
+        /// </summary>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public string GetDataTypeName(int ordinal)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Gets the value of the specified column as a <see cref="DateTime"/>.
@@ -792,7 +769,7 @@ namespace AceQL.Client.Api
         }
 
 
-        private void Debug(string s)
+        private static void Debug(string s)
         {
             if (DEBUG)
             {

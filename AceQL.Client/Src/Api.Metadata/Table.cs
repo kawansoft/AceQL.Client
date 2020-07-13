@@ -32,55 +32,55 @@ namespace AceQL.Client.Api.Metadata
         /// <summary>
         /// The table
         /// </summary>
-        public const string TABLE = "TABLE";
+        public static readonly string TABLE = "TABLE";
         /// <summary>
         /// The view
         /// </summary>
-        public const string VIEW = "VIEW";
+        public static readonly string VIEW = "VIEW";
 
         /// <summary>
         /// The table name
         /// </summary>
-        private string tableName = null;
+        private string tableName;
         /// <summary>
         /// The table type
         /// </summary>
-        private string tableType = null;
+        private string tableType;
         /// <summary>
         /// The remarks
         /// </summary>
-        private string remarks = null;
+        private string remarks;
 
         /// <summary>
         /// The columns
         /// </summary>
-        private List<Column> columns = null;
+        private List<Column> columns;
         /// <summary>
         /// The primary keys
         /// </summary>
-        private List<PrimaryKey> primaryKeys = null;
+        private List<PrimaryKey> primaryKeys;
         /// <summary>
         /// The indexes
         /// </summary>
-        private List<Index> indexes = null;
+        private List<Index> indexes;
 
         /// <summary>
         /// The importedforeign keys
         /// </summary>
-        private List<ImportedKey> importedforeignKeys = null;
+        private List<ImportedKey> importedforeignKeys;
         /// <summary>
         /// The exportedforeign keys
         /// </summary>
-        private List<ExportedKey> exportedforeignKeys = null;
+        private List<ExportedKey> exportedforeignKeys;
 
         /// <summary>
         /// The catalog
         /// </summary>
-        private string catalog = null;
+        private string catalog;
         /// <summary>
         /// The schema
         /// </summary>
-        private string schema = null;
+        private string schema;
 
         /// <summary>
         /// Gets or sets the name of the table.
@@ -167,9 +167,9 @@ namespace AceQL.Client.Api.Metadata
         public override String ToString()
         {
             return "Table [tableName=" + tableName + ", tableType=" + tableType + ", remarks=" + remarks + ", columns="
-                + string.Join(",", (object[])columns.ToArray()) + ", primaryKeys=" + string.Join(",", (object[])primaryKeys.ToArray()) 
+                + string.Join(",", (object[])columns.ToArray()) + ", primaryKeys=" + string.Join(",", (object[])primaryKeys.ToArray())
                 + ", indexes=" + string.Join(",", (object[])indexes.ToArray()) + ", importedforeignKeys="
-                + string.Join(",", (object[])importedforeignKeys.ToArray()) 
+                + string.Join(",", (object[])importedforeignKeys.ToArray())
                 + ", exportedforeignKeys=" + string.Join(",", (object[])exportedforeignKeys.ToArray()) + ", catalog=" + catalog
                 + ", schema=" + schema + "]";
         }

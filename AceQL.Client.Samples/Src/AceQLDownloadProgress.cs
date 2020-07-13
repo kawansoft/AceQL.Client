@@ -110,8 +110,8 @@ namespace AceQL.Client.Samples
 
             await connection.OpenAsync();
 
-            AceQLConsole.WriteLine("aceQLConnection.GetClientVersion(): " + connection.GetClientVersion());
-            AceQLConsole.WriteLine("aceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
+            AceQLConsole.WriteLine("AceQLConnection.GetClientVersion(): " + AceQLConnection.GetClientVersion());
+            AceQLConsole.WriteLine("AceQLConnection.GetServerVersion(): " + await connection.GetServerVersionAsync());
             AceQLConsole.WriteLine("AceQL local folder: ");
             AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
