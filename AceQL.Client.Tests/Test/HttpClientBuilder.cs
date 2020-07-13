@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    class HttpClientBuilder
+    static class HttpClientBuilder
     {
         public static HttpClient buildHttpClient()
         {
@@ -24,7 +24,7 @@ namespace AceQL.Client.Tests
             WebProxy proxy = new WebProxy(proxyUri0);
             proxy.Credentials = proxyCredentials;
 
-            HttpClientHandler httpClientHandler = new HttpClientHandler()
+            HttpClientHandler httpClientHandler = new HttpClientHandler
             {
                 Proxy = proxy
             };

@@ -26,9 +26,9 @@ namespace AceQL.Client.Api
     /// </summary>
     public sealed  class AceQLCredential
     {
-        private string username;
-        private char[] password;
-        private string sessionId;
+        private readonly string username;
+        private readonly char[] password;
+        private readonly string sessionId;
 
         /// <summary>
         /// Creates an object of type <see cref="AceQLCredential"/>.

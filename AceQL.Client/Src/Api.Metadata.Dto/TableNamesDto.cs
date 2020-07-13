@@ -32,7 +32,7 @@ namespace AceQL.Client.Api.Metadata.Dto
         /// <summary>
         /// The status
         /// </summary>
-        private string status = "OK";
+        private readonly string status = "OK";
         /// <summary>
         /// The table names
         /// </summary>

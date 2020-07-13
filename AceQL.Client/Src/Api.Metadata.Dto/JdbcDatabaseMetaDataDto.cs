@@ -27,7 +27,7 @@ namespace AceQL.Client.Api.Metadata.Dto
         /// <summary>
         /// The JDBC database meta data
         /// </summary>
-        private JdbcDatabaseMetaData jdbcDatabaseMetaData = null;
+        private readonly JdbcDatabaseMetaData jdbcDatabaseMetaData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JdbcDatabaseMetaDataDto"/> class.

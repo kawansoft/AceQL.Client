@@ -28,7 +28,7 @@ namespace AceQL.Client.Api.Util
     /// <summary>
     /// Parameters for SDK.
     /// </summary>
-    internal class Parms
+    static internal class Parms
     {
         /// <summary>
         /// The AceQL default storage folder.

@@ -34,9 +34,8 @@ namespace AceQL.Client.Api.Util
     {
         private bool traceOn;
 
-
-        private StreamReader streamReader;
-        private JsonTextReader reader;
+        private readonly StreamReader streamReader;
+        private readonly JsonTextReader reader;
 
         /// <summary>
         /// Constructor
@@ -141,19 +140,6 @@ namespace AceQL.Client.Api.Util
             {
                 ConsoleEmul.WriteLine();
             }
-        }
-
-        public void Dispose()
-        {
-            if (this.streamReader != null)
-            {
-                this.streamReader.Dispose();
-                if (this.reader != null)
-                {
-                    this.reader.Close();
-                }
-            }
-
         }
 
         /// <summary>

@@ -19,7 +19,7 @@
 ﻿
 namespace AceQL.Client.Api
 {
-    internal class Factor
+    internal static class Factor
     {
         // We multiply original Jav enum value per -10000 to be sure the int value is never used as 
         // prepared statement parameter by user?

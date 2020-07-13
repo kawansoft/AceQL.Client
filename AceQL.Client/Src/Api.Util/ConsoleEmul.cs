@@ -28,7 +28,7 @@ namespace AceQL.Client.Api.Util
     /// <summary>
     /// Console emulator as in Portable Class Library we don't have access to Console.
     /// </summary>
-    internal class ConsoleEmul
+    static internal class ConsoleEmul
     {
         private const string CONSOLE_EMUL = "CONSOLE_EMUL";
 

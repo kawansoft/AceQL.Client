@@ -9,7 +9,7 @@ namespace AceQL.Client.Src.Api.Util
     /// <summary>
     /// Class StringUtils. Utilities fro String management.
     /// </summary>
-    internal class StringUtils
+    internal static class StringUtils
     {
         /// <summary>
         /// Gets the substring before the first occurrence of a separator. The separator is not returned.
@@ -24,7 +24,7 @@ namespace AceQL.Client.Src.Api.Util
                 return str;
             }
 
-            int commaIndex = str.IndexOf(separator);
+            int commaIndex = str.IndexOf(separator, StringComparison.CurrentCulture);
 
             if (commaIndex <= 0)
             {

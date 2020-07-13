@@ -31,17 +31,17 @@ namespace AceQL.Client.Api.Metadata.Dto
         /// <summary>
         /// The status
         /// </summary>
-        private string status = "OK";
+        private readonly string status = "OK";
         /// <summary>
         /// The table
         /// </summary>
-        private Table table = null;
+        private readonly Table table;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableDto"/> class.
         /// </summary>
         /// <param name="table">The table.</param>
-        public TableDto(Table table) : base()
+        public TableDto(Table table)
         {
             this.table = table;
         }

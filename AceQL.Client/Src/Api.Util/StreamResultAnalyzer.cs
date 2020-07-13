@@ -46,10 +46,10 @@ namespace AceQL.Client.Api.Util
         /// </summary>
         private string stackTrace;
 
-        private HttpStatusCode httpStatusCode;
+        private readonly HttpStatusCode httpStatusCode;
 
         // The JSON file containing Result Set
-        private IFile file;
+        private readonly IFile file;
 
 
         /// <summary>

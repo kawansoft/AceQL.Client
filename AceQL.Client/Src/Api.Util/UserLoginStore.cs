@@ -34,9 +34,9 @@ namespace AceQL.Client.Src.Api.Util
     {
         private static Dictionary<string, string> loggedUsers = new Dictionary<string, string>();
 
-        private string serverUrl;
-        private string username;
-        private string database;
+        private readonly string serverUrl;
+        private readonly string username;
+        private readonly string database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserLoginStore"/> class.

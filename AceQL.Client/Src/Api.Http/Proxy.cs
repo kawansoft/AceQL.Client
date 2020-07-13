@@ -26,8 +26,8 @@ namespace AceQL.Client.Api.Http
     /// </summary>
     internal class Proxy : IWebProxy
     {
-        private ICredentials credentials = null;
-        String proxyUri = null;
+        private ICredentials credentials;
+        private readonly String proxyUri;
 
         /// <summary>
         /// Builds an  <see cref="IWebProxy"/> implementation.

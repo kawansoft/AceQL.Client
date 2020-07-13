@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    public class HttpClientLoopTest
+    public static class HttpClientLoopTest
     {
         public static async Task Test()
         {
@@ -44,7 +44,6 @@ namespace AceQL.Client.Tests
                 AceQLConsole.WriteLine("response " + responseString);
 
                 AceQLConsole.WriteLine();
-                //Thread.Sleep(100);
             }
             httpClient.Dispose();
 

@@ -38,7 +38,7 @@ namespace AceQL.Client.Tests.Test
         /// <summary>
         /// The value
         /// </summary>
-        private object theValue = null;
+        private object theValue;
 
         /// <summary>
         /// Specifies the out parameter name.

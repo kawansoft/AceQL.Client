@@ -32,17 +32,17 @@ namespace AceQL.Client.Api
         /// <summary>
         /// The AceQL connection
         /// </summary>
-        private AceQLConnection connection = null;
+        private readonly AceQLConnection connection;
 
         /// <summary>
         /// The instance that does all http stuff
         /// </summary>
-        private AceQLHttpApi aceQLHttpApi;
+        private readonly AceQLHttpApi aceQLHttpApi;
 
         /// <summary>
         /// The isolation level
         /// </summary>
-        private IsolationLevel isolationLevel = IsolationLevel.Unspecified;
+        private readonly IsolationLevel isolationLevel = IsolationLevel.Unspecified;
 
 
         /// <summary>
@@ -63,7 +63,6 @@ namespace AceQL.Client.Api
         internal AceQLTransaction(AceQLConnection connection, IsolationLevel isolationLevel) : this(connection)
         {
             this.isolationLevel = isolationLevel;
-            string isolationLevelStr = GetTransactionIsolationAsString(isolationLevel);
         }
 
         /// <summary>

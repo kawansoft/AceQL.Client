@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    public class AceQLConsole
+    public static class AceQLConsole
     {
         public static void WriteLine()
         {
-            Console.WriteLine();
+            WriteLine("");
         }
 
         public static void WriteLine(String s)

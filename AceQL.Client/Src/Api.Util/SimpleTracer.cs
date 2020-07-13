@@ -17,19 +17,12 @@ namespace AceQL.Client.Src.Api.Util
         /// <summary>
         /// The trace on
         /// </summary>
-        private bool traceOn = false;
+        private bool traceOn;
 
         /// <summary>
         /// The trace file for debug
         /// </summary>
-        private IFile file = null;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleTracer"/> class.
-        /// </summary>
-        public SimpleTracer()
-        {
-        }
+        private IFile file;
 
         /// <summary>
         /// Says if trace is on

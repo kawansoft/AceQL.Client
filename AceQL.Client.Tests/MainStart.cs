@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Tests
 {
-    public class MainStart
+    public static class MainStart
     {
 
         public static void Main(string[] args)

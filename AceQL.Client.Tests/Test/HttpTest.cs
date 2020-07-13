@@ -56,6 +56,7 @@ namespace AceQL.Client.Tests
             response = await httpClient.PostAsync(theUrl, content);
 
             this.httpStatusCode = response.StatusCode;
+            AceQLConsole.WriteLine("this.httpStatusCode: " + this.httpStatusCode);
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
 

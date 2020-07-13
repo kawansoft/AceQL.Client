@@ -27,7 +27,7 @@ namespace AceQL.Client.Api.Util
     /// <remarks>   Nicolas De Pomereu, 19/05/2017. </remarks>
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    internal class AceQLTypes
+    internal static class AceQLTypes
     {
         internal static readonly String BINARY = "BINARY";
         internal static readonly String BIT = "BIT";

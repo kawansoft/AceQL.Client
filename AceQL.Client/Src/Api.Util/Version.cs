@@ -20,7 +20,7 @@
 
 namespace AceQL.Client.Api.Util
 {
-    internal class Version
+    internal static class Version
     {
         internal static String GetVersion()
         {
