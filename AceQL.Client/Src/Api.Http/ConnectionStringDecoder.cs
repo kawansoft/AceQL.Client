@@ -17,26 +17,18 @@ namespace AceQL.Client.Src.Api.Http
         private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
         private const string ESCAPED_SEMICOLON = "\\;";
 
-        private string server = null;
-        private string database = null;
-        private string username = null;
-        private char[] password = null;
-        private string sessionId = null;
-        private string proxyUri = null;
-        private ICredentials proxyCredentials = null;
+        private string server;
+        private string database;
+        private string username;
+        private char[] password;
+        private string sessionId;
+        private string proxyUri;
+        private ICredentials proxyCredentials;
         private int timeout = 0;
-        private bool enableDefaultSystemAuthentication = false;
+        private bool enableDefaultSystemAuthentication;
         private bool enableTrace;
 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionStringDecoder"/> class.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">connectionString has not been set and is null!</exception>
-        public ConnectionStringDecoder()
-        {
-
-        }
 
         /// <summary>
         /// Decodes the specified connection string.
@@ -60,8 +52,6 @@ namespace AceQL.Client.Src.Api.Http
             String proxyUsername = null;
             String proxyPassword = null;
 
-            int theTimeout = 0;
-
             string[] lines = connectionString.Split(';');
 
             if (lines.Length < 2)
@@ -71,7 +61,7 @@ namespace AceQL.Client.Src.Api.Http
 
             foreach (string line in lines)
             {
-                // If some empty ;
+                // Do not trea empty lines
                 if (line.Trim().Length <= 2)
                 {
                     continue;
@@ -166,7 +156,7 @@ namespace AceQL.Client.Src.Api.Http
                 }
                 else if (property.ToLower().Equals("timeout"))
                 {
-                    theTimeout = Int32.Parse(value);
+                    timeout = Int32.Parse(value);
                 }
                 else if (property.ToLower().Equals("enableTrace"))
                 {

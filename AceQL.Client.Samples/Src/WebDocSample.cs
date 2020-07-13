@@ -55,50 +55,50 @@ namespace AceQL.Client.Samples.Src
         static async Task DoIt(string[] args)
         {
             Console.WriteLine("Building connection with credential...");
-            AceQLConnection connection = await ConnectionBuilderAsyncWithCredential();
+            AceQLConnection connection = await ConnectionBuilderAsyncWithCredential().ConfigureAwait(false);
             WebDocSample webDocSamples = new WebDocSample(connection);
 
-            await webDocSamples.DeleteCustomers();
+            await webDocSamples.DeleteCustomers().ConfigureAwait(false);
 
             Console.WriteLine("Insert customer...");
-            await webDocSamples.InsertCustomer();
+            await webDocSamples.InsertCustomer().ConfigureAwait(false);
 
             Console.WriteLine("display customer 1...");
-            await webDocSamples.SelectCustomerOne();
+            await webDocSamples.SelectCustomerOne().ConfigureAwait(false);
             Console.WriteLine();
 
             Console.WriteLine("update customer...");
-            await webDocSamples.UpdateCustomer();
+            await webDocSamples.UpdateCustomer().ConfigureAwait(false);
             Console.WriteLine();
 
             Console.WriteLine("display customer...");
-            await webDocSamples.SelectCustomer();
+            await webDocSamples.SelectCustomer().ConfigureAwait(false);
             Console.WriteLine();
 
-            await webDocSamples.DeleteCustomers();
-            await webDocSamples.DeleteOrderlogs();
+            await webDocSamples.DeleteCustomers().ConfigureAwait(false);
+            await webDocSamples.DeleteOrderlogs().ConfigureAwait(false);
 
-            await webDocSamples.InsertCustomerAndOrderLogAsync(1, 1);
+            await webDocSamples.InsertCustomerAndOrderLogAsync(1, 1).ConfigureAwait(false);
             Console.WriteLine();
 
-            await webDocSamples.DeleteOrderlogs();
+            await webDocSamples.DeleteOrderlogs().ConfigureAwait(false);
 
             Console.WriteLine();
             Console.WriteLine("Insert BLOB...");
-            await webDocSamples.InsertBlob(1, 1);
+            await webDocSamples.InsertBlob(1, 1).ConfigureAwait(false);
 
             Console.WriteLine("Select BLOB...");
-            await webDocSamples.SelectBlob(1, 1);
+            await webDocSamples.SelectBlob(1, 1).ConfigureAwait(false);
 
             await webDocSamples.DeleteOrderlogs();
 
             Console.WriteLine();
             Console.WriteLine("Insert BLOB with ProgressIndicator...");
-            await webDocSamples.InsertBlobProgressIndicator(1, 1);
+            await webDocSamples.InsertBlobProgressIndicator(1, 1).ConfigureAwait(false);
 
             Console.WriteLine();
             Console.WriteLine("Select BLOB...");
-            await webDocSamples.SelectBlob(1, 1);
+            await webDocSamples.SelectBlob(1, 1).ConfigureAwait(false);
 
             await connection.CloseAsync();
             Console.WriteLine("Connection closed.");
@@ -268,16 +268,7 @@ namespace AceQL.Client.Samples.Src
 
         }
 
-        private static void UseConnection2()
-        {
-            string connectionString = null;
-            using (AceQLConnection connection = new AceQLConnection(connectionString))
-            {
-                // SQL stuff...
-            }
-        }
-
-        private static char[] GetFromUserInput()
+        internal static char[] GetFromUserInput()
         {
             return "password".ToArray();
         }
@@ -291,8 +282,6 @@ namespace AceQL.Client.Samples.Src
             this.connection = connection;
         }
 
-        //command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR);
-        // 
         private async Task InsertCustomer()
         {
             string sql = "insert into customer values (1, 'Sir', 'John', 'Doe', " +
@@ -306,10 +295,7 @@ namespace AceQL.Client.Samples.Src
 
         }
 
-
-        //command.Parameters.AddWithNullValue("@parm8", SqlType.VARCHAR);
-        // 
-        private async Task InsertCustomerPreparedStatement()
+        internal async Task InsertCustomerPreparedStatement()
         {
             string sql = "insert into customer values " + "" +
                     "(@customer_id, @customer_title, @fname, " +
@@ -325,12 +311,12 @@ namespace AceQL.Client.Samples.Src
             command.Parameters.Add(new AceQLParameter("@addressline", "1 Madison Ave"));
             command.Parameters.AddWithValue("@town", "New York");
             command.Parameters.AddWithValue("@zipcode", "NY 10010");
-            //command.Parameters.AddWithValue("@phone", "+1 (212) 586-71XX");
 
             // We don't know the phone number
             command.Parameters.Add(new AceQLParameter("@phone", new AceQLNullValue(AceQLNullType.VARCHAR)));
 
             int rows = await command.ExecuteNonQueryAsync();
+            Console.WriteLine("Rows updated: " + rows);
 
         }
 
@@ -399,7 +385,7 @@ namespace AceQL.Client.Samples.Src
             {
                 // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
                 await transaction.RollbackAsync();
-                throw e;
+                throw;
             }
 
         }

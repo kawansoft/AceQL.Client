@@ -35,7 +35,7 @@ namespace AceQL.Client.Samples.Src
         {
             try
             {
-                DoIt(args).Wait();
+                DoIt().Wait();
                 //DoIt(args).GetAwaiter().GetResult();
 
                 Console.WriteLine();
@@ -52,40 +52,40 @@ namespace AceQL.Client.Samples.Src
 
         }
 
-        static async Task DoIt(string[] args)
+        static async Task DoIt()
         {
             Console.WriteLine("Building connection with credential...");
-            AceQLConnection connection = await ConnectionBuilderAsyncWithCredential();
+            AceQLConnection connection = await ConnectionBuilderAsyncWithCredential().ConfigureAwait(false); ;
             DocSamples docSamples = new DocSamples(connection);
 
-            await docSamples.DeleteCustomers();
+            await docSamples.DeleteCustomers().ConfigureAwait(false); ;
 
             Console.WriteLine("Insert customer...");
-            await docSamples.InsertCustomer();
+            await docSamples.InsertCustomer().ConfigureAwait(false); ;
 
             Console.WriteLine("display customer...");
-            await docSamples.SelectCustomer();
+            await docSamples.SelectCustomer().ConfigureAwait(false); ;
 
-            await docSamples.DeleteCustomers();
-            await docSamples.DeleteOrderlogs();
+            await docSamples.DeleteCustomers().ConfigureAwait(false); ;
+            await docSamples.DeleteOrderlogs().ConfigureAwait(false); ;
 
-            await docSamples.InsertCustomerAndOrderLogAsync(1, 1);
+            await docSamples.InsertCustomerAndOrderLogAsync(1, 1).ConfigureAwait(false); ;
 
-            await docSamples.DeleteOrderlogs();
+            await docSamples.DeleteOrderlogs().ConfigureAwait(false); ;
 
             Console.WriteLine("Insert BLOB...");
-            await docSamples.InsertBlob(1, 1);
+            await docSamples.InsertBlob(1, 1).ConfigureAwait(false); ;
 
             Console.WriteLine("Select BLOB...");
             await docSamples.SelectBlob(1, 1);
 
-            await docSamples.DeleteOrderlogs();
+            await docSamples.DeleteOrderlogs().ConfigureAwait(false); ;
 
             Console.WriteLine("Insert BLOB with ProgressIndicator...");
-            await docSamples.InsertBlobProgressIndicator(1, 1);
+            await docSamples.InsertBlobProgressIndicator(1, 1).ConfigureAwait(false); ;
 
             Console.WriteLine("Select BLOB...");
-            await docSamples.SelectBlob(1, 1);
+            await docSamples.SelectBlob(1, 1).ConfigureAwait(false); ;
 
 
         }
@@ -338,7 +338,7 @@ namespace AceQL.Client.Samples.Src
             {
                 // Transaction must always be terminated by a CommitAsync() or RollbackAsync()
                 await transaction.RollbackAsync();
-                throw e;
+                throw;
             }
 
         }

@@ -37,7 +37,7 @@ namespace AceQL.Client.Samples
         /// <summary>
         /// The connection to the remote database
         /// </summary>
-        AceQLConnection connection = null;
+        AceQLConnection connection;
 
         public static void TheMain(string[] args)
         {
@@ -67,15 +67,15 @@ namespace AceQL.Client.Samples
                     // Delete previous instances, so that user can recall 
 
                     Console.WriteLine("deleting customer...");
-                    await myRemoteConnection.DeleteCustomerAsync(customerId);
+                    await myRemoteConnection.DeleteCustomerAsync(customerId).ConfigureAwait(false); ;
 
                     Console.WriteLine("deleting orderlog...");
-                    await myRemoteConnection.DeleteOrderlogAsync(customerId, itemId);
+                    await myRemoteConnection.DeleteOrderlogAsync(customerId, itemId).ConfigureAwait(false); ;
 
-                    await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId);
-                    await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId, itemId);
+                    await myRemoteConnection.InsertCustomerAndOrderLogAsync(customerId, itemId).ConfigureAwait(false); ;
+                    await myRemoteConnection.SelectCustomerAndOrderLogAsync(customerId).ConfigureAwait(false); ;
 
-                    await connection.CloseAsync();
+                    await connection.CloseAsync().ConfigureAwait(false); ;
                     Console.WriteLine("The end...");
                 }
 
@@ -230,7 +230,7 @@ namespace AceQL.Client.Samples
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                throw e;
+                throw;
             }
         }
 
@@ -238,8 +238,7 @@ namespace AceQL.Client.Samples
         /// Example of 2 SELECT.
         /// </summary>
         /// <param name="customerId">The cutomer ID.</param>
-        /// <param name="itemId">the item ID.</param>
-        private async Task SelectCustomerAndOrderLogAsync(int customerId, int itemId)
+        private async Task SelectCustomerAndOrderLogAsync(int customerId)
         {
             // Display the created Customer:
             string sql = "select customer_id, fname, lname from customer "
