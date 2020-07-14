@@ -980,6 +980,11 @@ namespace AceQL.Client.Api.Http
         public async Task CloseAsync()
         {
             await CallApiNoResultAsync("disconnect", null).ConfigureAwait(false);
+
+            if (httpManager != null)
+            {
+                httpManager.Dispose();
+            }
         }
 
         internal static void Debug(string s)

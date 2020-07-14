@@ -43,6 +43,7 @@
     <Compile Include="Src\Api.Http\FormUploadStream.cs" />
     <Compile Include="Src\Api.Http\HttpClientHandlerBuilder.cs" />
     <Compile Include="Src\Api.Http\HttpManager.cs" />
+    <Compile Include="Src\Api.Http\HttpRetryManager.cs" />
     <Compile Include="Src\Api.Http\Proxy.cs" />
     <Compile Include="Src\Api.Metadata.Dto\JdbcDatabaseMetaDataDto.cs" />
     <Compile Include="Src\Api.Metadata.Dto\TableDto.cs" />
@@ -90,9 +91,6 @@
     <Compile Include="Src\Api\ParameterDirection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.4.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\packages\BouncyCastle.1.8.4\lib\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>

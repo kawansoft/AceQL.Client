@@ -29,8 +29,6 @@ namespace AceQL.Client.Src.Api.Http
         private bool enableDefaultSystemAuthentication;
         private bool enableTrace;
 
-
-
         /// <summary>
         /// Decodes the specified connection string.
         /// </summary>
@@ -115,7 +113,6 @@ namespace AceQL.Client.Src.Api.Http
                 }
                 else if (property.ToLowerInvariant().Equals("proxyuri"))
                 {
-
                     proxyUri = value;
                     // Set to null a "null" string
                     if (proxyUri.ToLowerInvariant().Equals("null") || proxyUri.Length == 0)
@@ -158,10 +155,26 @@ namespace AceQL.Client.Src.Api.Http
                 else if (property.ToLowerInvariant().Equals("timeout"))
                 {
                     timeout = Int32.Parse(value);
+                    if (timeout < 0)
+                    {
+                        throw new ArgumentException("timeout cant be < 0");
+                    }
+
                 }
                 else if (property.ToLowerInvariant().Equals("enableTrace"))
                 {
                     enableTrace = Boolean.Parse(value);
+                }
+                else if (property.ToLowerInvariant().Equals("maxretryforhttpstatus407"))
+                { 
+                    int maxRetryForHttpStatus407 = Int32.Parse(value);
+
+                    if (maxRetryForHttpStatus407 < 0)
+                    {
+                        throw new ArgumentException("maxRetryForHttpStatus407 cant be < 0");
+                    }
+
+                    HttpRetryManager.ProxyAuthenticationCallLimit = maxRetryForHttpStatus407;
                 }
             }
 
@@ -181,8 +194,22 @@ namespace AceQL.Client.Src.Api.Http
                 }
             }
 
+            CheckBasicConnectionStringValues();
+
         }
 
+        private void CheckBasicConnectionStringValues()
+        {
+            if (server == null)
+            {
+                throw new ArgumentException("\"Server\" mandatory property not found in connection string.");
+            }
+
+            if (database == null)
+            {
+                throw new ArgumentException("\"Database\" mandatory property not found in connection string.");
+            }
+        }
 
         public string Server { get => server;  }
         public string Database { get => database; }
