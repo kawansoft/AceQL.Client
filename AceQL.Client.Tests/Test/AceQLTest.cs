@@ -29,7 +29,7 @@ namespace AceQL.Client.Tests
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    class AceQLTest
+    public class AceQLTest
     {
 
         public static void TheMain(string[] args)
@@ -53,88 +53,19 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
+            string connectionString = ConnectionStringCurrent.Build();
 
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhost = "http://localhost:9090/aceql";
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinuxNoSSL = "http://www.runsafester.net:8081/aceql";
-            string serverUrlLinux = "https://www.aceql.com:9443/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-
-            string server = serverUrlLinuxNoSSL;
-            string database = "sampledb";
-            string username = "user1";
-            string password = "password1";
-
-            bool useLdapAuth = false;
-            //LDAP Tests
-            if (useLdapAuth)
+            // Make sure connection is always closed to close and release server connection into the pool
+            using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
-                AceQLConsole.WriteLine("WARNING: using LDAP!");
-                username = "cn=read-only-admin,dc=example,dc=com";
-                //username = "CN=L. Eagle,O=Sue\\2C Grabbit and Runn,C=GB";
-                password = "password";
+                await ExecuteExample(connection).ConfigureAwait(false);
+                await connection.CloseAsync();
             }
 
-            //customer_id integer NOT NULL,
-            //customer_title character(4),
-            //fname character varying(32),
-            //lname character varying(32) NOT NULL,
-            //addressline character varying(64),
-            //town character varying(32),
-            //zipcode character(10) NOT NULL,
-            //phone character varying(32),
-
-            string connectionString = $"Server={server}; Database={database}; ";
-
-            Boolean useAuthenticatedProxy = true;
-            Boolean doItWithCredential = true;
-
-            if (!doItWithCredential)
-            {
-                connectionString += $"Username={username}; Password={password}; EnableDefaultSystemAuthentication=True";
-
-                AceQLConsole.WriteLine("Using connectionString with Username & Password: " + connectionString);
-
-                // Make sure connection is always closed to close and release server connection into the pool
-                using (AceQLConnection connection = new AceQLConnection(connectionString))
-                {
-                    await ExecuteExample(connection).ConfigureAwait(false);
-                    await connection.CloseAsync();
-                }
-            }
-            else
-            {
-
-                AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
-                AceQLConsole.WriteLine("Using AceQLCredential : " + credential);
-
-                if (useAuthenticatedProxy)
-                {
-                    MyProxyInfo myProxyInfo = new MyProxyInfo();
-
-                    string proxyUsername = myProxyInfo.ProxyUsername;
-                    string proxyPassword = myProxyInfo.ProxyPassword; ;
-                    connectionString += $"ProxyUri=http://localhost:8080 ; ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword}";
-                }
-
-                AceQLConsole.WriteLine("Using connectionString with credential: " + credential);
-                AceQLConsole.WriteLine("Using connectionString                : " + connectionString);
-
-                // Make sure connection is always closed to close and release server connection into the pool
-                using (AceQLConnection connection = new AceQLConnection(connectionString))
-                {
-                    connection.Credential = credential;
-                    await ExecuteExample(connection).ConfigureAwait(false);
-                    await connection.CloseAsync();
-                }
-            }
         }
 
-        /// <summary>
+ 
+       /// <summary>
         /// Executes our example using an <see cref="AceQLConnection"/> 
         /// </summary>
         /// <param name="connection"></param>
@@ -166,7 +97,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i <300; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";

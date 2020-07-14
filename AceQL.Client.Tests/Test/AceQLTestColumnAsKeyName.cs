@@ -18,6 +18,7 @@
  */
 
 using AceQL.Client.Api;
+using AceQL.Client.Tests.Test;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,37 +57,12 @@ namespace AceQL.Client.Tests
         static async Task DoIt()
         {
 
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhost = "http://localhost:9090/aceql";
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            string serverUrlLinux = "https://www.aceql.com:9443/aceql";
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-
-            string server = serverUrlLocalhost;
-            string database = "sampledb";
-            string username = "username";
-            string password = "password";
-
-            //customer_id integer NOT NULL,
-            //customer_title character(4),
-            //fname character varying(32),
-            //lname character varying(32) NOT NULL,
-            //addressline character varying(64),
-            //town character varying(32),
-            //zipcode character(10) NOT NULL,
-            //phone character varying(32),
-
-            string connectionString = $"Server={server}; Database={database}; ";
-
-            AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
+            string connectionString = ConnectionStringCurrent.Build();
 
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
-                connection.Credential = credential;
+                //connection.Credential = credential;
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }

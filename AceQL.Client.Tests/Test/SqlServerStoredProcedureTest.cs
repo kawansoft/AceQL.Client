@@ -21,6 +21,7 @@ using AceQL.Client;
 using AceQL.Client.Api;
 using AceQL.Client.Api.File;
 using AceQL.Client.Src.Api;
+using AceQL.Client.Tests.Test;
 using PCLStorage;
 using System;
 using System.IO;
@@ -91,19 +92,7 @@ namespace AceQL.Client.Tests
         /// <exception cref="AceQLException">If any Exception occurs.</exception>
         public static async Task<AceQLConnection> ConnectionBuilderAsync()
         {
-            // Port number is the port number used to start the Web Server:
-            string server = "http://localhost:9090/aceql";
-            string database = "sampledb";
-
-            // (username, password) for authentication on server side.
-            // No authentication will be done for our Quick Start:
-            // (username, password) for authentication on server side.
-            // No authentication will be done for our Quick Start:
-            string username = "MyUsername";
-            string password = "MySecret";
-
-            string connectionString = $"Server={server}; Database={database}; "
-                + $"Username={username}; Password={password};";
+            string connectionString = ConnectionStringCurrent.Build();
 
             AceQLConnection theConnection = new AceQLConnection(connectionString);
 
