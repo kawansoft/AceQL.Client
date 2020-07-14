@@ -100,7 +100,7 @@ namespace AceQL.Client.Api.Http
         internal SimpleTracer simpleTracer = new SimpleTracer();
 
         // The HttpManager that contains the HtttClient to use
-        private HttpManager httpManager;
+        internal HttpManager httpManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLHttpApi"/> class.
@@ -241,6 +241,8 @@ namespace AceQL.Client.Api.Http
                 }
                 else
                 {
+                    await DummyGetCallForProxyAuthentication().ConfigureAwait(false);
+
                     String theUrl = server + "/database/" + database + "/username/" + username + "/login";
                     ConsoleEmul.WriteLine("theUrl: " + theUrl);
 
@@ -251,7 +253,6 @@ namespace AceQL.Client.Api.Http
                     };
 
                     await simpleTracer.TraceAsync("Before CallWithPostAsyncReturnString: " + theUrl);
-
                     String result = await httpManager.CallWithPostAsyncReturnString(new Uri(theUrl), parametersMap).ConfigureAwait(false);
 
                     ConsoleEmul.WriteLine("result: " + result);
@@ -288,6 +289,20 @@ namespace AceQL.Client.Api.Http
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Dummies the get call for proxy authentication.
+        /// Hack to force a first GET on just aceql servlet if we are with a proxy, just to avoid system failure
+        /// Because of a bug in C#, if a POST is done first to detect a 407 (proxy auth asked), HttpClient throws an Exception
+        /// </summary>
+        private async Task DummyGetCallForProxyAuthentication()
+        {
+            if (proxyUri != null && proxyCredentials != null)
+            {
+                String getResult = await httpManager.CallWithGetAsync(server).ConfigureAwait(false);
+                ConsoleEmul.WriteLine(server + " - getResult: " + getResult);
+            }
         }
 
         /// <summary>

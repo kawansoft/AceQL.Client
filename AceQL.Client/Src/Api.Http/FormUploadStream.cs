@@ -170,6 +170,7 @@ namespace AceQL.Client.Api.Http
             finally
             {
                 stream.Dispose();
+                httpClient.Dispose();
             }
         }
     }

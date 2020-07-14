@@ -11,7 +11,7 @@ namespace AceQL.Client.Tests.Test
 
         public static Boolean useLocal = false;
         public static Boolean useLdapAuth = false;
-        public static Boolean useAuthenticatedProxy = false;
+        public static Boolean useAuthenticatedProxy = true;
 
         public static string Build()
         {
