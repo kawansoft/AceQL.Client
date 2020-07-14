@@ -19,7 +19,7 @@ namespace AceQL.Client.Tests.Test
             proxyPassword = lines[1];
         }
 
-        public string ProxyPassword { get => proxyPassword; set => proxyPassword = value; }
-        public string ProxyUsername { get => proxyUsername; set => proxyUsername = value; }
+        public string ProxyPassword { get => proxyPassword;}
+        public string ProxyUsername { get => proxyUsername;}
     }
 }

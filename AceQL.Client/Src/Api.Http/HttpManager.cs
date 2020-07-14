@@ -15,7 +15,7 @@ namespace AceQL.Client.Src.Api.Http
     /// <summary>
     /// Class HttpManager. A wrapped HttpClient tool that van do everything
     /// </summary>
-    public class HttpManager : IDisposable
+    internal class HttpManager : IDisposable
     {
         /// <summary>
         /// The Proxy Uri, if we don't want 

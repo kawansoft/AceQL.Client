@@ -65,10 +65,8 @@
     <Compile Include="Test\ConnectionStringBuilder.cs" />
     <Compile Include="Test\ConnectionStringCurrent.cs" />
     <Compile Include="Test\MyProxyInfo.cs" />
-    <Compile Include="Test\ProxyLoopTest.cs" />
     <Compile Include="Test\HttpTest.cs" />
     <Compile Include="Test\JsonTest.cs" />
-    <Compile Include="Test\ProxyHttpManagerBuilder.cs" />
     <Compile Include="Test\SqlServerStoredProcedureTest.cs" />
     <Compile Include="Test\MySqlStoredProcedureTest.cs" />
   </ItemGroup>
