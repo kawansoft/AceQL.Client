@@ -157,11 +157,11 @@ namespace AceQL.Client.Src.Api.Http
                     timeout = Int32.Parse(value);
                     if (timeout < 0)
                     {
-                        throw new ArgumentException("timeout cant be < 0");
+                        throw new ArgumentException("timeout cannot be < 0");
                     }
 
                 }
-                else if (property.ToLowerInvariant().Equals("enableTrace"))
+                else if (property.ToLowerInvariant().Equals ("enabletrace"))
                 {
                     enableTrace = Boolean.Parse(value);
                 }
@@ -171,7 +171,7 @@ namespace AceQL.Client.Src.Api.Http
 
                     if (maxRetryForHttpStatus407 < 0)
                     {
-                        throw new ArgumentException("maxRetryForHttpStatus407 cant be < 0");
+                        throw new ArgumentException("maxRetryForHttpStatus407 cannot be < 0");
                     }
 
                     HttpRetryManager.ProxyAuthenticationCallLimit = maxRetryForHttpStatus407;

@@ -1,6 +1,6 @@
 
                  AceQL C# Client SDK
-                    Version 4.3
+                    Version 5.0
                    Release Notes
 
 
@@ -23,21 +23,26 @@ AceQL C# Client SDK - Version 4.3 - 13-Jul-2020
 
 
 Bugs fixed:
-- When using a WebProxy, a session could be interrupted by 407 errors.
+- When using a WebProxy with authentication, a session could be interrupted 
+  by 407 errors.
   This is due to a C# bug or feature of the HttClient implementation.
-  A turnaround has been added by allowing to retry a call 
+  A turnaround has been added by allowing to retry each AceQL HTTP call 
+  that return a 407 HTTP status code.
 
 What's New:
+- For better for stability and perfomances, All HTTP calls during an AceQL session 
+  use the same HttpClient instance.
 - The AceQLConnection trace activation/deactivation methods have suppressed.
-  Tracing is now activated by 
+  Tracing is now activated by putting EnableTrace=true in the connection string.
+- The mandatory presence of "Server" and "Database" properties in the connection 
+  string are now checked.
 - AceQLConnection.GetVersion() is now static. 
-- All code follow now SonarCSharp coding convention.
+- All code follow now Codacy.com and SonarCSharp coding convention.
 
 
 
-AceQL C# Client SDK - Version 4.2.2 - 08-Jun-2020
--------------------------------------------------
-
+AceQL C# Client SDK - Version 5.0 - 14-Jul-2020
+------------------------------------------------
 
 Bugs fixed:
 - On some Locales, setting a parameter with a DateTime value could fail.

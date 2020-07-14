@@ -3,7 +3,7 @@
 
 # AceQL HTTP 
 
-## C# Client SDK v4.2.2 - June 2020, 8
+## C# Client SDK v5.0 - July 2020, 14
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -192,7 +192,7 @@ Note that the AceQL SDK does not allow you to specify data types to use; data ty
 The standard connection string is:
 
 ```c#
-"Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password = myPassword"
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword"
 ```
 
 Where:
@@ -206,7 +206,7 @@ Where:
 You can specify using NTLM with `NTLM=true` 
 
 ```c#
-"Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password = myPassword; NTLM=true"
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; NTLM=true"
 ```
 
 ### Using a Web Proxy
@@ -216,19 +216,19 @@ You can specify using NTLM with `NTLM=true`
 You can specify the credentials of a proxy that requires authentication with `ProxyUsernme` and `ProxyPassword`:
 
 ```c#
-"Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username= myUsername; Password = myPassword; ProxyUsername=MyProxyUser; ProxyPassword=MyProxyPassword"
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; ProxyUsername=MyProxyUser; ProxyPassword=MyProxyPassword"
 ```
 
 If `ProxyUri` is specified, the value will be used instead of the default `System.Net.WebRequest.DefaultWebProxy` value:
 
 ```c#
-"Server= https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password = myPassword; ProxyUri=http://localhost:8080 ProxyUsername=proxyuser1;ProxyPassword= proxyuser1"
+"Server=https://www.acme.com:9443/aceql; Database = myDataBase; Username =myUsername; Password=myPassword; ProxyUri=http://localhost:8080 ProxyUsername=proxyuser1;ProxyPassword=proxyuser1"
 ```
 
 Read/Write http timeout may be specified with `Timeout` in milliseconds:
 
 ```c#
-"Server = https://www.acme.com:9443/aceql;Database = myDataBase; Username = myUsername; Password = myPassword;Timeout=300000"
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; Timeout=300000"
 ```
 
 If Timeout is not specified or equals 0, Microsoft  [HttpClient.Timeout](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.timeout) default value will be used.
