@@ -543,7 +543,7 @@ namespace AceQL.Client.Api.Http
                 await simpleTracer.TraceAsync("parm: " + p.Key + " / " + p.Value);
             }
 
-            string result = await CallWithPostAsyncReturnString(urlWithaction, parametersMap).ConfigureAwait(false);
+            string result = await httpManager.CallWithPostAsyncReturnString(urlWithaction, parametersMap).ConfigureAwait(false);
 
             Debug("result: " + result);
 
@@ -599,31 +599,7 @@ namespace AceQL.Client.Api.Http
             }
         }
 
-        /// <summary>
-        /// Executes a POST with parameters and returns a Srring
-        /// </summary>
-        /// <param name="theUrl">The Url.</param>
-        /// <param name="parametersMap">The request parameters.</param>
-        /// <returns>Stream.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// action is null!
-        /// or
-        /// postParameters is null!
-        /// </exception>
-        private async Task<string> CallWithPostAsyncReturnString(Uri theUrl, Dictionary<string, string> parametersMap)
-        {
-            String result = null;
 
-            using (Stream input = await httpManager.CallWithPostAsync(theUrl, parametersMap).ConfigureAwait(false))
-            {
-                if (input != null)
-                {
-                    result = new StreamReader(input).ReadToEnd();
-                }
-            }
-
-            return result;
-        }
 
 
         /// <summary>

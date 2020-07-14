@@ -42,7 +42,9 @@ namespace AceQL.Client.Api.Http
     internal class FormUploadStream
     {
         internal static bool DEBUG = false;
-        private long tempLen = 0;
+        private long tempLen;
+        private int proxyAuthenticationCallCount;
+        private int proxyAuthenticationCallLimit = 1;
 
         /// <summary>
         /// Uploads a file using a blob reference.
@@ -127,6 +129,29 @@ namespace AceQL.Client.Api.Http
                 else
                 {
                     response = await httpClient.PostAsync(url, multipart, cancellationToken).ConfigureAwait(false);
+                }
+
+                // Allows a retry for 407, because can happen time to time with Web proxies 
+                if (response.StatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+                {
+                    while (proxyAuthenticationCallCount < proxyAuthenticationCallLimit)
+                    {
+                        proxyAuthenticationCallCount++;
+                        if (!useCancellationToken)
+                        {
+                            response = await httpClient.PostAsync(url, multipart).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            response = await httpClient.PostAsync(url, multipart, cancellationToken).ConfigureAwait(false);
+                        }
+
+                        if (!response.StatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+                        {
+                            proxyAuthenticationCallCount = 0;
+                            break;
+                        }
+                    }
                 }
 
                 if (progressIndicator != null)

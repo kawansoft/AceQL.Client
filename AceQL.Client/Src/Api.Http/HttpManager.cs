@@ -12,7 +12,10 @@ using System.Threading.Tasks;
 
 namespace AceQL.Client.Src.Api.Http
 {
-    internal class HttpManager
+    /// <summary>
+    /// Class HttpManager. A wrapped HttpClient tool that van do everything
+    /// </summary>
+    public class HttpManager : IDisposable
     {
         /// <summary>
         /// The Proxy Uri, if we don't want 
@@ -41,8 +44,8 @@ namespace AceQL.Client.Src.Api.Http
         private SimpleTracer simpleTracer = new SimpleTracer();
 
         HttpClient httpClient;
-        private int proxyAuthentcationCallCount;
-        private int proxyAuthentcationCallLimit = 1;
+        private int proxyAuthenticationCallCount;
+        private int proxyAuthenticationCallLimit = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpManager"/> class.
@@ -58,10 +61,10 @@ namespace AceQL.Client.Src.Api.Http
             this.timeout = timeout;
             this.enableDefaultSystemAuthentication = enableDefaultSystemAuthentication;
 
-            buildHttpClient();
+            BuildHttpClient();
         }
 
-        private void buildHttpClient()
+        private void BuildHttpClient()
         {
              httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
         }
@@ -75,13 +78,13 @@ namespace AceQL.Client.Src.Api.Http
         /// Gets the HTTP status code of the last HTTP call.
         /// </summary>
         /// <value>The HTTP status code.</value>
-        internal HttpStatusCode HttpStatusCode { get => httpStatusCode; set => httpStatusCode = value; }
+        public HttpStatusCode HttpStatusCode { get => httpStatusCode; set => httpStatusCode = value; }
 
         /// <summary>
         /// Gets or sets the proxy authentcation call limit.
         /// </summary>
         /// <value>The proxy authentcation call limit.</value>
-        public int ProxyAuthentcationCallLimit { get => proxyAuthentcationCallLimit; set => proxyAuthentcationCallLimit = value; }
+        public int ProxyAuthentcationCallLimit { get => proxyAuthenticationCallLimit; set => proxyAuthenticationCallLimit = value; }
 
         /// <summary>
         /// To be call at end of each of each public aysnc(CancellationToken) calls to reset to false the usage of a CancellationToken with http calls
@@ -131,15 +134,17 @@ namespace AceQL.Client.Src.Api.Http
             // Allows a retry for 407, because can happen time to time with Web proxies 
             if (this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
             {
-                proxyAuthentcationCallCount++;
-                if (proxyAuthentcationCallCount <= proxyAuthentcationCallLimit) {
+                while(proxyAuthenticationCallCount < proxyAuthenticationCallLimit)
+                {
+                    proxyAuthenticationCallCount++;
                     Stream input = await CallWithGetReturnStreamAsync(url).ConfigureAwait(false);
-                    return input;
+
+                    if (!this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+                    {
+                        proxyAuthenticationCallCount = 0;
+                        return input;
+                    }
                 }
-            }
-            else
-            {
-                proxyAuthentcationCallCount = 0;
             }
 
             HttpContent content = response.Content;
@@ -208,20 +213,22 @@ namespace AceQL.Client.Src.Api.Http
             // Allows a retry for 407, because can happen time to time with Web proxies 
             if (this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
             {
-                proxyAuthentcationCallCount++;
-                if (proxyAuthentcationCallCount <= proxyAuthentcationCallLimit)
+                while (proxyAuthenticationCallCount < proxyAuthenticationCallLimit)
                 {
+                    proxyAuthenticationCallCount++;
                     Stream input = await CallWithPostAsync(theUrl, parameters).ConfigureAwait(false);
-                    return input;
+
+                    if (!this.httpStatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
+                    {
+                        proxyAuthenticationCallCount = 0;
+                        return input;
+                    }
                 }
-            }
-            else
-            {
-                proxyAuthentcationCallCount = 0;
             }
 
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
+
 
         /// <summary>
         /// Calls the with get.
@@ -289,5 +296,13 @@ namespace AceQL.Client.Src.Api.Http
             return result;
         }
 
+        /// <summary>
+        /// Disposes the HttpClient 
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Dispose()
+        {
+            httpClient.Dispose();
+        }
     }
 }

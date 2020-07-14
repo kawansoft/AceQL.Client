@@ -18,6 +18,7 @@
  */
 
 using AceQL.Client.Api;
+using AceQL.Client.Tests.Test;
 using System;
 using System.IO;
 using System.Threading;
@@ -52,13 +53,6 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
-            bool doLoop = false;
-            if (doLoop)
-            {
-                await HttpClientLoopTest.Test().ConfigureAwait(false);
-                bool doReturn = true;
-                if (doReturn) return;
-            }
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             string serverUrlLocalhost = "http://localhost:9090/aceql";
@@ -96,7 +90,8 @@ namespace AceQL.Client.Tests
 
             string connectionString = $"Server={server}; Database={database}; ";
 
-            Boolean doItWithCredential = false;
+            Boolean useAuthenticatedProxy = true;
+            Boolean doItWithCredential = true;
 
             if (!doItWithCredential)
             {
@@ -116,6 +111,18 @@ namespace AceQL.Client.Tests
 
                 AceQLCredential credential = new AceQLCredential(username, password.ToCharArray());
                 AceQLConsole.WriteLine("Using AceQLCredential : " + credential);
+
+                if (useAuthenticatedProxy)
+                {
+                    MyProxyInfo myProxyInfo = new MyProxyInfo();
+
+                    string proxyUsername = myProxyInfo.ProxyUsername;
+                    string proxyPassword = myProxyInfo.ProxyPassword; ;
+                    connectionString += $"ProxyUri=http://localhost:8080 ; ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword}";
+                }
+
+                AceQLConsole.WriteLine("Using connectionString with credential: " + credential);
+                AceQLConsole.WriteLine("Using connectionString                : " + connectionString);
 
                 // Make sure connection is always closed to close and release server connection into the pool
                 using (AceQLConnection connection = new AceQLConnection(connectionString))
