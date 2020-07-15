@@ -53,6 +53,10 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
+
+            var netCoreVer = System.Environment.Version; // 3.0.0
+            AceQLConsole.WriteLine(netCoreVer + "");
+
             string connectionString = ConnectionStringCurrent.Build();
 
             // Make sure connection is always closed to close and release server connection into the pool
@@ -120,7 +124,7 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            int maxSelect = 1;
+            int maxSelect = 1000;
             for (int j = 0; j < maxSelect; j++)
             {
                 sql = "select * from customer where customer_id > @parm1";
