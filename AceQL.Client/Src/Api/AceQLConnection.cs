@@ -247,6 +247,12 @@ namespace AceQL.Client.Api
             }
 
             await aceQLHttpApi.CallApiNoResultAsync("close", null).ConfigureAwait(false);
+
+            if (aceQLHttpApi.httpManager != null)
+            {
+                aceQLHttpApi.httpManager.Dispose();
+            }
+
             closeAsyncDone = true;
         }
 
@@ -264,6 +270,11 @@ namespace AceQL.Client.Api
             UserLoginStore loginStore = new UserLoginStore(this.aceQLHttpApi.GetServer(), this.aceQLHttpApi.GetUsername(), this.aceQLHttpApi.GetDatabase());
             loginStore.Remove();
             await aceQLHttpApi.CallApiNoResultAsync("logout", null).ConfigureAwait(false);
+
+            if (aceQLHttpApi.httpManager != null) {
+                aceQLHttpApi.httpManager.Dispose();
+            }
+
             logoutAsyncDone = true;
         }
 

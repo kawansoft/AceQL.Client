@@ -84,7 +84,7 @@ namespace AceQL.Client.Tests.Test
         /// <returns>AceQLConnection.</returns>
         public static String Create(string server, string database, string username, string password, bool useAuthenticatedProxy)
         {
-            Boolean enableDefaultSystemAuthentication = true;
+            Boolean enableDefaultSystemAuthentication = false;
 
             ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder();
             connectionStringBuilder.AddServer(server);

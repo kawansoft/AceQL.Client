@@ -53,6 +53,10 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
+
+            var netCoreVer = System.Environment.Version; // 3.0.0
+            AceQLConsole.WriteLine(netCoreVer + "");
+
             string connectionString = ConnectionStringCurrent.Build();
 
             // Make sure connection is always closed to close and release server connection into the pool
@@ -61,7 +65,6 @@ namespace AceQL.Client.Tests
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }
-
         }
 
  
@@ -97,7 +100,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 4; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
@@ -121,26 +124,31 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            sql = "select * from customer where customer_id > @parm1";
-            command = new AceQLCommand(sql, connection);
-            command.Parameters.AddWithValue("@parm1", 1);
-
-            // Our dataReader must be disposed to delete underlying downloaded files
-            using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
+            int maxSelect = 1000;
+            for (int j = 0; j < maxSelect; j++)
             {
-                //await dataReader.ReadAsync(new CancellationTokenSource().Token)
-                while (dataReader.Read())
+                sql = "select * from customer where customer_id > @parm1";
+                command = new AceQLCommand(sql, connection);
+                command.Parameters.AddWithValue("@parm1", 1);
+
+                // Our dataReader must be disposed to delete underlying downloaded files
+                using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
                 {
-                    AceQLConsole.WriteLine();
-                    int i = 0;
-                    AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i));
+                    //await dataReader.ReadAsync(new CancellationTokenSource().Token)
+                    while (dataReader.Read())
+                    {
+                        AceQLConsole.WriteLine();
+                        AceQLConsole.WriteLine("" + DateTime.Now);
+                        int i = 0;
+                        AceQLConsole.WriteLine("GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i++) + "\n"
+                            + "GetValue: " + dataReader.GetValue(i));
+                    }
                 }
             }
 

@@ -59,7 +59,7 @@ namespace AceQL.Client.Tests
             string server = serverUrlLocalhost;
             string database = "sampledb";
             string username = "user1";
-            string sessionId = "z4p38gs28qpvht7qxughkkl7pw";
+            string sessionId = "4pdh8p2t14nd6j7dxt1owyjxef";
 
             string connectionString = $"Server={server}; Database={database}";
 
