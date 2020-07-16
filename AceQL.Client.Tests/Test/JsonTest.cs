@@ -13,8 +13,7 @@ namespace AceQL.Client.Tests
     {
         public static void TheMain(string[] args)
         {
-           
-
+          
             try
             {
                 AceQLConsole.WriteLine();
@@ -28,7 +27,6 @@ namespace AceQL.Client.Tests
                 AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
-
         }
 
         public static void JsonParseResultAsFile()

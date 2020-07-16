@@ -30,7 +30,6 @@ namespace AceQL.Client.Tests
     /// </summary>
     static class AceQLTestSessionId
     {
-
         public static void TheMain()
         {
             try
@@ -48,9 +47,7 @@ namespace AceQL.Client.Tests
                 AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
-
         }
-
 
         static async Task DoIt()
         {
@@ -65,7 +62,7 @@ namespace AceQL.Client.Tests
 
             Boolean doItWithCredential = true;
 
-            if (! doItWithCredential)
+            if (!doItWithCredential)
             {
                 connectionString += $"; Username={username}; SessionId={sessionId}";
                 AceQLConsole.WriteLine("Using connectionString with SessionId: " + connectionString);
@@ -90,10 +87,6 @@ namespace AceQL.Client.Tests
                     await connection.CloseAsync();
                 }
             }
-
-
         }
-
-
     }
 }

@@ -29,7 +29,7 @@ namespace AceQL.Client.Tests
     /// <summary>
     /// Tests AceQL client SDK by calling all APIs.
     /// </summary>
-    public class AceQLTest
+    public static class AceQLTest
     {
 
         public static void TheMain(string[] args)
@@ -124,7 +124,7 @@ namespace AceQL.Client.Tests
 
             command.Dispose();
 
-            int maxSelect = 1000;
+            int maxSelect = 10;
             for (int j = 0; j < maxSelect; j++)
             {
                 sql = "select * from customer where customer_id > @parm1";
@@ -242,7 +242,7 @@ namespace AceQL.Client.Tests
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
                         + "GetValue: " + dataReader.GetValue(i++) + "\n"
-                        + "GetValue: " + dataReader.GetValue(i++));
+                        + "GetValue: " + dataReader.GetValue(i));
 
                     //customer_id
                     //item_id

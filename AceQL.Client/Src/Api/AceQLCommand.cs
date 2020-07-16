@@ -234,26 +234,6 @@ namespace AceQL.Client.Api
 
         }
 
-        /// <summary>
-        /// Executes the query as statement.
-        /// <para/>The cancellation token can be used to can be used to request that the operation be abandoned before the http request timeout.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation instruction.</param>
-        /// <returns>An <see cref="AceQLDataReader"/>object.</returns>
-        /// <exception cref="AceQL.Client.Api.AceQLException">If any Exception occurs.</exception>
-        private async Task<AceQLDataReader> ExecuteQueryAsStatementAsync(CancellationToken cancellationToken)
-        {
-            try
-            {
-                // Global var avoids to propagate cancellationToken as parameter to all methods... 
-                aceQLHttpApi.SetCancellationToken(cancellationToken);
-                return await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
-            }
-            finally
-            {
-                aceQLHttpApi.ResetCancellationToken();
-            }
-        }
 
         /// <summary>
         /// Executes the query as statement.
@@ -506,7 +486,6 @@ namespace AceQL.Client.Api
                     { "prepared_statement", "true" }
                 };
 
-                //statementParameters.ToList().ForEach(x => parametersMap.Add(x.Key, x.Value));
                 List<string> keyList = new List<string>(statementParameters.Keys);
                 foreach (string key in keyList)
                 {
@@ -525,7 +504,7 @@ namespace AceQL.Client.Api
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {

@@ -51,7 +51,6 @@ namespace AceQL.Client.Api.Http
         private String server ;
 
         private string username;
-        private string sessionId ;
 
         /// <summary>
         /// The database
@@ -146,6 +145,8 @@ namespace AceQL.Client.Api.Http
         /// </exception>
         internal async Task OpenAsync()
         {
+            string sessionId;
+
             try
             {
                 ConnectionStringDecoder connectionStringDecoder = new ConnectionStringDecoder();
@@ -154,7 +155,7 @@ namespace AceQL.Client.Api.Http
                 this.database = connectionStringDecoder.Database;
                 this.username = connectionStringDecoder.Username;
                 this.password = connectionStringDecoder.Password;
-                this.sessionId = connectionStringDecoder.SessionId;
+                sessionId = connectionStringDecoder.SessionId;
                 this.proxyUri = connectionStringDecoder.ProxyUri;
                 this.proxyCredentials = connectionStringDecoder.ProxyCredentials;
                 this.timeout = connectionStringDecoder.Timeout;
@@ -166,7 +167,7 @@ namespace AceQL.Client.Api.Http
                 }
 
                 await simpleTracer.TraceAsync("connectionString: " + connectionString).ConfigureAwait(false);
-                await simpleTracer.TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false); ;
+                await simpleTracer.TraceAsync("DecodeConnectionString() done!").ConfigureAwait(false);
                 
                 if (credential != null)
                 {
@@ -734,7 +735,7 @@ namespace AceQL.Client.Api.Http
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {

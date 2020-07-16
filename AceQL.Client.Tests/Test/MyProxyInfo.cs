@@ -9,8 +9,8 @@ namespace AceQL.Client.Tests.Test
 {
     public class MyProxyInfo
     {
-        private string proxyUsername;
-        private string proxyPassword;
+        private readonly string proxyUsername;
+        private readonly string proxyPassword;
 
         public MyProxyInfo()
         {

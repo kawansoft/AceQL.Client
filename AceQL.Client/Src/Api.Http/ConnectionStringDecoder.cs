@@ -71,8 +71,8 @@ namespace AceQL.Client.Src.Api.Http
                     throw new ArgumentException("connectionString element token does not contain a = separator: " + line);
                 }
 
-                String property = line.Trim().Substring(0, line.Trim().IndexOf("="));
-                String value = line.Trim().Substring(line.Trim().IndexOf("=") + 1);
+                String property = line.Trim().Substring(0, line.Trim().IndexOf("=", StringComparison.CurrentCulture));
+                String value = line.Trim().Substring(line.Trim().IndexOf("=", StringComparison.CurrentCulture) + 1);
 
                 // Security check
                 if (property == null)

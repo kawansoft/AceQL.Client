@@ -41,10 +41,10 @@ namespace AceQL.Client.Api.Http
     /// </summary>
     internal class FormUploadStream
     {
-        internal static bool DEBUG = false;
+        internal static readonly bool DEBUG;
+
         private long tempLen;
         private int proxyAuthenticationCallCount;
-        private int proxyAuthenticationCallLimit = 1;
 
         /// <summary>
         /// Uploads a file using a blob reference.
@@ -76,8 +76,6 @@ namespace AceQL.Client.Api.Http
 
             processMessageHander.HttpSendProgress += (sender, e) =>
             {
-                //if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progress.IntValue: " + progress.IntValue);
-
                 int num = e.ProgressPercentage;
                 this.tempLen += e.BytesTransferred;
 
@@ -90,11 +88,18 @@ namespace AceQL.Client.Api.Http
                     int cpt = progressIndicator.Percent;
                     cpt++;
                     progressIndicator.SetValue(Math.Min(99, cpt));
-                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Percent);
+
+                    if (DEBUG)
+                    {
+                        ConsoleEmul.WriteLine(DateTime.Now + " progressHolder.Progress: " + progressIndicator.Percent);
+                    }
                 }
                 else
                 {
-                    if (DEBUG) ConsoleEmul.WriteLine(DateTime.Now + " num: " + num);
+                    if (DEBUG)
+                    {
+                        ConsoleEmul.WriteLine(DateTime.Now + " num: " + num);
+                    }
                 }
             };
             
@@ -105,13 +110,6 @@ namespace AceQL.Client.Api.Http
                 var multipart = new MultipartFormDataContent();
                 multipart.Add(stringContentBlobId, '"' + "blob_id" + '"');
                 multipart.Add(new StreamContent(stream), '"' + "file" + '"', '"' + blobId + '"');
-
-                // TODO: maybe have a trace file in? So pass AceQLHttpApi to constructor.
-                //await AceQLHttpApi.TraceAsync().ConfigureAwait(false);
-                //await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
-                //await AceQLHttpApi.TraceAsync("url     : " + url).ConfigureAwait(false);
-                //await AceQLHttpApi.TraceAsync("blob_id : " + blobId).ConfigureAwait(false);
-                //await AceQLHttpApi.TraceAsync("----------------------------------------").ConfigureAwait(false);
 
                 if (DEBUG)
                 {
@@ -134,7 +132,7 @@ namespace AceQL.Client.Api.Http
                 // Allows a retry for 407, because can happen time to time with Web proxies 
                 if (response.StatusCode.Equals(HttpStatusCode.ProxyAuthenticationRequired))
                 {
-                    while (proxyAuthenticationCallCount < proxyAuthenticationCallLimit)
+                    while (proxyAuthenticationCallCount < HttpRetryManager.ProxyAuthenticationCallLimit)
                     {
                         proxyAuthenticationCallCount++;
                         if (!useCancellationToken)
@@ -158,12 +156,6 @@ namespace AceQL.Client.Api.Http
                 {
                     progressIndicator.SetValue(100);
                 }
-
-                //if (!response.IsSuccessStatusCode)
-                //{
-                //    ConsoleEmul.WriteLine("FAILURE");
-                //    return null;
-                //}
 
                 return response;
             }

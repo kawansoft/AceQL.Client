@@ -31,7 +31,6 @@ namespace AceQL.Client.Tests
     /// </summary>
     static class AceQLTestColumnAsKeyName
     {
-
         public static void TheMain(string[] args)
         {
             try
@@ -50,7 +49,6 @@ namespace AceQL.Client.Tests
                 AceQLConsole.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
-
         }
 
 
@@ -62,7 +60,6 @@ namespace AceQL.Client.Tests
             // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
-                //connection.Credential = credential;
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }
@@ -131,7 +128,6 @@ namespace AceQL.Client.Tests
             // Our dataReader must be disposed to delete underlying downloaded files
             using (AceQLDataReader dataReader = await command.ExecuteReaderAsync())
             {
-                //await dataReader.ReadAsync(new CancellationTokenSource().Token)
                 while (dataReader.Read())
                 {
                     AceQLConsole.WriteLine();

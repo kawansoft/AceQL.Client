@@ -9,7 +9,7 @@ namespace AceQL.Client.Src.Api.Http
     /// <summary>
     /// Class HttpRetryManager. Allows to define retry options. Fist implementation is for 407 retry. 
     /// </summary>
-    internal class HttpRetryManager
+    internal static class HttpRetryManager
     {
         /// <summary>
         /// The proxy authentication call limit. Defaults to one retry.

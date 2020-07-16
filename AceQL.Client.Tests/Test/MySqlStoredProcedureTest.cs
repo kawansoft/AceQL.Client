@@ -58,7 +58,7 @@ namespace AceQL.Client.Tests
        
                 // Make sure connection is always closed in order to close and release
                 // server connection into the pool
-                using (AceQLConnection theConnection = await ConnectionBuilderAsync())
+                using (AceQLConnection theConnection = await ConnectionBuilderAsync().ConfigureAwait(false))
                 {
                     MySqlStoredProcedureTest myRemoteConnection = new MySqlStoredProcedureTest(
                         theConnection);

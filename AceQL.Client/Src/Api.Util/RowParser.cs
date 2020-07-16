@@ -51,8 +51,6 @@ namespace AceQL.Client.Api.Util
         private Dictionary<int, string> typesPerColIndex;
         private Dictionary<string, int> colIndexesPerColName;
 
-        //private IFile file;
-
         /// <summary>
         /// Constructor
         /// </summary>

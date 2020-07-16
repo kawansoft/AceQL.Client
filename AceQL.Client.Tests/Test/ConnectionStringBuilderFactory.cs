@@ -13,13 +13,13 @@ namespace AceQL.Client.Tests.Test
     public static class ConnectionStringBuilderFactory
     {
 
-        public static string serverUrlLocalhost = "http://localhost:9090/aceql";
-        public static string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
-        public static string serverUrlLinuxNoSSL = "http://www.runsafester.net:8081/aceql";
-        public static string serverUrlLinux = "https://www.aceql.com:9443/aceql";
+        public static readonly string serverUrlLocalhost = "http://localhost:9090/aceql";
+        public static readonly string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
+        public static readonly string serverUrlLinuxNoSSL = "http://www.runsafester.net:8081/aceql";
+        public static readonly string serverUrlLinux = "https://www.aceql.com:9443/aceql";
 
-        public static string usernameLdap = "cn=read-only-admin,dc=example,dc=com";
-        public static string passwordLdap = "password";
+        public static readonly string usernameLdap = "cn=read-only-admin,dc=example,dc=com";
+        public static readonly string passwordLdap = "password";
 
         /// <summary>
         /// Creates the default local connection to localhost:9090 with sampledb and  with user1 and password1 password
@@ -36,13 +36,13 @@ namespace AceQL.Client.Tests.Test
 
         /// <summary>
         /// Creates the default connection with sampledb and with a LDAP authentication.
+        /// Other value: username = "CN=L. Eagle,O=Sue\\2C Grabbit and Runn,C=GB";
         /// </summary>
         /// <returns>connection string.</returns>
         public static String CreateDefaultLocalLdapAuth()
         {
             string database = "sampledb";
             string username = usernameLdap;
-            //username = "CN=L. Eagle,O=Sue\\2C Grabbit and Runn,C=GB";
             string password = passwordLdap;
             return Create(serverUrlLocalhost, database, username, password, false);
         }

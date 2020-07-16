@@ -9,9 +9,9 @@ namespace AceQL.Client.Tests.Test
     public static class ConnectionStringCurrent
     {
 
-        public static Boolean useLocal = false;
-        public static Boolean useLdapAuth = false;
-        public static Boolean useAuthenticatedProxy = true;
+        public static readonly Boolean useLocal ;
+        public static readonly Boolean useLdapAuth;
+        public static readonly Boolean useAuthenticatedProxy;
 
         public static string Build()
         {

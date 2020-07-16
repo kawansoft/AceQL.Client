@@ -38,7 +38,7 @@ namespace AceQL.Client.Api
     /// </summary>
     public class AceQLDataReader : IDisposable
     {
-        private static bool DEBUG;
+        private static readonly bool DEBUG;
 
         /// <summary>
         /// The instance that does all http stuff
@@ -51,9 +51,10 @@ namespace AceQL.Client.Api
         readonly RowParser rowParser;
         private bool isClosed;
 
+        private readonly Dictionary<int, string> colNamesPerColIndex = new Dictionary<int, string>();
+
         private Dictionary<int, object> valuesPerColIndex = new Dictionary<int, object>();
         private Dictionary<int, string> colTypesPerColIndex = new Dictionary<int, string>();
-        private Dictionary<int, string> colNamesPerColIndex = new Dictionary<int, string>();
         private Dictionary<string, int> colIndexesPerColName = new Dictionary<string, int>();
 
         private readonly AceQLConnection connection;
@@ -306,7 +307,15 @@ namespace AceQL.Client.Api
         /// <exception cref="System.NotSupportedException"></exception>
         public byte GetByte(int ordinal)
         {
-            throw new NotSupportedException();
+            bool throwExcepion = true;
+            if (throwExcepion)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -321,7 +330,15 @@ namespace AceQL.Client.Api
         /// <exception cref="System.NotSupportedException"></exception>
         public long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         {
-            throw new NotSupportedException();
+            bool throwExcepion = true;
+            if (throwExcepion)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -332,7 +349,15 @@ namespace AceQL.Client.Api
         /// <exception cref="System.NotSupportedException"></exception>
         public char GetChar(int ordinal)
         {
-            throw new NotSupportedException();
+            bool throwExcepion = true;
+            if (throwExcepion)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return ' ';
+            }
         }
 
         /// <summary>
@@ -347,7 +372,15 @@ namespace AceQL.Client.Api
         /// <exception cref="System.NotSupportedException"></exception>
         public long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         {
-            throw new NotSupportedException();
+            bool throwExcepion = true;
+            if (throwExcepion)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -358,7 +391,15 @@ namespace AceQL.Client.Api
         /// <exception cref="System.NotSupportedException"></exception>
         public string GetDataTypeName(int ordinal)
         {
-            throw new NotSupportedException();
+            bool throwExcepion = true;
+            if (throwExcepion)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -434,27 +475,6 @@ namespace AceQL.Client.Api
             return Double.Parse(valuesPerColIndex[ordinal].ToString(), CultureInfo.InvariantCulture);
         }
 
-        ///// <summary>
-        ///// Gets the enumerator.
-        ///// </summary>
-        ///// <returns>IEnumerator.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public IEnumerator GetEnumerator()
-        //{
-        //    throw new NotSupportedException();
-        //}
-
-        ///// <summary>
-        ///// Gets the type of the field.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <returns>Type.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public Type GetFieldType(int ordinal)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
         /// <summary>
         /// Gets the value of the specified column as a float.
         /// </summary>
@@ -477,17 +497,6 @@ namespace AceQL.Client.Api
 
             return float.Parse(valuesPerColIndex[ordinal].ToString(), CultureInfo.InvariantCulture);
         }
-
-        ///// <summary>
-        ///// Gets the unique identifier. Not implemented.
-        ///// </summary>
-        ///// <param name="ordinal">The ordinal.</param>
-        ///// <returns>Guid.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public Guid GetGuid(int ordinal)
-        //{
-        //    throw new NotSupportedException();
-        //}
 
         /// <summary>
         /// Gets the value of the specified column as a 16-bit signed integer.
