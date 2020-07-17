@@ -37,7 +37,7 @@ namespace AceQL.Client.Api.File
     /// Methods are all async, as storage methods are async on some OS.
     /// Implementation uses PCLStorage (https://github.com/dsplaisted/PCLStorage).
     /// </summary>
-    public class PortableFile
+    public static class PortableFile
     {
 
         /// <summary>

@@ -436,7 +436,7 @@ namespace AceQL.Client.Api
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {

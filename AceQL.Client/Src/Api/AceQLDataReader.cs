@@ -57,8 +57,6 @@ namespace AceQL.Client.Api
         private Dictionary<int, string> colTypesPerColIndex = new Dictionary<int, string>();
         private Dictionary<string, int> colIndexesPerColName = new Dictionary<string, int>();
 
-        private readonly AceQLConnection connection;
-
         /// <summary>
         /// The JSON file containing the Result Set
         /// </summary>
@@ -77,7 +75,6 @@ namespace AceQL.Client.Api
             this.file = file ?? throw new ArgumentNullException("file is null!");
             this.rowsCount = rowsCount;
 
-            this.connection = connection ?? throw new ArgumentNullException("connection is null!");
             this.aceQLHttpApi = connection.aceQLHttpApi;
 
             rowParser = new RowParser(readStream);

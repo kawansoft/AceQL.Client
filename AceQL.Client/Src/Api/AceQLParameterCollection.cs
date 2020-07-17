@@ -32,8 +32,6 @@ namespace AceQL.Client.Api
     /// </summary>
     public class AceQLParameterCollection : IList, ICollection, IEnumerable
     {
-        internal static readonly bool DEBUG;
-
         /// <summary>
         /// The AceQL Parameters
         /// </summary>
@@ -112,6 +110,12 @@ namespace AceQL.Client.Api
                 throw new NotSupportedException();
             }
         }
+
+        /// <summary>
+        /// Gets the command text.
+        /// </summary>
+        /// <value>The command text.</value>
+        public string CmdText => cmdText;
 
         /// <summary>
         /// Returns parameter at specified index.
@@ -392,14 +396,6 @@ namespace AceQL.Client.Api
         public int Add(object value)
         {
             throw new NotSupportedException();
-        }
-
-        private static void Debug(string s)
-        {
-            if (DEBUG)
-            {
-                ConsoleEmul.WriteLine(DateTime.Now + " " + s);
-            }
         }
     }
 }
