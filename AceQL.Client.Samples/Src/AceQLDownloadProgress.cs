@@ -177,7 +177,7 @@ namespace AceQL.Client.Samples
             catch (Exception exception)
             {
                 await transaction.RollbackAsync();
-                throw exception;
+                throw;
             }
 
             AceQLConsole.WriteLine("Before select *  from orderlog");
