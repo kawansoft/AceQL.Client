@@ -22,7 +22,8 @@ AceQL C# Client SDK - Version 5.0.2 - 17-Jul-2020
 -------------------------------------------------
 
 What's New:
-- Enhance Codacy.com and SonarCSharp coding convention.
+- Clean code using Codacy.com and SonarCSharp coding 
+  conventions.
 
 
 AceQL C# Client SDK - Version 5.0.1 - 15-Jul-2020
