@@ -32,7 +32,7 @@ namespace AceQL.Client.Api
     /// </summary>
     public class AceQLParameterCollection : IList, ICollection, IEnumerable
     {
-        internal static bool DEBUG;
+        internal static readonly bool DEBUG;
 
         /// <summary>
         /// The AceQL Parameters

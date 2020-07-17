@@ -383,8 +383,6 @@ namespace AceQL.Client.Api.Util
         {
             for (int i = 0; i < Parameters.Count; i++)
             {
-                //ConsoleEmul.WriteLine(Parameters[i] + " / " + Parameters[i].Value + " / " + Parameters[i].DbType);
-
                 String theParm = Parameters[i].ToString();
                 cmdText = cmdText.Replace(theParm, "?");
             }

@@ -28,7 +28,7 @@ namespace AceQL.Client.Api
     public class AceQLProgressIndicator
     {
         /// <summary>   The perccent progress value set by upload thread.</summary>
-        private int percent = 0;
+        private int percent;
 
         /// <summary>
         /// Gets the upload progress value between 0 and 100.

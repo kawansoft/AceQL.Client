@@ -3,7 +3,7 @@
 
 # AceQL HTTP 
 
-## C# Client SDK v5.0.1 - July 2020, 15
+## C# Client SDK v5.0.2 - July 2020, 17
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 

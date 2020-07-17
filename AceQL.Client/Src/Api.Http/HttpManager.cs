@@ -20,7 +20,7 @@ namespace AceQL.Client.Src.Api.Http
         /// <summary>
         /// The Proxy Uri, if we don't want 
         /// </summary>
-        private string proxyUri;
+        private readonly string proxyUri;
 
         /// <summary>
         /// The credentials

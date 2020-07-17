@@ -779,7 +779,7 @@ namespace AceQL.Client.Api.Http
 
                 if (exception.GetType() == typeof(AceQLException))
                 {
-                    throw exception;
+                    throw;
                 }
                 else
                 {

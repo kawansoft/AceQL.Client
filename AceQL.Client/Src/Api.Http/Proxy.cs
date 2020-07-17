@@ -59,6 +59,7 @@ namespace AceQL.Client.Api.Http
 
         public bool IsBypassed(Uri host)
         {
+
             return false;
         }
     }

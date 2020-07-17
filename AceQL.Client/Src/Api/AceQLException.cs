@@ -165,7 +165,7 @@ namespace AceQL.Client.Api
 
             if (exceptionCause != null)
             {
-                returnStr += " / exception: " + exceptionCause.ToString();
+                returnStr += " / exception: " + exceptionCause;
             }
 
             if (remoteStackTrace != null)

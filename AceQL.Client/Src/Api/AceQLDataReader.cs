@@ -693,17 +693,6 @@ namespace AceQL.Client.Api
 
         }
 
-        ///// <summary>
-        ///// Gets the values.
-        ///// </summary>
-        ///// <param name="values">The values.</param>
-        ///// <returns>System.Int32.</returns>
-        ///// <exception cref="System.NotSupportedException"></exception>
-        //public int GetValues(object[] values)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
 
         /// <summary>
         ///  Gets a value that indicates whether the column contains non-existent or missing values.

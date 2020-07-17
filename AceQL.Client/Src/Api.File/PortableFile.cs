@@ -72,7 +72,7 @@ namespace AceQL.Client.Api.File
         /// <param name="file">The file.</param>
         /// <returns>The <see cref="IFile" /> length.</returns>
         /// <exception cref="ArgumentNullException">file is null!</exception>
-        public async Task<long> GetLengthAsync(IFile file)
+        public static async Task<long> GetLengthAsync(IFile file)
         {
             if (file == null)
             {
