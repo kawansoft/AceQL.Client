@@ -241,7 +241,7 @@ Password = my\;Password;
 
 #### Using CredentialCache values for an authenticated proxy
 
-Just add `useCredentialCache=True` in the connection string, and AceQL will automatically retriieve the Credential to use for the proxy to use:
+Just add `UseCredentialCache=True` in the connection string, and AceQL will automatically retrieve the `Credential` to use for the proxy configuration:
 
 ```C#
 "Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; UseCredentialCache=True"
