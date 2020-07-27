@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,6 +59,17 @@ namespace AceQL.Client.Tests.Test
             string proxyUsername = myProxyInfo.ProxyUsername;
             string proxyPassword = myProxyInfo.ProxyPassword;
             connectionString += $"ProxyUri=http://localhost:8080 ; ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword};";
+        }
+
+
+        internal void AddAuthenticatedProyCredentialCache()
+        {
+            connectionString += $"UseCredentialCache=True;";
+            MyProxyInfo myProxyInfo = new MyProxyInfo(MyProxyInfo.NEOTUNNEL_SAVE_TXT);
+            String username = myProxyInfo.ProxyUsername;
+            String password = myProxyInfo.ProxyPassword;
+            CredentialCache.DefaultNetworkCredentials.UserName = username;
+            CredentialCache.DefaultNetworkCredentials.Password = password;
         }
 
         /// <summary>

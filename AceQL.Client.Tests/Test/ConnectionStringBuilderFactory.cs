@@ -12,6 +12,18 @@ namespace AceQL.Client.Tests.Test
     /// </summary>
     public static class ConnectionStringBuilderFactory
     {
+        /// <summary>
+        /// The authenticated proxy off
+        /// </summary>
+        public static readonly int AUTHENTICATED_PROXY_OFF = 0;
+        /// <summary>
+        /// The no authenticated proxy with credentials
+        /// </summary>
+        public static readonly int AUTHENTICATED_PROXY_WITH_PASSED_CREDENTIALS = 1;
+        /// <summary>
+        /// The no authenticated proxy credential cache
+        /// </summary>
+        public static readonly int AUTHENTICATED_PROXY_CREDENTIAL_CACHE = 2;
 
         public static readonly string serverUrlLocalhost = "http://localhost:9090/aceql";
         public static readonly string serverUrlLocalhostTomcat = "http://localhost:8080/aceql-test/aceql";
@@ -31,7 +43,7 @@ namespace AceQL.Client.Tests.Test
             string database = "sampledb";
             string username = "user1";
             string password = "password1";
-            return Create(serverUrlLocalhost, database, username, password, false);
+            return Create(serverUrlLocalhost, database, username, password, AUTHENTICATED_PROXY_OFF);
         }
 
         /// <summary>
@@ -44,7 +56,7 @@ namespace AceQL.Client.Tests.Test
             string database = "sampledb";
             string username = usernameLdap;
             string password = passwordLdap;
-            return Create(serverUrlLocalhost, database, username, password, false);
+            return Create(serverUrlLocalhost, database, username, password, AUTHENTICATED_PROXY_OFF);
         }
 
         /// <summary>
@@ -52,12 +64,12 @@ namespace AceQL.Client.Tests.Test
         /// </summary>
         /// <param name="useDefaultAuthenticatedProxy">if set to <c>true</c> [use default authenticated proxy].</param>
         /// <returns>connection string.</returns>
-        public static String CreateDefaultRemote(bool useDefaultAuthenticatedProxy)
+        public static String CreateDefaultRemote(int typeAuthenticatedProxy)
         {
             string database = "sampledb";
             string username = "user1";
             string password = "password1";
-            return Create(serverUrlLinuxNoSSL, database, username, password, useDefaultAuthenticatedProxy);
+            return Create(serverUrlLinuxNoSSL, database, username, password, typeAuthenticatedProxy);
         }
 
         /// <summary>
@@ -65,12 +77,12 @@ namespace AceQL.Client.Tests.Test
         /// </summary>
         /// <param name="useDefaultAuthenticatedProxy">if set to <c>true</c> [use default authenticated proxy].</param>
         /// <returns>connection string.</returns>
-        public static String CreateDefaultRemoteLdapAuth(bool useDefaultAuthenticatedProxy)
+        public static String CreateDefaultRemoteLdapAuth(int typeAuthenticatedProxy)
         {
             string database = "sampledb";
             string username = usernameLdap;
             string password = passwordLdap;
-            return Create(serverUrlLinuxNoSSL, database, username, password, useDefaultAuthenticatedProxy);
+            return Create(serverUrlLinuxNoSSL, database, username, password, typeAuthenticatedProxy);
         }
 
         /// <summary>
@@ -82,7 +94,7 @@ namespace AceQL.Client.Tests.Test
         /// <param name="password">The password.</param>
         /// <param name="useAuthenticatedProxy">if set to <c>true</c> [use authenticated proxy].</param>
         /// <returns>AceQLConnection.</returns>
-        public static String Create(string server, string database, string username, string password, bool useAuthenticatedProxy)
+        public static String Create(string server, string database, string username, string password, int typeAuthenticatedProxy)
         {
             Boolean enableDefaultSystemAuthentication = false;
 
@@ -96,9 +108,13 @@ namespace AceQL.Client.Tests.Test
                 connectionStringBuilder.AddEnableDefaultSystemAuthentication();
             }
 
-            if (useAuthenticatedProxy)
+            if (typeAuthenticatedProxy == AUTHENTICATED_PROXY_WITH_PASSED_CREDENTIALS)
             {
                 connectionStringBuilder.AddAuthenticatedProy();
+            }
+            else if (typeAuthenticatedProxy == AUTHENTICATED_PROXY_CREDENTIAL_CACHE)
+            {
+                connectionStringBuilder.AddAuthenticatedProyCredentialCache();
             }
 
             string connectionString = connectionStringBuilder.GetConnectionString();

@@ -9,9 +9,9 @@ namespace AceQL.Client.Tests.Test
     public static class ConnectionStringCurrent
     {
 
-        public static readonly Boolean useLocal ;
+        public static readonly Boolean useLocal = false;
         public static readonly Boolean useLdapAuth;
-        public static readonly Boolean useAuthenticatedProxy;
+        public static readonly int typeAuthenticatedProxy = ConnectionStringBuilderFactory.AUTHENTICATED_PROXY_CREDENTIAL_CACHE;
 
         public static string Build()
         {
@@ -32,11 +32,11 @@ namespace AceQL.Client.Tests.Test
             {
                 if (useLdapAuth)
                 {
-                    connectionString = ConnectionStringBuilderFactory.CreateDefaultRemoteLdapAuth(useAuthenticatedProxy);
+                    connectionString = ConnectionStringBuilderFactory.CreateDefaultRemoteLdapAuth(typeAuthenticatedProxy);
                 }
                 else
                 {
-                    connectionString = ConnectionStringBuilderFactory.CreateDefaultRemote(useAuthenticatedProxy);
+                    connectionString = ConnectionStringBuilderFactory.CreateDefaultRemote(typeAuthenticatedProxy);
                 }
             }
 

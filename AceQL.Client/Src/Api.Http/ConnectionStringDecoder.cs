@@ -28,6 +28,7 @@ namespace AceQL.Client.Src.Api.Http
         private int timeout;
         private bool enableDefaultSystemAuthentication;
         private bool enableTrace;
+        private bool useCredentialCache;
 
         /// <summary>
         /// Decodes the specified connection string.
@@ -111,6 +112,10 @@ namespace AceQL.Client.Src.Api.Http
                 {
                     isNTLM = Boolean.Parse(value);
                 }
+                else if (property.ToLowerInvariant().Equals("usecredentialcache"))
+                {
+                    useCredentialCache = Boolean.Parse(value);
+                }
                 else if (property.ToLowerInvariant().Equals("proxyuri"))
                 {
                     proxyUri = value;
@@ -161,12 +166,12 @@ namespace AceQL.Client.Src.Api.Http
                     }
 
                 }
-                else if (property.ToLowerInvariant().Equals ("enabletrace"))
+                else if (property.ToLowerInvariant().Equals("enabletrace"))
                 {
                     enableTrace = Boolean.Parse(value);
                 }
                 else if (property.ToLowerInvariant().Equals("maxretryforhttpstatus407"))
-                { 
+                {
                     int maxRetryForHttpStatus407 = Int32.Parse(value);
 
                     if (maxRetryForHttpStatus407 < 0)
@@ -181,10 +186,22 @@ namespace AceQL.Client.Src.Api.Http
             Debug("connectionString   : " + connectionString);
             Debug("theProxyUri        : " + proxyUri);
             Debug("theProxyCredentials: " + proxyUsername + " / " + proxyPassword);
+            Debug("isNTLM             : " + isNTLM + "");
+            Debug("useCredentialCache : " + useCredentialCache + "");
 
             if (isNTLM)
             {
                 proxyCredentials = CredentialCache.DefaultCredentials;
+            }
+
+            if (useCredentialCache)
+            {
+                Debug("useCredentialCache: " + CredentialCache.DefaultNetworkCredentials.UserName + " / xxxxxxxx");
+                NetworkCredential networkCredential = (NetworkCredential)CredentialCache.DefaultCredentials;
+                proxyCredentials = new NetworkCredential(networkCredential.UserName, networkCredential.Password);
+
+                //Alternative solution:
+                //proxyCredentials = new NetworkCredential(CredentialCache.DefaultNetworkCredentials.UserName, CredentialCache.DefaultNetworkCredentials.Password);
             }
             else
             {
@@ -211,14 +228,14 @@ namespace AceQL.Client.Src.Api.Http
             }
         }
 
-        public string Server { get => server;  }
+        public string Server { get => server; }
         public string Database { get => database; }
         public string Username { get => username; }
         public char[] Password { get => password; }
         public string SessionId { get => sessionId; }
         public string ProxyUri { get => proxyUri; }
-        public ICredentials ProxyCredentials { get => proxyCredentials;  }
-        public int Timeout { get => timeout;  }
+        public ICredentials ProxyCredentials { get => proxyCredentials; }
+        public int Timeout { get => timeout; }
 
         public bool EnableDefaultSystemAuthentication { get => enableDefaultSystemAuthentication; }
 

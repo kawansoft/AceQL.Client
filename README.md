@@ -3,7 +3,7 @@
 
 # AceQL HTTP 
 
-## C# Client SDK v5.0.2 - July 2020, 17
+## C# Client SDK v5.1 - July 2020, 27
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
@@ -238,6 +238,16 @@ The semicolon";" character is supported in password, but must be escaped:
 ```
 Password = my\;Password; 
 ```
+
+#### Using CredentialCache values for an authenticated proxy
+
+Just add `useCredentialCache=True` in the connection string, and AceQL will automatically retriieve the Credential to use for the proxy to use:
+
+```C#
+"Server=https://www.acme.com:9443/aceql; Database=myDataBase; Username=myUsername; Password=myPassword; UseCredentialCache=True"
+```
+
+`
 
 ## Handling Exceptions
 
