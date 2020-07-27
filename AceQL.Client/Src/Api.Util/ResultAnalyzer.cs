@@ -47,6 +47,10 @@ namespace AceQL.Client.Api.Util
         /** Exception when parsing the JSON stream. Future usage */
         private Exception parseException;
 
+        public HttpStatusCode HttpStatusCode => httpStatusCode;
+
+        public Exception ParseException { get => parseException; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultAnalyzer"/> class.
         /// </summary>
@@ -321,5 +325,7 @@ namespace AceQL.Client.Api.Util
 
             return Int32.Parse(insStr);
         }
+
+
     }
 }

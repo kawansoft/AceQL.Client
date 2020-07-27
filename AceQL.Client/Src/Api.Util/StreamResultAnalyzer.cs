@@ -51,6 +51,8 @@ namespace AceQL.Client.Api.Util
         // The JSON file containing Result Set
         private readonly IFile file;
 
+        public HttpStatusCode HttpStatusCode => httpStatusCode;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamResultAnalyzer"/> class.
