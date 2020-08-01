@@ -378,16 +378,16 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the system web proxy.
+        /// Gets the system web proxy set. Returns null if none previously set by <c>AceQLConnection.SetSystemWebProxy</c>.
         /// </summary>
-        /// <returns>IWebProxy.</returns>
+        /// <returns>The system web proxy set.</returns>
         public static IWebProxy GetSystemWebProxy()
         {
             return systemWebProxy;
         }
 
         /// <summary>
-        /// Sets the system web proxy.
+        /// Sets the system web proxy to use. Allows to force to use on some environments (Windows, ...)  <c>System.Net.WebRequest.GetSystemProxy()</c> instead of <c>System.Net.WebRequest.DefaultWebProxy</c>.
         /// </summary>
         /// <param name="webProxy">The system web proxy.</param>
         public static void SetSystemWebProxy(IWebProxy webProxy)

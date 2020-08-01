@@ -6,7 +6,7 @@ using System.Net.Http;
 namespace AceQL.Client.Src.Api.Http
 {
     /// <summary>
-    /// Class HttpClientHandlerCreator. HttpClientHandler creation to be used with HttpClient
+    /// Class HttpClientHandlerCreator. HttpClientHandler creation to be used with HttpClient.
     /// </summary>
     internal class HttpClientHandlerCreator
     {
@@ -28,7 +28,7 @@ namespace AceQL.Client.Src.Api.Http
         }
 
         /// <summary>
-        /// Creates  the HttpClientHandler instance with or without a Web Proxy.
+        /// Creates the HttpClientHandler instance with or without a Web Proxy.
         /// </summary>
         /// <returns>HttpClientHandler.</returns>
         public HttpClientHandler GetHttpClientHandler()
