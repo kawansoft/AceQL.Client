@@ -36,7 +36,7 @@ namespace AceQL.Client.Src.Api.Http
             {
                 // Detect the System.Net.WebRequest.DefaultWebProxy or WebRequest.GetSystemWebProxy() in use. 
                 // We we get null if no Default/System proxy is configured
-                webProxy = new DefaultWebProxyCreator().GetWebProxy();
+                webProxy = DefaultWebProxyCreator.GetWebProxy();
             }
             else
             {

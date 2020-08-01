@@ -117,7 +117,6 @@ namespace AceQL.Client.Api
         /// Checks the name of the parameter. It must not contain separator values as defined AceQLCommandUtil.PARM_SEPARATORS.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
-        /// <exception cref="NotImplementedException"></exception>
         private static void CheckParameterName(string parameterName)
         {
             if (parameterName == null)

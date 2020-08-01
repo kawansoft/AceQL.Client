@@ -15,19 +15,12 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class DefaultWebProxyCreator
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultWebProxyCreator"/> class.
-        /// </summary>
-        public DefaultWebProxyCreator()
-        {
-
-        }
 
         /// <summary>
         /// Gets the  the Default Or System proxy in use. Will lreturn null if no Default/System proxy is in use.
         /// </summary>
         /// <returns>System.Net.IWebProxy.</returns>
-        public IWebProxy GetWebProxy()
+        public static IWebProxy GetWebProxy()
         {
             IWebProxy webProxy = null;
 

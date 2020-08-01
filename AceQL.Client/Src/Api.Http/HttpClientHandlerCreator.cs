@@ -10,9 +10,9 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class HttpClientHandlerCreator
     {
-        private IWebProxy webProxy;
-        private ICredentials credentials;
-        private bool enableDefaultSystemAuthentication;
+        private readonly IWebProxy webProxy;
+        private readonly ICredentials credentials;
+        private readonly bool enableDefaultSystemAuthentication;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpClientHandlerCreator"/> class.

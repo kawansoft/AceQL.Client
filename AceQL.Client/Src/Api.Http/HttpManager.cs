@@ -292,7 +292,6 @@ namespace AceQL.Client.Src.Api.Http
         /// <summary>
         /// Disposes the HttpClient 
         /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public void Dispose()
         {
             httpClient.Dispose();

@@ -390,10 +390,8 @@ namespace AceQL.Client.Api
         /// Sets the system web proxy.
         /// </summary>
         /// <param name="webProxy">The system web proxy.</param>
-        /// <exception cref="NotImplementedException"></exception>
         public static void SetSystemWebProxy(IWebProxy webProxy)
         {
-           //ConsoleEmul.WriteLine("SetSystemWebProxy() webProxyname:" + nameof(webProxy));
            systemWebProxy = webProxy;
         }
 
