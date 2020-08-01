@@ -22,7 +22,7 @@ using System.Net;
 namespace AceQL.Client.Api.Http
 {
     /// <summary>
-    /// <see cref="Proxy"/>Class. Allow to create a proxy from an end user proxyUri.
+    /// <see cref="Proxy"/>Class. Allow to create a web proxy from an URI.
     /// </summary>
     public class Proxy : IWebProxy
     {
@@ -71,7 +71,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         /// <param name="host">
         ///   <see cref="T:System.Uri" /> of the host whose proxy usage is to be verified.</param>
-        /// <returns>true if the proxy server should not be used for <paramref name="host" /> ; else false.</returns>
+        /// <returns><c>true</c> if the proxy server should not be used for <paramref name="host" /> ; else <c>false</c>.</returns>
         public bool IsBypassed(Uri host)
         {
             return false;
