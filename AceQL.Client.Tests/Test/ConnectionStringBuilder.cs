@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AceQL.Client.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,6 +56,7 @@ namespace AceQL.Client.Tests.Test
         /// </summary>
          public void AddAuthenticatedProy()
         {
+            AceQLConnection.SetSystemWebProxy(WebRequest.GetSystemWebProxy());
             MyProxyInfo myProxyInfo = new MyProxyInfo();
             string proxyUsername = myProxyInfo.ProxyUsername;
             string proxyPassword = myProxyInfo.ProxyPassword;
@@ -64,6 +66,7 @@ namespace AceQL.Client.Tests.Test
 
         internal void AddAuthenticatedProyCredentialCache()
         {
+            AceQLConnection.SetSystemWebProxy(WebRequest.GetSystemWebProxy());
             connectionString += $"UseCredentialCache=True;";
             MyProxyInfo myProxyInfo = new MyProxyInfo(MyProxyInfo.NEOTUNNEL_SAVE_TXT);
             String username = myProxyInfo.ProxyUsername;

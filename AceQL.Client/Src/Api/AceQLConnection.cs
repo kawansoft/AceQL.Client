@@ -51,6 +51,11 @@ namespace AceQL.Client.Api
         private bool logoutAsyncDone;
 
         /// <summary>
+        /// The system web proxy that the end user may set
+        /// </summary>
+        private static IWebProxy systemWebProxy;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
         /// </summary>
         public AceQLConnection()
@@ -370,6 +375,26 @@ namespace AceQL.Client.Api
             TestConnectionOpened();
             String serverVersion = await aceQLHttpApi.CallApiWithResultAsync("get_version", null).ConfigureAwait(false);
             return serverVersion;
+        }
+
+        /// <summary>
+        /// Gets the system web proxy.
+        /// </summary>
+        /// <returns>IWebProxy.</returns>
+        public static IWebProxy GetSystemWebProxy()
+        {
+            return systemWebProxy;
+        }
+
+        /// <summary>
+        /// Sets the system web proxy.
+        /// </summary>
+        /// <param name="webProxy">The system web proxy.</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void SetSystemWebProxy(IWebProxy webProxy)
+        {
+           //ConsoleEmul.WriteLine("SetSystemWebProxy() webProxyname:" + nameof(webProxy));
+           systemWebProxy = webProxy;
         }
 
         /// <summary>

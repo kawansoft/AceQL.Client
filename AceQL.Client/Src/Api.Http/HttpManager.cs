@@ -65,7 +65,7 @@ namespace AceQL.Client.Src.Api.Http
 
         private void BuildHttpClient()
         {
-             httpClient = new HttpClient(HttpClientHandlerBuilder.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
+             httpClient = new HttpClient(HttpClientHandlerBuilderNew.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
         }
 
         /// <summary>

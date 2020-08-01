@@ -22,9 +22,9 @@ using System.Net;
 namespace AceQL.Client.Api.Http
 {
     /// <summary>
-    /// <see cref="Proxy"/>Class. Allow to pass a proxyUri, if we don't want to use the default <see cref="System.Net.WebRequest"/>.DefaultWebProxy
+    /// <see cref="Proxy"/>Class. Allow to create a proxy from an end user proxyUri.
     /// </summary>
-    internal class Proxy : IWebProxy
+    public class Proxy : IWebProxy
     {
         private ICredentials credentials;
         private readonly String proxyUri;
@@ -39,6 +39,10 @@ namespace AceQL.Client.Api.Http
             this.proxyUri = proxyUri ?? throw new ArgumentNullException("proxyUri is null!");
         }
 
+        /// <summary>
+        /// Credentials to send to the proxy server for authentication.
+        /// </summary>
+        /// <value>The credentials.</value>
         public ICredentials Credentials
         {
             get
@@ -52,14 +56,24 @@ namespace AceQL.Client.Api.Http
             }
         }
 
+        /// <summary>
+        /// Specifies the protocols for authentication.
+        /// </summary>
+        /// <param name="destination">The destination.</param>
+        /// <returns>System.Uri.</returns>
         public Uri GetProxy(Uri destination)
         {
             return new Uri(this.proxyUri);
         }
 
+        /// <summary>
+        /// Indicates that the proxy should not be used for the specified host.
+        /// </summary>
+        /// <param name="host">
+        ///   <see cref="T:System.Uri" /> of the host whose proxy usage is to be verified.</param>
+        /// <returns>true if the proxy server should not be used for <paramref name="host" /> ; else false.</returns>
         public bool IsBypassed(Uri host)
         {
-
             return false;
         }
     }

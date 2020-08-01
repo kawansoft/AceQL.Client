@@ -18,9 +18,11 @@
  */
 
 using AceQL.Client.Api;
+using AceQL.Client.Api.Http;
 using AceQL.Client.Tests.Test;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +33,6 @@ namespace AceQL.Client.Tests
     /// </summary>
     public static class AceQLTest
     {
-
         public static void TheMain(string[] args)
         {
             try
@@ -53,13 +54,11 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
-
             var netCoreVer = System.Environment.Version; // 3.0.0
             AceQLConsole.WriteLine(netCoreVer + "");
 
             string connectionString = ConnectionStringCurrent.Build();
 
-            // Make sure connection is always closed to close and release server connection into the pool
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
                 await ExecuteExample(connection).ConfigureAwait(false);
@@ -67,8 +66,8 @@ namespace AceQL.Client.Tests
             }
         }
 
- 
-       /// <summary>
+
+        /// <summary>
         /// Executes our example using an <see cref="AceQLConnection"/> 
         /// </summary>
         /// <param name="connection"></param>

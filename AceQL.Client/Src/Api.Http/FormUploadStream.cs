@@ -64,7 +64,7 @@ namespace AceQL.Client.Api.Http
         internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
             int timeout, bool enableDefaultSystemAuthentication, String blobId, Stream stream, long totalLength, AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
         {
-            HttpClientHandler handler = HttpClientHandlerBuilder.Build(proxyUri, credentials, enableDefaultSystemAuthentication);
+            HttpClientHandler handler = HttpClientHandlerBuilderNew.Build(proxyUri, credentials, enableDefaultSystemAuthentication);
             ProgressMessageHandler processMessageHander = new ProgressMessageHandler(handler);
             HttpClient httpClient = new HttpClient(processMessageHander);
 

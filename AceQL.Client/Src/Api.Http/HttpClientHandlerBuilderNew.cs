@@ -1,0 +1,61 @@
+﻿using AceQL.Client.Api.Http;
+using AceQL.Client.Api.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AceQL.Client.Src.Api.Http
+{
+    /// <summary>
+    /// Class HttpClientHandlerBuilder. Allows to build an HttpClientHandler.
+    /// </summary>
+    static internal class HttpClientHandlerBuilderNew
+    {
+        internal readonly static bool DEBUG;
+
+        internal static readonly String SECRET_URL = "http://secret.aceql.com"; 
+
+        /// <summary>
+        /// Build an HttpClientHandler instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
+        /// </summary>
+        /// <param name="proxyUri"></param>
+        /// <param name="credentials">The credentials to use for an authenticated proxy. null if none.</param>
+        /// <param name="enableDefaultSystemAuthentication">if True ==> call HttpClientHandler.UseDefaultCredentials = true</param>
+        /// <returns>The HtpClientHandler.</returns>
+        internal static HttpClientHandler Build(string proxyUri, ICredentials credentials, bool enableDefaultSystemAuthentication)
+        {
+            Debug("httpClientHandler.UseDefaultCredentials: "  + enableDefaultSystemAuthentication);
+
+            IWebProxy webProxy = null;
+            
+            if (proxyUri == null)
+            {
+                // Detect the System.Net.WebRequest.DefaultWebProxy or WebRequest.GetSystemWebProxy() in use. 
+                // We we get null if no Default/System proxy is configured
+                webProxy = new DefaultWebProxyCreator().GetWebProxy();
+            }
+            else
+            {
+                webProxy = new Proxy(proxyUri);
+            }
+
+            // Creates the HttpClientHandler, with or without an associated IWebProxy
+            HttpClientHandlerCreator httpClientHandlerCreator = new HttpClientHandlerCreator(webProxy, credentials, enableDefaultSystemAuthentication);
+            HttpClientHandler httpClientHandler = httpClientHandlerCreator.GetHttpClientHandler();
+            return httpClientHandler;
+
+        }
+
+        internal static void Debug(string s)
+        {
+            if (DEBUG)
+            {
+                ConsoleEmul.WriteLine(DateTime.Now + " " + s);
+            }
+        }
+    }
+}
