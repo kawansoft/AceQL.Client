@@ -11,7 +11,7 @@ namespace AceQL.Client.Src.Api.Http
 {
 
     /// <summary>
-    /// Class DefaultWebProxyCreator. Allows to get the System.Net.WebRequest.DefaultWebProxy or System.Net.WebRequest.GetSystemProxy() proxy value to use. 
+    /// Class DefaultWebProxyCreator. Allows to get the <see cref="System.Net.WebRequest.DefaultWebProxy"/> or <c>System.Net.WebRequest.GetSystemProxy()</c> proxy value to use. 
     /// </summary>
     internal static class DefaultWebProxyCreator
     {

@@ -145,7 +145,7 @@ namespace AceQL.Client.Samples
             string username = "MyUsername";
             string password = "MySecret";
 
-            // Proxy will be detected, pass the auth info for proxy that require authentication:
+            // WebProxy will be detected, pass the auth info for proxy that require authentication:
             string proxyUri = "http://localhost:8080";
             string proxyUsername = "ndepomereu2";
             string proxyPassword = null;

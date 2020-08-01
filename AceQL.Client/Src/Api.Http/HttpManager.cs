@@ -18,7 +18,7 @@ namespace AceQL.Client.Src.Api.Http
     internal class HttpManager : IDisposable
     {
         /// <summary>
-        /// The Proxy Uri, if we don't want 
+        /// The UriWebProxy Uri, if we don't want 
         /// </summary>
         private readonly string proxyUri;
 

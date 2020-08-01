@@ -56,7 +56,6 @@ namespace AceQL.Client.Tests.Test
         /// </summary>
          public void AddAuthenticatedProy()
         {
-            AceQLConnection.SetDefaultWebProxy(WebRequest.GetSystemWebProxy());
             MyProxyInfo myProxyInfo = new MyProxyInfo();
             string proxyUsername = myProxyInfo.ProxyUsername;
             string proxyPassword = myProxyInfo.ProxyPassword;

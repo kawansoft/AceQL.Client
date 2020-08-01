@@ -17,12 +17,12 @@ namespace AceQL.Client.Src.Api.Http
     {
         internal readonly static bool DEBUG;
 
-        internal static readonly String SECRET_URL = "http://secret.aceql.com"; 
+        internal static readonly String SECRET_URL = "http://secret.aceql.com";
 
         /// <summary>
-        /// Build an HttpClientHandler instance with proxy settings, if necessary. Proxy used is System.Net.WebRequest.DefaultWebProxy
+        /// Builds an HttpClientHandler instance with proxy settings, if necessary. IWebProxy used is System.Net.WebRequest.DefaultWebProxy
         /// </summary>
-        /// <param name="proxyUri"></param>
+        /// <param name="proxyUri">The URI of the web proxy to use.</param>
         /// <param name="credentials">The credentials to use for an authenticated proxy. null if none.</param>
         /// <param name="enableDefaultSystemAuthentication">if True ==> call HttpClientHandler.UseDefaultCredentials = true</param>
         /// <returns>The HtpClientHandler.</returns>
@@ -31,16 +31,16 @@ namespace AceQL.Client.Src.Api.Http
             Debug("httpClientHandler.UseDefaultCredentials: "  + enableDefaultSystemAuthentication);
 
             IWebProxy webProxy = null;
-            
             if (proxyUri == null)
             {
                 // Detect the System.Net.WebRequest.DefaultWebProxy or WebRequest.GetSystemWebProxy() in use. 
-                // We we get null if no Default/System proxy is configured
+                // We we get null if no Default/System proxy is configured.
                 webProxy = DefaultWebProxyCreator.GetWebProxy();
             }
             else
             {
-                webProxy = new Proxy(proxyUri);
+                Uri uri = new Uri(proxyUri);
+                webProxy = new UriWebProxy(uri);
             }
 
             // Creates the HttpClientHandler, with or without an associated IWebProxy

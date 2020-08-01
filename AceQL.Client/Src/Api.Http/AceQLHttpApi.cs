@@ -59,7 +59,7 @@ namespace AceQL.Client.Api.Http
         private char[] password ;
 
         /// <summary>
-        /// The Proxy Uri, if we don't want 
+        /// The Web Proxy Uri
         /// </summary>
         private string proxyUri ;
 

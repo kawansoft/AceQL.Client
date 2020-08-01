@@ -22,19 +22,19 @@ using System.Net;
 namespace AceQL.Client.Api.Http
 {
     /// <summary>
-    /// <see cref="Proxy"/>Class. Allow to create a web proxy from an URI.
+    /// <see cref="UriWebProxy"/>Class. Allows to create a web proxy thats interfaces an <see cref="System.Net.IWebProxy"/> from an URI.
     /// </summary>
-    public class Proxy : IWebProxy
+    internal class UriWebProxy : IWebProxy
     {
         private ICredentials credentials;
-        private readonly String proxyUri;
+        private readonly Uri proxyUri;
 
         /// <summary>
-        /// Builds an  <see cref="IWebProxy"/> implementation.
+        /// Builds an <see cref="IWebProxy"/> concrete implementation.
         /// </summary>
-        /// <param name="proxyUri">The proxy URI. Example: http://localhost:8080.</param>
+        /// <param name="proxyUri">The proxy URI. Example: <c>new Uri("http://localhost:8080")</c>.</param>
         /// 
-        public Proxy(String proxyUri)
+        public UriWebProxy(Uri proxyUri)
         {
             this.proxyUri = proxyUri ?? throw new ArgumentNullException("proxyUri is null!");
         }
@@ -63,7 +63,7 @@ namespace AceQL.Client.Api.Http
         /// <returns>System.Uri.</returns>
         public Uri GetProxy(Uri destination)
         {
-            return new Uri(this.proxyUri);
+            return this.proxyUri;
         }
 
         /// <summary>

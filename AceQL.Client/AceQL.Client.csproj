@@ -46,7 +46,7 @@
     <Compile Include="Src\Api.Http\HttpClientHandlerCreator.cs" />
     <Compile Include="Src\Api.Http\HttpManager.cs" />
     <Compile Include="Src\Api.Http\HttpRetryManager.cs" />
-    <Compile Include="Src\Api.Http\Proxy.cs" />
+    <Compile Include="Src\Api.Http\UriWebProxy.cs" />
     <Compile Include="Src\Api.Metadata.Dto\JdbcDatabaseMetaDataDto.cs" />
     <Compile Include="Src\Api.Metadata.Dto\TableDto.cs" />
     <Compile Include="Src\Api.Metadata.Dto\TableNamesDto.cs" />

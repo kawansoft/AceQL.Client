@@ -28,7 +28,7 @@ namespace AceQL.Client.Src.Api.Http
         }
 
         /// <summary>
-        /// Creates the HttpClientHandler instance with or without a Web Proxy.
+        /// Creates the HttpClientHandler instance with or without a web proxy.
         /// </summary>
         /// <returns>HttpClientHandler.</returns>
         public HttpClientHandler GetHttpClientHandler()
@@ -46,7 +46,7 @@ namespace AceQL.Client.Src.Api.Http
             }
             else
             {
-                // We have a Web Proxy set, set accordingly the HttpClientHandler
+                // We have a web proxy set, set accordingly the HttpClientHandler
                 httpClientHandler = new HttpClientHandler
                 {
                     UseProxy = true,
