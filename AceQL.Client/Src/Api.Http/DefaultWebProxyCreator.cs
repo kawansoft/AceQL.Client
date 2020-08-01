@@ -25,9 +25,9 @@ namespace AceQL.Client.Src.Api.Http
             IWebProxy webProxy = null;
 
             // See if end user has forced to use a System.Net.WebRequest.GetSystemWebProxy()
-            if (AceQLConnection.GetSystemWebProxy() != null)
+            if (AceQLConnection.GetDefaultWebProxy() != null)
             {
-                webProxy = AceQLConnection.GetSystemWebProxy();
+                webProxy = AceQLConnection.GetDefaultWebProxy();
             }
             else
             {

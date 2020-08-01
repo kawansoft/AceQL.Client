@@ -51,9 +51,9 @@ namespace AceQL.Client.Api
         private bool logoutAsyncDone;
 
         /// <summary>
-        /// The system web proxy that the end user may set
+        /// The default web proxy that the end user may set
         /// </summary>
-        private static IWebProxy systemWebProxy;
+        private static IWebProxy defaultWebProxy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
@@ -378,21 +378,21 @@ namespace AceQL.Client.Api
         }
 
         /// <summary>
-        /// Gets the system web proxy set. Returns null if none previously set by <c>AceQLConnection.SetSystemWebProxy</c>.
+        /// Gets the default web proxy set. Returns null if none was previously set by <c>AceQLConnection.SetSystemWebProxy</c>.
         /// </summary>
-        /// <returns>The system web proxy set.</returns>
-        public static IWebProxy GetSystemWebProxy()
+        /// <returns>The default web proxy set. Returns null if none was previously set by <c>AceQLConnection.SetSystemWebProxy</c></returns>
+        public static IWebProxy GetDefaultWebProxy()
         {
-            return systemWebProxy;
+            return defaultWebProxy;
         }
 
         /// <summary>
-        /// Sets the system web proxy to use. Allows to force to use on some environments (Windows, ...)  <c>System.Net.WebRequest.GetSystemProxy()</c> instead of <c>System.Net.WebRequest.DefaultWebProxy</c>.
+        /// Sets the default web proxy to use. Allows to force to use on some environments (Windows, ...)  <c>System.Net.WebRequest.GetSystemProxy()</c> instead of <c>System.Net.WebRequest.DefaultWebProxy</c>.
         /// </summary>
-        /// <param name="webProxy">The system web proxy.</param>
-        public static void SetSystemWebProxy(IWebProxy webProxy)
+        /// <param name="webProxy">The default web proxy that will be used.</param>
+        public static void SetDefaultWebProxy(IWebProxy webProxy)
         {
-           systemWebProxy = webProxy;
+           defaultWebProxy = webProxy;
         }
 
         /// <summary>

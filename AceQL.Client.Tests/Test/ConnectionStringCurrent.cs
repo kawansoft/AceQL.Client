@@ -11,7 +11,7 @@ namespace AceQL.Client.Tests.Test
 
         public static readonly Boolean useLocal = false;
         public static readonly Boolean useLdapAuth;
-        public static readonly int typeAuthenticatedProxy = ConnectionStringBuilderFactory.AUTHENTICATED_PROXY_OFF;
+        public static readonly int typeAuthenticatedProxy = ConnectionStringBuilderFactory.AUTHENTICATED_PROXY_CREDENTIAL_CACHE;
 
         public static string Build()
         {
