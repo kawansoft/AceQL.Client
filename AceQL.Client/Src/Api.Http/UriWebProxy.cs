@@ -30,10 +30,10 @@ namespace AceQL.Client.Api.Http
         private readonly Uri proxyUri;
 
         /// <summary>
-        /// Builds an <see cref="IWebProxy"/> concrete implementation.
+        /// Builds an <see cref="IWebProxy" /> concrete implementation.
         /// </summary>
         /// <param name="proxyUri">The proxy URI. Example: <c>new Uri("http://localhost:8080")</c>.</param>
-        /// 
+        /// <exception cref="ArgumentNullException">proxyUri is null!</exception>
         public UriWebProxy(Uri proxyUri)
         {
             this.proxyUri = proxyUri ?? throw new ArgumentNullException("proxyUri is null!");
