@@ -19,11 +19,6 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class HttpManager : IDisposable
     {
-        /// <summary>
-        /// The credentials
-        /// </summary>
-        private readonly ICredentials proxyCredentials;
-
         private CancellationToken cancellationToken;
         private bool useCancellationToken;
 
@@ -31,7 +26,6 @@ namespace AceQL.Client.Src.Api.Http
         /// The timeout in milliseconds
         /// </summary>
         private readonly int timeout;
-        private readonly bool enableDefaultSystemAuthentication;
 
         /// <summary>
         /// The HTTP status code
@@ -62,13 +56,16 @@ namespace AceQL.Client.Src.Api.Http
         /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
         public HttpManager(string proxyUri, ICredentials proxyCredentials, int timeout, bool enableDefaultSystemAuthentication)
         {
-            this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;
-            this.enableDefaultSystemAuthentication = enableDefaultSystemAuthentication;
-
             BuildHttpClient(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
         }
 
+        /// <summary>
+        /// Builds the HTTP client.
+        /// </summary>
+        /// <param name="proxyUri">The proxy URI.</param>
+        /// <param name="proxyCredentials">The proxy credentials.</param>
+        /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
         private void BuildHttpClient(string proxyUri, ICredentials proxyCredentials, bool enableDefaultSystemAuthentication)
         {
             HttpClientHandler httpClientHandler = HttpClientHandlerBuilderNew.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
