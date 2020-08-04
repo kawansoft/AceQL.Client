@@ -54,6 +54,7 @@ namespace AceQL.Client.Tests
 
         static async Task DoIt()
         {
+ 
             var netCoreVer = System.Environment.Version; // 3.0.0
             AceQLConsole.WriteLine(netCoreVer + "");
 

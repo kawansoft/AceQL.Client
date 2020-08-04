@@ -13,7 +13,7 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class ConnectionStringDecoder
     {
-        internal static readonly bool DEBUG;
+        internal static readonly bool DEBUG = true;
 
         private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
         private const string ESCAPED_SEMICOLON = "\\;";
@@ -198,6 +198,9 @@ namespace AceQL.Client.Src.Api.Http
             {
                 Debug("useCredentialCache: " + CredentialCache.DefaultNetworkCredentials.UserName + " / xxxxxxxx");
                 NetworkCredential networkCredential = (NetworkCredential)CredentialCache.DefaultCredentials;
+
+                Debug("networkCredential.UserName: " + networkCredential.UserName);
+
                 proxyCredentials = new NetworkCredential(networkCredential.UserName, networkCredential.Password);
             }
             else

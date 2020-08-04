@@ -43,7 +43,7 @@ namespace AceQL.Client.Api.Http
     internal class AceQLHttpApi
     {
 
-        internal static readonly bool DEBUG;
+        internal static readonly bool DEBUG = true;
 
         /// <summary>
         /// The server URL
@@ -205,6 +205,8 @@ namespace AceQL.Client.Api.Http
                 this.httpManager = new HttpManager(proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication);
                 this.httpManager.SetSimpleTracer(simpleTracer);
 
+                Debug("httpManager.Proxy: " + httpManager.Proxy);
+
                 UserLoginStore userLoginStore = new UserLoginStore(server, username,
                     database);
 
@@ -299,7 +301,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         private async Task DummyGetCallForProxyAuthentication()
         {
-            if (proxyUri != null && proxyCredentials != null)
+            if (this.httpManager.Proxy != null && proxyCredentials != null)
             {
                 String getResult = await httpManager.CallWithGetAsync(server).ConfigureAwait(false);
                 ConsoleEmul.WriteLine(server + " - getResult: " + getResult);
