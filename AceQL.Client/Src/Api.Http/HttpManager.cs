@@ -1,16 +1,11 @@
-﻿using AceQL.Client.Api.Util;
-using AceQL.Client.Src.Api.Util;
+﻿using AceQL.Client.Src.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Handlers;
 
 namespace AceQL.Client.Src.Api.Http
 {

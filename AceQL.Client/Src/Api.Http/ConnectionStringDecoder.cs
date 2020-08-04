@@ -13,7 +13,7 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class ConnectionStringDecoder
     {
-        internal static readonly bool DEBUG = true;
+        internal static readonly bool DEBUG;
 
         private const string ESCAPED_SEMICOLON_WORD = "\\semicolon";
         private const string ESCAPED_SEMICOLON = "\\;";
