@@ -1,12 +1,9 @@
-﻿using AceQL.Client.Api.Util;
-using AceQL.Client.Src.Api.Util;
+﻿using AceQL.Client.Src.Api.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,16 +14,6 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     internal class HttpManager : IDisposable
     {
-        /// <summary>
-        /// The UriWebProxy Uri, if we don't want 
-        /// </summary>
-        private readonly string proxyUri;
-
-        /// <summary>
-        /// The credentials
-        /// </summary>
-        private readonly ICredentials proxyCredentials;
-
         private CancellationToken cancellationToken;
         private bool useCancellationToken;
 
@@ -34,7 +21,6 @@ namespace AceQL.Client.Src.Api.Http
         /// The timeout in milliseconds
         /// </summary>
         private readonly int timeout;
-        private readonly bool enableDefaultSystemAuthentication;
 
         /// <summary>
         /// The HTTP status code
@@ -43,8 +29,18 @@ namespace AceQL.Client.Src.Api.Http
 
         private SimpleTracer simpleTracer = new SimpleTracer();
 
-        HttpClient httpClient;
+        /// <summary>
+        /// The HTTP client
+        /// </summary>
+        private HttpClient httpClient;
+
         private int proxyAuthenticationCallCount;
+
+        /// <summary>
+        /// The proxy. Is null if no Defaut/System proxy and no used defined proxy.
+        /// </summary>
+        private IWebProxy proxy;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpManager"/> class.
@@ -55,17 +51,21 @@ namespace AceQL.Client.Src.Api.Http
         /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
         public HttpManager(string proxyUri, ICredentials proxyCredentials, int timeout, bool enableDefaultSystemAuthentication)
         {
-            this.proxyUri = proxyUri;
-            this.proxyCredentials = proxyCredentials;
             this.timeout = timeout;
-            this.enableDefaultSystemAuthentication = enableDefaultSystemAuthentication;
-
-            BuildHttpClient();
+            BuildHttpClient(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
         }
 
-        private void BuildHttpClient()
+        /// <summary>
+        /// Builds the HTTP client.
+        /// </summary>
+        /// <param name="proxyUri">The proxy URI.</param>
+        /// <param name="proxyCredentials">The proxy credentials.</param>
+        /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
+        private void BuildHttpClient(string proxyUri, ICredentials proxyCredentials, bool enableDefaultSystemAuthentication)
         {
-             httpClient = new HttpClient(HttpClientHandlerBuilderNew.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication));
+            HttpClientHandler httpClientHandler = HttpClientHandlerBuilderNew.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
+            this.proxy = httpClientHandler.Proxy;
+            this.httpClient = new HttpClient(httpClientHandler);
         }
 
         /// <summary>
@@ -78,6 +78,12 @@ namespace AceQL.Client.Src.Api.Http
         /// </summary>
         /// <value>The HTTP status code.</value>
         public HttpStatusCode HttpStatusCode { get => httpStatusCode; set => httpStatusCode = value; }
+
+        /// <summary>
+        /// Gets or sets the proxy.
+        /// </summary>
+        /// <value>The proxy.</value>
+        public IWebProxy Proxy { get => proxy; set => proxy = value; }
 
         /// <summary>
         /// To be call at end of each of each public aysnc(CancellationToken) calls to reset to false the usage of a CancellationToken with http calls

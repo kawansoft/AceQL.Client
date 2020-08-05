@@ -64,6 +64,7 @@
     <Compile Include="Test\ConnectionStringBuilderFactory.cs" />
     <Compile Include="Test\ConnectionStringBuilder.cs" />
     <Compile Include="Test\ConnectionStringCurrent.cs" />
+    <Compile Include="Test\PropFileReader.cs" />
     <Compile Include="Test\MyProxyInfo.cs" />
     <Compile Include="Test\HttpTest.cs" />
     <Compile Include="Test\JsonTest.cs" />

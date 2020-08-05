@@ -59,19 +59,21 @@ namespace AceQL.Client.Tests.Test
             MyProxyInfo myProxyInfo = new MyProxyInfo();
             string proxyUsername = myProxyInfo.ProxyUsername;
             string proxyPassword = myProxyInfo.ProxyPassword;
-            connectionString += $"ProxyUri=http://localhost:8080 ; ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword};";
+            connectionString += $"ProxyUri=http://localhost:8081 ; ProxyUsername={proxyUsername}; ProxyPassword={proxyPassword};";
         }
 
 
         internal void AddAuthenticatedProyCredentialCache()
         {
-            AceQLConnection.SetDefaultWebProxy(WebRequest.GetSystemWebProxy());
-            connectionString += $"UseCredentialCache=True;";
             MyProxyInfo myProxyInfo = new MyProxyInfo(MyProxyInfo.NEOTUNNEL_SAVE_TXT);
             String username = myProxyInfo.ProxyUsername;
             String password = myProxyInfo.ProxyPassword;
             CredentialCache.DefaultNetworkCredentials.UserName = username;
             CredentialCache.DefaultNetworkCredentials.Password = password;
+
+            AceQLConnection.SetDefaultWebProxy(WebRequest.GetSystemWebProxy());
+            connectionString += $"UseCredentialCache=True;";
+
         }
 
         /// <summary>
