@@ -65,13 +65,14 @@ namespace AceQL.Client.Tests.Test
 
         internal void AddAuthenticatedProyCredentialCache()
         {
-            AceQLConnection.SetDefaultWebProxy(WebRequest.GetSystemWebProxy());
-            connectionString += $"UseCredentialCache=True;";
             MyProxyInfo myProxyInfo = new MyProxyInfo(MyProxyInfo.NEOTUNNEL_SAVE_TXT);
             String username = myProxyInfo.ProxyUsername;
             String password = myProxyInfo.ProxyPassword;
             CredentialCache.DefaultNetworkCredentials.UserName = username;
             CredentialCache.DefaultNetworkCredentials.Password = password;
+
+            AceQLConnection.SetDefaultWebProxy(WebRequest.GetSystemWebProxy());
+            connectionString += $"UseCredentialCache=True;";
 
         }
 
