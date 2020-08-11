@@ -15,7 +15,7 @@ namespace AceQL.Client.Src.Api.Http
     /// </summary>
     static internal class HttpClientHandlerBuilderNew
     {
-        internal readonly static bool DEBUG;
+        internal readonly static bool DEBUG = true;
 
         internal static readonly String SECRET_URL = "http://secret.aceql.com";
 
@@ -31,22 +31,40 @@ namespace AceQL.Client.Src.Api.Http
             Debug("httpClientHandler.UseDefaultCredentials: "  + enableDefaultSystemAuthentication);
 
             IWebProxy webProxy = null;
+            HttpClientHandlerCreator httpClientHandlerCreator = null;
+
             if (proxyUri == null)
             {
                 // Detect the System.Net.WebRequest.DefaultWebProxy or WebRequest.GetSystemWebProxy() in use. 
-                // We we get null if no Default/System proxy is configured.
+                // We will get null if no Default/System proxy is configured.
+                // We use the webproxy credentials if they are set / not null:
                 webProxy = DefaultWebProxyCreator.GetWebProxy();
+               
+                if (webProxy == null || webProxy.Credentials == null)
+                {
+                    Debug("webProxy or webProxy.Credentials is NULL!");
+                    httpClientHandlerCreator = new HttpClientHandlerCreator(webProxy, credentials, enableDefaultSystemAuthentication);
+                }
+                else
+                {
+                    // Use the Credentials of the Web Proxy if webProxy.Credentials  is not null
+                    httpClientHandlerCreator = new HttpClientHandlerCreator(webProxy, webProxy.Credentials, enableDefaultSystemAuthentication);
+                }
+
+                
             }
             else
             {
                 Uri uri = new Uri(proxyUri);
                 webProxy = new UriWebProxy(uri);
+
+                // Creates the HttpClientHandler, with or without an associated IWebProxy
+                httpClientHandlerCreator = new HttpClientHandlerCreator(webProxy, credentials, enableDefaultSystemAuthentication);
             }
 
-            // Creates the HttpClientHandler, with or without an associated IWebProxy
-            HttpClientHandlerCreator httpClientHandlerCreator = new HttpClientHandlerCreator(webProxy, credentials, enableDefaultSystemAuthentication);
             HttpClientHandler httpClientHandler = httpClientHandlerCreator.GetHttpClientHandler();
             return httpClientHandler;
+
 
         }
 

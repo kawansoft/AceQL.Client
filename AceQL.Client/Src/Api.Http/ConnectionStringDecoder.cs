@@ -198,9 +198,7 @@ namespace AceQL.Client.Src.Api.Http
             {
                 Debug("useCredentialCache: " + CredentialCache.DefaultNetworkCredentials.UserName + " / xxxxxxxx");
                 NetworkCredential networkCredential = (NetworkCredential)CredentialCache.DefaultCredentials;
-
                 Debug("networkCredential.UserName: " + networkCredential.UserName);
-
                 proxyCredentials = new NetworkCredential(networkCredential.UserName, networkCredential.Password);
             }
             else
@@ -240,6 +238,7 @@ namespace AceQL.Client.Src.Api.Http
         public bool EnableDefaultSystemAuthentication { get => enableDefaultSystemAuthentication; }
 
         public bool EnableTrace { get => enableTrace; }
+        public bool UseCredentialCache { get => useCredentialCache; }
 
         internal static void Debug(string s)
         {

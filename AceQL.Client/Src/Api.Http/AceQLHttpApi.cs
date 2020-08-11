@@ -67,6 +67,7 @@ namespace AceQL.Client.Api.Http
         /// The credentials
         /// </summary>
         private ICredentials proxyCredentials ;
+        private bool useCredentialCache;
 
         /// <summary>
         /// The timeout in milliseconds
@@ -158,6 +159,7 @@ namespace AceQL.Client.Api.Http
                 sessionId = connectionStringDecoder.SessionId;
                 this.proxyUri = connectionStringDecoder.ProxyUri;
                 this.proxyCredentials = connectionStringDecoder.ProxyCredentials;
+                this.useCredentialCache = connectionStringDecoder.UseCredentialCache;
                 this.timeout = connectionStringDecoder.Timeout;
                 this.enableDefaultSystemAuthentication = connectionStringDecoder.EnableDefaultSystemAuthentication;
 
@@ -301,7 +303,7 @@ namespace AceQL.Client.Api.Http
         /// </summary>
         private async Task DummyGetCallForProxyAuthentication()
         {
-            if (this.httpManager.Proxy != null && proxyCredentials != null)
+            if ((this.httpManager.Proxy != null && proxyCredentials != null) || useCredentialCache)
             {
                 String getResult = await httpManager.CallWithGetAsync(server).ConfigureAwait(false);
                 ConsoleEmul.WriteLine(server + " - getResult: " + getResult);
