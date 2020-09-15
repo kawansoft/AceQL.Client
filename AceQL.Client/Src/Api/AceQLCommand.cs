@@ -35,6 +35,8 @@ namespace AceQL.Client.Api
     /// <summary>Represents a SQL statement to execute against a remote SQL database.</summary>
     public class AceQLCommand : IDisposable
     {
+        internal static readonly bool DEBUG;
+
         /// <summary>
         /// The instance that does all http stuff
         /// </summary>
@@ -366,6 +368,11 @@ namespace AceQL.Client.Api
                 // Get the parameters and build the result set
                 Dictionary<string, string> statementParameters = aceQLCommandUtil.GetPreparedStatementParameters();
 
+                foreach (string key in statementParameters.Keys)
+                {
+                    Debug("key:==> " + key + " / " + statementParameters[key]);
+                }
+
                 // Replace all @parms with ? in sql command
                 cmdText = aceQLCommandUtil.ReplaceParmsWithQuestionMarks();
 
@@ -581,7 +588,7 @@ namespace AceQL.Client.Api
             {
                 this.transaction = value ?? throw new ArgumentNullException("transaction is null!");
             }
-        
+
         }
 
         /// <summary>
@@ -618,7 +625,16 @@ namespace AceQL.Client.Api
         /// <param name="v"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool v)
         {
-            
+
         }
+
+        private static void Debug(string s)
+        {
+            if (DEBUG)
+            {
+                ConsoleEmul.WriteLine(DateTime.Now + " " + s);
+            }
+        }
+
     }
 }

@@ -36,11 +36,12 @@ namespace AceQL.Client.Tests
 
         public static void Main(string[] args)
         {
-            int mainToLaunch = 6;
+            int mainToLaunch = 1;
 
             if (mainToLaunch == 1)
             {
                 AceQLTest.TheMain(args);
+                AceQLTestClose.TheMain(args);
             }
             else if (mainToLaunch == 2)
             {
@@ -67,6 +68,10 @@ namespace AceQL.Client.Tests
             {
                 AceQLTestSessionId.TheMain();
                 AceQLTestMetadata.TheMain();
+            }
+            else if (mainToLaunch == 8)
+            {
+                AceQLTestClose.TheMain(args);
             }
 
         }

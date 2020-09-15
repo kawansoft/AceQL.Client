@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainStart.cs" />
+    <Compile Include="Test\AceQLTestClose.cs" />
     <Compile Include="Test\AceQLTestSessionId.cs" />
     <Compile Include="Test\AceQLTestMetadata.cs" />
     <Compile Include="Test\AceQLTestColumnAsKeyName.cs" />

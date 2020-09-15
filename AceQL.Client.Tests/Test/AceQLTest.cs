@@ -85,9 +85,11 @@ namespace AceQL.Client.Tests
             AceQLConsole.WriteLine("AceQL local folder: ");
             AceQLConsole.WriteLine(await AceQLConnection.GetAceQLLocalFolderAsync());
 
-            AceQLTransaction transaction = await connection.BeginTransactionAsync();
-            await transaction.CommitAsync();
-            transaction.Dispose();
+            //AceQLTransaction transaction = await connection.BeginTransactionAsync();
+            //await transaction.CommitAsync();
+            //transaction.Dispose();
+
+            AceQLTransaction transaction = null;
 
             string sql = "delete from customer";
 
@@ -100,7 +102,7 @@ namespace AceQL.Client.Tests
 
             await command.ExecuteNonQueryAsync();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 300; i++)
             {
                 sql =
                 "insert into customer values (@parm1, @parm2, @parm3, @parm4, @parm5, @parm6, @parm7, @parm8)";
@@ -110,7 +112,7 @@ namespace AceQL.Client.Tests
                 int customer_id = i;
 
                 command.Parameters.AddWithValue("@parm1", customer_id);
-                command.Parameters.AddWithValue("@parm2", "Sir");
+                command.Parameters.AddWithValue("@parm2", ""); // HACK NDP
                 command.Parameters.AddWithValue("@parm3", "André_" + customer_id);
                 command.Parameters.Add(new AceQLParameter("@parm4", "Name_" + customer_id));
                 command.Parameters.AddWithValue("@parm5", customer_id + ", road 66");

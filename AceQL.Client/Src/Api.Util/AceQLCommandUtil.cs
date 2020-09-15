@@ -121,15 +121,23 @@ namespace AceQL.Client.Api.Util
         /// <returns>The Parameters List</returns>
         internal Dictionary<string, string> GetPreparedStatementParameters()
         {
-            Dictionary<String, int> paramsIndexInPrepStatement = GetPreparedStatementParametersDic();
+            HashSet<String> theParamsSetInSqlCommand = GetValidParamsInSqlCommand();
+            CheckAllParametersExistInSqlCommand(theParamsSetInSqlCommand, this.Parameters);
 
             Dictionary<string, string> parametersList = new Dictionary<string, string>();
 
-            // For each parameter 1) get the index 2) get the dbType
-            foreach (KeyValuePair<String, int> parameter in paramsIndexInPrepStatement)
+            // For each parameter get the dbType
+            int paramIndex = 0;
+            foreach (var parameterName in theParamsSetInSqlCommand)
             {
-                AceQLParameter aceQLParameter = this.Parameters.GetAceQLParameter(parameter.Key);
-                int paramIndex = parameter.Value;
+                AceQLParameter aceQLParameter = this.Parameters.GetAceQLParameter(parameterName);
+                paramIndex++;
+
+                Debug("");
+                Debug("parameterName       : " + parameterName);
+                Debug("aceQLParameter.Value: " + aceQLParameter.Value + ":");
+                Debug("paramIndex          : " + paramIndex);
+
                 AceQLNullType aceQLNullType = aceQLParameter.SqlNullType;
                 Object ParmValue = aceQLParameter.Value;
 
@@ -142,9 +150,6 @@ namespace AceQL.Client.Api.Util
                 {
                     ParmValue = "NULL";
                 }
-
-                Debug("paramIndex: " + paramIndex);
-                Debug("ParmValue : " + ParmValue + ":");
 
                 if (aceQLParameter.IsNullValue)
                 {
@@ -275,50 +280,6 @@ namespace AceQL.Client.Api.Util
             string pathTraceTxt = "Trace_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + "_" + Guid.NewGuid().ToString() + ".txt";
             IFile file = await folder.CreateFileAsync(pathTraceTxt, CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
             return file;
-        }
-
-        /// <summary>
-        /// Gets the prepared statement parameters dictionary.
-        /// </summary>
-        /// <returns>Dictionary&lt;String, System.Int32&gt;.</returns>
-        /// <exception cref="System.ArgumentException">Invalid parameter not exists in SQL command: " + theParm</exception>
-        internal Dictionary<String, int> GetPreparedStatementParametersDic()
-        {
-            HashSet<String> theParamsSetInSqlCommand = GetValidParamsInSqlCommand();
-
-            List<String> parameterNamesList = new List<string>();
-
-            // 1) Create the list of rparameters and check that Added parameters exist in SQL command
-            for (int i = 0; i < Parameters.Count; i++)
-            {
-                String theParm = Parameters[i].ToString();
-
-                if (!theParamsSetInSqlCommand.Contains(theParm))
-                {
-                    throw new ArgumentException("Can not add value for the invalid parameter name: " + theParm);
-                }
-                parameterNamesList.Add(theParm);
-            }
-
-            // 2) Check that all SQL Command parameters have been set
-            CheckAllParametersExistInSqlCommand(theParamsSetInSqlCommand, Parameters);
-
-            // Build the parameters dictonary with rank of each parameter
-            Dictionary<String, int> paramsIndexInPrepStatement = new Dictionary<String, int>();
-
-            int parameterIndex = 0;
-            foreach (String parameterName in parameterNamesList)
-            {
-                parameterIndex++;
-
-                if (paramsIndexInPrepStatement.ContainsKey(parameterName))
-                {
-                    throw new ArgumentException("Can not add twice a value for the parameter: " + parameterName);
-                }
-
-                paramsIndexInPrepStatement.Add(parameterName, parameterIndex);
-            }
-            return paramsIndexInPrepStatement;
         }
 
         /// <summary>
