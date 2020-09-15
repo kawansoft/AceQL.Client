@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AceQL.Client</id>
-        <version>5.3.1</version>
+        <version>5.4.0</version>
         <title>AceQL HTTP Client SDK</title>
         <authors>KawanSoft</authors>
         <owners>KawanSoft</owners>
@@ -13,7 +13,7 @@
         <description>AceQL allows C# and Xamarin developers to access remote SQL databases and/or SQL databases in the cloud by simply including standard SQL calls in their code. AceQL operates with AceQL HTTP on server side. See www.aceql.com for more info.
 		</description>
         <releaseNotes>
-		Use the Default/System Web Proxy Credentials if they are set when creating the HttpClientHandler instance. 
+		AceQLCommand.Parameters.AddWithValue support now adding parameter names in any order.
 		</releaseNotes>	
         <copyright>Copyright © 2020</copyright>
         <tags>SQL over http remote jdbc cloud database Xamarin</tags>

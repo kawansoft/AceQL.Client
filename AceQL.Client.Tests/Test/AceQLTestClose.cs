@@ -85,7 +85,7 @@ namespace AceQL.Client.Tests
             int maxSelect = 1;
             for (int j = 0; j < maxSelect; j++)
             {
-                string sql = "select * from customer where customer_id > @parm1 and lname = @parm2"; ;
+                string sql = "select * from customer where customer_id > @parm1 and lname = @parm2";
                 AceQLCommand command = new AceQLCommand(sql, connection);
 
                 command.Parameters.AddWithValue("@parm2", "Name_5");
