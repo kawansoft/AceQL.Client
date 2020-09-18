@@ -1,6 +1,5 @@
 
                  AceQL C# Client SDK
-                     Version 5.4
                     Release Notes
 
 
@@ -16,6 +15,20 @@ in the cloud by simply including standard C# SQL calls in their code, just like
 they would do for an SQL Server database. 
 
 The AceQL C# Client SDK is licensed under the Apache 2.0 License.
+
+
+AceQL C# Client SDK - Version 5.5 - 18-Sep-2020
+------------------------------------------------
+
+What's New:
+- The new AceQLConnection.AddRequestHeader(string name, string value) allows
+  to set request headers for the session. 
+  AceQLConnection.ResetRequestHeaders() allows to reset (added headers are
+  suppressed in subsequent requests).
+- The AceQLConnection.RequestRetry property allows forcing a retry if a 
+  SELECT query failed. If the failure was due to a GZIP issue, the failed 
+  request is retried without any compression. This is experimental and
+  AceQLConnection.RequestRetry default value is false.
 
 
 AceQL C# Client SDK - Version 5.4 - 15-Sep-2020

@@ -56,11 +56,34 @@ namespace AceQL.Client.Api
         private static IWebProxy defaultWebProxy;
 
         /// <summary>
+        /// The request retry/
+        /// </summary>
+        private bool requestRetry;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AceQLConnection"/> class.
         /// </summary>
         public AceQLConnection()
         {
             aceQLHttpApi = new AceQLHttpApi();
+        }
+
+        /// <summary>
+        /// Adds A request header. The header will be added at each server call.
+        /// </summary>
+        /// <param name="name">The header name.</param>
+        /// <param name="value">The header value.</param>
+        public void AddRequestHeader(string name, string value)
+        {
+            aceQLHttpApi.AddRequestHeader(name, value);
+        }
+
+        /// <summary>
+        /// Resets the request headers. The previously added headers with <see cref="AddRequestHeader"/> will be suppressed.
+        /// </summary>
+        public void ResetRequestHeaders()
+        {
+            aceQLHttpApi.ResetRequestHeaders();
         }
 
         internal AceQLHttpApi GetAceQLHttpApi()
@@ -276,7 +299,8 @@ namespace AceQL.Client.Api
             loginStore.Remove();
             await aceQLHttpApi.CallApiNoResultAsync("logout", null).ConfigureAwait(false);
 
-            if (aceQLHttpApi.httpManager != null) {
+            if (aceQLHttpApi.httpManager != null)
+            {
                 aceQLHttpApi.httpManager.Dispose();
             }
 
@@ -392,7 +416,7 @@ namespace AceQL.Client.Api
         /// <param name="webProxy">The default web proxy that will be used.</param>
         public static void SetDefaultWebProxy(IWebProxy webProxy)
         {
-           defaultWebProxy = webProxy;
+            defaultWebProxy = webProxy;
         }
 
         /// <summary>
@@ -474,6 +498,11 @@ namespace AceQL.Client.Api
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether a failed request will be retried. The retry will be done once, without compression. Defaults to false.
+        /// </summary>
+        /// <value><c>true</c> if a failed request will be retried without compression.; otherwise, <c>false</c>.</value>
+        public bool RequestRetry { get => requestRetry; set => requestRetry = value; }
     }
 
 }

@@ -76,6 +76,11 @@ namespace AceQL.Client.Api.Http
         private bool enableDefaultSystemAuthentication;
 
         /// <summary>
+        /// The request headers added by the user
+        /// </summary>
+        private Dictionary<string, string> requestHeaders =  new Dictionary<string, string>();
+
+        /// <summary>
         /// The pretty printing
         /// </summary>
         const bool prettyPrinting = true;
@@ -136,6 +141,23 @@ namespace AceQL.Client.Api.Http
             this.credential = credential ?? throw new ArgumentNullException("credential is null!");
         }
 
+        /// <summary>
+        /// Resets the request headers.
+        /// </summary>
+        internal void ResetRequestHeaders()
+        {
+            requestHeaders = new Dictionary<string, string>();
+        }
+
+        /// <summary>
+        /// Adds A request header. This will be added at each server call.
+        /// </summary>
+        /// <param name="name">The header name.</param>
+        /// <param name="value">The header value.</param>
+        internal void AddRequestHeader(string name, string value)
+        {
+            requestHeaders.Add(name, value);
+        }
 
         /// <summary>
         /// Opens this instance.
@@ -204,7 +226,7 @@ namespace AceQL.Client.Api.Http
                 this.username = username ?? throw new ArgumentNullException("Username keyword not found in connection string or AceQLCredential not set.");
 
                 // Create the HttpManager instance
-                this.httpManager = new HttpManager(proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication);
+                this.httpManager = new HttpManager(proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication, requestHeaders);
                 this.httpManager.SetSimpleTracer(simpleTracer);
 
                 Debug("httpManager.Proxy: " + httpManager.Proxy);
@@ -655,7 +677,7 @@ namespace AceQL.Client.Api.Http
             HttpResponseMessage response = null;
 
             response = await formUploadStream.UploadAsync(theUrl, proxyUri, proxyCredentials, timeout, enableDefaultSystemAuthentication,  blobId, stream,
-                totalLength, progressIndicator, cancellationToken, useCancellationToken).ConfigureAwait(false);
+                totalLength, progressIndicator, cancellationToken, useCancellationToken, requestHeaders).ConfigureAwait(false);
 
             httpManager.HttpStatusCode = response.StatusCode;
 

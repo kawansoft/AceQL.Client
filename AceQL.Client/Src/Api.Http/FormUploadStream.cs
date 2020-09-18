@@ -59,14 +59,17 @@ namespace AceQL.Client.Api.Http
         /// <param name="totalLength"></param> 
         /// <param name="progressIndicator"></param>
         /// <param name="cancellationToken"></param> 
-        /// <param name="useCancellationToken"></param> 
+        /// <param name="useCancellationToken"></param>
+        /// <param name="requestHeaders">The request headers to add to all requests.</param>
         /// <returns></returns>
         internal async Task<HttpResponseMessage> UploadAsync(String url, String proxyUri, ICredentials credentials,
-            int timeout, bool enableDefaultSystemAuthentication, String blobId, Stream stream, long totalLength, AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken)
+            int timeout, bool enableDefaultSystemAuthentication, String blobId, Stream stream, long totalLength, 
+            AceQLProgressIndicator progressIndicator, CancellationToken cancellationToken, bool useCancellationToken, Dictionary<string, string> requestHeaders)
         {
             HttpClientHandler handler = HttpClientHandlerBuilderNew.Build(proxyUri, credentials, enableDefaultSystemAuthentication);
             ProgressMessageHandler processMessageHander = new ProgressMessageHandler(handler);
             HttpClient httpClient = new HttpClient(processMessageHander);
+            HttpManager.AddRequestHeaders(httpClient, requestHeaders);
 
             if (timeout != 0)
             {

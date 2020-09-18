@@ -67,6 +67,8 @@ namespace AceQL.Client.Api
 
         private CommandType commandType = CommandType.Text;
 
+        private int executeQueryRetryCount;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AceQLCommand"/> class.
         /// </summary>
@@ -254,24 +256,29 @@ namespace AceQL.Client.Api
 
                 using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, parametersMap).ConfigureAwait(false))
                 {
-                    if (aceQLHttpApi.GzipResult)
+                    try
                     {
-                        using (GZipStream decompressionStream = new GZipStream(input, CompressionMode.Decompress))
-                        {
-                            using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
-                            {
-                                decompressionStream.CopyTo(stream);
-                            }
-                        }
+                        await CopyHttpStreamToFile(file, input).ConfigureAwait(false);
                     }
-                    else
+                    catch (Exception exception)
                     {
-                        using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
+                        if (this.connection.RequestRetry && (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip")))
                         {
-                            input.CopyTo(stream);
+                            this.executeQueryRetryCount++;
+                            Boolean saveGzipResultValue = this.aceQLHttpApi.GzipResult;
+                            this.aceQLHttpApi.GzipResult = false;
+                            AceQLDataReader dataReader = await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
+                            this.aceQLHttpApi.GzipResult = saveGzipResultValue;
+                            return dataReader;
+                        }
+                        else
+                        {
+                            throw;
                         }
                     }
                 }
+
+                this.executeQueryRetryCount = 0;
 
                 StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.HttpStatusCode);
                 if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
@@ -380,31 +387,32 @@ namespace AceQL.Client.Api
 
                 bool isStoredProcedure = (commandType == CommandType.StoredProcedure ? true : false);
                 bool isPreparedStatement = true;
+
                 using (Stream input = await aceQLHttpApi.ExecuteQueryAsync(cmdText, Parameters, isStoredProcedure, isPreparedStatement, statementParameters).ConfigureAwait(false))
                 {
-                    if (input != null)
+                    try
                     {
-                        if (aceQLHttpApi.GzipResult)
+                        await CopyHttpStreamToFile(file, input).ConfigureAwait(false);
+                    }
+                    catch (Exception exception)
+                    {
+                        if (this.connection.RequestRetry && (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip")))
                         {
-                            using (GZipStream decompressionStream = new GZipStream(input, CompressionMode.Decompress))
-                            {
-                                using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
-                                {
-                                    decompressionStream.CopyTo(stream);
-                                }
-                            }
+                            this.executeQueryRetryCount++;
+                            Boolean saveGzipResultValue = this.aceQLHttpApi.GzipResult;
+                            this.aceQLHttpApi.GzipResult = false;
+                            AceQLDataReader dataReader = await ExecuteQueryAsPreparedStatementAsync().ConfigureAwait(false);
+                            this.aceQLHttpApi.GzipResult = saveGzipResultValue;
+                            return dataReader;
                         }
                         else
                         {
-                            using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
-                            {
-                                input.CopyTo(stream);
-                            }
+                            throw;
                         }
-
                     }
-
                 }
+
+                this.executeQueryRetryCount = 0;
 
                 StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.HttpStatusCode);
                 if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))
@@ -448,6 +456,35 @@ namespace AceQL.Client.Api
                 else
                 {
                     throw new AceQLException(exception.Message, 0, exception, aceQLHttpApi.HttpStatusCode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the HTTP stream to file. Unzip it if it's zipped.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="input">The input.</param>
+        private async Task CopyHttpStreamToFile(IFile file, Stream input)
+        {
+            if (input != null)
+            {
+                if (aceQLHttpApi.GzipResult)
+                {
+                    using (GZipStream decompressionStream = new GZipStream(input, CompressionMode.Decompress))
+                    {
+                        using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
+                        {
+                            decompressionStream.CopyTo(stream);
+                        }
+                    }
+                }
+                else
+                {
+                    using (var stream = await file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).ConfigureAwait(false))
+                    {
+                        input.CopyTo(stream);
+                    }
                 }
             }
         }
