@@ -62,6 +62,10 @@ namespace AceQL.Client.Tests
 
             using (AceQLConnection connection = new AceQLConnection(connectionString))
             {
+                connection.RequestRetry = true;
+                connection.AddRequestHeader("aceqlHeader1", "myAceQLHeader1");
+                connection.AddRequestHeader("aceqlHeader2", "myAceQLHeader2");
+
                 await ExecuteExample(connection).ConfigureAwait(false);
                 await connection.CloseAsync();
             }

@@ -262,7 +262,7 @@ namespace AceQL.Client.Api
                     }
                     catch (Exception exception)
                     {
-                        if (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip"))
+                        if (this.connection.RequestRetry && (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip")))
                         {
                             this.executeQueryRetryCount++;
                             Boolean saveGzipResultValue = this.aceQLHttpApi.GzipResult;
@@ -396,12 +396,12 @@ namespace AceQL.Client.Api
                     }
                     catch (Exception exception)
                     {
-                        if (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip"))
+                        if (this.connection.RequestRetry && (this.executeQueryRetryCount < 1 || exception.Message.Contains("GZip")))
                         {
                             this.executeQueryRetryCount++;
                             Boolean saveGzipResultValue = this.aceQLHttpApi.GzipResult;
                             this.aceQLHttpApi.GzipResult = false;
-                            AceQLDataReader dataReader = await ExecuteQueryAsStatementAsync().ConfigureAwait(false);
+                            AceQLDataReader dataReader = await ExecuteQueryAsPreparedStatementAsync().ConfigureAwait(false);
                             this.aceQLHttpApi.GzipResult = saveGzipResultValue;
                             return dataReader;
                         }
@@ -411,6 +411,8 @@ namespace AceQL.Client.Api
                         }
                     }
                 }
+
+                this.executeQueryRetryCount = 0;
 
                 StreamResultAnalyzer streamResultAnalyzer = new StreamResultAnalyzer(file, aceQLHttpApi.HttpStatusCode);
                 if (!await streamResultAnalyzer.IsStatusOkAsync().ConfigureAwait(false))

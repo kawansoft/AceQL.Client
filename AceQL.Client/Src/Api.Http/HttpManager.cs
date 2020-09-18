@@ -49,10 +49,11 @@ namespace AceQL.Client.Src.Api.Http
         /// <param name="proxyCredentials">The proxy credentials.</param>
         /// <param name="timeout">The timeout.</param>
         /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
-        public HttpManager(string proxyUri, ICredentials proxyCredentials, int timeout, bool enableDefaultSystemAuthentication)
+        /// <param name="requestHeaders">The request headers to add to all requests.</param>
+        public HttpManager(string proxyUri, ICredentials proxyCredentials, int timeout, bool enableDefaultSystemAuthentication, Dictionary<string, string> requestHeaders)
         {
             this.timeout = timeout;
-            BuildHttpClient(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
+            BuildHttpClient(proxyUri, proxyCredentials, enableDefaultSystemAuthentication, requestHeaders);
         }
 
         /// <summary>
@@ -61,11 +62,31 @@ namespace AceQL.Client.Src.Api.Http
         /// <param name="proxyUri">The proxy URI.</param>
         /// <param name="proxyCredentials">The proxy credentials.</param>
         /// <param name="enableDefaultSystemAuthentication">if set to <c>true</c> [enable default system authentication].</param>
-        private void BuildHttpClient(string proxyUri, ICredentials proxyCredentials, bool enableDefaultSystemAuthentication)
+        /// <param name="requestHeaders">The request headers to add to all requests.</param>
+        private void BuildHttpClient(string proxyUri, ICredentials proxyCredentials, bool enableDefaultSystemAuthentication, Dictionary<string, string> requestHeaders)
         {
             HttpClientHandler httpClientHandler = HttpClientHandlerBuilderNew.Build(proxyUri, proxyCredentials, enableDefaultSystemAuthentication);
             this.proxy = httpClientHandler.Proxy;
             this.httpClient = new HttpClient(httpClientHandler);
+
+            AddRequestHeaders(httpClient, requestHeaders);
+        }
+
+        /// <summary>
+        /// Add request headers to the HttpClient instance.
+        /// </summary>
+        /// <param name="httpClient"></param>
+        /// <param name="requestHeaders"></param>
+        public static void AddRequestHeaders(HttpClient httpClient, Dictionary<string, string> requestHeaders)
+        {
+            if (requestHeaders != null)
+            {
+                List<string> keyList = new List<string>(requestHeaders.Keys);
+                foreach (string key in keyList)
+                {
+                    httpClient.DefaultRequestHeaders.Add(key, requestHeaders[key]);
+                }
+            }
         }
 
         /// <summary>
