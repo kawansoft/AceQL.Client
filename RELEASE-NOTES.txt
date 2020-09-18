@@ -30,6 +30,7 @@ What's New:
   request is retried without any compression. This is experimental and
   AceQLConnection.RequestRetry default value is false.
 
+
 AceQL C# Client SDK - Version 5.4 - 15-Sep-2020
 ------------------------------------------------
 
