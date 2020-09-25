@@ -125,12 +125,12 @@ namespace AceQL.Client.Tests
             AceQLCommand command = new AceQLCommand(sql, connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            AceQLParameter aceQLParameter1 = new AceQLParameter("@parm1", 0);
-
             AceQLParameter aceQLParameter2 = new AceQLParameter("@parm2", 2)
             {
                 Direction = ParameterDirection.InputOutput
             };
+
+            AceQLParameter aceQLParameter1 = new AceQLParameter("@parm1", 0);
 
             AceQLParameter aceQLParameter3 = new AceQLParameter("@parm3")
             {
@@ -142,6 +142,7 @@ namespace AceQL.Client.Tests
             command.Parameters.Add(aceQLParameter3);
 
             AceQLConsole.WriteLine(sql);
+            AceQLConsole.WriteLine("BEFORE execute @parm1: " + aceQLParameter1.ParameterName + " / " + aceQLParameter1.Value + " (" + aceQLParameter2.Value.GetType() + ")");
             AceQLConsole.WriteLine("BEFORE execute @parm2: " + aceQLParameter2.ParameterName + " / " + aceQLParameter2.Value + " (" + aceQLParameter2.Value.GetType() + ")");
             AceQLConsole.WriteLine("BEFORE execute @parm3: " + aceQLParameter3.ParameterName + " / " + aceQLParameter3.Value);
             AceQLConsole.WriteLine();
