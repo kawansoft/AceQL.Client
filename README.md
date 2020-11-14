@@ -13,7 +13,7 @@ This AceQL C# Client SDK  v5.5 is deprecated, as it was built as a [Portable Cla
 
 Starting at version 6.0, AceQL C# Client is SDK now a [.Net Standard 2.0 library](https://docs.microsoft.com/dotnet/standard/net-standard) . Please go to the new AceQL Project https://github.com/kawansoft/AceQL.Client2. 
 
-*(If you need to access the  AceQL C# Client SDK  v5.5 documentation and code, go to this branch: https://github.com/kawansoft/AceQL.Client/tree/5.5. The 5.5 version package is stil accessible on NuGet and will be maintened until Janurary 2020, 2.)*
+*(If you need to access the  AceQL C# Client SDK  v5.5 documentation and code, go to this branch: https://github.com/kawansoft/AceQL.Client/tree/5.5. The 5.5 version package is stil accessible on NuGet and will be maintened until December 2020, 31.)*
 
 ------
 
