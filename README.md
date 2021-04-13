@@ -9,6 +9,8 @@
 
 <img src="https://www.aceql.com/favicon.png" alt="AceQ HTTP Icon"/>
 
+<img src="https://www.aceql.com/img/AceQL-Schema-min.jpg" alt="AceQL Draw"/>
+
 ### Starting at version 6.0, AceQL C# Client SDK is now a [.Net Standard 2.0 library](https://docs.microsoft.com/dotnet/standard/net-standard). 
 
 ### **Please go to the new AceQL C# SDK Project: https://github.com/kawansoft/AceQL.Client2**. 
