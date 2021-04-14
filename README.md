@@ -13,9 +13,10 @@
 
 ### Starting at version 6.0, AceQL C# Client SDK is now a [.Net Standard 2.0 library](https://docs.microsoft.com/dotnet/standard/net-standard). 
 
+### This AceQL C# Client SDK v5.5 was built as a Portable Class Library and is not any more maintened. ###
 ### **Please go to the new AceQL C# SDK Project: https://github.com/kawansoft/AceQL.Client2**. 
 
-*(This AceQL C# Client SDK v5.5 was built as a Portable Class Library and is not any more maintened. If you need to access the  AceQL C# Client SDK  v5.5 documentation and code, go to this branch: https://github.com/kawansoft/AceQL.Client/tree/5.5. The v5.5 package is still accessible on NuGet.* 
+*(If you need to access the  AceQL C# Client SDK  v5.5 documentation and code, go to this branch: https://github.com/kawansoft/AceQL.Client/tree/5.5. The v5.5 package is still accessible on NuGet.* 
 
 ------
 
